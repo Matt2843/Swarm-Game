@@ -37,7 +37,6 @@ public class SwarmerMain extends ApplicationAdapter {
 	private void centerCamera() {
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
 		float mapWidth = layer.getWidth() * layer.getTileWidth();
-		float mapHeight = layer.getHeight() * layer.getTileHeight();
 
 		camera.translate(mapWidth / 2, 0);
 	}
