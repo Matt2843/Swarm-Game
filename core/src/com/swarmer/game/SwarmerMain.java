@@ -16,41 +16,7 @@ public class SwarmerMain extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private TiledMap map;
 	
-	private void input(int keyCode) {
-		if(keyCode == Input.Keys.LEFT) {
-			camera.position.x -= 200;
-		}
-		if(keyCode == Input.Keys.RIGHT) {
-			camera.position.x += 200;
-		}
-		if(keyCode == Input.Keys.UP) {
-			camera.position.y += 200;
-		}
-		if(keyCode == Input.Keys.UP) {
-			camera.position.y -= 200;
-		}
-	}
-	
-	
-	@Override
-	public void resize(int width, int height) {
-		camera.viewportWidth = width;
-		camera.viewportHeight = height;
-		camera.update();
-	}
-	
-	@Override
-	public void create () {
-		map = new TmxMapLoader().load("map.tmx");
-		renderer = new IsometricTiledMapRenderer(map);
-		camera = new OrthographicCamera();
-	}
-
-	@Override
-	public void render() {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+	private void handleInput() {
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 			camera.translate(-10, 0, 0);
 		}
@@ -66,6 +32,39 @@ public class SwarmerMain extends ApplicationAdapter {
 		if(Gdx.input.isKeyJustPressed(Input.Keys.X)) {
 			camera.rotate(20);
 		}
+	}
+	
+	private void centerCamera() {
+		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+		float mapWidth = layer.getWidth() * layer.getTileWidth();
+		float mapHeight = layer.getHeight() * layer.getTileHeight();
+
+		camera.translate(mapWidth / 2, 0);
+	}
+	
+	
+	@Override
+	public void resize(int width, int height) {
+		camera.viewportWidth = width;
+		camera.viewportHeight = height;
+		camera.update();
+	}
+	
+	@Override
+	public void create () {
+		map = new TmxMapLoader().load("map.tmx");
+		renderer = new IsometricTiledMapRenderer(map);
+		camera = new OrthographicCamera();
+
+		centerCamera();
+	}
+
+	@Override
+	public void render() {
+		handleInput();
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 		
 		camera.update();
 		
