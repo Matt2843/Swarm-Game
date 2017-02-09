@@ -18,19 +18,24 @@ public class SwarmerMain extends ApplicationAdapter {
 	
 	private void handleInput() {
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			camera.translate(-10, 0, 0);
+			if (camera.position.x > Gdx.graphics.getWidth() / 2) {
+				camera.translate(-10, 0, 0);
+			};
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			camera.translate(10, 0, 0);
+			if (camera.position.x < Gdx.graphics.getWidth() * 2) {
+				camera.translate(10, 0, 0);
+			};
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			camera.translate(0, 10, 0);
+			if (camera.position.y < Gdx.graphics.getHeight() / 2 + 20) {
+				camera.translate(0, 10, 0);
+			};
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-			camera.translate(0, -10, 0);
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-			camera.rotate(20);
+			if (camera.position.y > (Gdx.graphics.getHeight() / 2 - 15) * -1) {
+				camera.translate(0, -10, 0);
+			};
 		}
 	}
 	
