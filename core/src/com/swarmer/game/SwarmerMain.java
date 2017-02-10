@@ -12,7 +12,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 
-
 public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 	
 	private IsometricTiledMapRenderer renderer;
@@ -34,7 +33,7 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 		if(camera.position.y + y > mapHeight / 2 - camera.viewportHeight / 2) {
 			vecY = (mapHeight / 2 - (camera.viewportHeight / 2)) - camera.position.y;
 		} else if(camera.position.y + y < -(mapHeight / 2) + camera.viewportHeight / 2){
-			vecY = camera.position.y - (camera.viewportHeight / 2);
+			vecY = -(mapHeight / 2) + (camera.viewportHeight / 2) - camera.position.y;
 		}
 		return new Vector2(vecX, vecY);
 	}
@@ -60,6 +59,10 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 				camera.translate(0, -10, 0);
 			};
 		}
+
+		if(Gdx.input.isKeyPressed(Input.Keys.X)) {
+			centerCamera();
+		}
 	}
 	
 	private void centerCamera() {
@@ -67,7 +70,8 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 		mapWidth = layer.getWidth() * layer.getTileWidth();
 		mapHeight = layer.getHeight() * layer.getTileHeight();
 
-		camera.translate(mapWidth / 2, 0);
+		camera.position.x = mapWidth / 2;
+		camera.position.y = 0;
 	}
 	
 	
