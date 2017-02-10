@@ -11,7 +11,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 
 public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
@@ -24,20 +23,20 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 	private int xOffset, yOffset;
 	
 	private Vector2 getInBounds(int x, int y) {
-		Vector2 vec = new Vector2();
+		float vecX = x, vecY = y;
 		
 		if(camera.position.x + x > mapWidth - camera.viewportWidth / 2){
-			vec[0] = (mapWidth - (camera.viewportWidth / 2)) - camera.position.x;
+			vecX = (mapWidth - (camera.viewportWidth / 2)) - camera.position.x;
 		} else if(camera.position.x + x < camera.viewportWidth / 2){
-			vec[0] = (camera.viewportWidth / 2) - camera.position.x;
+			vecX = (camera.viewportWidth / 2) - camera.position.x;
 		}
 		
-		if(camera.position.y + y > mapHeight - camera.viewportmapHeight / 2) {
-			vec[1] = (mapHeight - (camera.viewportmapHeight / 2)) - camera.position.y;
+		if(camera.position.y + y > mapHeight - camera.viewportHeight / 2) {
+			vecY = (mapHeight - (camera.viewportHeight / 2)) - camera.position.y;
 		} else if(camera.position.x + x < camera.viewportWidth / 2){
-			vec[1] = (camera.viewportmapHeight / 2) - camera.position.y;
+			vecY = (camera.viewportHeight / 2) - camera.position.y;
 		}
-		return vec;
+		return new Vector2(vecX, vecY);
 	}
 	
 	private void handleInput() {
