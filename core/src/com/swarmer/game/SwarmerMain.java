@@ -40,24 +40,16 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 	
 	private void handleInput() {
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			if (camera.position.x > Gdx.graphics.getWidth() / 2) {
-				camera.translate(-10, 0, 0);
-			};
+			camera.translate(getInBounds(-10, 0));
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			if (camera.position.x < Gdx.graphics.getWidth() * 2) {
-				camera.translate(10, 0, 0);
-			};
+			camera.translate(getInBounds(10, 0));
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			if (camera.position.y < Gdx.graphics.getHeight() / 2 + 20) {
-				camera.translate(0, 10, 0);
-			};
+			camera.translate(getInBounds(0, 10));
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-			if (camera.position.y > (Gdx.graphics.getHeight() / 2 - 15) * -1) {
-				camera.translate(0, -10, 0);
-			};
+			camera.translate(getInBounds(0, -10));
 		}
 
 		if(Gdx.input.isKeyPressed(Input.Keys.X)) {
