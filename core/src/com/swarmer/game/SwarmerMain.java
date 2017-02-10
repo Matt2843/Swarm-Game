@@ -31,10 +31,10 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 			vecX = (camera.viewportWidth / 2) - camera.position.x;
 		}
 		
-		if(camera.position.y + y > mapHeight - camera.viewportHeight / 2) {
-			vecY = (mapHeight - (camera.viewportHeight / 2)) - camera.position.y;
-		} else if(camera.position.x + x < camera.viewportWidth / 2){
-			vecY = (camera.viewportHeight / 2) - camera.position.y;
+		if(camera.position.y + y > mapHeight / 2 - camera.viewportHeight / 2) {
+			vecY = (mapHeight / 2 - (camera.viewportHeight / 2)) - camera.position.y;
+		} else if(camera.position.y + y < -(mapHeight / 2) + camera.viewportHeight / 2){
+			vecY = camera.position.y - (camera.viewportHeight / 2);
 		}
 		return new Vector2(vecX, vecY);
 	}
