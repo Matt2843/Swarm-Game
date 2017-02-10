@@ -20,13 +20,24 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 	private OrthographicCamera camera;
 	private TiledMap map;
 	
+	private float mapWidth, mapHeight;
 	private int xOffset, yOffset;
 	
-	private Vector2 inBounds(int x, int y) {
-		return 		(camera.position.x + x) > (Gdx.graphics.getWidth() / 2) 
-				&& 	(camera.position.x + x) < (Gdx.graphics.getWidth() * 2)
-				&& 	(camera.position.y + y) < (Gdx.graphics.getHeight() / 2 + 20)
-				&& 	(camera.position.y + y) > ((Gdx.graphics.getHeight() / 2 - 15) * -1);
+	private Vector2 getInBounds(int x, int y) {
+		Vector2 vec = new Vector2();
+		
+		if(camera.position.x + x > mapWidth - camera.viewportWidth / 2){
+			vec[0] = (mapWidth - (camera.viewportWidth / 2)) - camera.position.x;
+		} else if(camera.position.x + x < camera.viewportWidth / 2){
+			vec[0] = (camera.viewportWidth / 2) - camera.position.x;
+		}
+		
+		if(camera.position.y + y > mapHeight - camera.viewportmapHeight / 2) {
+			vec[1] = (mapHeight - (camera.viewportmapHeight / 2)) - camera.position.y;
+		} else if(camera.position.x + x < camera.viewportWidth / 2){
+			vec[1] = (camera.viewportmapHeight / 2) - camera.position.y;
+		}
+		return vec;
 	}
 	
 	private void handleInput() {
@@ -54,7 +65,8 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 	
 	private void centerCamera() {
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
-		float mapWidth = layer.getWidth() * layer.getTileWidth();
+		mapWidth = layer.getWidth() * layer.getTileWidth();
+		mapHeight = layer.getHeight() * layer.getTileHeight();
 
 		camera.translate(mapWidth / 2, 0);
 	}
@@ -135,11 +147,9 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		if (!dragging) return false;
-		if(inBounds(-(screenX - xOffset), screenY - yOffset)) {
-			camera.translate(-(screenX - xOffset), screenY - yOffset);
-	        xOffset = screenX;
-	        yOffset = screenY; 
-		}
+		camera.translate(getInBounds(-(screenX - xOffset), screenY - yOffset));
+		xOffset = screenX;
+		yOffset = screenY;
 		return true;
 	}
 
