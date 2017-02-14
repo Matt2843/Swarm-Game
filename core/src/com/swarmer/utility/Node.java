@@ -10,15 +10,7 @@ public class Node {
 	
 	private Resource resource = null;
 	
-	public Node nextNode(Node previousNode) {
-		/*
-		 * Implement:
-		 * set coefficient of previousNode low
-		 * roll through nodesInVicinity
-		 * return the node
-		 */
-		return null;
-	}
+	
 
 	public Node(Vector2 position) {
 		this.position = position;
