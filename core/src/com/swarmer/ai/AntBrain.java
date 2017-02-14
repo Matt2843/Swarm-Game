@@ -1,9 +1,28 @@
 package com.swarmer.ai;
 
-public interface AntBrain {
+import com.swarmer.utility.Node;
+
+public class AntBrain {
 	
-//	private void determineNextNode(Node n, Node[] a, float[] params) {
-//		
-//	}
+	private Node previousNode;
+	private Node currentNode;
+	
+	public Node determineNextNode() {
+		/*
+		 * set previousNode coefficient low
+		 * roll through the nodesInVicinity from currentNode,
+		 * according to the pheromone strengths.
+		 * return the node.
+		 */
+		return null;
+	}
+
+	public Node getPreviousNode() {
+		return previousNode;
+	}
+
+	public void setPreviousNode(Node previousNode) {
+		this.previousNode = previousNode;
+	}
 
 }
