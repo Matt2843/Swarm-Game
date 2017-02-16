@@ -14,7 +14,7 @@ public class AntBrain {
 	 * COEFFICIENTS
 	 */
 	
-	private int c1 = 10;
+	private int c1 = 100;
 	
 	private Path previousPath;
 	private Node currentNode;
@@ -31,35 +31,35 @@ public class AntBrain {
 		p1.getPheromones().put("Matt", new Pheromone(10));
 		
 		Path p2 = new Path("p2");
-		p2.getPheromones().put("Matt", new Pheromone(5));
+		p2.getPheromones().put("Matt", new Pheromone(0));
 		
 		Path p3 = new Path("p3");
-		p3.getPheromones().put("Matt", new Pheromone(15));
+		p3.getPheromones().put("Matt", new Pheromone(20));
 		
 		Path p4 = new Path("p4");
-		p4.getPheromones().put("Matt", new Pheromone(30));
+		p4.getPheromones().put("Matt", new Pheromone(5));
 		
 		Path p5 = new Path("p5");
-		p5.getPheromones().put("Matt", new Pheromone(18));
+		p5.getPheromones().put("Matt", new Pheromone(22));
 		
-		Path p6 = new Path("p6");
-		p6.getPheromones().put("Matt", new Pheromone(8));
-		
+//		Path p6 = new Path("p6");
+//		p6.getPheromones().put("Matt", new Pheromone(8));
+////		
 		Array<Path> paths = new Array<Path>();
 		paths.add(p1);
 		paths.add(p2);
 		paths.add(p3);
 		paths.add(p4);
 		paths.add(p5);
-		paths.add(p6);
+		//paths.add(p6);
 		
 		Node node = new Node(new Vector2(0,0), paths);
 		ab.setCurrentNode(node);
 		ab.setPreviousPath(p2);
 		
-		int[] scores = new int[6];
+		int[] scores = new int[5];
 		
-		for(int i = 0; i < 100000; i++) {
+		for(int i = 0; i < 125000; i++) {
 			
 			String str = ab.determineNextPath().getPATH_ID();
 			if(str.equals("p1")) {
@@ -86,7 +86,7 @@ public class AntBrain {
 		
 		for(int i = 0; i < scores.length; i++) {
 			float frac = (float)scores[i]/total;
-			System.out.println("P" + (i+1) + " chosen: " + frac * 100);
+			System.out.println("P" + (i+1) + " chosen: " + frac * 100 + " " + scores[i]);
 		}
 	}
 	
@@ -125,7 +125,7 @@ public class AntBrain {
 			}
 		}
 		
-		currentNode.getConnectedPaths().get(decision).getPheromones().get(PLAYER_ID).addPheromone();
+		//currentNode.getConnectedPaths().get(decision).getPheromones().get(PLAYER_ID).addPheromone();
 		return currentNode.getConnectedPaths().get(decision);
 	}
 
