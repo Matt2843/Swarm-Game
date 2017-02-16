@@ -6,11 +6,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 	
@@ -20,6 +23,8 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 	
 	private float mapWidth, mapHeight;
 	private int xOffset, yOffset;
+
+	private Ant ant;
 	
 	private Vector2 getInBounds(int x, int y) {
 		float vecX = x, vecY = y;
@@ -79,10 +84,11 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 		map = new TmxMapLoader().load("map.tmx");
 		renderer = new IsometricTiledMapRenderer(map);
 		camera = new OrthographicCamera();
-
 		Gdx.input.setInputProcessor(this);
-		
+
 		centerCamera();
+
+		ant = new Ant(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(1), camera);
 	}
 
 	@Override
@@ -95,6 +101,10 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 		
 		renderer.setView(camera);
 		renderer.render();
+
+		renderer.getBatch().begin();
+		ant.draw(renderer.getBatch());
+		renderer.getBatch().end();
 	}
 	
 	@Override
