@@ -6,14 +6,14 @@ import com.badlogic.gdx.utils.Array;
 public class Node {
 	
 	private final Vector2 position;
-	private Array<Node> nodesInVicinity;
+	private Array<Node> connectedNodes;
 	
 	private Resource resource = null;
 	
-	
 
-	public Node(Vector2 position) {
+	public Node(Vector2 position, Array<Node> connectedNodes) {
 		this.position = position;
+		this.connectedNodes = connectedNodes;
 	}
 	
 	public Vector2 getPosition() {
