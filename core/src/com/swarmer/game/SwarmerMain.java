@@ -70,8 +70,7 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 		camera.position.x = mapWidth / 2;
 		camera.position.y = 0;
 	}
-	
-	
+
 	@Override
 	public void resize(int width, int height) {
 		camera.viewportWidth = width;
@@ -88,7 +87,10 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 
 		centerCamera();
 
-		ant = new Ant(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(1), camera);
+		ant = new Ant(
+				new Sprite(new Texture("player.png")),
+				(TiledMapTileLayer) map.getLayers().get(1)
+		);
 	}
 
 	@Override

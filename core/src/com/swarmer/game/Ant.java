@@ -2,7 +2,6 @@ package com.swarmer.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -14,16 +13,14 @@ public class Ant extends Sprite {
 	private Vector2 velocity = new Vector2();
 
 	private float speed = 60 * 2;
-	private TiledMapTileLayer layer;
-	private OrthographicCamera camera;
+	private TiledMapTileLayer layer;;
 
-	public Ant(Sprite sprite, TiledMapTileLayer layer, OrthographicCamera camera) {
+	public Ant(Sprite sprite, TiledMapTileLayer layer) {
 		super(sprite);
 
 		this.layer = layer;
-		this.camera = camera;
 
-		setX(100);
+		setX(0);
 		setY(0);
 	}
 
@@ -33,7 +30,7 @@ public class Ant extends Sprite {
 		super.draw(batch);
 	}
 
-	public void update(float delta) {
+	private void update(float delta) {
 		velocity.y = 0; velocity.x = 0;
 
 		if(Gdx.input.isKeyPressed(Input.Keys.A)) {
@@ -48,9 +45,13 @@ public class Ant extends Sprite {
 		if(Gdx.input.isKeyPressed(Input.Keys.S)) {
 			velocity.y = -speed;
 		}
-		
 
-		if (layer.getCell((int) ((getX() + velocity.x * delta) / layer.getTileWidth()), (int) ((getY() + velocity.y * delta) / layer.getTileHeight())) == null) {
+		float w = layer.getTileWidth(); float h = layer.getTileHeight();
+		float sx = getX(); float sy = getY();
+		float y = ( w*sy + h*sx )/( w*h );
+		float x = (( w*sy - h*sx )/( w*h ))*-1;
+
+		if (layer.getCell((int) (x + velocity.x * delta), (int) (y + velocity.y * delta)) == null) {
 			setX(getX() + velocity.x * delta);
 			setY(getY() + velocity.y * delta);
 		}
