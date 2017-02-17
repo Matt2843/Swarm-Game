@@ -13,12 +13,17 @@ public class Ant extends Sprite {
 	private Vector2 velocity = new Vector2();
 
 	private float speed = 60 * 2;
-	private TiledMapTileLayer layer;;
+	private TiledMapTileLayer layer;
+	private float tileWidth;
+	private float tileHeight;
+
 
 	public Ant(Sprite sprite, TiledMapTileLayer layer) {
 		super(sprite);
 
 		this.layer = layer;
+		this.tileWidth = layer.getTileWidth();
+		this.tileHeight = layer.getTileHeight();
 
 		setX(0);
 		setY(0);
@@ -31,7 +36,8 @@ public class Ant extends Sprite {
 	}
 
 	private void update(float delta) {
-		velocity.y = 0; velocity.x = 0;
+		velocity.y = 0;
+		velocity.x = 0;
 
 		if(Gdx.input.isKeyPressed(Input.Keys.A)) {
 			velocity.x = -speed;
@@ -46,14 +52,32 @@ public class Ant extends Sprite {
 			velocity.y = -speed;
 		}
 
-		float w = layer.getTileWidth(); float h = layer.getTileHeight();
-		float sx = getX(); float sy = getY();
-		float y = ( w*sy + h*sx )/( w*h );
-		float x = (( w*sy - h*sx )/( w*h ))*-1;
+		Vector2 tileCoords = getTileCoordinates(getX(), getY());
 
-		if (layer.getCell((int) (x + velocity.x * delta), (int) (y + velocity.y * delta)) == null) {
+		Vector2 nextTileCoords = getTileCoordinates(getX() + velocity.x * delta, getY() + velocity.y * delta);
+
+		if (getCell(layer, nextTileCoords) == null)
+		{
 			setX(getX() + velocity.x * delta);
 			setY(getY() + velocity.y * delta);
 		}
+	}
+
+	public Vector2 getTileCoordinates(float sx, float sy) {
+		float x = Math.round(( ( tileWidth * sy - tileHeight * sx ) / ( tileWidth*tileHeight) ) * -1);
+		float y = Math.round(( tileWidth * sy + tileHeight * sx ) / ( tileWidth*tileHeight));
+
+		return new Vector2(x,y);
+	}
+
+	public Vector2 getScreenCoordinates(float tx, float ty) {
+		float x = 0.5f * tx * tileWidth + 0.5f * ty * tileWidth;
+		float y = -0.5f * tileHeight * (tx-ty);
+
+		return new Vector2(x,y);
+	}
+
+	public TiledMapTileLayer.Cell getCell(TiledMapTileLayer layer, Vector2 coords) {
+		return layer.getCell((int) coords.x, (int) coords.y);
 	}
 }
