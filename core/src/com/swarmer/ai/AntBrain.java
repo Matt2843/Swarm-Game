@@ -14,7 +14,7 @@ public class AntBrain {
 	 * COEFFICIENTS
 	 */
 	
-	private int c1 = 100;
+	private int c1 = 10;
 	
 	private Path previousPath;
 	private Node currentNode;
@@ -59,7 +59,7 @@ public class AntBrain {
 		
 		int[] scores = new int[5];
 		
-		for(int i = 0; i < 125000; i++) {
+		for(int i = 0; i < 100000; i++) {
 			
 			String str = ab.determineNextPath().getPATH_ID();
 			if(str.equals("p1")) {
