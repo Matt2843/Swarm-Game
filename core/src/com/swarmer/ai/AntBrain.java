@@ -14,7 +14,7 @@ public class AntBrain {
 	 * COEFFICIENTS
 	 */
 	
-	private int c1 = 10;
+	private int c1 = 1;
 	
 	private Path previousPath;
 	private Node currentNode;
@@ -100,13 +100,11 @@ public class AntBrain {
 			totalPheromones += evaluationPath.getPheromones().get(PLAYER_ID).getQuantity();
 		}
 		
-		float denominator = 0.0f;
 		float defaultProbability = (float) 1/currentNode.getConnectedPaths().size;
 		for(Path evaluationPath : currentNode.getConnectedPaths()) {		
 			if(!evaluationPath.getPATH_ID().equals(previousPath.getPATH_ID())) {
 				float pheromone = (float) evaluationPath.getPheromones().get(PLAYER_ID).getQuantity();
 				float decision = pheromone/totalPheromones * c1 + defaultProbability * (1 - c1);
-				//denominator += decision;
 				pathLikelihood.add(decision);
 			} else {
 				pathLikelihood.add(0.0f);
@@ -117,7 +115,7 @@ public class AntBrain {
 		int decision = 0;
 		
 		for(int i = 0; i < pathLikelihood.size; i++) {
-			float chance = (float) pathLikelihood.get(i); // denominator;
+			float chance = (float) pathLikelihood.get(i);
 			accunulated += chance;
 			if(rngesus <= accunulated){
 				decision = i;
