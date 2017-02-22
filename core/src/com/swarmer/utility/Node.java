@@ -8,20 +8,26 @@ public class Node {
 	private final Vector2 position;
 	private Array<Edge> connectedEdges;
 	
+	public boolean isCollisionNode = false;
+	
 	private Resource resource = null;
 	
 	public Node(Vector2 position) {
 		this.position = position;
+		connectedEdges = new Array<Edge>();
 	}
 	
-
-	public Node(Vector2 position, Array<Edge> connectedPaths) {
+	public Node(Vector2 position, Array<Edge> connectedEdges) {
 		this.position = position;
-		this.connectedEdges = connectedPaths;
+		this.connectedEdges = connectedEdges;
 	}
 	
 	public Vector2 getPosition() {
 		return position;
+	}
+	
+	public void addEdge(Edge e) {
+		connectedEdges.add(e);
 	}
 
 	public Resource getResource() {
@@ -32,12 +38,20 @@ public class Node {
 		this.resource = resource;
 	}
 
-	public Array<Edge> getConnectedPaths() {
+	public Array<Edge> getConnectedEdges() {
 		return connectedEdges;
 	}
 
-	public void setConnectedPaths(Array<Edge> connectedPaths) {
-		this.connectedEdges = connectedPaths;
+	public void setConnectedEdges(Array<Edge> connectedEdges) {
+		this.connectedEdges = connectedEdges;
+	}
+	
+	public float getX() {
+		return position.x;
+	}
+	
+	public float getY() {
+		return position.x;
 	}
 	
 }

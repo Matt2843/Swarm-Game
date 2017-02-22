@@ -28,10 +28,10 @@ public class AntBrain {
 	public static void main(String[] args) {
 		AntBrain ab = new AntBrain("Matt");
 		
-		Edge[] edges = new Edge[6];
-		for(int i = 0; i < edges.length; i++) {
-			edges[i] = new Edge("p"+ (i+1));
-		}
+//		Edge[] edges = new Edge[6];
+//		for(int i = 0; i < edges.length; i++) {
+//			edges[i] = new Edge("p"+ (i+1));
+//		}
 		
 		Edge p1 = new Edge("p1");
 		p1.getPheromones().put("Matt", new Pheromone(10));
@@ -49,15 +49,15 @@ public class AntBrain {
 		p5.getPheromones().put("Matt", new Pheromone(22));
 		
 		
-		Array<Edge> paths = new Array<Edge>();
-		paths.add(p1);
-		paths.add(p2);
-		paths.add(p3);
-		paths.add(p4);
-		paths.add(p5);
+		Array<Edge> edges = new Array<Edge>();
+		edges.add(p1);
+		edges.add(p2);
+		edges.add(p3);
+		edges.add(p4);
+		edges.add(p5);
 		//paths.add(p6);
 		
-		Node node = new Node(new Vector2(0,0), paths);
+		Node node = new Node(new Vector2(0,0), edges);
 		ab.setCurrentNode(node);
 		ab.setPreviousPath(p2);
 		
@@ -100,12 +100,12 @@ public class AntBrain {
 		double rngesus = ThreadLocalRandom.current().nextDouble(0.0, 1.0);
 		
 		int totalPheromones = 0;
-		for(Edge evaluationPath : currentNode.getConnectedPaths()) {
+		for(Edge evaluationPath : currentNode.getConnectedEdges()) {
 			totalPheromones += evaluationPath.getPheromones().get(PLAYER_ID).getQuantity();
 		}
 		
-		float defaultProbability = (float) 1/currentNode.getConnectedPaths().size;
-		for(Edge evaluationPath : currentNode.getConnectedPaths()) {		
+		float defaultProbability = (float) 1/currentNode.getConnectedEdges().size;
+		for(Edge evaluationPath : currentNode.getConnectedEdges()) {		
 			if(!evaluationPath.getPATH_ID().equals(previousEdge.getPATH_ID())) {
 				float pheromone = (float) evaluationPath.getPheromones().get(PLAYER_ID).getQuantity();
 				float decision = pheromone/totalPheromones * c1 + defaultProbability * (1 - c1);
@@ -132,7 +132,7 @@ public class AntBrain {
 		 */
 		
 		//currentNode.getConnectedPaths().get(decision).getPheromones().get(PLAYER_ID).addPheromone();
-		return currentNode.getConnectedPaths().get(decision);
+		return currentNode.getConnectedEdges().get(decision);
 	}
 
 	public Edge getPreviousPath() {

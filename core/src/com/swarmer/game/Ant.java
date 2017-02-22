@@ -61,7 +61,7 @@ public class Ant extends Sprite {
 
 		Vector2 nextTileCoords = getTileCoordinates(getX() + velocity.x * delta, getY() + velocity.y * delta);
 
-		System.out.println(tileCoords.x + " " + tileCoords.y);
+//		System.out.println(tileCoords.x + " " + tileCoords.y);
 
 		if (getCell(layer, nextTileCoords) == null)
 		{
