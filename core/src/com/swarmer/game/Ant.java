@@ -51,10 +51,17 @@ public class Ant extends Sprite {
 		if(Gdx.input.isKeyPressed(Input.Keys.S)) {
 			velocity.y = -speed;
 		}
+		if(Gdx.input.isKeyPressed(Input.Keys.G)) {
+			Vector2 coords = getScreenCoordinates(8, 8);
+			setX(coords.x);
+			setY(coords.y);
+		}
 
 		Vector2 tileCoords = getTileCoordinates(getX(), getY());
 
 		Vector2 nextTileCoords = getTileCoordinates(getX() + velocity.x * delta, getY() + velocity.y * delta);
+
+		System.out.println(tileCoords.x + " " + tileCoords.y);
 
 		if (getCell(layer, nextTileCoords) == null)
 		{
