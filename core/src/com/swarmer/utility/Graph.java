@@ -39,9 +39,6 @@ public class Graph {
 						new Edge(nodes[i][j], nodes[i-1][j-1]);
 						new Edge(nodes[i][j], nodes[i][j-1]);
 					}
-				} else {
-					nodes[i][j] = new Node(new Vector2(i, j));
-					nodes[i][j].isCollisionNode = true;
 				}
 			}
 		}
@@ -53,7 +50,7 @@ public class Graph {
 		for(int j = 0; j < height; j++) {
 			String row = "";
 			for(int i = 0; i < width; i++) {
-				if(!nodes[i][j].isCollisionNode){
+				if(nodes[i][j] != null){
 					row = row + "x";
 				} else {
 					row = row + " ";
@@ -62,6 +59,10 @@ public class Graph {
 			res = row + "\n" + res;
 		}
 		System.out.print(res);
+		
+		for(Edge e : nodes[0][0].getConnectedEdges()) {
+			System.out.println("N1: " + e.getNode1().getPosition().toString() + " N2: " + e.getNode2().getPosition().toString());
+		}
 		
 	}
 }

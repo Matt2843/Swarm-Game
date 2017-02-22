@@ -8,8 +8,6 @@ public class Node {
 	private final Vector2 position;
 	private Array<Edge> connectedEdges;
 	
-	public boolean isCollisionNode = false;
-	
 	private Resource resource = null;
 	
 	public Node(Vector2 position) {

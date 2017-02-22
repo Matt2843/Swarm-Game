@@ -13,7 +13,7 @@ public class Edge {
 	public Edge(Node n1, Node n2) {
 		this.node1 = n1;
 		this.node2 = n2;
-		if(!n1.isCollisionNode && !n2.isCollisionNode) {
+		if(n1 != null && n2 != null) {
 			n1.addEdge(this);
 			n2.addEdge(this);
 		}
