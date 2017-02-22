@@ -4,19 +4,20 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.swarmer.utility.Edge;
 import com.swarmer.utility.Node;
-import com.swarmer.utility.Path;
 import com.swarmer.utility.Pheromone;
 
 public class AntBrain {
 	
 	/*
 	 * COEFFICIENTS
+	 *  TODO: What should determine the edge selection beside pheromone strength?
 	 */
 	
 	private int c1 = 1;
 	
-	private Path previousPath;
+	private Edge previousEdge;
 	private Node currentNode;
 	private final String PLAYER_ID;
 	
@@ -27,25 +28,28 @@ public class AntBrain {
 	public static void main(String[] args) {
 		AntBrain ab = new AntBrain("Matt");
 		
-		Path p1 = new Path("p1");
+		Edge[] edges = new Edge[6];
+		for(int i = 0; i < edges.length; i++) {
+			edges[i] = new Edge("p"+ (i+1));
+		}
+		
+		Edge p1 = new Edge("p1");
 		p1.getPheromones().put("Matt", new Pheromone(10));
 		
-		Path p2 = new Path("p2");
+		Edge p2 = new Edge("p2");
 		p2.getPheromones().put("Matt", new Pheromone(0));
 		
-		Path p3 = new Path("p3");
+		Edge p3 = new Edge("p3");
 		p3.getPheromones().put("Matt", new Pheromone(20));
 		
-		Path p4 = new Path("p4");
+		Edge p4 = new Edge("p4");
 		p4.getPheromones().put("Matt", new Pheromone(5));
 		
-		Path p5 = new Path("p5");
+		Edge p5 = new Edge("p5");
 		p5.getPheromones().put("Matt", new Pheromone(22));
 		
-//		Path p6 = new Path("p6");
-//		p6.getPheromones().put("Matt", new Pheromone(8));
-////		
-		Array<Path> paths = new Array<Path>();
+		
+		Array<Edge> paths = new Array<Edge>();
 		paths.add(p1);
 		paths.add(p2);
 		paths.add(p3);
@@ -90,19 +94,19 @@ public class AntBrain {
 		}
 	}
 	
-	public Path determineNextPath() {
+	public Edge determineNextPath() {
 		Array<Float> pathLikelihood = new Array<Float>();
 		
 		double rngesus = ThreadLocalRandom.current().nextDouble(0.0, 1.0);
 		
 		int totalPheromones = 0;
-		for(Path evaluationPath : currentNode.getConnectedPaths()) {
+		for(Edge evaluationPath : currentNode.getConnectedPaths()) {
 			totalPheromones += evaluationPath.getPheromones().get(PLAYER_ID).getQuantity();
 		}
 		
 		float defaultProbability = (float) 1/currentNode.getConnectedPaths().size;
-		for(Path evaluationPath : currentNode.getConnectedPaths()) {		
-			if(!evaluationPath.getPATH_ID().equals(previousPath.getPATH_ID())) {
+		for(Edge evaluationPath : currentNode.getConnectedPaths()) {		
+			if(!evaluationPath.getPATH_ID().equals(previousEdge.getPATH_ID())) {
 				float pheromone = (float) evaluationPath.getPheromones().get(PLAYER_ID).getQuantity();
 				float decision = pheromone/totalPheromones * c1 + defaultProbability * (1 - c1);
 				pathLikelihood.add(decision);
@@ -123,16 +127,20 @@ public class AntBrain {
 			}
 		}
 		
+		/*
+		 * Find a way to increase pheromone trail
+		 */
+		
 		//currentNode.getConnectedPaths().get(decision).getPheromones().get(PLAYER_ID).addPheromone();
 		return currentNode.getConnectedPaths().get(decision);
 	}
 
-	public Path getPreviousPath() {
-		return previousPath;
+	public Edge getPreviousPath() {
+		return previousEdge;
 	}
 
-	public void setPreviousPath(Path previousPath) {
-		this.previousPath = previousPath;
+	public void setPreviousPath(Edge previousPath) {
+		this.previousEdge = previousPath;
 	}
 
 	public Node getCurrentNode() {

@@ -6,12 +6,12 @@ import com.badlogic.gdx.utils.Array;
 public class Node {
 	
 	private final Vector2 position;
-	private Array<Path> connectedPaths;
+	private Array<Edge> connectedPaths;
 	
 	private Resource resource = null;
 	
 
-	public Node(Vector2 position, Array<Path> connectedPaths) {
+	public Node(Vector2 position, Array<Edge> connectedPaths) {
 		this.position = position;
 		this.connectedPaths = connectedPaths;
 	}
@@ -28,11 +28,11 @@ public class Node {
 		this.resource = resource;
 	}
 
-	public Array<Path> getConnectedPaths() {
+	public Array<Edge> getConnectedPaths() {
 		return connectedPaths;
 	}
 
-	public void setConnectedPaths(Array<Path> connectedPaths) {
+	public void setConnectedPaths(Array<Edge> connectedPaths) {
 		this.connectedPaths = connectedPaths;
 	}
 	

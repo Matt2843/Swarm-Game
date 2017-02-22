@@ -2,12 +2,12 @@ package com.swarmer.utility;
 
 import java.util.HashMap;
 
-public class Path {
+public class Edge {
 	
 	private HashMap<String, Pheromone> pheromones = new HashMap<String, Pheromone>();
 	private final String PATH_ID;
 	
-	public Path(String PATH_ID) {
+	public Edge(String PATH_ID) {
 		this.PATH_ID = PATH_ID;
 	}
 
