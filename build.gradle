@@ -83,6 +83,10 @@ project(":core") {
     }
 }
 
+project(":server") {
+    apply plugin: "java"
+}
+
 tasks.eclipse.doLast {
     delete ".project"
 }
