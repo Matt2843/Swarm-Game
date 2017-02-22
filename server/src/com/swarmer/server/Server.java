@@ -3,8 +3,11 @@ package com.swarmer.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Server extends Thread {
+	
+	private ArrayList<Connection> allConnections;
 	
 	private ServerSocket server;
 	private Socket connection;
@@ -14,6 +17,7 @@ public class Server extends Thread {
 	
 	public Server(int port) {
 		this.port = port;
+		allConnections = new ArrayList<Connection>();
 	}
 	
 	@Override
@@ -39,16 +43,32 @@ public class Server extends Thread {
 
 	private void waitForConnection() throws IOException, InterruptedException {
 		while(running) {
+			System.out.println("Awaiting connection.. :)");
 			connection = server.accept();
 			Connection newClient = new Connection(connection);
 			newClient.start();
+			allConnections.add(newClient);
 			
 			Thread.sleep(50);
 		}
 	}
 	
 	private void cleanUp() {
-		// TODO Auto-generated method stub
-		
+		for(Connection c : allConnections) {
+			try {
+				c.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
+	
+	public static void main(String[] args) {
+		new Server(1234).start();
+	}
+	
+	
+	
+	
+	
 }
