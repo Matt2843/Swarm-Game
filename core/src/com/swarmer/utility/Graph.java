@@ -6,14 +6,12 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Graph {
 	private Node[][] nodes;
-	private final TiledMap map;	
 	private final TiledMapTileLayer collisionLayer;
 	
 	private final int width;
 	private final int height;
 	
 	public Graph(TiledMap map) {
-		this.map = map;
 		collisionLayer = (TiledMapTileLayer) map.getLayers().get(1);
 		width = ((TiledMapTileLayer)map.getLayers().get(0)).getWidth();
 		height = ((TiledMapTileLayer)map.getLayers().get(0)).getHeight();
@@ -22,7 +20,6 @@ public class Graph {
 	}
 
 	private void generateGraph() {
-		System.out.println("Kappa");
 		for(int j = 0; j < height; j++) {
 			for(int i = 0; i < width; i++) {
 				if(collisionLayer.getCell(i, j) == null) {
@@ -48,24 +45,23 @@ public class Graph {
 				}
 			}
 		}
-		System.out.println("End Kappa");
 		printNodes();
 	}
 
 	private void printNodes() {
-		String row = "";
 		String res = "";
-		for(int j = 0; j > height; j++) {
+		for(int j = 0; j < height; j++) {
+			String row = "";
 			for(int i = 0; i < width; i++) {
-				if(!nodes[i][j].isCollisionNode)
-					row += "x";
-				else {
-					row += " ";
+				if(!nodes[i][j].isCollisionNode){
+					row = row + "x";
+				} else {
+					row = row + " ";
 				}
 			}
 			res = row + "\n" + res;
 		}
-		System.out.println(res);
+		System.out.print(res);
 		
 	}
 }
