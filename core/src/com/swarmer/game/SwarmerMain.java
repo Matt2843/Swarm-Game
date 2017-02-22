@@ -13,7 +13,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.swarmer.utility.Node;
 
 public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
@@ -99,7 +98,7 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 	private void createNodes() {
 		for (int i = 0; i < ((TiledMapTileLayer) map.getLayers().get(0)).getWidth(); i++) {
 			for (int j = 0; j < ((TiledMapTileLayer) map.getLayers().get(0)).getHeight(); j++) {
-				
+				new Node(new Vector2(i,j));
 			}
 		}
 	}
