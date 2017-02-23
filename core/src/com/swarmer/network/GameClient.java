@@ -35,7 +35,7 @@ public class GameClient extends Thread {
 			setupStreams();
 			sendMessage(new Message("Hello"));
 			whileConnected();
-		} catch(IOException | ClassNotFoundException e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
