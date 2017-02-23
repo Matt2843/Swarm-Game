@@ -7,6 +7,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import com.swarmer.server.Message;
+
 public class GameClient extends Thread {
 	
 	private ObjectOutputStream output;
@@ -44,7 +46,7 @@ public class GameClient extends Thread {
 	}
 	
 	private void whileConnected() throws ClassNotFoundException, IOException {
-		Message message;
+		Message message = null;
 		do {
 			message = (Message) input.readObject();
 			System.out.println(message.getMessage());
@@ -74,6 +76,7 @@ public class GameClient extends Thread {
 	}
 	
 	public static void main(String[] args) {
-		new GameClient().start();
+		GameClient client = new GameClient();
+		client.start();
 	}
 }
