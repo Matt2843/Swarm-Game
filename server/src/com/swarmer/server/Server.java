@@ -66,9 +66,4 @@ public class Server extends Thread {
 	public static void main(String[] args) {
 		new Server(1234).start();
 	}
-	
-	
-	
-	
-	
 }

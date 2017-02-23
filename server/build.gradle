@@ -1,5 +1,9 @@
 apply plugin: "java"
 
+<<<<<<< HEAD
+=======
+targetCompatibility = 1.7
+>>>>>>> 3cda4d5663bfce2c80b77de4c2c72be3b9b75bd7
 sourceCompatibility = 1.7
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
