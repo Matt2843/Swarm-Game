@@ -18,14 +18,24 @@ public class WebServer {
 		get("template-example", new Route() {
 			@Override
 			public Object handle(Request req, Response res) throws Exception {
-				Map<String, Object> model = new HashMap<>();
-				return render(model, "server/views/pages/index.hbs");
+				Map model = new HashMap<>();
+				model.put("name", "Sam");
+				return render(model, "/server/views/pages/index.hbs");
+			}
+		});
+
+		get("hello", new Route() {
+			@Override
+			public Object handle(Request req, Response res) throws Exception {
+				Map model = new HashMap<>();
+				model.put("name", "Sam");
+				return "heeey";
 			}
 		});
 
 	}
 
-	private static String render(Map<String, Object> model, String templatePath) {
+	private static String render(Map model, String templatePath) {
 		return new HandlebarsTemplateEngine().render(new ModelAndView(model, templatePath));
 	}
 }
