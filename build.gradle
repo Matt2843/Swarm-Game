@@ -23,6 +23,7 @@ allprojects {
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
+        sparkVersion = '2.5.5'
     }
 
     repositories {
@@ -87,7 +88,8 @@ project(":server") {
     apply plugin: "java"
     
     dependencies {
-        compile "javax.servlet:javax.servlet-api:3.0.1"
+        compile "com.sparkjava:spark-core:$sparkVersion"
+        compile "com.sparkjava:spark-template-handlebars:$sparkVersion"
     }
 }
 
