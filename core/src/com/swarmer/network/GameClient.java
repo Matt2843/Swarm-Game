@@ -12,7 +12,7 @@ public class GameClient extends Thread {
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 	
-	private String host = "10.16.131.67";
+	private String host = "localhost";
 	private int port = 1234;
 	
 	private Socket client; 
@@ -64,6 +64,12 @@ public class GameClient extends Thread {
 	
 	
 	public void cleanUp() {
+		try {
+			output.close();
+			input.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
