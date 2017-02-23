@@ -5,31 +5,37 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class GameClient extends Thread {
 	
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 	
-	private String host = "localhost";
+	private String host = "10.16.131.67";
 	private int port = 1234;
 	
 	private Socket client; 
 	
 	public GameClient() {
+		
+	}
+
+	public GameClient(String host, int port) {
+		this.host = host;
+		this.port = port;
+	}
+	
+	@Override
+	public void run() {
 		try {
-			client = new Socket(InetAddress.getByName(host), port);
+			connectToService();
 			setupStreams();
-			sendMessage("Hello");
+			sendMessage(new Message("Hello"));
 			whileConnected();
 		} catch(IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public void sendMessage(String m) throws IOException {
-		output.writeObject(m);
-		output.flush();
 	}
 	
 	public void sendMessage(Message m) throws IOException {
@@ -45,18 +51,15 @@ public class GameClient extends Thread {
 		} while(message.getMessage().contains("STOPCONNECTION"));
 		
 	}
+	
+	private void connectToService() throws UnknownHostException, IOException {
+		client = new Socket(InetAddress.getByName(host), port);
+	}
 
 	private void setupStreams() throws IOException {
 		output = new ObjectOutputStream(client.getOutputStream());
 		output.flush();
 		input = new ObjectInputStream(client.getInputStream());
-	}
-
-	@Override
-	public void run() {
-		// TODO:  while true loop,
-		// cleanUp method
-		// connection commands
 	}
 	
 	
@@ -65,6 +68,6 @@ public class GameClient extends Thread {
 	}
 	
 	public static void main(String[] args) {
-		new GameClient();
+		new GameClient().start();
 	}
 }
