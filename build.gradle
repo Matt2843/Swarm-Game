@@ -92,6 +92,7 @@ project(":server") {
         compile project(":shared")
         compile "com.sparkjava:spark-core:$sparkVersion"
         compile "com.sparkjava:spark-template-handlebars:$sparkVersion"
+        compile "org.slf4j:slf4j-simple:1.7.21"
     }
 }
 
