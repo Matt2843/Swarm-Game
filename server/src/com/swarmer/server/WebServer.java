@@ -19,7 +19,7 @@ public class WebServer {
 			@Override
 			public Object handle(Request req, Response res) throws Exception {
 				Map<String, Object> model = new HashMap<>();
-				return render(model, "path-to-template");
+				return render(model, "server/views/pages/index.hbs");
 			}
 		});
 

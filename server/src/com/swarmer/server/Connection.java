@@ -21,10 +21,10 @@ public class Connection extends Thread {
 	
 	@Override
 	public void run() {
-		Message message = null;
+		com.swarmer.shared.Message message = null;
 		try {
 			do {
-				message = (Message) input.readObject();
+				message = (com.swarmer.shared.Message) input.readObject();
 				System.out.println(message.getMessage());
 			} while(!message.getMessage().equals("STOPSERVER"));
 		} catch(Exception e) {

@@ -80,7 +80,7 @@ project(":core") {
 
 
     dependencies {
-        compile project(":server")
+        compile project(':server').files("src/com/swarmer/shared/Message.java")
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     }
 }
