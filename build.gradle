@@ -80,7 +80,6 @@ project(":core") {
 
 
     dependencies {
-        compile project(':server').files("src/com/swarmer/shared/Message.java")
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     }
 }
@@ -92,6 +91,10 @@ project(":server") {
         compile "com.sparkjava:spark-core:$sparkVersion"
         compile "com.sparkjava:spark-template-handlebars:$sparkVersion"
     }
+}
+
+project(":shared") {
+    apply plugin: "java"
 }
 
 tasks.eclipse.doLast {
