@@ -80,6 +80,7 @@ project(":core") {
 
 
     dependencies {
+        compile project(":shared")
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
     }
 }
@@ -88,6 +89,7 @@ project(":server") {
     apply plugin: "java"
     
     dependencies {
+        compile project(":shared")
         compile "com.sparkjava:spark-core:$sparkVersion"
         compile "com.sparkjava:spark-template-handlebars:$sparkVersion"
     }
