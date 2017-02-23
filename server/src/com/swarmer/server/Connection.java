@@ -21,11 +21,12 @@ public class Connection extends Thread {
 	
 	@Override
 	public void run() {
-		Message message;
+		String message;
 		try {
 			do {
-				message = (Message) input.readObject();
-			} while(!message.getMessage().equals("STOPSERVER"));
+				message = (String) input.readObject();
+				System.out.println(message);
+			} while(!message.equals("STOPSERVER"));
 		} catch(ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}

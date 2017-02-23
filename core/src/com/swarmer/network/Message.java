@@ -1,4 +1,4 @@
-package com.swarmer.server;
+package com.swarmer.network;
 
 import java.io.Serializable;
 

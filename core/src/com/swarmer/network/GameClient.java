@@ -20,11 +20,32 @@ public class GameClient extends Thread {
 		try {
 			client = new Socket(InetAddress.getByName(host), port);
 			setupStreams();
-		} catch(IOException e) {
+			sendMessage("Hello");
+			whileConnected();
+		} catch(IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 	
+	public void sendMessage(String m) throws IOException {
+		output.writeObject(m);
+		output.flush();
+	}
+	
+	public void sendMessage(Message m) throws IOException {
+		output.writeObject(m);
+		output.flush();
+	}
+	
+	private void whileConnected() throws ClassNotFoundException, IOException {
+		Message message;
+		do {
+			message = (Message) input.readObject();
+			System.out.println(message.getMessage());
+		} while(message.getMessage().contains("STOPCONNECTION"));
+		
+	}
+
 	private void setupStreams() throws IOException {
 		output = new ObjectOutputStream(client.getOutputStream());
 		output.flush();
@@ -41,5 +62,9 @@ public class GameClient extends Thread {
 	
 	public void cleanUp() {
 		
+	}
+	
+	public static void main(String[] args) {
+		new GameClient();
 	}
 }
