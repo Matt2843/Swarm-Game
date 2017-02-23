@@ -33,7 +33,7 @@ public class Server extends Thread {
 	private void startServer() {
 		try {
 			waitForConnection();
-		} catch(IOException | InterruptedException e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
 			cleanUp();
