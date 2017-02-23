@@ -1,13 +1,13 @@
 package com.swarmer.network;
 
+import com.swarmer.server.Message;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
-import com.swarmer.server.Message;
 
 public class GameClient extends Thread {
 	
