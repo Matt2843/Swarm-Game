@@ -84,7 +84,7 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 	
 	@Override
 	public void create () {
-		map = new TmxMapLoader().load("map.tmx");
+		map = new TmxMapLoader().load("alb.tmx");
 		Graph graph = new Graph(map);
 		renderer = new IsometricTiledMapRenderer(map);
 		camera = new OrthographicCamera();
