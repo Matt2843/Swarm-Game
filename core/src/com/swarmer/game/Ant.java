@@ -48,7 +48,7 @@ public class Ant extends Sprite {
 
 	private void update(float delta) {
 
-		int speed = 50;
+		int speed = 90;
 
 		velocity.x = 0; velocity.y = 0;
 
