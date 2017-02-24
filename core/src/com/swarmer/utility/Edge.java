@@ -28,11 +28,18 @@ public class Edge {
 	public String getPATH_ID() {
 		return PATH_ID;
 	}
-
+	
+	public Pheromone getPheromones(String key) {
+		if(!pheromones.containsKey(key)){
+			pheromones.add(key, new Pheromone(0));
+		}
+		return pheromones.get(key);
+	}
+	
 	public HashMap<String, Pheromone> getPheromones() {
 		return pheromones;
 	}
-
+	
 	public void setPheromones(HashMap<String, Pheromone> pheromones) {
 		this.pheromones = pheromones;
 	}
