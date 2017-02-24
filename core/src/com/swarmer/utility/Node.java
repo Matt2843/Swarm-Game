@@ -49,7 +49,11 @@ public class Node {
 	}
 	
 	public float getY() {
-		return position.x;
+		return position.y;
+	}
+
+	public Boolean equals(Node node){
+		return position.equals(node.getPosition());
 	}
 	
 }
