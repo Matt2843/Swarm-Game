@@ -27,7 +27,7 @@ public class AntBrain {
 	}
 
 	public Edge determineNextPath() {
-		Array<Float> pathLikelihood = new Array<Float>();
+		Array<Float> edgeLikelihood = new Array<Float>();
 		
 		double rngesus = ThreadLocalRandom.current().nextDouble(0.0, 1.0);
 
@@ -40,25 +40,25 @@ public class AntBrain {
 		}
 		
 		float defaultProbability = (float) 1/currentNode.getConnectedEdges().size;
-		for(Edge evaluationPath : currentNode.getConnectedEdges()) {		
-			if(!evaluationPath.equals(previousEdge)) {
-				Pheromone pheromones = evaluationPath.getPheromones().get(PLAYER_ID);
+		for(Edge evaluationEdge : currentNode.getConnectedEdges()) {
+			if(!evaluationEdge.equals(previousEdge)) {
+				Pheromone pheromones = evaluationEdge.getPheromones().get(PLAYER_ID);
 				float pheromone = 0;
 				if(pheromones != null) {
 					pheromone = (float) pheromones.getQuantity();
 				}
 				float decision = pheromone/totalPheromones * c1 + defaultProbability * (1 - c1);
-				pathLikelihood.add(decision);
+				edgeLikelihood.add(decision);
 			} else {
-				pathLikelihood.add(0.0f);
+				edgeLikelihood.add(0.0f);
 			}
 		}
 		
 		float accumulated = 0.0f;
 		int decision = 0;
 
-		for(int i = 0; i < pathLikelihood.size; i++) {
-			float chance = (float) pathLikelihood.get(i);
+		for(int i = 0; i < edgeLikelihood.size; i++) {
+			float chance = (float) edgeLikelihood.get(i);
 			accumulated += chance;
 			if(rngesus <= accumulated){
 				decision = i;
