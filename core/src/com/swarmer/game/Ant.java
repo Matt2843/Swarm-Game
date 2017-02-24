@@ -21,6 +21,8 @@ public class Ant extends Sprite {
 
 	private AntBrain Brain;
 
+	private Vector2 desiredPosition;
+
 
 	public Ant(Sprite sprite, TiledMapTileLayer layer, Node startNode) {
 		super(sprite);
@@ -32,6 +34,7 @@ public class Ant extends Sprite {
 		this.tileHeight = layer.getTileHeight();
 
 		Vector2 start = getScreenCoordinates(startNode.getPosition());
+		desiredPosition = start;
 
 		setX(start.x);
 		setY(start.y);
@@ -44,38 +47,29 @@ public class Ant extends Sprite {
 	}
 
 	private void update(float delta) {
-		//velocity.y = 0;
-		//velocity.x = 0;
 
-		/*if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+		int speed = 50;
+
+		velocity.x = 0; velocity.y = 0;
+
+		if (Math.round(getX()) < Math.round(desiredPosition.x)) {
+			velocity.x = speed;
+		} else if (Math.round(getX()) > Math.round(desiredPosition.x)) {
 			velocity.x = -speed;
 		}
-		if(Gdx.input.isKeyPressed(Input.Keys.D)) {
-			velocity.x = speed;
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.W)) {
+
+		if (Math.round(getY()) < Math.round(desiredPosition.y)) {
 			velocity.y = speed;
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+		} else if (Math.round(getY()) > Math.round(desiredPosition.y)) {
 			velocity.y = -speed;
 		}
-		if(Gdx.input.isKeyPressed(Input.Keys.G)) {
-			Vector2 coords = getScreenCoordinates(8, 8);
-			setX(coords.x);
-			setY(coords.y);
-		}*/
 
-		Vector2 dest = getScreenCoordinates(Brain.determineNextPath().getNode().getPosition());
+		setX(getX() + velocity.x * delta);
+		setY(getY() + velocity.y * delta);
 
-		//Vector2 tileCoords = getTileCoordinates(getX(), getY());
-
-		//Vector2 nextTileCoords = getTileCoordinates(getX() + velocity.x * delta, getY() + velocity.y * delta);
-
-//		System.out.println(tileCoords.x + " " + tileCoords.y);
-		//System.out.println("(" + dest.x + ", " + dest.y + ")");
-
-		setX(dest.x);
-		setY(dest.y);
+		if (Math.round(getX()) == Math.round(desiredPosition.x) && Math.round(getY()) == Math.round(desiredPosition.y)){
+			desiredPosition = getScreenCoordinates(Brain.determineNextPath().getNode().getPosition());
+		}
 	}
 
 	public Vector2 getTileCoordinates(Vector2 pos) {
