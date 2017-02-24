@@ -30,7 +30,7 @@ public class Edge {
 	
 	public Pheromone getPheromones(String key) {
 		if(!pheromones.containsKey(key)){
-			pheromones.put(key, new Pheromone(0));
+			pheromones.put(key, new Pheromone(1));
 		}
 		return pheromones.get(key);
 	}
