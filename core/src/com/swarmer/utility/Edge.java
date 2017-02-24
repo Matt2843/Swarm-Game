@@ -20,7 +20,6 @@ public class Edge {
 				reverse = new Edge(end, start, false);
 				reverse.setPheromones(pheromones);
 				reverse.reverse = this;
-				end.addEdge(reverse);
 			}
 		}
 	}
