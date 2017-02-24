@@ -15,7 +15,7 @@ public class AntBrain {
 	 *  TODO: What should determine the edge selection beside pheromone strength?
 	 */
 	
-	private float c1 = 1f;
+	private float c1 = 0.8f;
 	
 	private Edge previousEdge;
 	private Node currentNode;
