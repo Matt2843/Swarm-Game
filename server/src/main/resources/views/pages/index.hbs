@@ -1,18 +1,15 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-
-    <h1>Swarmer Game</h1>
-
-    <h2>Hej {{name}}</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt ipsum laudantium placeat praesentium quas sequi similique suscipit velit voluptas voluptates. Aliquid ea eligendi ipsam perferendis provident. Aperiam aspernatur cum dignissimos id maxime minima officiis porro reiciendis similique voluptate? Atque dolorem labore minus numquam repellat repellendus sunt. Alias blanditiis dolorum esse expedita laudantium natus, rem sed velit! Debitis inventore ipsam ipsum mollitia nisi porro quos unde ut voluptate voluptatem. Laudantium, obcaecati sequi. Ab, ea molestias? Ad, architecto commodi cum delectus dolorem eaque facilis id illum, ipsam iure nobis porro quibusdam rem saepe tempore temporibus ullam voluptates. Dolorem eligendi eos quisquam reprehenderit.</p>
-
-</body>
-</html>
+{{#> layouts/app title="Page One" }}
+    {{#*inline "content-block"}}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="jumbotron">
+                        <h1>Hello, world!</h1>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et excepturi illum neque nobis suscipit voluptatem?</p>
+                        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/inline}}
+{{/layouts/app}}

@@ -11,9 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static spark.Spark.get;
+import static spark.Spark.staticFiles;
 
 public class WebServer {
 	public static void main(String[] args) {
+
+		staticFiles.location("/public");
 
 		get("template-example", new Route() {
 			@Override
