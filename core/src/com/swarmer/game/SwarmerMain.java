@@ -16,6 +16,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.swarmer.utility.Graph;
 import com.swarmer.utility.Node;
 
+import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 	
 	private IsometricTiledMapRenderer renderer;
@@ -25,7 +28,7 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 	private float mapWidth, mapHeight;
 	private int xOffset, yOffset;
 
-	private Ant ant;
+	private ArrayList<Ant> ants = new ArrayList<>();
 	
 	private Vector2 getInBounds(int x, int y) {
 		float vecX = x, vecY = y;
@@ -89,8 +92,14 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 
 		centerCamera();
 
-		
-		ant = new Ant(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(1), graph.nodes[0][0]);
+		for (int i = 0; i < 100; i++) {
+			int x = ThreadLocalRandom.current().nextInt(1, 49);
+			int y = ThreadLocalRandom.current().nextInt(1, 49);
+
+			if (graph.nodes[x][y] != null) {
+				ants.add(new Ant(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(1), graph.nodes[x][y]));
+			}
+		}
 	}
 
 	@Override
@@ -105,7 +114,10 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 		renderer.render();
 
 		renderer.getBatch().begin();
-		ant.draw(renderer.getBatch());
+		for (Ant ant : ants) {
+			ant.draw(renderer.getBatch());
+		}
+
 		renderer.getBatch().end();
 	}
 	
