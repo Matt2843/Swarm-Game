@@ -48,7 +48,7 @@ public class Ant extends Sprite {
 
 	private void update(float delta) {
 
-		int speed = 90;
+		int speed = 100;
 
 		velocity.x = 0; velocity.y = 0;
 
@@ -67,7 +67,7 @@ public class Ant extends Sprite {
 		setX(getX() + velocity.x * delta);
 		setY(getY() + velocity.y * delta);
 
-		if (Math.round(getX()) == Math.round(desiredPosition.x) && Math.round(getY()) == Math.round(desiredPosition.y)){
+		if (Math.abs(getX() - desiredPosition.x) < 10 && Math.abs(getY() - desiredPosition.y) < 10){
 			desiredPosition = getScreenCoordinates(Brain.determineNextPath().getNode().getPosition());
 		}
 	}
