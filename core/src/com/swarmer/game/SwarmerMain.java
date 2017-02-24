@@ -92,7 +92,7 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 
 		centerCamera();
 
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 1; i++) {
 			int x = ThreadLocalRandom.current().nextInt(1, 49);
 			int y = ThreadLocalRandom.current().nextInt(1, 49);
 

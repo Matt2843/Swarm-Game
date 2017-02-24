@@ -33,11 +33,13 @@ public class AntBrain {
 
 		int totalPheromones = 0;
 		for(Edge evaluationEdge : currentNode.getConnectedEdges()) {
-			if(!evaluationEdge.equals(previousEdge)) {
+			if(evaluationEdge != previousEdge) {
 				totalPheromones += evaluationEdge.getPheromones(PLAYER_ID).getQuantity();
 			}
 		}
-		
+
+		int counter = 0;
+
 		float defaultProbability = (float) 1/(currentNode.getConnectedEdges().size - 1);
 		for(Edge evaluationEdge : currentNode.getConnectedEdges()) {
 			if(!evaluationEdge.equals(previousEdge)) {
@@ -45,9 +47,13 @@ public class AntBrain {
 				float decision = pheromone/totalPheromones * c1 + defaultProbability * (1 - c1);
 				edgeLikelihood.add(decision);
 			} else {
+				counter+=1;
 				edgeLikelihood.add(0.0f);
 			}
 		}
+
+		System.out.println(counter);
+		counter = 0;
 		
 		float accumulated = 0.0f;
 		int decision = 0;

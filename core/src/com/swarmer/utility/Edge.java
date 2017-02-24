@@ -16,7 +16,7 @@ public class Edge {
 		if(start != null && end != null) {
 			start.addEdge(this);
 			if(bool) {
-				pheromones = new HashMap<String, Pheromone>();
+				pheromones = new HashMap<>();
 				reverse = new Edge(end, start, false);
 				reverse.setPheromones(pheromones);
 				reverse.reverse = this;
@@ -44,12 +44,9 @@ public class Edge {
 		this.pheromones = pheromones;
 	}
 
-	public Boolean equals(Edge edge){
-		if(edge == null) {
-			return false;
-		} else {
-			return dest.equals(edge);
-		}
+	@Override
+	public boolean equals(Object edge) {
+		return edge != null && dest.equals(edge);
 	}
 
 	public Node getNode() {
