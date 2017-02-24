@@ -92,12 +92,12 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 
 		centerCamera();
 
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 100000; i++) {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
 			int y = ThreadLocalRandom.current().nextInt(1, 99);
 
 			if (graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
-				ants.add(new Ant(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(1), graph.nodes[x][y]));<<<<<<< HEAD
+				ants.add(new Ant(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(1), graph.nodes[x][y]));
 			}
 		}
 	}
