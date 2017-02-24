@@ -15,99 +15,38 @@ public class AntBrain {
 	 *  TODO: What should determine the edge selection beside pheromone strength?
 	 */
 	
-	private int c1 = 1;
+	private float c1 = (float) 0.9;
 	
 	private Edge previousEdge;
 	private Node currentNode;
 	private final String PLAYER_ID;
 	
-	public AntBrain(String PLAYER_ID) {
+	public AntBrain(String PLAYER_ID, Node startingNode) {
 		this.PLAYER_ID = PLAYER_ID;
+		currentNode = startingNode;
 	}
-	
-	public static void main(String[] args) {
-		AntBrain ab = new AntBrain("Matt");
-		
-//		Edge[] edges = new Edge[6];
-//		for(int i = 0; i < edges.length; i++) {
-//			edges[i] = new Edge("p"+ (i+1));
-//		}
-		
-		Edge p1 = new Edge("p1");
-		p1.getPheromones().put("Matt", new Pheromone(10));
-		
-		Edge p2 = new Edge("p2");
-		p2.getPheromones().put("Matt", new Pheromone(0));
-		
-		Edge p3 = new Edge("p3");
-		p3.getPheromones().put("Matt", new Pheromone(20));
-		
-		Edge p4 = new Edge("p4");
-		p4.getPheromones().put("Matt", new Pheromone(5));
-		
-		Edge p5 = new Edge("p5");
-		p5.getPheromones().put("Matt", new Pheromone(22));
-		
-		
-		Array<Edge> edges = new Array<Edge>();
-		edges.add(p1);
-		edges.add(p2);
-		edges.add(p3);
-		edges.add(p4);
-		edges.add(p5);
-		//paths.add(p6);
-		
-		Node node = new Node(new Vector2(0,0), edges);
-		ab.setCurrentNode(node);
-		ab.setPreviousPath(p2);
-		
-		int[] scores = new int[5];
-		
-		for(int i = 0; i < 100000; i++) {
-			
-			String str = ab.determineNextPath().getPATH_ID();
-			if(str.equals("p1")) {
-				scores[0] += 1;
-			} else if(str.equals("p2")) {
-				scores[1] += 1;
-			} else if(str.equals("p3")) {
-				scores[2] += 1;
-			} else if(str.equals("p4")) {
-				scores[3] += 1;
-			} else if(str.equals("p5")) {
-				scores[4] += 1;
-			} else if(str.equals("p6")) {
-				scores[5] += 1;
-			}
-			
-			
-		}
-		
-		int total = 0;
-		for(int i = 0; i < scores.length; i++) {
-			total += scores[i];
-		}
-		
-		for(int i = 0; i < scores.length; i++) {
-			float frac = (float)scores[i]/total;
-			System.out.println("P" + (i+1) + " chosen: " + frac * 100 + " " + scores[i]);
-		}
-	}
-	
+
 	public Edge determineNextPath() {
 		Array<Float> pathLikelihood = new Array<Float>();
 		
 		double rngesus = ThreadLocalRandom.current().nextDouble(0.0, 1.0);
-		
+
 		int totalPheromones = 0;
 		for(Edge evaluationPath : currentNode.getConnectedEdges()) {
-			totalPheromones += evaluationPath.getPheromones().get(PLAYER_ID).getQuantity();
+			Pheromone pheromones = evaluationPath.getPheromones().get(PLAYER_ID);
+			if(pheromones != null) {
+				totalPheromones += pheromones.getQuantity();
+			}
 		}
 		
 		float defaultProbability = (float) 1/currentNode.getConnectedEdges().size;
 		for(Edge evaluationPath : currentNode.getConnectedEdges()) {		
-			if(!evaluationPath.getPATH_ID().equals(previousEdge.getPATH_ID())) {
-				float pheromone = (float) evaluationPath.getPheromones().get(PLAYER_ID).getQuantity();
+			if(!evaluationPath.equals(previousEdge)) {
+				Pheromone pheromones = evaluationPath.getPheromones().get(PLAYER_ID);
+				float pheromone = 0;
+				if(pheromones != null) {
+					pheromone = (float) pheromones.getQuantity();
+				}
 				float decision = pheromone/totalPheromones * c1 + defaultProbability * (1 - c1);
 				pathLikelihood.add(decision);
 			} else {
@@ -115,24 +54,29 @@ public class AntBrain {
 			}
 		}
 		
-		float accunulated = 0.0f;
+		float accumulated = 0.0f;
 		int decision = 0;
-		
+
 		for(int i = 0; i < pathLikelihood.size; i++) {
 			float chance = (float) pathLikelihood.get(i);
-			accunulated += chance;
-			if(rngesus <= accunulated){
+			accumulated += chance;
+			if(rngesus <= accumulated){
 				decision = i;
 				break;
 			}
 		}
-		
-		/*
-		 * Find a way to increase pheromone trail
-		 */
-		
-		//currentNode.getConnectedPaths().get(decision).getPheromones().get(PLAYER_ID).addPheromone();
-		return currentNode.getConnectedEdges().get(decision);
+
+		Edge nextEdge = currentNode.getConnectedEdges().get(decision);
+
+		if(!nextEdge.getPheromones().containsKey(PLAYER_ID)){
+			nextEdge.getPheromones().put(PLAYER_ID, new Pheromone(1));
+		} else {
+			nextEdge.getPheromones().get(PLAYER_ID).addPheromone();
+		}
+
+		currentNode = nextEdge.getNode();
+		previousEdge = nextEdge.reverse;
+		return nextEdge;
 	}
 
 	public Edge getPreviousPath() {
