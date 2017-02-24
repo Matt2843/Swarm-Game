@@ -15,7 +15,7 @@ public class AntBrain {
 	 *  TODO: What should determine the edge selection beside pheromone strength?
 	 */
 	
-	private float c1 = 0.75f;
+	private float c1 = 1f;
 	
 	private Edge previousEdge;
 	private Node currentNode;
@@ -38,8 +38,6 @@ public class AntBrain {
 			}
 		}
 
-		int counter = 0;
-
 		float defaultProbability = (float) 1/(currentNode.getConnectedEdges().size - 1);
 		for(Edge evaluationEdge : currentNode.getConnectedEdges()) {
 
@@ -48,18 +46,9 @@ public class AntBrain {
 				float decision = pheromone/totalPheromones * c1 + defaultProbability * (1 - c1);
 				edgeLikelihood.add(decision);
 			} else {
-				counter+=1;
 				edgeLikelihood.add(0.0f);
 			}
 		}
-
-		if (counter > 1) {
-			for (Edge edge :
-					currentNode.getConnectedEdges()) {
-				System.out.println(edge.toString());
-			}
-		}
-		counter = 0;
 		
 		float accumulated = 0.0f;
 		int decision = 0;
