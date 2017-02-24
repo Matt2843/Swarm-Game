@@ -23,7 +23,7 @@ public class WebServer {
 			public Object handle(Request req, Response res) throws Exception {
 				Map model = new HashMap<>();
 				model.put("name", "Sam");
-				return render(model, "/views/pages/index.hbs");
+				return render(model, "/views/pages/app.hbs");
 			}
 		});
 
