@@ -45,7 +45,7 @@ public class Edge {
 	}
 
 	public Boolean equals(Edge edge){
-		if(edge != null) {
+		if(edge == null) {
 			return false;
 		} else {
 			return dest.equals(edge);
