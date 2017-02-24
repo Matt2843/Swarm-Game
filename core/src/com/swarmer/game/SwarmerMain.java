@@ -81,8 +81,8 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 	
 	@Override
 	public void create () {
-		map = new TmxMapLoader().load("small_map.tmx");
-		new Graph(map);
+		map = new TmxMapLoader().load("map.tmx");
+		Graph graph = new Graph(map);
 		renderer = new IsometricTiledMapRenderer(map);
 		camera = new OrthographicCamera();
 		Gdx.input.setInputProcessor(this);
@@ -90,10 +90,7 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 		centerCamera();
 
 		
-		ant = new Ant(
-				new Sprite(new Texture("player.png")),
-				(TiledMapTileLayer) map.getLayers().get(1)
-		);
+		ant = new Ant(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(1), graph.nodes[0][0]);
 	}
 
 	@Override

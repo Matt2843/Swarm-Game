@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
+import com.swarmer.ai.AntBrain;
+import com.swarmer.utility.Node;
 
 public class Ant extends Sprite {
 
@@ -17,16 +19,22 @@ public class Ant extends Sprite {
 	private float tileWidth;
 	private float tileHeight;
 
+	private AntBrain Brain;
 
-	public Ant(Sprite sprite, TiledMapTileLayer layer) {
+
+	public Ant(Sprite sprite, TiledMapTileLayer layer, Node startNode) {
 		super(sprite);
+
+		Brain = new AntBrain("Matt", startNode);
 
 		this.layer = layer;
 		this.tileWidth = layer.getTileWidth();
 		this.tileHeight = layer.getTileHeight();
 
-		setX(0);
-		setY(0);
+		Vector2 start = getScreenCoordinates(startNode.getPosition());
+
+		setX(start.x);
+		setY(start.y);
 	}
 
 	@Override
@@ -36,10 +44,10 @@ public class Ant extends Sprite {
 	}
 
 	private void update(float delta) {
-		velocity.y = 0;
-		velocity.x = 0;
+		//velocity.y = 0;
+		//velocity.x = 0;
 
-		if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+		/*if(Gdx.input.isKeyPressed(Input.Keys.A)) {
 			velocity.x = -speed;
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.D)) {
@@ -55,19 +63,31 @@ public class Ant extends Sprite {
 			Vector2 coords = getScreenCoordinates(8, 8);
 			setX(coords.x);
 			setY(coords.y);
-		}
+		}*/
 
-		Vector2 tileCoords = getTileCoordinates(getX(), getY());
+		Vector2 dest = getScreenCoordinates(Brain.determineNextPath().getNode().getPosition());
 
-		Vector2 nextTileCoords = getTileCoordinates(getX() + velocity.x * delta, getY() + velocity.y * delta);
+		//Vector2 tileCoords = getTileCoordinates(getX(), getY());
+
+		//Vector2 nextTileCoords = getTileCoordinates(getX() + velocity.x * delta, getY() + velocity.y * delta);
 
 //		System.out.println(tileCoords.x + " " + tileCoords.y);
+		//System.out.println("(" + dest.x + ", " + dest.y + ")");
 
-		if (getCell(layer, nextTileCoords) == null)
-		{
-			setX(getX() + velocity.x * delta);
-			setY(getY() + velocity.y * delta);
-		}
+		setX(dest.x);
+		setY(dest.y);
+	}
+
+	public Vector2 getTileCoordinates(Vector2 pos) {
+		float x = Math.round(( ( tileWidth * pos.y - tileHeight * pos.x ) / ( tileWidth*tileHeight) ) * -1);
+		float y = Math.round(( tileWidth * pos.y + tileHeight * pos.x ) / ( tileWidth*tileHeight));
+		return new Vector2(x,y);
+	}
+
+	public Vector2 getScreenCoordinates(Vector2 pos) {
+		float x = 0.5f * pos.x * tileWidth + 0.5f * pos.y * tileWidth;
+		float y = -0.5f * tileHeight * (pos.x-pos.y);
+		return new Vector2(x,y);
 	}
 
 	public Vector2 getTileCoordinates(float sx, float sy) {
