@@ -14,7 +14,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.swarmer.utility.Graph;
-import com.swarmer.utility.Node;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
