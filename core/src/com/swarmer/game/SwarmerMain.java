@@ -32,16 +32,16 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 	private Vector2 getInBounds(int x, int y) {
 		float vecX = x, vecY = y;
 		
-		if(camera.position.x + x > mapWidth - camera.viewportWidth / 2){
-			vecX = (mapWidth - (camera.viewportWidth / 2)) - camera.position.x;
-		} else if(camera.position.x + x < camera.viewportWidth / 2){
-			vecX = (camera.viewportWidth / 2) - camera.position.x;
+		if(camera.position.x + x > mapWidth - camera.viewportWidth / 2 * camera.zoom){
+			vecX = mapWidth - camera.viewportWidth / 2 * camera.zoom - camera.position.x;
+		} else if(camera.position.x + x < (camera.viewportWidth / 2) * camera.zoom){
+			vecX = camera.viewportWidth / 2 * camera.zoom - camera.position.x;
 		}
 
-		if(camera.position.y + y > mapHeight / 2 - camera.viewportHeight / 2) {
-			vecY = (mapHeight / 2 - (camera.viewportHeight / 2)) - camera.position.y;
-		} else if(camera.position.y + y < -(mapHeight / 2) + camera.viewportHeight / 2){
-			vecY = -(mapHeight / 2) + (camera.viewportHeight / 2) - camera.position.y;
+		if(camera.position.y + y > mapHeight / 2 - (camera.viewportHeight / 2) * camera.zoom) {
+			vecY =  mapHeight / 2 - camera.viewportHeight / 2 * camera.zoom - camera.position.y;
+		} else if(camera.position.y + y < -(mapHeight / 2) + (camera.viewportHeight / 2) * camera.zoom){
+			vecY = -mapHeight / 2 + camera.viewportHeight / 2 * camera.zoom - camera.position.y;
 		}
 		return new Vector2(vecX, vecY);
 	}
