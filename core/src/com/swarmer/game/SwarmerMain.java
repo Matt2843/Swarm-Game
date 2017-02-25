@@ -91,9 +91,9 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 
 		centerCamera();
 
-		for (int i = 0; i < 100000; i++) {
-			int x = ThreadLocalRandom.current().nextInt(1, 99);
-			int y = ThreadLocalRandom.current().nextInt(1, 99);
+		for (int i = 0; i < 1000; i++) {
+			int x = 50; // ThreadLocalRandom.current().nextInt(1, 99);
+			int y = 50; // ThreadLocalRandom.current().nextInt(1, 99);
 
 			if (graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
 				ants.add(new Ant(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(1), graph.nodes[x][y]));
@@ -178,7 +178,9 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 
 	@Override
 	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
+		if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && ((amount < 0 && camera.zoom > amount * -1) || (amount > 0 && camera.zoom < 3))) {
+			camera.zoom += amount * 0.2f;
+		}
 		return false;
 	}
 
