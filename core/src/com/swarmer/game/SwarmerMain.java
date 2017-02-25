@@ -37,7 +37,7 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 		} else if(camera.position.x + x < camera.viewportWidth / 2){
 			vecX = (camera.viewportWidth / 2) - camera.position.x;
 		}
-		
+
 		if(camera.position.y + y > mapHeight / 2 - camera.viewportHeight / 2) {
 			vecY = (mapHeight / 2 - (camera.viewportHeight / 2)) - camera.position.y;
 		} else if(camera.position.y + y < -(mapHeight / 2) + camera.viewportHeight / 2){
@@ -165,7 +165,7 @@ public class SwarmerMain extends ApplicationAdapter implements InputProcessor {
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		if (!dragging) return false;
-		camera.translate(getInBounds(-(screenX - xOffset), screenY - yOffset));
+		camera.translate(getInBounds((int) (-(screenX - xOffset) * camera.zoom), (int) ((screenY - yOffset) * camera.zoom)));
 		xOffset = screenX;
 		yOffset = screenY;
 		return true;
