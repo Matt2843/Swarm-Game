@@ -124,9 +124,9 @@ public class SwarmerMain extends ApplicationAdapter {
 		}
 
 		if(camera.position.y + y > mapHeight / 2 - camera.viewportHeight / 2 * camera.zoom) {
-			vecY =  mapHeight / 2 - camera.viewportHeight / 2 * camera.zoom - camera.position.y + 15;
+			vecY =  mapHeight / 2 - camera.viewportHeight / 2 * camera.zoom - camera.position.y;
 		} else if(camera.position.y + y < -(mapHeight / 2) + camera.viewportHeight / 2 * camera.zoom){
-			vecY = -mapHeight / 2 + camera.viewportHeight / 2 * camera.zoom - camera.position.y + 15;
+			vecY = -mapHeight / 2 + camera.viewportHeight / 2 * camera.zoom - camera.position.y;
 		}
 		return new Vector2(vecX, vecY);
 	}

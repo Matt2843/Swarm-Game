@@ -36,9 +36,10 @@ public class SwarmerGestureDetector implements GestureDetector.GestureListener {
 	}
 
 	@Override public boolean zoom(float initialDistance, float distance) {
-		float delta = distance - initialDistance;
+		Parent.dragging = false;
+		float delta = (distance - initialDistance) / initialDistance;
 		if((delta < 0 && Parent.camera.zoom > delta * -1) || (delta > 0 && Parent.camera.zoom < 3)) {
-			Parent.camera.zoom += delta;
+			Parent.camera.zoom = delta;
 		}
 		return false;
 	}
