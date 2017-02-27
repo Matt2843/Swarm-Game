@@ -1,14 +1,15 @@
 package com.swarmer.server;
 
+import com.swarmer.server.database.ServerDatabase;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class Server extends Thread {
-	
-	private ArrayList<Connection> allConnections;
-	
+
+	public static ServerDatabase database = new ServerDatabase();
+
 	private ServerSocket server;
 	private Socket connection;
 	private final int port;
@@ -17,16 +18,15 @@ public class Server extends Thread {
 	
 	public Server(int port) {
 		this.port = port;
-		allConnections = new ArrayList<Connection>();
 	}
 	
-	@Override
-	public void run() {
+	@Override public void run() {
 		try {
 			server = new ServerSocket(port);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+
 		startServer();
 	}
 
@@ -38,7 +38,6 @@ public class Server extends Thread {
 		} finally {
 			cleanUp();
 		}
-		
 	}
 
 	private void waitForConnection() throws IOException, InterruptedException {
@@ -47,20 +46,13 @@ public class Server extends Thread {
 			connection = server.accept();
 			Connection newClient = new Connection(connection);
 			newClient.start();
-			allConnections.add(newClient);
-			
 			Thread.sleep(50);
 		}
 	}
 	
 	private void cleanUp() {
-		for(Connection c : allConnections) {
-			try {
-				c.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+		/*
+		* TODO: implement cleanUp method of server class!! */
 	}
 	
 	public static void main(String[] args) {
