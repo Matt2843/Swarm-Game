@@ -26,21 +26,21 @@ public class SwamerInputProcessor implements InputProcessor {
 		if (button != Input.Buttons.LEFT || pointer > 0) return false;
 		Parent.camera.unproject(tp.set(screenX, screenY, 0));
 		Parent.dragging = true;
-		return true;
+		return false;
 	}
 
 	@Override public boolean touchDragged(int screenX, int screenY, int pointer) {
 		if (!Parent.dragging) return false;
 		Parent.camera.unproject(tp2.set(screenX, screenY, 0));
 		Parent.camera.translate(Parent.getInBounds((int) (tp.x - tp2.x), (int) (tp.y - tp2.y)));
-		return true;
+		return false;
 	}
 
 	@Override public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		if (button != Input.Buttons.LEFT || pointer > 0) return false;
 		Parent.camera.unproject(tp.set(screenX, screenY, 0));
 		Parent.dragging = false;
-		return true;
+		return false;
 	}
 
 	@Override public boolean keyDown(int keycode) {
