@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
 import com.swarmer.screens.GameScreen;
+import com.swarmer.screens.ScreenLib;
+import com.swarmer.screens.ScreenManager;
 
 public class SwamerInputProcessor implements InputProcessor {
 
@@ -45,6 +47,8 @@ public class SwamerInputProcessor implements InputProcessor {
 	}
 
 	@Override public boolean keyDown(int keycode) {
+		if(keycode == Input.Keys.ESCAPE)
+			ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
 		return false;
 	}
 
