@@ -3,7 +3,8 @@ package com.swarmer.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.swarmer.screens.MainMenuScreen;
+import com.swarmer.screens.ScreenLib;
+import com.swarmer.screens.ScreenManager;
 
 public class SwarmerMain extends Game {
 
@@ -11,11 +12,10 @@ public class SwarmerMain extends Game {
 	public BitmapFont font;
 
 	public void create() {
-
+		ScreenManager.getInstance().initialize(this);
+		ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
 		batch = new SpriteBatch();
 		font = new BitmapFont();
-
-		this.setScreen(new MainMenuScreen(this, 1920, 1080));
 	}
 
 	public void render() {
