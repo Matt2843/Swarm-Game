@@ -34,6 +34,8 @@ public class GameScreen implements Screen {
 
 	private float mapWidth, mapHeight;
 
+	private InputMultiplexer IM;
+
 	public final static float SCALE = 1f;
 	public final static float INV_SCALE = 1.f/SCALE;
 
@@ -60,11 +62,9 @@ public class GameScreen implements Screen {
 
 		viewport.apply(false);
 
-		InputMultiplexer IM = new InputMultiplexer();
+		IM = new InputMultiplexer();
 		IM.addProcessor(new SwamerInputProcessor(this));
 		IM.addProcessor(new GestureDetector(new SwarmerGestureDetector(this)));
-
-		Gdx.input.setInputProcessor(IM);
 
 		centerCamera();
 
@@ -80,7 +80,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
-
+		Gdx.input.setInputProcessor(IM);
 	}
 
 	@Override

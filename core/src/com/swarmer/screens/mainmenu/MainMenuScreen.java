@@ -24,7 +24,6 @@ public class MainMenuScreen extends Stage implements Screen {
 	public MainMenuScreen(final SwarmerMain game, int width, int height) {
 		this.game = game;
 		setViewport(new StretchViewport(width, height));
-		Gdx.input.setInputProcessor(this);
 		create();
 	}
 
@@ -67,7 +66,7 @@ public class MainMenuScreen extends Stage implements Screen {
 	}
 
 	@Override public void show() {
-
+		Gdx.input.setInputProcessor(this);
 	}
 
 	@Override public void render(float delta) {
