@@ -33,6 +33,7 @@ public class SwamerInputProcessor implements InputProcessor {
 		if (!Parent.dragging) return false;
 		Parent.camera.unproject(tp2.set(screenX, screenY, 0));
 		Parent.camera.translate(Parent.getInBounds((int) (tp.x - tp2.x), (int) (tp.y - tp2.y)));
+		System.out.println(tp2.x + ", " + tp2.y + "\n" + tp.x + ", " + tp.y + "\n" + (tp.x - tp2.x) + ", " + (tp.y - tp2.y) + "\n");
 		return false;
 	}
 
