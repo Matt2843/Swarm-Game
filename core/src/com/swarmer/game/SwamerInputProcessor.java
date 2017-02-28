@@ -33,9 +33,13 @@ public class SwamerInputProcessor implements InputProcessor {
 	@Override public boolean touchDragged(int screenX, int screenY, int pointer) {
 		if (!Parent.dragging) return false;
 		Parent.camera.unproject(tp2.set(screenX, screenY, 0));
-		Vector2 ttt = Parent.getInBounds((int) (tp.x - tp2.x), (int) (tp.y - tp2.y));
-		Parent.camera.translate(ttt);
-		System.out.println(tp.x + ", " + tp.y + "\n" + tp2.x + ", " + tp2.y + "\n" + (tp.x - tp2.x) + ", " + (tp.y - tp2.y) + "\n" + ttt.x + ", " + ttt.y + "\n");
+		Vector2 tt1 = new Vector2((int) (tp.x - tp2.x), (int) (tp.y - tp2.y));
+		Vector2 tt2 = Parent.getInBounds((int) (tp.x - tp2.x), (int) (tp.y - tp2.y));
+		if(tt1.equals(tt2)) {
+			Parent.camera.translate(tt2);
+		} else {
+			System.out.println(tp.x + ", " + tp.y + "\n" + tp2.x + ", " + tp2.y + "\n" + tt1.x + ", " + tt1.y + "\n" + tt2.x + ", " + tt2.y + "\n");
+		}
 		return false;
 	}
 
