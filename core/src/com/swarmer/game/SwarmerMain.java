@@ -15,7 +15,7 @@ public class SwarmerMain extends Game {
 		batch = new SpriteBatch();
 		font = new BitmapFont();
 
-		this.setScreen(new MainMenuScreen(this));
+		this.setScreen(new MainMenuScreen(this, 1920, 1080));
 	}
 
 	public void render() {
