@@ -63,11 +63,6 @@ public class SwarmerMain extends ApplicationAdapter {
 
 		centerCamera();
 
-		Vector2 ttt = getInBounds((int) (-355.0f), (int) (1362.9999f));
-		System.out.println(ttt.x + ", " + ttt.y + "\n");
-		ttt = getInBounds((int) (2948.9995f - 3303.9995f), (int) (163.00002f - (-1199.9999f)));
-		System.out.println(ttt.x + ", " + ttt.y + "\n");
-
 		for (int i = 0; i < 100; i++) {
 			int x = 50; // ThreadLocalRandom.current().nextInt(1, 99);
 			int y = 50; // ThreadLocalRandom.current().nextInt(1, 99);
