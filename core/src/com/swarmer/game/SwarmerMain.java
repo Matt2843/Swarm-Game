@@ -117,7 +117,7 @@ public class SwarmerMain extends ApplicationAdapter {
 	public Vector2 getInBounds(int x, int y) {
 		float vecX = x, vecY = y;
 
-		if(camera.position.x + x > mapWidth - camera.viewportWidth / 2 * camera.zoom){
+		/*if(camera.position.x + x > mapWidth - camera.viewportWidth / 2 * camera.zoom){
 			vecX = mapWidth - camera.viewportWidth / 2 * camera.zoom - camera.position.x;
 		} else if(camera.position.x + x < camera.viewportWidth / 2 * camera.zoom){
 			vecX = camera.viewportWidth / 2 * camera.zoom - camera.position.x;
@@ -127,7 +127,8 @@ public class SwarmerMain extends ApplicationAdapter {
 			vecY =  mapHeight / 2 - camera.viewportHeight / 2 * camera.zoom - camera.position.y;
 		} else if(camera.position.y + y < -(mapHeight / 2) + camera.viewportHeight / 2 * camera.zoom){
 			vecY = -mapHeight / 2 + camera.viewportHeight / 2 * camera.zoom - camera.position.y;
-		}
+		}*/
+
 		return new Vector2(vecX, vecY);
 	}
 }
