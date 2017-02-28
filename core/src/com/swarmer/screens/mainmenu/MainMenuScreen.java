@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.swarmer.game.SwarmerMain;
+import com.swarmer.screens.ScreenLib;
 import com.swarmer.screens.ScreenManager;
 
 public class MainMenuScreen extends Stage implements Screen {
@@ -47,11 +48,24 @@ public class MainMenuScreen extends Stage implements Screen {
 			else buttons[i].setPosition(0, 0);
 			buttonGroup.addActor(buttons[i]);
 		}
-		addActor(buttonGroup);
-		System.out.println(getHeight() + "< - h " + getWidth() + " < - w");
+
+		buttons[0].setText("Play");
+		buttons[0].addCaptureListener(new ChangeListener() {
+			@Override public void changed(ChangeEvent event, Actor actor) {
+				ScreenManager.getInstance().show(ScreenLib.GAME_SCREEN);
+			}
+		});
+
+		buttons[4].setText("Exit");
+		buttons[4].addCaptureListener(new ChangeListener() {
+			@Override public void changed(ChangeEvent event, Actor actor) {
+				Gdx.app.exit();
+			}
+		});
+
 
 		buttonGroup.setPosition(getWidth() / 2 - buttons[0].getWidth() / 2, getHeight() / 2 + 5*buttons[0].getHeight() / 2 - buttons[0].getHeight());
-
+		addActor(buttonGroup);
 	}
 
 	@Override public void show() {
