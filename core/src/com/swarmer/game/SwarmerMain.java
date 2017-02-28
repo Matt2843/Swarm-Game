@@ -36,7 +36,7 @@ public class SwarmerMain extends ApplicationAdapter {
 	public final static float INV_SCALE = 1.f/SCALE;
 
 	public final static float VP_WIDTH = 1280 * INV_SCALE;
-	public final static float VP_HEIGHT = 720 * INV_SCALE;
+	public final static float VP_HEIGHT = 800 * INV_SCALE;
 
 	public boolean dragging;
 
