@@ -36,7 +36,7 @@ public class SwarmerGestureDetector implements GestureDetector.GestureListener {
 	}
 
 	@Override public boolean zoom(float initialDistance, float distance) {
-		//Parent.dragging = false;
+		Parent.dragging = false;
 		float delta = (distance - initialDistance) / initialDistance;
 		if((delta < 0 && Parent.camera.zoom > delta * -1) || (delta > 0 && Parent.camera.zoom < 3)) {
 			Parent.camera.zoom = delta;
@@ -45,7 +45,7 @@ public class SwarmerGestureDetector implements GestureDetector.GestureListener {
 	}
 
 	@Override public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-		//Parent.dragging = false;
+		Parent.dragging = false;
 		return false;
 	}
 
