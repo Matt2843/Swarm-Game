@@ -3,13 +3,15 @@ package com.swarmer.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Vector3;
+import com.swarmer.screens.GameScreen;
 
 public class SwamerInputProcessor implements InputProcessor {
 
-	SwarmerMain Parent;
+	private GameScreen Parent;
 
-	public SwamerInputProcessor(SwarmerMain Parent){
+	public SwamerInputProcessor(GameScreen Parent){
 		this.Parent = Parent;
 	}
 
