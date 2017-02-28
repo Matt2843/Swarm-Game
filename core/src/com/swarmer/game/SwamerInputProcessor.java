@@ -3,6 +3,7 @@ package com.swarmer.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class SwamerInputProcessor implements InputProcessor {
@@ -32,8 +33,9 @@ public class SwamerInputProcessor implements InputProcessor {
 	@Override public boolean touchDragged(int screenX, int screenY, int pointer) {
 		if (!Parent.dragging) return false;
 		Parent.camera.unproject(tp2.set(screenX, screenY, 0));
-		Parent.camera.translate(Parent.getInBounds((int) (tp.x - tp2.x), (int) (tp.y - tp2.y)));
-		System.out.println(tp2.x + ", " + tp2.y + "\n" + tp.x + ", " + tp.y + "\n" + (tp.x - tp2.x) + ", " + (tp.y - tp2.y) + "\n");
+		Vector2 ttt = Parent.getInBounds((int) (tp.x - tp2.x), (int) (tp.y - tp2.y));
+		Parent.camera.translate(ttt);
+		System.out.println(tp.x + ", " + tp.y + "\n" + tp2.x + ", " + tp2.y + "\n" + (tp.x - tp2.x) + ", " + (tp.y - tp2.y) + "\n" + ttt.x + ", " + ttt.y + "\n");
 		return false;
 	}
 
