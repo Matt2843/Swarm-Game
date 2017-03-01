@@ -1,10 +1,8 @@
 package com.swarmer.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.swarmer.ai.AntBrain;
@@ -12,10 +10,14 @@ import com.swarmer.utility.Node;
 
 public class Ant extends Sprite {
 
+	private float stateTime;
 	/** the movement */
 	private Vector2 velocity = new Vector2();
 
 	private TiledMapTileLayer layer;
+	private TextureAtlas textureAtlas;
+	private Animation<TextureRegion> animation;
+
 	private float tileWidth;
 	private float tileHeight;
 
@@ -24,7 +26,11 @@ public class Ant extends Sprite {
 	private Vector2 desiredPosition;
 
 	public Ant(TiledMapTileLayer layer, Node startNode) {
-		super(new Sprite(new Texture("player.png")));
+//		super(new Sprite(new Texture("Ant/iceant/1.png")));
+
+		textureAtlas = new TextureAtlas(Gdx.files.internal("Ant/atlas/iceant.atlas"));
+
+		animation = new Animation<TextureRegion>(1f/30f, textureAtlas.findRegions("running_left"), Animation.PlayMode.LOOP);
 
 		Brain = new AntBrain("Matt", startNode);
 
@@ -36,12 +42,16 @@ public class Ant extends Sprite {
 
 		setX(desiredPosition.x);
 		setY(desiredPosition.y);
+
+		stateTime = 0;
 	}
 
 	@Override
 	public void draw(Batch batch) {
-		update(Gdx.graphics.getDeltaTime());
-		super.draw(batch);
+		float delta = Gdx.graphics.getDeltaTime();
+		stateTime += delta;
+		update(delta);
+		batch.draw(animation.getKeyFrame(stateTime, true), getX(), getY());
 	}
 
 	private void update(float delta) {
