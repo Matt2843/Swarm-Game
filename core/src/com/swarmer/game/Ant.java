@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.swarmer.ai.AntBrain;
 import com.swarmer.utility.Node;
 
+import java.util.HashMap;
+
 public class Ant extends Sprite {
 
 	private float stateTime;
@@ -16,7 +18,7 @@ public class Ant extends Sprite {
 
 	private TiledMapTileLayer layer;
 	private TextureAtlas textureAtlas;
-	private Animation<TextureRegion> animation;
+	private HashMap<String, Animation<TextureRegion>> animations;
 
 	private float tileWidth;
 	private float tileHeight;
@@ -28,9 +30,25 @@ public class Ant extends Sprite {
 	public Ant(TiledMapTileLayer layer, Node startNode) {
 //		super(new Sprite(new Texture("Ant/iceant/1.png")));
 
+		animations = new HashMap<>();
+
 		textureAtlas = new TextureAtlas(Gdx.files.internal("Ant/atlas/iceant.atlas"));
 
-		animation = new Animation<TextureRegion>(1f/30f, textureAtlas.findRegions("running_left"), Animation.PlayMode.LOOP);
+		String[] animationlist = {
+				"running_left",
+				"running_up_left",
+				"running_up",
+				"running_up_right",
+				"running_right",
+				"running_down_right",
+				"running_down",
+				"running_down_left",
+				"stance_down",
+		};
+
+		for (String animation : animationlist) {
+			animations.put(animation, new Animation<TextureRegion>(1f/30f, textureAtlas.findRegions(animation), Animation.PlayMode.LOOP));
+		}
 
 		Brain = new AntBrain("Matt", startNode);
 
@@ -51,7 +69,27 @@ public class Ant extends Sprite {
 		float delta = Gdx.graphics.getDeltaTime();
 		stateTime += delta;
 		update(delta);
-		batch.draw(animation.getKeyFrame(stateTime, true), getX(), getY());
+
+		String direction = "stance_down";
+		if (velocity.x > 0 && velocity.y > 0) {
+			direction = "running_up_right";
+		} else if (velocity.x > 0 && velocity.y == 0) {
+			direction = "running_right";
+		} else if (velocity.x > 0 && velocity.y < 0) {
+			direction = "running_down_right";
+		} else if (velocity.x == 0 && velocity.y < 0) {
+			direction = "running_down";
+		} else if (velocity.x < 0 && velocity.y < 0) {
+			direction = "running_down_left";
+		} else if (velocity.x < 0 && velocity.y == 0) {
+			direction = "running_left";
+		} else if (velocity.x < 0 && velocity.y > 0) {
+			direction = "running_up_left";
+		} else if (velocity.x == 0 && velocity.y > 0) {
+			direction = "running_up";
+		}
+
+		batch.draw(animations.get(direction).getKeyFrame(stateTime, true), getX(), getY());
 	}
 
 	private void update(float delta) {
