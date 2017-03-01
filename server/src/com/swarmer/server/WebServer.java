@@ -36,6 +36,13 @@ public class WebServer {
 			}
 		});
 
+		get("servers", new Route() {
+			@Override
+			public Object handle(Request req, Response res) throws Exception {
+				return "localhost:1234";
+			}
+		});
+
 	}
 
 	private static String render(Map model, String templatePath) {
