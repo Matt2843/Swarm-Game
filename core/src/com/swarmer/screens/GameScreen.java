@@ -68,12 +68,12 @@ public class GameScreen implements Screen {
 
 		centerCamera();
 
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 1; i++) {
 			int x = 50; // ThreadLocalRandom.current().nextInt(1, 99);
 			int y = 50; // ThreadLocalRandom.current().nextInt(1, 99);
 
 			if (graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
-				ants.add(new Ant(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(1), graph.nodes[x][y]));
+				ants.add(new Ant((TiledMapTileLayer) map.getLayers().get(1), graph.nodes[x][y]));
 			}
 		}
 	}

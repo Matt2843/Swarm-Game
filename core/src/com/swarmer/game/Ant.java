@@ -2,6 +2,7 @@ package com.swarmer.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -14,7 +15,6 @@ public class Ant extends Sprite {
 	/** the movement */
 	private Vector2 velocity = new Vector2();
 
-	private float speed = 60 * 2;
 	private TiledMapTileLayer layer;
 	private float tileWidth;
 	private float tileHeight;
@@ -23,9 +23,8 @@ public class Ant extends Sprite {
 
 	private Vector2 desiredPosition;
 
-
-	public Ant(Sprite sprite, TiledMapTileLayer layer, Node startNode) {
-		super(sprite);
+	public Ant(TiledMapTileLayer layer, Node startNode) {
+		super(new Sprite(new Texture("player.png")));
 
 		Brain = new AntBrain("Matt", startNode);
 
@@ -33,11 +32,10 @@ public class Ant extends Sprite {
 		this.tileWidth = layer.getTileWidth();
 		this.tileHeight = layer.getTileHeight();
 
-		Vector2 start = getScreenCoordinates(startNode.getPosition());
-		desiredPosition = start;
+		desiredPosition = getScreenCoordinates(startNode.getPosition());
 
-		setX(start.x);
-		setY(start.y);
+		setX(desiredPosition.x);
+		setY(desiredPosition.y);
 	}
 
 	@Override
