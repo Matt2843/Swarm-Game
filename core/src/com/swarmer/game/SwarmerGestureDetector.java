@@ -2,13 +2,14 @@ package com.swarmer.game;
 
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.swarmer.screens.GameScreen;
 
 public class SwarmerGestureDetector implements GestureDetector.GestureListener {
 
-	SwarmerMain Parent;
+	GameScreen Parent;
 	float zoom = 0;
 
-	public SwarmerGestureDetector(SwarmerMain Parent){
+	public SwarmerGestureDetector(GameScreen Parent){
 		this.Parent = Parent;
 	}
 
