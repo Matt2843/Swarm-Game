@@ -6,12 +6,14 @@ import com.badlogic.gdx.math.Vector2;
 public class SwarmerGestureDetector implements GestureDetector.GestureListener {
 
 	SwarmerMain Parent;
+	float zoom = 0;
 
 	public SwarmerGestureDetector(SwarmerMain Parent){
 		this.Parent = Parent;
 	}
 
 	@Override public boolean touchDown(float x, float y, int pointer, int button) {
+		zoom = Parent.camera.zoom;
 		return false;
 	}
 
@@ -37,9 +39,9 @@ public class SwarmerGestureDetector implements GestureDetector.GestureListener {
 
 	@Override public boolean zoom(float initialDistance, float distance) {
 		Parent.dragging = false;
-		float delta = (distance - initialDistance) / initialDistance;
-		if((delta < 0 && Parent.camera.zoom > delta * -1) || (delta > 0 && Parent.camera.zoom < 3)) {
-			Parent.camera.zoom = delta;
+		float delta = 1 - (distance - initialDistance) / initialDistance;
+		if((delta < 1 && zoom * delta > 1) || (delta > 1 && zoom * delta < 3)) {
+			Parent.camera.zoom = zoom * delta;
 		}
 		return false;
 	}
