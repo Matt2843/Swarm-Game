@@ -1,16 +1,26 @@
 package com.swarmer.utility;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 public class CoordsTranslator {
 
+	private OrthographicCamera camera;
 	private float tileWidth;
 	private float tileHeight;
 
 	public CoordsTranslator(TiledMapTileLayer layer) {
 		this.tileWidth = layer.getTileWidth();
 		this.tileHeight = layer.getTileHeight();
+	}
+
+	public CoordsTranslator(TiledMapTileLayer layer, OrthographicCamera camera) {
+		this.tileWidth = layer.getTileWidth();
+		this.tileHeight = layer.getTileHeight();
+
+		this.camera = camera;
 	}
 
 	public Vector2 getTileCoordinates(Vector2 pos) {
@@ -23,6 +33,12 @@ public class CoordsTranslator {
 		float x = 0.5f * pos.x * tileWidth + 0.5f * pos.y * tileWidth;
 		float y = -0.5f * tileHeight * (pos.x-pos.y);
 		return new Vector2(x,y);
+	}
+
+	public Vector2 getTileCoordinatesFromScreen(float screenX, float screenY) {
+		Vector3 worldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
+
+		return getTileCoordinates(worldCoords.x, worldCoords.y);
 	}
 
 	public Vector2 getTileCoordinates(float sx, float sy) {
