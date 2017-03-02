@@ -18,6 +18,8 @@ import com.swarmer.game.input.SwamerInputProcessor;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.game.input.SwarmerGestureDetector;
 import com.swarmer.aco.graph.Graph;
+import com.swarmer.gui.animations.AnimationLibrary;
+import javafx.animation.Animation;
 
 import java.util.ArrayList;
 
@@ -44,6 +46,7 @@ public class GameScreen implements Screen {
 	public boolean dragging;
 
 	private ArrayList<Ant> ants = new ArrayList<>();
+	public static Graph graph;
 
 	public GameScreen(final SwarmerMain game) {
 		this.game = game;
@@ -53,7 +56,7 @@ public class GameScreen implements Screen {
 		mapWidth = layer.getWidth() * layer.getTileWidth();
 		mapHeight = layer.getHeight() * layer.getTileHeight();
 
-		Graph graph = new Graph(map);
+		graph = new Graph(map);
 		renderer = new IsometricTiledMapRenderer(map);
 		camera = new OrthographicCamera();
 		viewport = new ExtendViewport(VP_WIDTH, VP_HEIGHT, camera);
@@ -66,7 +69,7 @@ public class GameScreen implements Screen {
 
 		centerCamera();
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 0; i++) {
 			int x = 50; // ThreadLocalRandom.current().nextInt(1, 99);
 			int y = 50; // ThreadLocalRandom.current().nextInt(1, 99);
 
@@ -152,5 +155,13 @@ public class GameScreen implements Screen {
 		if(!vec.isZero()){
 			camera.translate(getInBounds((int) vec.x, (int) vec.y));
 		}
+	}
+
+	public TiledMap getMap() {
+		return map;
+	}
+
+	public ArrayList<Ant> getAnts() {
+		return ants;
 	}
 }

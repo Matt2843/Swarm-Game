@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.swarmer.aco.ai.AntBrain;
+import com.swarmer.gui.animations.AnimationLibrary;
 import com.swarmer.utility.CoordsTranslator;
 import com.swarmer.aco.graph.Node;
 
@@ -14,8 +15,6 @@ public class Ant {
 
 	private float stateTime;
 	private Vector2 velocity = new Vector2();
-
-	private HashMap<String, Animation<TextureRegion>> animations;
 
 	private CoordsTranslator coordsTranslator;
 
@@ -29,26 +28,6 @@ public class Ant {
 	public Ant(TiledMapTileLayer layer, Node startNode) {
 
 		coordsTranslator = new CoordsTranslator(layer);
-
-		animations = new HashMap<>();
-
-		TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("Ant/atlas/iceant.atlas"));
-
-		String[] animationlist = {
-				"running_left",
-				"running_up_left",
-				"running_up",
-				"running_up_right",
-				"running_right",
-				"running_down_right",
-				"running_down",
-				"running_down_left",
-				"stance_down",
-		};
-
-		for (String animation : animationlist) {
-			animations.put(animation, new Animation<TextureRegion>(1f/30f, textureAtlas.findRegions(animation), Animation.PlayMode.LOOP));
-		}
 
 		brain = new AntBrain("Matt", startNode);
 
@@ -84,7 +63,7 @@ public class Ant {
 			direction = "running_up";
 		}
 
-		TextureRegion frame = animations.get(direction).getKeyFrame(stateTime, true);
+		TextureRegion frame = AnimationLibrary.getInstance().antAnimation.get(direction).getKeyFrame(stateTime, true);
 		batch.draw(frame, getX(), getY(), 0, 0, frame.getRegionWidth(), frame.getRegionHeight(), .35f, .35f, 0);
 	}
 

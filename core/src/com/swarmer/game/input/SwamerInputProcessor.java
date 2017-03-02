@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.swarmer.gui.screens.GameScreen;
 import com.swarmer.gui.screens.ScreenLib;
 import com.swarmer.gui.screens.ScreenManager;
+import com.swarmer.utility.Temp;
 
 public class SwamerInputProcessor implements InputProcessor {
 
@@ -27,6 +28,10 @@ public class SwamerInputProcessor implements InputProcessor {
 
 	@Override public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		// ignore if its not left mouse button or first touch pointer
+		if(button == Input.Buttons.RIGHT) {
+			//Temp.spawn((int)(screenX + Parent.camera.position.x), (int)(screenY + Parent.camera.viewportHeight - Parent.camera.position.y));
+			Temp.spawn(50, 50);
+		}
 		if (button != Input.Buttons.LEFT || pointer > 0) return false;
 		PreX = screenX;
 		PreY = screenY;

@@ -5,15 +5,15 @@ import com.badlogic.gdx.math.Vector2;
 
 public class CoordsTranslator {
 
-	private float tileWidth;
-	private float tileHeight;
+	private static float tileWidth;
+	private static float tileHeight;
 
 	public CoordsTranslator(TiledMapTileLayer layer) {
 		this.tileWidth = layer.getTileWidth();
 		this.tileHeight = layer.getTileHeight();
 	}
 
-	public Vector2 getTileCoordinates(Vector2 pos) {
+	public static Vector2 getTileCoordinates(Vector2 pos) {
 		float x = Math.round(( ( tileWidth * pos.y - tileHeight * pos.x ) / ( tileWidth*tileHeight) ) * -1);
 		float y = Math.round(( tileWidth * pos.y + tileHeight * pos.x ) / ( tileWidth*tileHeight));
 		return new Vector2(x,y);
@@ -25,7 +25,7 @@ public class CoordsTranslator {
 		return new Vector2(x,y);
 	}
 
-	public Vector2 getTileCoordinates(float sx, float sy) {
+	public static Vector2 getTileCoordinates(float sx, float sy) {
 		float x = Math.round(( ( tileWidth * sy - tileHeight * sx ) / ( tileWidth*tileHeight) ) * -1);
 		float y = Math.round(( tileWidth * sy + tileHeight * sx ) / ( tileWidth*tileHeight));
 
