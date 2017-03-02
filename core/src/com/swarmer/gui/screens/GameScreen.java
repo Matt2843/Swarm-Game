@@ -1,4 +1,4 @@
-package com.swarmer.screens;
+package com.swarmer.gui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -6,8 +6,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -15,11 +13,11 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.swarmer.game.Ant;
-import com.swarmer.game.SwamerInputProcessor;
+import com.swarmer.game.units.Ant;
+import com.swarmer.game.input.SwamerInputProcessor;
 import com.swarmer.game.SwarmerMain;
-import com.swarmer.game.SwarmerGestureDetector;
-import com.swarmer.utility.Graph;
+import com.swarmer.game.input.SwarmerGestureDetector;
+import com.swarmer.aco.graph.Graph;
 
 import java.util.ArrayList;
 

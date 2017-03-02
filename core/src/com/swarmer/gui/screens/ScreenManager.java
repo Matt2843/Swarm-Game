@@ -1,4 +1,4 @@
-package com.swarmer.screens;
+package com.swarmer.gui.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.IntMap;

@@ -1,4 +1,4 @@
-package com.swarmer.screens.mainmenu;
+package com.swarmer.gui.screens.mainmenu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -10,8 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.swarmer.game.SwarmerMain;
-import com.swarmer.screens.ScreenLib;
-import com.swarmer.screens.ScreenManager;
+import com.swarmer.gui.screens.ScreenManager;
 
 public class MainMenuScreen extends Stage implements Screen {
 
@@ -49,7 +48,7 @@ public class MainMenuScreen extends Stage implements Screen {
 		buttons[0].setText("Play");
 		buttons[0].addCaptureListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
-				ScreenManager.getInstance().show(ScreenLib.GAME_SCREEN);
+				ScreenManager.getInstance().show(com.swarmer.gui.screens.ScreenLib.GAME_SCREEN);
 			}
 		});
 

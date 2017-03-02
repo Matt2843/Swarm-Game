@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
-import com.swarmer.ai.AntBrain;
+import com.swarmer.aco.ai.AntBrain;
 import com.swarmer.utility.CoordsTranslator;
-import com.swarmer.utility.Node;
+import com.swarmer.aco.graph.Node;
 
 import java.util.HashMap;
 
