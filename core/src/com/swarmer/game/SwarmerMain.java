@@ -8,6 +8,8 @@ public class SwarmerMain extends Game {
 	
 	public void create() {
 		ScreenManager.getInstance().initialize(this);
+
+		// TODO: Start main menu at launch
 		ScreenManager.getInstance().show(ScreenLib.GAME_SCREEN);
 	}
 
