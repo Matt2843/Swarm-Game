@@ -5,7 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
 public class Graph {
-	private Node[][] nodes;
+	public Node[][] nodes;
 	private final TiledMapTileLayer collisionLayer;
 	
 	private final int width;
@@ -25,24 +25,24 @@ public class Graph {
 				if(collisionLayer.getCell(i, j) == null) {
 					nodes[i][j] = new Node(new Vector2(i,j));
 					if(i > 0 && j > 0 && i < width-1) {
-						new Edge(nodes[i][j], nodes[i-1][j]);
-						new Edge(nodes[i][j], nodes[i-1][j-1]);
-						new Edge(nodes[i][j], nodes[i][j-1]);
-						new Edge(nodes[i][j], nodes[i+1][j-1]);
+						new Edge(nodes[i][j], nodes[i-1][j], true);
+						new Edge(nodes[i][j], nodes[i-1][j-1], true);
+						new Edge(nodes[i][j], nodes[i][j-1], true);
+						new Edge(nodes[i][j], nodes[i+1][j-1], true);
 					} else if(i == 0 && j > 0) {
-						new Edge(nodes[i][j], nodes[i][j-1]);
-						new Edge(nodes[i][j], nodes[i+1][j-1]);
+						new Edge(nodes[i][j], nodes[i][j-1], true);
+						new Edge(nodes[i][j], nodes[i+1][j-1], true);
 					} else if(j == 0 && i > 0) {
-						new Edge(nodes[i][j], nodes[i-1][j]);
+						new Edge(nodes[i][j], nodes[i-1][j], true);
 					} else if(i == width-1) {
-						new Edge(nodes[i][j], nodes[i-1][j]);
-						new Edge(nodes[i][j], nodes[i-1][j-1]);
-						new Edge(nodes[i][j], nodes[i][j-1]);
+						new Edge(nodes[i][j], nodes[i-1][j], true);
+						new Edge(nodes[i][j], nodes[i-1][j-1], true);
+						new Edge(nodes[i][j], nodes[i][j-1], true);
 					}
 				}
 			}
 		}
-		printNodes();
+		//printNodes();
 	}
 
 	private void printNodes() {
@@ -61,7 +61,7 @@ public class Graph {
 		System.out.print(res);
 		
 		for(Edge e : nodes[0][0].getConnectedEdges()) {
-			System.out.println("N1: " + e.getNode1().getPosition().toString() + " N2: " + e.getNode2().getPosition().toString());
+			//System.out.println("N1: " + e.getNode1().getPosition().toString() + " N2: " + e.getNode2().getPosition().toString());
 		}
 		
 	}

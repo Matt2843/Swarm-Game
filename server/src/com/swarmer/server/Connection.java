@@ -1,5 +1,7 @@
 package com.swarmer.server;
 
+import com.swarmer.shared.Message;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -31,6 +33,11 @@ public class Connection extends Thread {
 			e.printStackTrace();
 		}
 		
+	}
+
+	public void sendMessage(Message m) throws IOException {
+		output.writeObject(m);
+		output.flush();
 	}
 
 	private void setupStreams() throws IOException {

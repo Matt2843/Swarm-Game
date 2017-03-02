@@ -4,46 +4,51 @@ import java.util.HashMap;
 
 public class Edge {
 	
-	private HashMap<String, Pheromone> pheromones = new HashMap<String, Pheromone>();
+	private HashMap<String, Pheromone> pheromones;
 	private String PATH_ID;
+
+	public Edge reverse;
 	
-	private final Node node1;
-	private final Node node2;
+	private final Node dest;
 	
-	public Edge(Node n1, Node n2) {
-		this.node1 = n1;
-		this.node2 = n2;
-		if(n1 != null && n2 != null) {
-			n1.addEdge(this);
-			n2.addEdge(this);
+	public Edge(Node start, Node end, Boolean bool) {
+		dest = end;
+		if(start != null && end != null) {
+			start.addEdge(this);
+			if(bool) {
+				pheromones = new HashMap<>();
+				reverse = new Edge(end, start, false);
+				reverse.setPheromones(pheromones);
+				reverse.reverse = this;
+			}
 		}
-	}
-	
-	public Edge(String PATH_ID) {
-		this.PATH_ID = PATH_ID;
-		node1 = null;
-		node2 = null;
 	}
 
 	public String getPATH_ID() {
 		return PATH_ID;
 	}
-
+	
+	public Pheromone getPheromones(String key) {
+		if(!pheromones.containsKey(key)){
+			pheromones.put(key, new Pheromone(1));
+		}
+		return pheromones.get(key);
+	}
+	
 	public HashMap<String, Pheromone> getPheromones() {
 		return pheromones;
 	}
-
+	
 	public void setPheromones(HashMap<String, Pheromone> pheromones) {
 		this.pheromones = pheromones;
 	}
 
-	public Node getNode1() {
-		return node1;
+	@Override
+	public boolean equals(Object edge) {
+		return edge != null && dest.equals(edge);
 	}
 
-	public Node getNode2() {
-		return node2;
+	public Node getNode() {
+		return dest;
 	}
-	
-
 }
