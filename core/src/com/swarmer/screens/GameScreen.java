@@ -36,11 +36,11 @@ public class GameScreen implements Screen {
 
 	private InputMultiplexer IM;
 
-	public final static float SCALE = 1f;
-	public final static float INV_SCALE = 1.f/SCALE;
+	private final static float SCALE = 1f;
+	private final static float INV_SCALE = 1.f/SCALE;
 
-	public final static float VP_WIDTH = 1280 * INV_SCALE;
-	public final static float VP_HEIGHT = 720 * INV_SCALE;
+	private final static float VP_WIDTH = 1280 * INV_SCALE;
+	private final static float VP_HEIGHT = 720 * INV_SCALE;
 
 	private Vector2 vec = new Vector2();
 	public boolean dragging;
@@ -68,12 +68,12 @@ public class GameScreen implements Screen {
 
 		centerCamera();
 
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10; i++) {
 			int x = 50; // ThreadLocalRandom.current().nextInt(1, 99);
 			int y = 50; // ThreadLocalRandom.current().nextInt(1, 99);
 
 			if (graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
-				ants.add(new Ant(new Sprite(new Texture("player.png")), (TiledMapTileLayer) map.getLayers().get(1), graph.nodes[x][y]));
+				ants.add(new Ant((TiledMapTileLayer) map.getLayers().get(1), graph.nodes[x][y]));
 			}
 		}
 	}

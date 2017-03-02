@@ -8,7 +8,7 @@ public class SwarmerMain extends Game {
 	
 	public void create() {
 		ScreenManager.getInstance().initialize(this);
-		ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
+		ScreenManager.getInstance().show(ScreenLib.GAME_SCREEN);
 	}
 
 	public void render() {
