@@ -30,18 +30,20 @@ public class MainMenuScreen extends Stage implements Screen {
 		buttonGroup = new Group();
 
 		for(int i = 0; i < buttons.length; i++) {
-			buttons[i] = new TextButton("Button " + (i+1), new MainMenuButtonSkin());
+			buttons[i] = new TextButton("Button " + (i + 1), new MainMenuButtonSkin());
 			final int finalI = i;
 			buttons[i].addCaptureListener(new ChangeListener() {
 				@Override public void changed(ChangeEvent event, Actor actor) {
-					System.out.println("Button " + (finalI +1) + " pressed.");
+					System.out.println("Button " + (finalI + 1) + " pressed.");
 				}
 			});
 		}
 		for(int i = 0; i < buttons.length; i++) {
-			if(i > 0)
-				buttons[i].setPosition(0, buttons[i-1].getY() - buttons[i].getHeight());
-			else buttons[i].setPosition(0, 0);
+			if(i > 0) {
+				buttons[i].setPosition(0, buttons[i - 1].getY() - buttons[i].getHeight());
+			} else {
+				buttons[i].setPosition(0, 0);
+			}
 			buttonGroup.addActor(buttons[i]);
 		}
 
@@ -60,7 +62,7 @@ public class MainMenuScreen extends Stage implements Screen {
 		});
 
 
-		buttonGroup.setPosition(getWidth() / 2 - buttons[0].getWidth() / 2, getHeight() / 2 + 5*buttons[0].getHeight() / 2 - buttons[0].getHeight());
+		buttonGroup.setPosition(getWidth() / 2 - buttons[0].getWidth() / 2, getHeight() / 2 + 5 * buttons[0].getHeight() / 2 - buttons[0].getHeight());
 		addActor(buttonGroup);
 	}
 
@@ -69,7 +71,7 @@ public class MainMenuScreen extends Stage implements Screen {
 	}
 
 	@Override public void render(float delta) {
-		Gdx.gl.glClearColor( 0, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		act(delta);
 		draw();

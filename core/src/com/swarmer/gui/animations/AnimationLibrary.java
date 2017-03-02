@@ -12,42 +12,32 @@ import java.util.HashMap;
  */
 public class AnimationLibrary {
 
-    private static AnimationLibrary instance;
+	private static AnimationLibrary instance;
 
 
-    private static TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("Ant/atlas/iceant.atlas"));
+	private static TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("Ant/atlas/iceant.atlas"));
 
-    public static HashMap<String, Animation<TextureRegion>> antAnimation;
+	public static HashMap<String, Animation<TextureRegion>> antAnimation;
 
-    // Prevent instantiation
-    private AnimationLibrary() {
+	// Prevent instantiation
+	private AnimationLibrary() {
 
-    }
+	}
 
-    public void initializeAntAnimations() {
-        antAnimation = new HashMap<>();
-        String[] animationlist = {
-                "running_left",
-                "running_up_left",
-                "running_up",
-                "running_up_right",
-                "running_right",
-                "running_down_right",
-                "running_down",
-                "running_down_left",
-                "stance_down",
-        };
+	public void initializeAntAnimations() {
+		antAnimation = new HashMap<>();
+		String[] animationlist = {"running_left", "running_up_left", "running_up", "running_up_right", "running_right", "running_down_right", "running_down", "running_down_left", "stance_down",};
 
-        for (String animation : animationlist) {
-            antAnimation.put(animation, new Animation<TextureRegion>(1f/30f, textureAtlas.findRegions(animation), Animation.PlayMode.LOOP));
-        }
-    }
+		for(String animation : animationlist) {
+			antAnimation.put(animation, new Animation<TextureRegion>(1f / 30f, textureAtlas.findRegions(animation), Animation.PlayMode.LOOP));
+		}
+	}
 
-    public static AnimationLibrary getInstance() {
-        if(instance == null) {
-            instance = new AnimationLibrary();
-        }
-        return instance;
-    }
+	public static AnimationLibrary getInstance() {
+		if(instance == null) {
+			instance = new AnimationLibrary();
+		}
+		return instance;
+	}
 
 }

@@ -29,7 +29,7 @@ public class Edge {
 	}
 	
 	public Pheromone getPheromones(String key) {
-		if(!pheromones.containsKey(key)){
+		if(!pheromones.containsKey(key)) {
 			pheromones.put(key, new Pheromone(1));
 		}
 		return pheromones.get(key);
@@ -43,8 +43,7 @@ public class Edge {
 		this.pheromones = pheromones;
 	}
 
-	@Override
-	public boolean equals(Object edge) {
+	@Override public boolean equals(Object edge) {
 		return edge != null && dest.equals(edge);
 	}
 

@@ -23,20 +23,22 @@ public class CoordsTranslator {
 	}
 
 	public static CoordsTranslator getInstance() {
-		if(instance == null) instance = new CoordsTranslator((TiledMapTileLayer) GameScreen.map.getLayers().get(0), ScreenManager.camera);
+		if(instance == null) {
+			instance = new CoordsTranslator((TiledMapTileLayer) GameScreen.map.getLayers().get(0), ScreenManager.camera);
+		}
 		return instance;
 	}
 
 	public Vector2 getTileCoordinates(Vector2 pos) {
 		float x = Math.round(-(tileWidth * pos.y - tileHeight * pos.x) / (tileWidth * tileHeight));
-		float y = Math.round( (tileWidth * pos.y + tileHeight * pos.x) / (tileWidth * tileHeight) - 1);
-		return new Vector2(x,y);
+		float y = Math.round((tileWidth * pos.y + tileHeight * pos.x) / (tileWidth * tileHeight) - 1);
+		return new Vector2(x, y);
 	}
 
 	public Vector2 getScreenCoordinates(Vector2 pos) {
 		float x = 0.5f * pos.x * tileWidth + 0.5f * pos.y * tileWidth;
-		float y = -0.5f * tileHeight * (pos.x-pos.y);
-		return new Vector2(x,y);
+		float y = -0.5f * tileHeight * (pos.x - pos.y);
+		return new Vector2(x, y);
 	}
 
 	public Vector2 getTileCoordinatesFromScreen(float screenX, float screenY) {
@@ -47,15 +49,15 @@ public class CoordsTranslator {
 
 	public Vector2 getTileCoordinates(float sx, float sy) {
 		float x = Math.round(-(tileWidth * sy - tileHeight * sx) / (tileWidth * tileHeight));
-		float y = Math.round( (tileWidth * sy + tileHeight * sx) / (tileWidth * tileHeight) - 1);
-		return new Vector2(x,y);
+		float y = Math.round((tileWidth * sy + tileHeight * sx) / (tileWidth * tileHeight) - 1);
+		return new Vector2(x, y);
 	}
 
 	public Vector2 getScreenCoordinates(float tx, float ty) {
 		float x = 0.5f * tx * tileWidth + 0.5f * ty * tileWidth;
-		float y = -0.5f * tileHeight * (tx-ty);
+		float y = -0.5f * tileHeight * (tx - ty);
 
-		return new Vector2(x,y);
+		return new Vector2(x, y);
 	}
 
 	public TiledMapTileLayer.Cell getCell(TiledMapTileLayer layer, Vector2 coords) {

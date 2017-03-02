@@ -8,18 +8,18 @@ import com.swarmer.gui.screens.mainmenu.MainMenuScreen;
  */
 public enum ScreenLib {
 
-    MAIN_MENU_SCREEN {
-        @Override protected Screen getScreenInstance() {
-            return new MainMenuScreen(com.swarmer.gui.screens.ScreenManager.getInstance().getGame(), 1280, 800);
-        }
-    },
+	MAIN_MENU_SCREEN {
+		@Override protected Screen getScreenInstance() {
+			return new MainMenuScreen(com.swarmer.gui.screens.ScreenManager.getInstance().getGame(), 1280, 800);
+		}
+	},
 
-    GAME_SCREEN {
-        @Override protected Screen getScreenInstance() {
-            return new GameScreen(com.swarmer.gui.screens.ScreenManager.getInstance().getGame());
-        }
-    };
+	GAME_SCREEN {
+		@Override protected Screen getScreenInstance() {
+			return new GameScreen(com.swarmer.gui.screens.ScreenManager.getInstance().getGame());
+		}
+	};
 
-    protected abstract Screen getScreenInstance();
+	protected abstract Screen getScreenInstance();
 
 }

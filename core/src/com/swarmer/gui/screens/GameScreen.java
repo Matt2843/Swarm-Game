@@ -27,28 +27,21 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GameScreen implements Screen {
 
-	private final SwarmerMain game;
-	private IsometricTiledMapRenderer renderer;
-	public static TiledMap map;
-
-	private OrthographicCamera camera;
-	private ExtendViewport viewport;
-
-	private float mapWidth, mapHeight;
-
-	private InputMultiplexer IM;
-
 	private final static float SCALE = 1f;
-	private final static float INV_SCALE = 1.f/SCALE;
-
+	private final static float INV_SCALE = 1.f / SCALE;
 	private final static float VP_WIDTH = 1280 * INV_SCALE;
 	private final static float VP_HEIGHT = 720 * INV_SCALE;
-
-	private Vector2 vec = new Vector2();
-	public boolean dragging;
-
-	private ArrayList<Ant> ants = new ArrayList<>();
+	public static TiledMap map;
 	public static Graph graph;
+	private final SwarmerMain game;
+	public boolean dragging;
+	private IsometricTiledMapRenderer renderer;
+	private OrthographicCamera camera;
+	private ExtendViewport viewport;
+	private float mapWidth, mapHeight;
+	private InputMultiplexer IM;
+	private Vector2 vec = new Vector2();
+	private ArrayList<Ant> ants = new ArrayList<>();
 
 	public GameScreen(final SwarmerMain game) {
 		this.game = game;
@@ -91,23 +84,21 @@ public class GameScreen implements Screen {
 
 		renderer = new IsometricTiledMapRenderer(map);
 
-		for (int i = 0; i < 0; i++) {
+		for(int i = 0; i < 0; i++) {
 			int x = 50; // ThreadLocalRandom.current().nextInt(1, 99);
 			int y = 50; // ThreadLocalRandom.current().nextInt(1, 99);
 
-			if (graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
+			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
 				ants.add(new Ant((TiledMapTileLayer) map.getLayers().get(1), graph.nodes[x][y]));
 			}
 		}
 	}
 
-	@Override
-	public void show() {
+	@Override public void show() {
 		Gdx.input.setInputProcessor(IM);
 	}
 
-	@Override
-	public void render(float delta) {
+	@Override public void render(float delta) {
 		handleInput();
 		//Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -117,32 +108,29 @@ public class GameScreen implements Screen {
 		renderer.render();
 
 		renderer.getBatch().begin();
-		for (Ant ant : ants) {ant.draw(renderer.getBatch());}
+		for(Ant ant : ants) {
+			ant.draw(renderer.getBatch());
+		}
 		renderer.getBatch().end();
 	}
 
-	@Override
-	public void resize(int width, int height) {
+	@Override public void resize(int width, int height) {
 		viewport.update(width, height, false);
 	}
 
-	@Override
-	public void pause() {
+	@Override public void pause() {
 
 	}
 
-	@Override
-	public void resume() {
+	@Override public void resume() {
 
 	}
 
-	@Override
-	public void hide() {
+	@Override public void hide() {
 
 	}
 
-	@Override
-	public void dispose() {
+	@Override public void dispose() {
 
 	}
 
@@ -154,15 +142,15 @@ public class GameScreen implements Screen {
 	public Vector2 getInBounds(int x, int y) {
 		float vecX = x, vecY = y;
 
-		if(camera.position.x + x > mapWidth - camera.viewportWidth / 2 * camera.zoom){
+		if(camera.position.x + x > mapWidth - camera.viewportWidth / 2 * camera.zoom) {
 			vecX = mapWidth - camera.viewportWidth / 2 * camera.zoom - camera.position.x;
-		} else if(camera.position.x + x < camera.viewportWidth / 2 * camera.zoom){
+		} else if(camera.position.x + x < camera.viewportWidth / 2 * camera.zoom) {
 			vecX = camera.viewportWidth / 2 * camera.zoom - camera.position.x;
 		}
 
 		if(camera.position.y + y > mapHeight / 2 - camera.viewportHeight / 2 * camera.zoom) {
-			vecY =  mapHeight / 2 - camera.viewportHeight / 2 * camera.zoom - camera.position.y;
-		} else if(camera.position.y + y < -(mapHeight / 2) + camera.viewportHeight / 2 * camera.zoom){
+			vecY = mapHeight / 2 - camera.viewportHeight / 2 * camera.zoom - camera.position.y;
+		} else if(camera.position.y + y < -(mapHeight / 2) + camera.viewportHeight / 2 * camera.zoom) {
 			vecY = -mapHeight / 2 + camera.viewportHeight / 2 * camera.zoom - camera.position.y;
 		}
 		return new Vector2(vecX, vecY);
@@ -170,11 +158,19 @@ public class GameScreen implements Screen {
 
 	private void handleInput() {
 		vec.set(0, 0);
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT))	{vec.x += -10 * camera.zoom;}
-		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){vec.x += 10 * camera.zoom;}
-		if(Gdx.input.isKeyPressed(Input.Keys.UP))	{vec.y += 10 * camera.zoom;}
-		if(Gdx.input.isKeyPressed(Input.Keys.DOWN))	{vec.y += -10 * camera.zoom;}
-		if(!vec.isZero()){
+		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+			vec.x += -10 * camera.zoom;
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+			vec.x += 10 * camera.zoom;
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+			vec.y += 10 * camera.zoom;
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+			vec.y += -10 * camera.zoom;
+		}
+		if(!vec.isZero()) {
 			camera.translate(getInBounds((int) vec.x, (int) vec.y));
 		}
 	}

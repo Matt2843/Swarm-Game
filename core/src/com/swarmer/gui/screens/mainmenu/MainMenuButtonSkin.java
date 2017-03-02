@@ -11,15 +11,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
  */
 public class MainMenuButtonSkin extends TextButton.TextButtonStyle {
 
-    private Skin skin;
-    private TextureAtlas buttonAtlas;
+	private Skin skin;
+	private TextureAtlas buttonAtlas;
 
-    public MainMenuButtonSkin() {
-        skin = new Skin();
-        buttonAtlas = new TextureAtlas(Gdx.files.internal("button.atlas"));
-        skin.addRegions(buttonAtlas);
-        this.font = new BitmapFont();
-        this.up = skin.getDrawable("button-up");
-        this.down = skin.getDrawable("button-down");
-    }
+	public MainMenuButtonSkin() {
+		skin = new Skin();
+		buttonAtlas = new TextureAtlas(Gdx.files.internal("button.atlas"));
+		skin.addRegions(buttonAtlas);
+		this.font = new BitmapFont();
+		this.up = skin.getDrawable("button-up");
+		this.down = skin.getDrawable("button-down");
+	}
 }

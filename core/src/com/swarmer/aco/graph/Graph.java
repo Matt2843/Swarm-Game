@@ -13,8 +13,8 @@ public class Graph {
 	
 	public Graph(TiledMap map) {
 		collisionLayer = (TiledMapTileLayer) map.getLayers().get(1);
-		width = ((TiledMapTileLayer)map.getLayers().get(0)).getWidth();
-		height = ((TiledMapTileLayer)map.getLayers().get(0)).getHeight();
+		width = ((TiledMapTileLayer) map.getLayers().get(0)).getWidth();
+		height = ((TiledMapTileLayer) map.getLayers().get(0)).getHeight();
 		nodes = new Node[width][height];
 		generateGraph();
 	}
@@ -23,21 +23,21 @@ public class Graph {
 		for(int j = 0; j < height; j++) {
 			for(int i = 0; i < width; i++) {
 				if(collisionLayer.getCell(i, j) == null) {
-					nodes[i][j] = new Node(new Vector2(i,j));
-					if(i > 0 && j > 0 && i < width-1) {
-						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i-1][j], true);
-						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i-1][j-1], true);
-						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i][j-1], true);
-						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i+1][j-1], true);
+					nodes[i][j] = new Node(new Vector2(i, j));
+					if(i > 0 && j > 0 && i < width - 1) {
+						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i - 1][j], true);
+						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i - 1][j - 1], true);
+						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i][j - 1], true);
+						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i + 1][j - 1], true);
 					} else if(i == 0 && j > 0) {
-						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i][j-1], true);
-						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i+1][j-1], true);
+						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i][j - 1], true);
+						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i + 1][j - 1], true);
 					} else if(j == 0 && i > 0) {
-						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i-1][j], true);
-					} else if(i == width-1) {
-						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i-1][j], true);
-						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i-1][j-1], true);
-						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i][j-1], true);
+						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i - 1][j], true);
+					} else if(i == width - 1) {
+						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i - 1][j], true);
+						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i - 1][j - 1], true);
+						new com.swarmer.aco.graph.Edge(nodes[i][j], nodes[i][j - 1], true);
 					}
 				}
 			}
@@ -50,7 +50,7 @@ public class Graph {
 		for(int j = 0; j < height; j++) {
 			String row = "";
 			for(int i = 0; i < width; i++) {
-				if(nodes[i][j] != null){
+				if(nodes[i][j] != null) {
 					row = row + "x";
 				} else {
 					row = row + " ";

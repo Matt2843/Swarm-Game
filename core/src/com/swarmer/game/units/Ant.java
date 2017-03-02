@@ -42,21 +42,21 @@ public class Ant {
 		update(delta);
 
 		String direction = "stance_down";
-		if (velocity.x > 0 && velocity.y > 0) {
+		if(velocity.x > 0 && velocity.y > 0) {
 			direction = "running_up_right";
-		} else if (velocity.x > 0 && velocity.y == 0) {
+		} else if(velocity.x > 0 && velocity.y == 0) {
 			direction = "running_right";
-		} else if (velocity.x > 0 && velocity.y < 0) {
+		} else if(velocity.x > 0 && velocity.y < 0) {
 			direction = "running_down_right";
-		} else if (velocity.x == 0 && velocity.y < 0) {
+		} else if(velocity.x == 0 && velocity.y < 0) {
 			direction = "running_down";
-		} else if (velocity.x < 0 && velocity.y < 0) {
+		} else if(velocity.x < 0 && velocity.y < 0) {
 			direction = "running_down_left";
-		} else if (velocity.x < 0 && velocity.y == 0) {
+		} else if(velocity.x < 0 && velocity.y == 0) {
 			direction = "running_left";
-		} else if (velocity.x < 0 && velocity.y > 0) {
+		} else if(velocity.x < 0 && velocity.y > 0) {
 			direction = "running_up_left";
-		} else if (velocity.x == 0 && velocity.y > 0) {
+		} else if(velocity.x == 0 && velocity.y > 0) {
 			direction = "running_up";
 		}
 
@@ -68,28 +68,29 @@ public class Ant {
 
 		int speed = 100;
 
-		velocity.x = 0; velocity.y = 0;
+		velocity.x = 0;
+		velocity.y = 0;
 
-		if (brain.getPreviousNode().getResource() != null) {
+		if(brain.getPreviousNode().getResource() != null) {
 			return;
 		}
 
-		if (Math.round(getX()) < Math.round(desiredPosition.x)) {
+		if(Math.round(getX()) < Math.round(desiredPosition.x)) {
 			velocity.x = speed;
-		} else if (Math.round(getX()) > Math.round(desiredPosition.x)) {
+		} else if(Math.round(getX()) > Math.round(desiredPosition.x)) {
 			velocity.x = -speed;
 		}
 
-		if (Math.round(getY()) < Math.round(desiredPosition.y)) {
+		if(Math.round(getY()) < Math.round(desiredPosition.y)) {
 			velocity.y = speed;
-		} else if (Math.round(getY()) > Math.round(desiredPosition.y)) {
+		} else if(Math.round(getY()) > Math.round(desiredPosition.y)) {
 			velocity.y = -speed;
 		}
 
 		setX(getX() + velocity.x * delta);
 		setY(getY() + velocity.y * delta);
 
-		if (Math.abs(getX() - desiredPosition.x) < 10 && Math.abs(getY() - desiredPosition.y) < 10){
+		if(Math.abs(getX() - desiredPosition.x) < 10 && Math.abs(getY() - desiredPosition.y) < 10) {
 			desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(brain.determineNextPath().getNode().getPosition());
 		}
 	}

@@ -12,7 +12,7 @@ public class SwarmerGestureDetector implements GestureDetector.GestureListener {
 	private OrthographicCamera camera;
 	private float zoom = 0;
 
-	public SwarmerGestureDetector(GameScreen parent){
+	public SwarmerGestureDetector(GameScreen parent) {
 		this.parent = parent;
 		camera = ScreenManager.camera;
 	}

@@ -19,7 +19,7 @@ public class SwamerInputProcessor implements InputProcessor {
 	private int PreX = 0;
 	private int PreY = 0;
 
-	public SwamerInputProcessor(GameScreen parent){
+	public SwamerInputProcessor(GameScreen parent) {
 		this.parent = parent;
 		camera = ScreenManager.camera;
 	}
@@ -38,7 +38,9 @@ public class SwamerInputProcessor implements InputProcessor {
 			Vector2 tileCoords = CoordsTranslator.getInstance().getTileCoordinatesFromScreen(screenX, screenY);
 			Temp.spawn((int) tileCoords.x, (int) tileCoords.y);
 		}
-		if (button != Input.Buttons.LEFT || pointer > 0) return false;
+		if(button != Input.Buttons.LEFT || pointer > 0) {
+			return false;
+		}
 		PreX = screenX;
 		PreY = screenY;
 		parent.dragging = true;
@@ -46,7 +48,9 @@ public class SwamerInputProcessor implements InputProcessor {
 	}
 
 	@Override public boolean touchDragged(int screenX, int screenY, int pointer) {
-		if (!parent.dragging) return false;
+		if(!parent.dragging) {
+			return false;
+		}
 		camera.translate(parent.getInBounds((int) (-(screenX - PreX) * camera.zoom), (int) ((screenY - PreY) * camera.zoom)));
 		PreX = screenX;
 		PreY = screenY;
@@ -54,15 +58,18 @@ public class SwamerInputProcessor implements InputProcessor {
 	}
 
 	@Override public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		if (button != Input.Buttons.LEFT || pointer > 0) return false;
+		if(button != Input.Buttons.LEFT || pointer > 0) {
+			return false;
+		}
 		//parent.camera.unproject(tp.set(screenX, screenY, 0));
 		parent.dragging = false;
 		return false;
 	}
 
 	@Override public boolean keyDown(int keycode) {
-		if(keycode == Input.Keys.ESCAPE)
+		if(keycode == Input.Keys.ESCAPE) {
 			ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
+		}
 		return false;
 	}
 
@@ -71,8 +78,9 @@ public class SwamerInputProcessor implements InputProcessor {
 	}
 
 	@Override public boolean keyTyped(char character) {
-		if(character == 'c'){
-			parent.centerCamera();}
+		if(character == 'c') {
+			parent.centerCamera();
+		}
 		return false;
 	}
 

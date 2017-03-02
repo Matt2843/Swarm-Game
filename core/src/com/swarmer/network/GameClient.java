@@ -17,7 +17,7 @@ public class GameClient extends Thread {
 	private String host = "localhost";
 	private int port = 1234;
 	
-	private Socket client; 
+	private Socket client;
 	
 	public GameClient() {
 		
@@ -28,8 +28,7 @@ public class GameClient extends Thread {
 		this.port = port;
 	}
 	
-	@Override
-	public void run() {
+	@Override public void run() {
 		try {
 			connectToService();
 			setupStreams();
@@ -47,10 +46,12 @@ public class GameClient extends Thread {
 	
 	private void whileConnected() throws ClassNotFoundException, IOException {
 		Message message = null;
-		do {
+		do
+		{
 			message = (Message) input.readObject();
 			System.out.println(message.getMessage());
-		} while(message.getMessage().contains("STOPCONNECTION"));
+		}
+		while(message.getMessage().contains("STOPCONNECTION"));
 		
 	}
 	
@@ -69,7 +70,7 @@ public class GameClient extends Thread {
 		try {
 			output.close();
 			input.close();
-		} catch (IOException e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 		
