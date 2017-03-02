@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
@@ -58,7 +59,7 @@ public class GameScreen implements Screen {
 		mapHeight = layer.getHeight() * layer.getTileHeight();
 
 		graph = new Graph(map);
-		renderer = new IsometricTiledMapRenderer(map);
+
 		viewport = new ExtendViewport(VP_WIDTH, VP_HEIGHT, camera);
 
 		viewport.apply(false);
@@ -68,19 +69,41 @@ public class GameScreen implements Screen {
 		IM.addProcessor(new GestureDetector(new SwarmerGestureDetector(this)));
 
 		centerCamera();
+		TiledMapTileLayer tilaaaa = (TiledMapTileLayer) map.getLayers().get(0);
+		TiledMapTileLayer lay1 = (TiledMapTileLayer) map.getLayers().get(1);
+		TiledMapTileLayer lay2 = (TiledMapTileLayer) map.getLayers().get(2);
+		TiledMapTileLayer lay3 = (TiledMapTileLayer) map.getLayers().get(3);
 
-		for (int i = 0; i < 200; i++) {
+		map.getLayers().remove(3);
+		map.getLayers().remove(2);
+		map.getLayers().remove(1);
+		map.getLayers().remove(0);
+
+		TiledMapTile tile = lay1.getCell(0, 0).getTile();
+		for(int i = 0; i < 200; i++) {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
 			int y = ThreadLocalRandom.current().nextInt(1, 99);
 
-			if (x == 50 && y == 50) {
+			if(x == 50 && y == 50) {
 				continue;
 			}
 
-			if (graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
+			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
+
+				if(tilaaaa.getCell(x, y) != null) {
+					tilaaaa.getCell(x, y).setTile(tile);
+
+
+				}
 				graph.nodes[x][y].setResource(new Food(100));
 			}
 		}
+		map.getLayers().add(tilaaaa);
+		map.getLayers().add(lay1);
+		map.getLayers().add(lay2);
+		map.getLayers().add(lay3);
+
+		renderer = new IsometricTiledMapRenderer(map);
 
 		for (int i = 0; i < 0; i++) {
 			int x = 50; // ThreadLocalRandom.current().nextInt(1, 99);
