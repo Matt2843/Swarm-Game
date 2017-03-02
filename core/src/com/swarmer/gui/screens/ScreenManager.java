@@ -55,6 +55,11 @@ public final class ScreenManager {
         instance = null;
     }
 
+    public Screen getScreen(ScreenLib screenLib) {
+        if(screens.containsKey(screenLib.ordinal())) return screens.get(screenLib.ordinal());
+        return null;
+    }
+
     public SwarmerMain getGame() {
         return game;
     }
