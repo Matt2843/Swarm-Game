@@ -36,11 +36,11 @@ public class GameScreen implements Screen {
 
 	private InputMultiplexer IM;
 
-	public final static float SCALE = 1f;
-	public final static float INV_SCALE = 1.f/SCALE;
+	private final static float SCALE = 1f;
+	private final static float INV_SCALE = 1.f/SCALE;
 
-	public final static float VP_WIDTH = 1280 * INV_SCALE;
-	public final static float VP_HEIGHT = 720 * INV_SCALE;
+	private final static float VP_WIDTH = 1280 * INV_SCALE;
+	private final static float VP_HEIGHT = 720 * INV_SCALE;
 
 	private Vector2 vec = new Vector2();
 	public boolean dragging;

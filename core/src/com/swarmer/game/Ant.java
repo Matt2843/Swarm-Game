@@ -1,38 +1,38 @@
 package com.swarmer.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.swarmer.ai.AntBrain;
+import com.swarmer.utility.CoordsTranslator;
 import com.swarmer.utility.Node;
 
 import java.util.HashMap;
 
-public class Ant extends Sprite {
+public class Ant {
 
 	private float stateTime;
-	/** the movement */
 	private Vector2 velocity = new Vector2();
 
-	private TiledMapTileLayer layer;
-	private TextureAtlas textureAtlas;
 	private HashMap<String, Animation<TextureRegion>> animations;
 
-	private float tileWidth;
-	private float tileHeight;
+	private CoordsTranslator coordsTranslator;
 
-	private AntBrain Brain;
+	private float x;
+	private float y;
+
+	private AntBrain brain;
 
 	private Vector2 desiredPosition;
 
 	public Ant(TiledMapTileLayer layer, Node startNode) {
-//		super(new Sprite(new Texture("Ant/iceant/1.png")));
+
+		coordsTranslator = new CoordsTranslator(layer);
 
 		animations = new HashMap<>();
 
-		textureAtlas = new TextureAtlas(Gdx.files.internal("Ant/atlas/iceant.atlas"));
+		TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("Ant/atlas/iceant.atlas"));
 
 		String[] animationlist = {
 				"running_left",
@@ -50,13 +50,9 @@ public class Ant extends Sprite {
 			animations.put(animation, new Animation<TextureRegion>(1f/30f, textureAtlas.findRegions(animation), Animation.PlayMode.LOOP));
 		}
 
-		Brain = new AntBrain("Matt", startNode);
+		brain = new AntBrain("Matt", startNode);
 
-		this.layer = layer;
-		this.tileWidth = layer.getTileWidth();
-		this.tileHeight = layer.getTileHeight();
-
-		desiredPosition = getScreenCoordinates(startNode.getPosition());
+		desiredPosition = coordsTranslator.getScreenCoordinates(startNode.getPosition());
 
 		setX(desiredPosition.x);
 		setY(desiredPosition.y);
@@ -64,7 +60,6 @@ public class Ant extends Sprite {
 		stateTime = 0;
 	}
 
-	@Override
 	public void draw(Batch batch) {
 		float delta = Gdx.graphics.getDeltaTime();
 		stateTime += delta;
@@ -89,7 +84,8 @@ public class Ant extends Sprite {
 			direction = "running_up";
 		}
 
-		batch.draw(animations.get(direction).getKeyFrame(stateTime, true), getX(), getY());
+		TextureRegion frame = animations.get(direction).getKeyFrame(stateTime, true);
+		batch.draw(frame, getX(), getY(), 0, 0, frame.getRegionWidth(), frame.getRegionHeight(), .35f, .35f, 0);
 	}
 
 	private void update(float delta) {
@@ -114,37 +110,23 @@ public class Ant extends Sprite {
 		setY(getY() + velocity.y * delta);
 
 		if (Math.abs(getX() - desiredPosition.x) < 10 && Math.abs(getY() - desiredPosition.y) < 10){
-			desiredPosition = getScreenCoordinates(Brain.determineNextPath().getNode().getPosition());
+			desiredPosition = coordsTranslator.getScreenCoordinates(brain.determineNextPath().getNode().getPosition());
 		}
 	}
 
-	public Vector2 getTileCoordinates(Vector2 pos) {
-		float x = Math.round(( ( tileWidth * pos.y - tileHeight * pos.x ) / ( tileWidth*tileHeight) ) * -1);
-		float y = Math.round(( tileWidth * pos.y + tileHeight * pos.x ) / ( tileWidth*tileHeight));
-		return new Vector2(x,y);
+	private void setX(float x) {
+		this.x = x;
 	}
 
-	public Vector2 getScreenCoordinates(Vector2 pos) {
-		float x = 0.5f * pos.x * tileWidth + 0.5f * pos.y * tileWidth;
-		float y = -0.5f * tileHeight * (pos.x-pos.y);
-		return new Vector2(x,y);
+	private void setY(float y) {
+		this.y = y;
 	}
 
-	public Vector2 getTileCoordinates(float sx, float sy) {
-		float x = Math.round(( ( tileWidth * sy - tileHeight * sx ) / ( tileWidth*tileHeight) ) * -1);
-		float y = Math.round(( tileWidth * sy + tileHeight * sx ) / ( tileWidth*tileHeight));
-
-		return new Vector2(x,y);
+	private float getX() {
+		return x;
 	}
 
-	public Vector2 getScreenCoordinates(float tx, float ty) {
-		float x = 0.5f * tx * tileWidth + 0.5f * ty * tileWidth;
-		float y = -0.5f * tileHeight * (tx-ty);
-
-		return new Vector2(x,y);
-	}
-
-	public TiledMapTileLayer.Cell getCell(TiledMapTileLayer layer, Vector2 coords) {
-		return layer.getCell((int) coords.x, (int) coords.y);
+	private float getY() {
+		return y;
 	}
 }
