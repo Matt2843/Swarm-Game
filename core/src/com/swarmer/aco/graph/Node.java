@@ -12,10 +12,10 @@ public class Node {
 	
 	public Node(Vector2 position) {
 		this.position = position;
-		connectedEdges = new Array<com.swarmer.aco.graph.Edge>();
+		connectedEdges = new Array<>();
 	}
 	
-	public Node(Vector2 position, Array<com.swarmer.aco.graph.Edge> connectedEdges) {
+	public Node(Vector2 position, Array<Edge> connectedEdges) {
 		this.position = position;
 		this.connectedEdges = connectedEdges;
 	}
