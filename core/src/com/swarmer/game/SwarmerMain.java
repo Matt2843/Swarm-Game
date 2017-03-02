@@ -1,8 +1,8 @@
 package com.swarmer.game;
 
 import com.badlogic.gdx.Game;
-import com.swarmer.screens.ScreenLib;
-import com.swarmer.screens.ScreenManager;
+import com.swarmer.gui.screens.ScreenLib;
+import com.swarmer.gui.screens.ScreenManager;
 
 public class SwarmerMain extends Game {
 	

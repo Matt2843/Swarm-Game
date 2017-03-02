@@ -1,8 +1,8 @@
-package com.swarmer.game;
+package com.swarmer.game.input;
 
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
-import com.swarmer.screens.GameScreen;
+import com.swarmer.gui.screens.GameScreen;
 
 public class SwarmerGestureDetector implements GestureDetector.GestureListener {
 

@@ -1,13 +1,11 @@
-package com.swarmer.game;
+package com.swarmer.game.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.swarmer.screens.GameScreen;
-import com.swarmer.screens.ScreenLib;
-import com.swarmer.screens.ScreenManager;
+import com.swarmer.gui.screens.GameScreen;
+import com.swarmer.gui.screens.ScreenLib;
+import com.swarmer.gui.screens.ScreenManager;
 
 public class SwamerInputProcessor implements InputProcessor {
 

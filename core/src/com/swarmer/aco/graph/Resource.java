@@ -1,4 +1,4 @@
-package com.swarmer.utility;
+package com.swarmer.aco.graph;
 
 public abstract class Resource {
 	

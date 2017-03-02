@@ -1,4 +1,4 @@
-package com.swarmer.utility;
+package com.swarmer.aco.graph;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -6,16 +6,16 @@ import com.badlogic.gdx.utils.Array;
 public class Node {
 	
 	private final Vector2 position;
-	private Array<Edge> connectedEdges;
+	private Array<com.swarmer.aco.graph.Edge> connectedEdges;
 	
 	private Resource resource = null;
 	
 	public Node(Vector2 position) {
 		this.position = position;
-		connectedEdges = new Array<Edge>();
+		connectedEdges = new Array<com.swarmer.aco.graph.Edge>();
 	}
 	
-	public Node(Vector2 position, Array<Edge> connectedEdges) {
+	public Node(Vector2 position, Array<com.swarmer.aco.graph.Edge> connectedEdges) {
 		this.position = position;
 		this.connectedEdges = connectedEdges;
 	}
@@ -24,7 +24,7 @@ public class Node {
 		return position;
 	}
 	
-	public void addEdge(Edge e) {
+	public void addEdge(com.swarmer.aco.graph.Edge e) {
 		connectedEdges.add(e);
 	}
 
@@ -36,11 +36,11 @@ public class Node {
 		this.resource = resource;
 	}
 
-	public Array<Edge> getConnectedEdges() {
+	public Array<com.swarmer.aco.graph.Edge> getConnectedEdges() {
 		return connectedEdges;
 	}
 
-	public void setConnectedEdges(Array<Edge> connectedEdges) {
+	public void setConnectedEdges(Array<com.swarmer.aco.graph.Edge> connectedEdges) {
 		this.connectedEdges = connectedEdges;
 	}
 	
