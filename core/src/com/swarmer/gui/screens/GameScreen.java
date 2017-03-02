@@ -69,17 +69,10 @@ public class GameScreen implements Screen {
 		IM.addProcessor(new GestureDetector(new SwarmerGestureDetector(this)));
 
 		centerCamera();
-		TiledMapTileLayer tilaaaa = (TiledMapTileLayer) map.getLayers().get(0);
-		TiledMapTileLayer lay1 = (TiledMapTileLayer) map.getLayers().get(1);
-		TiledMapTileLayer lay2 = (TiledMapTileLayer) map.getLayers().get(2);
-		TiledMapTileLayer lay3 = (TiledMapTileLayer) map.getLayers().get(3);
 
-		map.getLayers().remove(3);
-		map.getLayers().remove(2);
-		map.getLayers().remove(1);
-		map.getLayers().remove(0);
+		TiledMapTileLayer lay0 = map.getLayers().getByType(TiledMapTileLayer.class).get(0);
 
-		TiledMapTile tile = lay1.getCell(0, 0).getTile();
+		TiledMapTile tile = map.getLayers().getByType(TiledMapTileLayer.class).get(1).getCell(0, 0).getTile();
 		for(int i = 0; i < 200; i++) {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
 			int y = ThreadLocalRandom.current().nextInt(1, 99);
@@ -89,19 +82,12 @@ public class GameScreen implements Screen {
 			}
 
 			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
-
-				if(tilaaaa.getCell(x, y) != null) {
-					tilaaaa.getCell(x, y).setTile(tile);
-
-
+				if(lay0.getCell(x, y) != null) {
+					lay0.getCell(x, y).setTile(tile);
 				}
 				graph.nodes[x][y].setResource(new Food(100));
 			}
 		}
-		map.getLayers().add(tilaaaa);
-		map.getLayers().add(lay1);
-		map.getLayers().add(lay2);
-		map.getLayers().add(lay3);
 
 		renderer = new IsometricTiledMapRenderer(map);
 
