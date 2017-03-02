@@ -18,18 +18,19 @@ import com.swarmer.game.input.SwamerInputProcessor;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.game.input.SwarmerGestureDetector;
 import com.swarmer.aco.graph.Graph;
-import com.swarmer.gui.animations.AnimationLibrary;
-import javafx.animation.Animation;
+import com.swarmer.aco.graph.resources.Food;
+
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameScreen implements Screen {
 
 	private final SwarmerMain game;
 	private IsometricTiledMapRenderer renderer;
-	public OrthographicCamera camera;
-	private TiledMap map;
+	public static TiledMap map;
 
+	private OrthographicCamera camera;
 	private ExtendViewport viewport;
 
 	private float mapWidth, mapHeight;
@@ -50,7 +51,7 @@ public class GameScreen implements Screen {
 
 	public GameScreen(final SwarmerMain game) {
 		this.game = game;
-
+		camera = ScreenManager.camera;
 		map = new TmxMapLoader().load("alb.tmx");
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
 		mapWidth = layer.getWidth() * layer.getTileWidth();
@@ -58,7 +59,6 @@ public class GameScreen implements Screen {
 
 		graph = new Graph(map);
 		renderer = new IsometricTiledMapRenderer(map);
-		camera = new OrthographicCamera();
 		viewport = new ExtendViewport(VP_WIDTH, VP_HEIGHT, camera);
 
 		viewport.apply(false);
@@ -68,6 +68,19 @@ public class GameScreen implements Screen {
 		IM.addProcessor(new GestureDetector(new SwarmerGestureDetector(this)));
 
 		centerCamera();
+
+		for (int i = 0; i < 200; i++) {
+			int x = ThreadLocalRandom.current().nextInt(1, 99);
+			int y = ThreadLocalRandom.current().nextInt(1, 99);
+
+			if (x == 50 && y == 50) {
+				continue;
+			}
+
+			if (graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
+				graph.nodes[x][y].setResource(new Food(100));
+			}
+		}
 
 		for (int i = 0; i < 0; i++) {
 			int x = 50; // ThreadLocalRandom.current().nextInt(1, 99);

@@ -21,13 +21,10 @@ public class AnimationLibrary {
 
     // Prevent instantiation
     private AnimationLibrary() {
-        initializeAntAnimations();
-
-        System.out.println("Hello World");
 
     }
 
-    private void initializeAntAnimations() {
+    public void initializeAntAnimations() {
         antAnimation = new HashMap<>();
         String[] animationlist = {
                 "running_left",

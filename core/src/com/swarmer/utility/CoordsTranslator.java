@@ -1,19 +1,33 @@
 package com.swarmer.utility;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.swarmer.gui.screens.GameScreen;
+import com.swarmer.gui.screens.ScreenManager;
 
 public class CoordsTranslator {
 
-	private static float tileWidth;
-	private static float tileHeight;
+	private static CoordsTranslator instance;
 
-	public CoordsTranslator(TiledMapTileLayer layer) {
+	private final OrthographicCamera camera;
+	private final float tileWidth;
+	private final float tileHeight;
+
+	// Prevent instantiation
+	private CoordsTranslator(TiledMapTileLayer layer, OrthographicCamera camera) {
 		this.tileWidth = layer.getTileWidth();
 		this.tileHeight = layer.getTileHeight();
+		this.camera = camera;
 	}
 
-	public static Vector2 getTileCoordinates(Vector2 pos) {
+	public static CoordsTranslator getInstance() {
+		if(instance == null) instance = new CoordsTranslator((TiledMapTileLayer) GameScreen.map.getLayers().get(0), ScreenManager.camera);
+		return instance;
+	}
+
+	public Vector2 getTileCoordinates(Vector2 pos) {
 		float x = Math.round(( ( tileWidth * pos.y - tileHeight * pos.x ) / ( tileWidth*tileHeight) ) * -1);
 		float y = Math.round(( tileWidth * pos.y + tileHeight * pos.x ) / ( tileWidth*tileHeight));
 		return new Vector2(x,y);
@@ -25,7 +39,13 @@ public class CoordsTranslator {
 		return new Vector2(x,y);
 	}
 
-	public static Vector2 getTileCoordinates(float sx, float sy) {
+	public Vector2 getTileCoordinatesFromScreen(float screenX, float screenY) {
+		Vector3 worldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
+
+		return getTileCoordinates(worldCoords.x, worldCoords.y);
+	}
+
+	public Vector2 getTileCoordinates(float sx, float sy) {
 		float x = Math.round(( ( tileWidth * sy - tileHeight * sx ) / ( tileWidth*tileHeight) ) * -1);
 		float y = Math.round(( tileWidth * sy + tileHeight * sx ) / ( tileWidth*tileHeight));
 

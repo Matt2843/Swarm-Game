@@ -1,6 +1,7 @@
 package com.swarmer.gui.screens;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.IntMap;
 import com.swarmer.game.SwarmerMain;
 
@@ -12,6 +13,7 @@ public final class ScreenManager {
     // The only static instance to be used.
     private static ScreenManager instance;
 
+    public static OrthographicCamera camera;
     private SwarmerMain game;
 
     private Screen currentScreen;
@@ -25,6 +27,7 @@ public final class ScreenManager {
     public static ScreenManager getInstance() {
         if(instance == null) {
             instance = new ScreenManager();
+            camera = new OrthographicCamera();
         }
         return instance;
     }
@@ -67,4 +70,5 @@ public final class ScreenManager {
     public com.badlogic.gdx.Screen getScreen() {
         return currentScreen;
     }
+
 }

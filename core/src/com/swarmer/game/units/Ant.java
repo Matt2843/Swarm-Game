@@ -10,13 +10,12 @@ import com.swarmer.utility.CoordsTranslator;
 import com.swarmer.aco.graph.Node;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Ant {
 
 	private float stateTime;
 	private Vector2 velocity = new Vector2();
-
-	private CoordsTranslator coordsTranslator;
 
 	private float x;
 	private float y;
@@ -27,11 +26,9 @@ public class Ant {
 
 	public Ant(TiledMapTileLayer layer, Node startNode) {
 
-		coordsTranslator = new CoordsTranslator(layer);
-
 		brain = new AntBrain("Matt", startNode);
 
-		desiredPosition = coordsTranslator.getScreenCoordinates(startNode.getPosition());
+		desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(startNode.getPosition());
 
 		setX(desiredPosition.x);
 		setY(desiredPosition.y);
@@ -63,7 +60,7 @@ public class Ant {
 			direction = "running_up";
 		}
 
-		TextureRegion frame = AnimationLibrary.getInstance().antAnimation.get(direction).getKeyFrame(stateTime, true);
+		TextureRegion frame = AnimationLibrary.antAnimation.get(direction).getKeyFrame(stateTime, true);
 		batch.draw(frame, getX(), getY(), 0, 0, frame.getRegionWidth(), frame.getRegionHeight(), .35f, .35f, 0);
 	}
 
@@ -72,6 +69,10 @@ public class Ant {
 		int speed = 100;
 
 		velocity.x = 0; velocity.y = 0;
+
+		if (brain.getCurrentNode().getResource() != null) {
+			return;
+		}
 
 		if (Math.round(getX()) < Math.round(desiredPosition.x)) {
 			velocity.x = speed;
@@ -89,7 +90,7 @@ public class Ant {
 		setY(getY() + velocity.y * delta);
 
 		if (Math.abs(getX() - desiredPosition.x) < 10 && Math.abs(getY() - desiredPosition.y) < 10){
-			desiredPosition = coordsTranslator.getScreenCoordinates(brain.determineNextPath().getNode().getPosition());
+			desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(brain.determineNextPath().getNode().getPosition());
 		}
 	}
 

@@ -1,20 +1,24 @@
 package com.swarmer.game.input;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.swarmer.gui.screens.GameScreen;
+import com.swarmer.gui.screens.ScreenManager;
 
 public class SwarmerGestureDetector implements GestureDetector.GestureListener {
 
-	GameScreen Parent;
-	float zoom = 0;
+	private GameScreen parent;
+	private OrthographicCamera camera;
+	private float zoom = 0;
 
-	public SwarmerGestureDetector(GameScreen Parent){
-		this.Parent = Parent;
+	public SwarmerGestureDetector(GameScreen parent){
+		this.parent = parent;
+		camera = ScreenManager.camera;
 	}
 
 	@Override public boolean touchDown(float x, float y, int pointer, int button) {
-		zoom = Parent.camera.zoom;
+		zoom = camera.zoom;
 		return false;
 	}
 
@@ -39,16 +43,16 @@ public class SwarmerGestureDetector implements GestureDetector.GestureListener {
 	}
 
 	@Override public boolean zoom(float initialDistance, float distance) {
-		Parent.dragging = false;
+		parent.dragging = false;
 		float delta = 1 - (distance - initialDistance) / initialDistance;
 		if((delta < 1 && zoom * delta > 1) || (delta > 1 && zoom * delta < 3)) {
-			Parent.camera.zoom = zoom * delta;
+			camera.zoom = zoom * delta;
 		}
 		return false;
 	}
 
 	@Override public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-		Parent.dragging = false;
+		parent.dragging = false;
 		return false;
 	}
 
