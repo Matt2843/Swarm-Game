@@ -19,9 +19,11 @@ public class Temp {
 	}
 
 	public static Boolean spawn(Vector2 vec) {
-		if(gameScreen().graph.nodes[(int) vec.x][(int) vec.y] != null && gameScreen().graph.nodes[(int) vec.x][(int) vec.y].getConnectedEdges().size > 0) {
-			gameScreen().getAnts().add(new Ant((TiledMapTileLayer) gameScreen().getMap().getLayers().get(1), gameScreen().graph.nodes[(int) vec.x][(int) vec.y]));
-			return true;
+		if(between((int) vec.x, 0, gameScreen().graph.nodes.length) && between((int) vec.y, 0, gameScreen().graph.nodes[(int) vec.x].length)) {
+			if(gameScreen().graph.nodes[(int) vec.x][(int) vec.y] != null && gameScreen().graph.nodes[(int) vec.x][(int) vec.y].getConnectedEdges().size > 0) {
+				gameScreen().getAnts().add(new Ant((TiledMapTileLayer) gameScreen().getMap().getLayers().get(1), gameScreen().graph.nodes[(int) vec.x][(int) vec.y]));
+				return true;
+			}
 		}
 		return false;
 	}
