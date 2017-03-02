@@ -9,13 +9,15 @@ import com.swarmer.utility.CoordsTranslator;
 import com.swarmer.utility.Node;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Ant {
 
 	private float stateTime;
 	private Vector2 velocity = new Vector2();
 
-	private HashMap<String, Animation<TextureRegion>> animations;
+	private HashMap<String, Animation<TextureRegion>> animations = new HashMap<>();
+	private HashMap<String, Float> animationlist = new HashMap<>();
 
 	private CoordsTranslator coordsTranslator;
 
@@ -30,24 +32,20 @@ public class Ant {
 
 		coordsTranslator = new CoordsTranslator(layer);
 
-		animations = new HashMap<>();
-
 		TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("Ant/atlas/iceant.atlas"));
 
-		String[] animationlist = {
-				"running_left",
-				"running_up_left",
-				"running_up",
-				"running_up_right",
-				"running_right",
-				"running_down_right",
-				"running_down",
-				"running_down_left",
-				"stance_down",
-		};
+		animationlist.put("running_left",		1f/20f);
+		animationlist.put("running_up_left",	1f/20f);
+		animationlist.put("running_up",			1f/20f);
+		animationlist.put("running_up_right",	1f/20f);
+		animationlist.put("running_right",		1f/20f);
+		animationlist.put("running_down_right",	1f/20f);
+		animationlist.put("running_down",		1f/20f);
+		animationlist.put("running_down_left",	1f/20f);
+		animationlist.put("stance_down",		1f/8f);
 
-		for (String animation : animationlist) {
-			animations.put(animation, new Animation<TextureRegion>(1f/30f, textureAtlas.findRegions(animation), Animation.PlayMode.LOOP));
+		for (Map.Entry<String, Float> animation : animationlist.entrySet()) {
+			animations.put(animation.getKey(), new Animation<TextureRegion>(animation.getValue(), textureAtlas.findRegions(animation.getKey()), Animation.PlayMode.LOOP));
 		}
 
 		brain = new AntBrain("Matt", startNode);
@@ -93,6 +91,10 @@ public class Ant {
 		int speed = 100;
 
 		velocity.x = 0; velocity.y = 0;
+
+		if (brain.getCurrentNode().getResource() != null) {
+			return;
+		}
 
 		if (Math.round(getX()) < Math.round(desiredPosition.x)) {
 			velocity.x = speed;

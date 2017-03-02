@@ -20,8 +20,10 @@ import com.swarmer.game.SwamerInputProcessor;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.game.SwarmerGestureDetector;
 import com.swarmer.utility.Graph;
+import com.swarmer.utility.Resources.Food;
 
 import java.util.ArrayList;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameScreen implements Screen {
 
@@ -68,7 +70,20 @@ public class GameScreen implements Screen {
 
 		centerCamera();
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 200; i++) {
+			int x = ThreadLocalRandom.current().nextInt(1, 99);
+			int y = ThreadLocalRandom.current().nextInt(1, 99);
+
+			if (x == 50 && y == 50) {
+				continue;
+			}
+
+			if (graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
+				graph.nodes[x][y].setResource(new Food(100));
+			}
+		}
+
+		for (int i = 0; i < 20; i++) {
 			int x = 50; // ThreadLocalRandom.current().nextInt(1, 99);
 			int y = 50; // ThreadLocalRandom.current().nextInt(1, 99);
 

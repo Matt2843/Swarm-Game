@@ -9,7 +9,13 @@ public abstract class Resource {
 		this.quantity = quantity;
 	}
 	
-	public abstract void setType();
+	public void setType(String type) {
+		this.type = type;
+	};
+
+	public String getType() {
+		return this.type;
+	}
 
 	public int getQuantity() {
 		return quantity;
