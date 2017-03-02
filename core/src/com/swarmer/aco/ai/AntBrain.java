@@ -17,11 +17,13 @@ public class AntBrain {
 	
 	private Edge previousEdge;
 	private Node currentNode;
+	private Node previousNode;
 	private final String PLAYER_ID;
 	
 	public AntBrain(String PLAYER_ID, Node startingNode) {
 		this.PLAYER_ID = PLAYER_ID;
 		currentNode = startingNode;
+		previousNode = currentNode;
 	}
 
 	public Edge determineNextPath() {
@@ -63,7 +65,8 @@ public class AntBrain {
 		Edge nextEdge = currentNode.getConnectedEdges().get(decision);
 
 		nextEdge.getPheromones(PLAYER_ID).addPheromone();
-		
+
+		previousNode = currentNode;
 		currentNode = nextEdge.getNode();
 		previousEdge = nextEdge.reverse;
 		return nextEdge;
@@ -71,6 +74,10 @@ public class AntBrain {
 
 	public Edge getPreviousEdge() {
 		return previousEdge;
+	}
+
+	public Node getPreviousNode() {
+		return previousNode;
 	}
 
 	public void setPreviousEdge(Edge previousEdge) {

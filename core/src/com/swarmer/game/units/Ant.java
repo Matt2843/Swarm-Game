@@ -70,7 +70,7 @@ public class Ant {
 
 		velocity.x = 0; velocity.y = 0;
 
-		if (brain.getCurrentNode().getResource() != null) {
+		if (brain.getPreviousNode().getResource() != null) {
 			return;
 		}
 
