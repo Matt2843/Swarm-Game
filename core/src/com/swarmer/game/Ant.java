@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
+
 import com.swarmer.ai.AntBrain;
 import com.swarmer.utility.CoordsTranslator;
 import com.swarmer.utility.Node;
@@ -17,7 +18,6 @@ public class Ant {
 	private Vector2 velocity = new Vector2();
 
 	private HashMap<String, Animation<TextureRegion>> animations = new HashMap<>();
-	private HashMap<String, Float> animationlist = new HashMap<>();
 
 	private CoordsTranslator coordsTranslator;
 
@@ -34,6 +34,7 @@ public class Ant {
 
 		TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("Ant/atlas/iceant.atlas"));
 
+		HashMap<String, Float> animationlist = new HashMap<>();
 		animationlist.put("running_left",		1f/20f);
 		animationlist.put("running_up_left",	1f/20f);
 		animationlist.put("running_up",			1f/20f);
