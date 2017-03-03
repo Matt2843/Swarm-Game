@@ -27,6 +27,8 @@ public class SwarmerGestureDetector implements GestureDetector.GestureListener {
 	}
 
 	@Override public boolean longPress(float x, float y) {
+		Vector2 tileCoords = CoordsTranslator.getInstance().getTileCoordinatesFromScreen((int) x, (int) y);
+		Temp.spawn((int) tileCoords.x, (int) tileCoords.y);
 		return false;
 	}
 
