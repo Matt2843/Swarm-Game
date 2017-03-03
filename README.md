@@ -1,3 +1,8 @@
-# Swarmer 
+# Swarmer - Swarm intelligence multiplayer game.
+
+A multiplayer experience where people are in charge of a colony, and providing for it. Players joins an event lasting a set amount of time, where they compete to conquer as much territory as possible. Players start with an initial amount of resources and compete to explore randomly generated resources in the joined event. The explorer not playable characters(NPCs) use genetic algorithms for generating tracks. It is needed to find the optimal way to determine the movement of the explorers until a resource is found i.e. by looking into techniques/algorithms such as swarm intelligence or ant colony optimization. When a resource is found, the explorers returns to the colony, and a track will be available for the player to use for collectors. Players slowly grow their colony and are awarded depending on the amount of resources gathered. It is up to the player to make tactical decisions with the resources he/she has. The map will have to be randomly generated with some kind of obstacles to make it harder for the NPCs to find a given resource. Every player will also be randomly placed on the map and has very limited knowledge of his or her surroundings therefore having to explore the world using said explorers.
+
+The game will be built as a mobile application, using web servers to handle the critical logic and by that preventing cheating. We plan to keep track of every player and the players can check rankings and profile information on a website. The application database will be built on the shared memory concept of tuple spaces.
+
 
 ##Ants
