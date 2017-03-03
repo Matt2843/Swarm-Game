@@ -34,16 +34,13 @@ public class SwamerInputProcessor implements InputProcessor {
 	@Override public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		// ignore if its not left mouse button or first touch pointer
 		if(button == Input.Buttons.RIGHT) {
-			//Temp.spawn((int)(screenX + parent.camera.position.x), (int)(screenY + parent.camera.viewportHeight - parent.camera.position.y));
 			Vector2 tileCoords = CoordsTranslator.getInstance().getTileCoordinatesFromScreen(screenX, screenY);
 			Temp.spawn((int) tileCoords.x, (int) tileCoords.y);
+		} else if(button == Input.Buttons.LEFT || pointer == 0) {
+			PreX = screenX;
+			PreY = screenY;
+			parent.dragging = true;
 		}
-		if(button != Input.Buttons.LEFT || pointer > 0) {
-			return false;
-		}
-		PreX = screenX;
-		PreY = screenY;
-		parent.dragging = true;
 		return false;
 	}
 
