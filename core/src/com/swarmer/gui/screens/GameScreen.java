@@ -84,7 +84,7 @@ public class GameScreen implements Screen {
 
 		renderer = new IsometricTiledMapRenderer(map);
 
-		for(int i = 0; i < 1000; i++) {
+		for(int i = 0; i < 0; i++) {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
 			int y = ThreadLocalRandom.current().nextInt(1, 99);
 
