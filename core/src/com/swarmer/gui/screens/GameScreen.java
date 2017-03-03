@@ -75,10 +75,6 @@ public class GameScreen implements Screen {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
 			int y = ThreadLocalRandom.current().nextInt(1, 99);
 
-			if(x == 50 && y == 50) {
-				continue;
-			}
-
 			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
 				lay0.setCell(x, y, new TiledMapTileLayer.Cell());
 				lay0.getCell(x,y).setTile(tile);
