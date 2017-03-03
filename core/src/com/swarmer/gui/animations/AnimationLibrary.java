@@ -6,10 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Created by Matt on 02-03-2017.
- */
 public class AnimationLibrary {
 
 	private static AnimationLibrary instance;
@@ -26,10 +24,20 @@ public class AnimationLibrary {
 
 	public void initializeAntAnimations() {
 		antAnimation = new HashMap<>();
-		String[] animationlist = {"running_left", "running_up_left", "running_up", "running_up_right", "running_right", "running_down_right", "running_down", "running_down_left", "stance_down",};
 
-		for(String animation : animationlist) {
-			antAnimation.put(animation, new Animation<TextureRegion>(1f / 30f, textureAtlas.findRegions(animation), Animation.PlayMode.LOOP));
+		HashMap<String, Float> animationlist = new HashMap<>();
+		animationlist.put("running_left",		1f/20f);
+		animationlist.put("running_up_left",	1f/20f);
+		animationlist.put("running_up",			1f/20f);
+		animationlist.put("running_up_right",	1f/20f);
+		animationlist.put("running_right",		1f/20f);
+		animationlist.put("running_down_right",	1f/20f);
+		animationlist.put("running_down",		1f/20f);
+		animationlist.put("running_down_left",	1f/20f);
+		animationlist.put("stance_down",		1f/4f);
+
+		for (Map.Entry<String, Float> animation : animationlist.entrySet()) {
+			antAnimation.put(animation.getKey(), new Animation<TextureRegion>(animation.getValue(), textureAtlas.findRegions(animation.getKey()), Animation.PlayMode.LOOP));
 		}
 	}
 

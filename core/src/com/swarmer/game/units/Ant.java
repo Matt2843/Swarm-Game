@@ -9,9 +9,6 @@ import com.swarmer.gui.animations.AnimationLibrary;
 import com.swarmer.utility.CoordsTranslator;
 import com.swarmer.aco.graph.Node;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Ant {
 
 	private float stateTime;

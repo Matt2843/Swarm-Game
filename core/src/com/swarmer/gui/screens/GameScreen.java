@@ -68,7 +68,7 @@ public class GameScreen implements Screen {
 
 		centerCamera();
 
-		TiledMapTileLayer lay0 = map.getLayers().getByType(TiledMapTileLayer.class).get(0);
+		TiledMapTileLayer lay0 = map.getLayers().getByType(TiledMapTileLayer.class).get(2);
 
 		TiledMapTile tile = map.getLayers().getByType(TiledMapTileLayer.class).get(1).getCell(0, 0).getTile();
 		for(int i = 0; i < 200; i++) {
@@ -80,18 +80,17 @@ public class GameScreen implements Screen {
 			}
 
 			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
-				if(lay0.getCell(x, y) != null) {
-					lay0.getCell(x, y).setTile(tile);
-				}
+				lay0.setCell(x, y, new TiledMapTileLayer.Cell());
+				lay0.getCell(x,y).setTile(tile);
 				graph.nodes[x][y].setResource(new Food(100));
 			}
 		}
 
 		renderer = new IsometricTiledMapRenderer(map);
 
-		for(int i = 0; i < 0; i++) {
-			int x = 50; // ThreadLocalRandom.current().nextInt(1, 99);
-			int y = 50; // ThreadLocalRandom.current().nextInt(1, 99);
+		for(int i = 0; i < 1000; i++) {
+			int x = ThreadLocalRandom.current().nextInt(1, 99);
+			int y = ThreadLocalRandom.current().nextInt(1, 99);
 
 			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
 				ants.add(new Ant((TiledMapTileLayer) map.getLayers().get(1), graph.nodes[x][y]));
