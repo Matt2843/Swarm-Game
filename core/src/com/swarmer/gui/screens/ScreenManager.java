@@ -5,9 +5,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.IntMap;
 import com.swarmer.game.SwarmerMain;
 
-/**
- * Created by Matt on 02/28/2017.
- */
 public final class ScreenManager {
 
 	// The only static instance to be used.

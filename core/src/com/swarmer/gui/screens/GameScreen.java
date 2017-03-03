@@ -21,7 +21,6 @@ import com.swarmer.game.input.SwarmerGestureDetector;
 import com.swarmer.aco.graph.Graph;
 import com.swarmer.aco.graph.resources.Food;
 
-
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -42,6 +41,8 @@ public class GameScreen implements Screen {
 	private InputMultiplexer IM;
 	private Vector2 vec = new Vector2();
 	private ArrayList<Ant> ants = new ArrayList<>();
+	private int[] backgroundLayers;
+	private int[] foregroundLayers;
 
 	public GameScreen(final SwarmerMain game) {
 		this.game = game;
@@ -50,6 +51,10 @@ public class GameScreen implements Screen {
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
 		mapWidth = layer.getWidth() * layer.getTileWidth();
 		mapHeight = layer.getHeight() * layer.getTileHeight();
+
+		backgroundLayers = new int[]{0, 1, 2};
+		foregroundLayers = new int[]{3};
+
 
 		graph = new Graph(map);
 
@@ -105,13 +110,15 @@ public class GameScreen implements Screen {
 
 		camera.update();
 		renderer.setView(camera);
-		renderer.render();
+		renderer.render(backgroundLayers);
 
 		renderer.getBatch().begin();
 		for(Ant ant : ants) {
 			ant.draw(renderer.getBatch());
 		}
 		renderer.getBatch().end();
+
+		renderer.render(foregroundLayers);
 	}
 
 	@Override public void resize(int width, int height) {
