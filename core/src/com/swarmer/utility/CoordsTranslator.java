@@ -30,20 +30,15 @@ public class CoordsTranslator {
 	}
 
 	public Vector2 getTileCoordinates(Vector2 pos) {
-		float x = Math.round(-(tileWidth * pos.y - tileHeight * pos.x) / (tileWidth * tileHeight));
-		float y = Math.round((tileWidth * pos.y + tileHeight * pos.x) / (tileWidth * tileHeight) - 1);
-		return new Vector2(x, y);
+		return getTileCoordinates(pos.x, pos.y);
 	}
 
 	public Vector2 getScreenCoordinates(Vector2 pos) {
-		float x = 0.5f * pos.x * tileWidth + 0.5f * pos.y * tileWidth;
-		float y = -0.5f * tileHeight * (pos.x - pos.y);
-		return new Vector2(x, y);
+		return getScreenCoordinates(pos.x, pos.y);
 	}
 
 	public Vector2 getTileCoordinatesFromScreen(float screenX, float screenY) {
 		Vector3 worldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
-
 		return getTileCoordinates(worldCoords.x, worldCoords.y);
 	}
 
