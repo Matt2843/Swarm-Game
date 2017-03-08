@@ -3,6 +3,10 @@ package com.swarmer.shared;
 import java.io.Serializable;
 
 public class Message implements Serializable {
+
+	/*
+	TODO: Transform this class to hold the data to be broadcast between players.
+	 */
 	
 	private static final long serialVersionUID = -3726114245181941134L;
 	
