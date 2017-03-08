@@ -1,5 +1,6 @@
 package com.swarmer.gui.widgets;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -16,8 +17,7 @@ public class BubbleWidget extends ImageButton {
 
     private void configureSkin() {
         skin = new Skin();
-        
+        bubbleAtlas = new TextureAtlas(Gdx.files.internal("roundButton.atlas"));
         this.setSkin(skin);
     }
-
 }
