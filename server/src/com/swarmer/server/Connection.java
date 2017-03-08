@@ -14,13 +14,7 @@ public class Connection extends Thread {
 	
 	private Socket client = null;
 	private String clientIP = "";
-	
-	public Connection(Socket connection) throws IOException {
-		client = connection;
-		clientIP = client.getRemoteSocketAddress().toString();
-		setupStreams();
-	}
-	
+
 	@Override
 	public void run() {
 		com.swarmer.shared.Message message = null;
@@ -32,7 +26,13 @@ public class Connection extends Thread {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
+
+	}
+
+	public Connection(Socket connection) throws IOException {
+		client = connection;
+		clientIP = client.getRemoteSocketAddress().toString();
+		setupStreams();
 	}
 
 	public void sendMessage(Message m) throws IOException {
