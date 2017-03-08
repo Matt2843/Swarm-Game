@@ -1,0 +1,732 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="isometric" renderorder="right-down" width="100" height="100" tilewidth="128" tileheight="64" nextobjectid="1">
+ <tileset firstgid="1" name="handycraft-forrest" tilewidth="128" tileheight="128" tilecount="133" columns="0">
+  <tile id="0">
+   <image width="101" height="128" source="38518/arrowTreeBlue_128px.png"/>
+  </tile>
+  <tile id="1">
+   <image width="128" height="128" source="38518/arrowTreeBrown_128px.png"/>
+  </tile>
+  <tile id="2">
+   <image width="105" height="128" source="38518/arrowTreeLightRed_128px.png"/>
+  </tile>
+  <tile id="3">
+   <image width="128" height="101" source="38518/baseTreeBrown_128px.png"/>
+  </tile>
+  <tile id="4">
+   <image width="128" height="93" source="38518/baseTreeOrange_128px.png"/>
+  </tile>
+  <tile id="5">
+   <image width="128" height="110" source="38518/baseTreeYellow_128px.png"/>
+  </tile>
+  <tile id="6">
+   <image width="128" height="95" source="38518/bushGrass1_128px.png"/>
+  </tile>
+  <tile id="7">
+   <image width="128" height="125" source="38518/bushGrass2_128px.png"/>
+  </tile>
+  <tile id="8">
+   <image width="126" height="128" source="38518/bushGrass3_128px.png"/>
+  </tile>
+  <tile id="9">
+   <image width="128" height="93" source="38518/bushGrass4_128px.png"/>
+  </tile>
+  <tile id="10">
+   <image width="128" height="71" source="38518/bushGrass5_128px.png"/>
+  </tile>
+  <tile id="11">
+   <image width="128" height="126" source="38518/bushGrass6_128px.png"/>
+  </tile>
+  <tile id="12">
+   <image width="99" height="128" source="38518/cartelTreeBlue_128px.png"/>
+  </tile>
+  <tile id="13">
+   <image width="101" height="128" source="38518/cartelTreeBrown_128px.png"/>
+  </tile>
+  <tile id="14">
+   <image width="100" height="128" source="38518/cartelTreeGreen_128px.png"/>
+  </tile>
+  <tile id="15">
+   <image width="90" height="128" source="38518/deathTreeBrown_128px.png"/>
+  </tile>
+  <tile id="16">
+   <image width="81" height="128" source="38518/deathTreeRed_128px.png"/>
+  </tile>
+  <tile id="17">
+   <image width="83" height="128" source="38518/deathTreeYellow_128px.png"/>
+  </tile>
+  <tile id="18">
+   <image width="128" height="64" source="38518/grassTiles1_128px.png"/>
+  </tile>
+  <tile id="19">
+   <image width="128" height="64" source="38518/grassTiles2_128px.png"/>
+  </tile>
+  <tile id="20">
+   <image width="128" height="64" source="38518/grassTiles3_128px.png"/>
+  </tile>
+  <tile id="21">
+   <image width="128" height="64" source="38518/grassTiles4_128px.png"/>
+  </tile>
+  <tile id="22">
+   <image width="128" height="64" source="38518/grassTiles5_128px.png"/>
+  </tile>
+  <tile id="23">
+   <image width="128" height="64" source="38518/grassTiles6_128px.png"/>
+  </tile>
+  <tile id="24">
+   <image width="128" height="64" source="38518/grassTiles7_128px.png"/>
+  </tile>
+  <tile id="25">
+   <image width="128" height="64" source="38518/grassTiles8_128px.png"/>
+  </tile>
+  <tile id="26">
+   <image width="128" height="64" source="38518/grassTiles9_128px.png"/>
+  </tile>
+  <tile id="27">
+   <image width="128" height="64" source="38518/grassTiles10_128px.png"/>
+  </tile>
+  <tile id="28">
+   <image width="128" height="64" source="38518/grassTiles11_128px.png"/>
+  </tile>
+  <tile id="29">
+   <image width="128" height="64" source="38518/grassTiles12_128px.png"/>
+  </tile>
+  <tile id="30">
+   <image width="128" height="126" source="38518/groundDirtTile1_128px.png"/>
+  </tile>
+  <tile id="31">
+   <image width="128" height="128" source="38518/groundDirtTile2_128px.png"/>
+  </tile>
+  <tile id="32">
+   <image width="128" height="128" source="38518/groundDirtTile3_128px.png"/>
+  </tile>
+  <tile id="33">
+   <image width="128" height="128" source="38518/groundDirtTile4_128px.png"/>
+  </tile>
+  <tile id="34">
+   <image width="127" height="128" source="38518/groundDirtTile5_128px.png"/>
+  </tile>
+  <tile id="35">
+   <image width="128" height="127" source="38518/groundDirtTile6_128px.png"/>
+  </tile>
+  <tile id="36">
+   <image width="118" height="128" source="38518/groundDirtTile7_128px.png"/>
+  </tile>
+  <tile id="37">
+   <image width="114" height="128" source="38518/groundDirtTile8_128px.png"/>
+  </tile>
+  <tile id="38">
+   <image width="128" height="126" source="38518/groundDirtTile9_128px.png"/>
+  </tile>
+  <tile id="39">
+   <image width="128" height="128" source="38518/groundDirtTile10_128px.png"/>
+  </tile>
+  <tile id="40">
+   <image width="128" height="127" source="38518/groundDirtTile11_128px.png"/>
+  </tile>
+  <tile id="41">
+   <image width="111" height="128" source="38518/legendTree1_128px.png"/>
+  </tile>
+  <tile id="42">
+   <image width="128" height="124" source="38518/palmTreeBlue_128px.png"/>
+  </tile>
+  <tile id="43">
+   <image width="128" height="118" source="38518/palmTreeGreen_128px.png"/>
+  </tile>
+  <tile id="44">
+   <image width="120" height="128" source="38518/palmTreeLightGreen_128px.png"/>
+  </tile>
+  <tile id="45">
+   <image width="128" height="122" source="38518/palmTreeYellow_128px.png"/>
+  </tile>
+  <tile id="46">
+   <image width="128" height="81" source="38518/rootPlant_128px.png"/>
+  </tile>
+  <tile id="47">
+   <image width="128" height="128" source="38518/rootPlantBrown_128px.png"/>
+  </tile>
+  <tile id="48">
+   <image width="128" height="128" source="38518/rootPlantWhite_128px.png"/>
+  </tile>
+  <tile id="49">
+   <image width="93" height="128" source="38518/roundTreeGreen_128px.png"/>
+  </tile>
+  <tile id="50">
+   <image width="93" height="128" source="38518/roundTreeOrange_128px.png"/>
+  </tile>
+  <tile id="51">
+   <image width="90" height="128" source="38518/roundTreePurple_128px.png"/>
+  </tile>
+  <tile id="52">
+   <image width="94" height="128" source="38518/roundTreeRed_128px.png"/>
+  </tile>
+  <tile id="53">
+   <image width="95" height="128" source="38518/roundTreeYellow_128px.png"/>
+  </tile>
+  <tile id="54">
+   <image width="63" height="128" source="38518/skyRockTilesBrown1_128px.png"/>
+  </tile>
+  <tile id="55">
+   <image width="117" height="128" source="38518/skyRockTilesBrown2_128px.png"/>
+  </tile>
+  <tile id="56">
+   <image width="100" height="128" source="38518/skyRockTilesBrown3_128px.png"/>
+  </tile>
+  <tile id="57">
+   <image width="126" height="128" source="38518/skyRockTilesBrown4_128px.png"/>
+  </tile>
+  <tile id="58">
+   <image width="115" height="128" source="38518/skyRockTilesBrown5_128px.png"/>
+  </tile>
+  <tile id="59">
+   <image width="63" height="128" source="38518/skyRockTilesGrey1_128px.png"/>
+  </tile>
+  <tile id="60">
+   <image width="117" height="128" source="38518/skyRockTilesGrey2_128px.png"/>
+  </tile>
+  <tile id="61">
+   <image width="100" height="128" source="38518/skyRockTilesGrey3_128px.png"/>
+  </tile>
+  <tile id="62">
+   <image width="126" height="128" source="38518/skyRockTilesGrey4_128px.png"/>
+  </tile>
+  <tile id="63">
+   <image width="114" height="128" source="38518/skyRockTilesGrey5_128px.png"/>
+  </tile>
+  <tile id="64">
+   <image width="63" height="128" source="38518/skyRockTilesLight1_128px.png"/>
+  </tile>
+  <tile id="65">
+   <image width="117" height="128" source="38518/skyRockTilesLight2_128px.png"/>
+  </tile>
+  <tile id="66">
+   <image width="100" height="128" source="38518/skyRockTilesLight3_128px.png"/>
+  </tile>
+  <tile id="67">
+   <image width="126" height="128" source="38518/skyRockTilesLight4_128px.png"/>
+  </tile>
+  <tile id="68">
+   <image width="115" height="128" source="38518/skyRockTilesLight5_128px.png"/>
+  </tile>
+  <tile id="69">
+   <image width="63" height="128" source="38518/skyRockTilesOrange1_128px.png"/>
+  </tile>
+  <tile id="70">
+   <image width="117" height="128" source="38518/skyRockTilesOrange2_128px.png"/>
+  </tile>
+  <tile id="71">
+   <image width="100" height="128" source="38518/skyRockTilesOrange3_128px.png"/>
+  </tile>
+  <tile id="72">
+   <image width="126" height="128" source="38518/skyRockTilesOrange4_128px.png"/>
+  </tile>
+  <tile id="73">
+   <image width="114" height="128" source="38518/skyRockTilesOrange5_128px.png"/>
+  </tile>
+  <tile id="74">
+   <image width="128" height="67" source="38518/smallGrass_128px.png"/>
+  </tile>
+  <tile id="75">
+   <image width="118" height="128" source="38518/smallPalmGreen_128px.png"/>
+  </tile>
+  <tile id="76">
+   <image width="110" height="128" source="38518/smallPalmLightGreen_128px.png"/>
+  </tile>
+  <tile id="77">
+   <image width="122" height="128" source="38518/smallPalmRed_128px.png"/>
+  </tile>
+  <tile id="78">
+   <image width="121" height="128" source="38518/smallPalmYellow_128px.png"/>
+  </tile>
+  <tile id="79">
+   <image width="128" height="97" source="38518/smallPlantGreen_128px.png"/>
+  </tile>
+  <tile id="80">
+   <image width="116" height="128" source="38518/smallPlantLarge_128px.png"/>
+  </tile>
+  <tile id="81">
+   <image width="128" height="108" source="38518/smallPlantLightGreen_128px.png"/>
+  </tile>
+  <tile id="82">
+   <image width="128" height="101" source="38518/smallPlantPurple_128px.png"/>
+  </tile>
+  <tile id="83">
+   <image width="128" height="104" source="38518/smallPlantRed_128px.png"/>
+  </tile>
+  <tile id="84">
+   <image width="116" height="128" source="38518/smallPlantRockBlue_128px.png"/>
+  </tile>
+  <tile id="85">
+   <image width="128" height="114" source="38518/smallPlantRockGrey_128px.png"/>
+  </tile>
+  <tile id="86">
+   <image width="128" height="126" source="38518/smallPlantRockLight_128px.png"/>
+  </tile>
+  <tile id="87">
+   <image width="128" height="113" source="38518/smallPlantRockRed_128px.png"/>
+  </tile>
+  <tile id="88">
+   <image width="128" height="117" source="38518/smallPlantRockYellow_128px.png"/>
+  </tile>
+  <tile id="89">
+   <image width="128" height="94" source="38518/smallRockBlue_128px.png"/>
+  </tile>
+  <tile id="90">
+   <image width="128" height="111" source="38518/smallRockBrown_128px.png"/>
+  </tile>
+  <tile id="91">
+   <image width="128" height="98" source="38518/smallRockGrey_128px.png"/>
+  </tile>
+  <tile id="92">
+   <image width="128" height="96" source="38518/smallRockYellow_128px.png"/>
+  </tile>
+  <tile id="93">
+   <image width="128" height="114" source="38518/smallRoundTreeBlue_128px.png"/>
+  </tile>
+  <tile id="94">
+   <image width="122" height="128" source="38518/smallRoundTreeGreen_128px.png"/>
+  </tile>
+  <tile id="95">
+   <image width="115" height="128" source="38518/smallRoundTreeLight_128px.png"/>
+  </tile>
+  <tile id="96">
+   <image width="109" height="128" source="38518/smallRoundTreeLightGreen_128px.png"/>
+  </tile>
+  <tile id="97">
+   <image width="99" height="128" source="38518/smallRoundTreeRed_128px.png"/>
+  </tile>
+  <tile id="98">
+   <image width="128" height="127" source="38518/squareGrass1_128px.png"/>
+  </tile>
+  <tile id="99">
+   <image width="128" height="127" source="38518/squareGrass2_128px.png"/>
+  </tile>
+  <tile id="100">
+   <image width="128" height="127" source="38518/squareGrass3_128px.png"/>
+  </tile>
+  <tile id="101">
+   <image width="128" height="127" source="38518/squareGrass4_128px.png"/>
+  </tile>
+  <tile id="102">
+   <image width="128" height="127" source="38518/squareGrass5_128px.png"/>
+  </tile>
+  <tile id="103">
+   <image width="128" height="127" source="38518/squareGrass6_128px.png"/>
+  </tile>
+  <tile id="104">
+   <image width="128" height="127" source="38518/squareGrass7_128px.png"/>
+  </tile>
+  <tile id="105">
+   <image width="128" height="127" source="38518/squareGrass8_128px.png"/>
+  </tile>
+  <tile id="106">
+   <image width="128" height="127" source="38518/squareGrass9_128px.png"/>
+  </tile>
+  <tile id="107">
+   <image width="128" height="127" source="38518/squareGrassPartial1_128px.png"/>
+  </tile>
+  <tile id="108">
+   <image width="128" height="127" source="38518/squareGrassPartial2_128px.png"/>
+  </tile>
+  <tile id="109">
+   <image width="128" height="127" source="38518/squareGrassPartial3_128px.png"/>
+  </tile>
+  <tile id="110">
+   <image width="128" height="127" source="38518/squareGrassPartial4_128px.png"/>
+  </tile>
+  <tile id="111">
+   <image width="128" height="127" source="38518/squareGrassPartial5_128px.png"/>
+  </tile>
+  <tile id="112">
+   <image width="128" height="127" source="38518/squareGrassPartial6_128px.png"/>
+  </tile>
+  <tile id="113">
+   <image width="128" height="127" source="38518/squareGrassPartial7_128px.png"/>
+  </tile>
+  <tile id="114">
+   <image width="128" height="127" source="38518/squareGrassPartial8_128px.png"/>
+  </tile>
+  <tile id="115">
+   <image width="128" height="127" source="38518/squareGrassPartial9_128px.png"/>
+  </tile>
+  <tile id="116">
+   <image width="128" height="126" source="38518/squareRockTile1_128px.png"/>
+  </tile>
+  <tile id="117">
+   <image width="128" height="126" source="38518/squareRockTile2_128px.png"/>
+  </tile>
+  <tile id="118">
+   <image width="128" height="126" source="38518/squareRockTile3_128px.png"/>
+  </tile>
+  <tile id="119">
+   <image width="128" height="126" source="38518/squareRockTile4_128px.png"/>
+  </tile>
+  <tile id="120">
+   <image width="128" height="126" source="38518/squareRockTile5_128px.png"/>
+  </tile>
+  <tile id="121">
+   <image width="128" height="126" source="38518/squareRockTile6_128px.png"/>
+  </tile>
+  <tile id="122">
+   <image width="128" height="126" source="38518/squareRockTile7_128px.png"/>
+  </tile>
+  <tile id="123">
+   <image width="128" height="126" source="38518/squareRockTile8_128px.png"/>
+  </tile>
+  <tile id="124">
+   <image width="128" height="126" source="38518/squareRockTile9_128px.png"/>
+  </tile>
+  <tile id="125">
+   <image width="128" height="102" source="38518/treeCut_128px.png"/>
+  </tile>
+  <tile id="126">
+   <image width="127" height="128" source="38518/treeRoot_128px.png"/>
+  </tile>
+  <tile id="127">
+   <image width="128" height="123" source="38518/treeRootDarkGreen_128px.png"/>
+  </tile>
+  <tile id="128">
+   <image width="128" height="117" source="38518/treeRootGreen_128px.png"/>
+  </tile>
+  <tile id="129">
+   <image width="128" height="123" source="38518/treeRootRed_128px.png"/>
+  </tile>
+  <tile id="130">
+   <image width="70" height="128" source="38518/treeSpiralBlue_128px.png"/>
+  </tile>
+  <tile id="131">
+   <image width="86" height="128" source="38518/treeSpiralGreen_128px.png"/>
+  </tile>
+  <tile id="132">
+   <image width="86" height="128" source="38518/treeSpiralRed_128px.png"/>
+  </tile>
+ </tileset>
+ <tileset firstgid="134" name="foliage-pack" tilewidth="128" tileheight="128" tilecount="102" columns="0">
+  <tile id="0">
+   <image width="44" height="128" source="52633/GSS_Foliage_bamboo (1).png"/>
+  </tile>
+  <tile id="1">
+   <image width="78" height="128" source="52633/GSS_Foliage_bamboo (2).png"/>
+  </tile>
+  <tile id="2">
+   <image width="50" height="128" source="52633/GSS_Foliage_bamboo (3).png"/>
+  </tile>
+  <tile id="3">
+   <image width="66" height="128" source="52633/GSS_Foliage_bamboo (4).png"/>
+  </tile>
+  <tile id="4">
+   <image width="57" height="128" source="52633/GSS_Foliage_bamboo (5).png"/>
+  </tile>
+  <tile id="5">
+   <image width="56" height="128" source="52633/GSS_Foliage_bamboo (6).png"/>
+  </tile>
+  <tile id="6">
+   <image width="66" height="128" source="52633/GSS_Foliage_bamboo (7).png"/>
+  </tile>
+  <tile id="7">
+   <image width="66" height="128" source="52633/GSS_Foliage_bamboo (8).png"/>
+  </tile>
+  <tile id="8">
+   <image width="42" height="128" source="52633/GSS_Foliage_Desert_big_cactus_02.png"/>
+  </tile>
+  <tile id="9">
+   <image width="75" height="128" source="52633/GSS_Foliage_Desert_big_cactus_03.png"/>
+  </tile>
+  <tile id="10">
+   <image width="79" height="128" source="52633/GSS_Foliage_Desert_big_cactus_04.png"/>
+  </tile>
+  <tile id="11">
+   <image width="55" height="128" source="52633/GSS_Foliage_Desert_big_flower_01.png"/>
+  </tile>
+  <tile id="12">
+   <image width="128" height="83" source="52633/GSS_Foliage_desert_skull_01.png"/>
+  </tile>
+  <tile id="13">
+   <image width="128" height="83" source="52633/GSS_Foliage_desert_skull_02.png"/>
+  </tile>
+  <tile id="14">
+   <image width="128" height="95" source="52633/GSS_Foliage_desert_skull_03.png"/>
+  </tile>
+  <tile id="15">
+   <image width="106" height="128" source="52633/GSS_Foliage_Desert_small_Agave_Cactus_01.png"/>
+  </tile>
+  <tile id="16">
+   <image width="85" height="128" source="52633/GSS_Foliage_Desert_small_Agave_Cactus_02.png"/>
+  </tile>
+  <tile id="17">
+   <image width="106" height="128" source="52633/GSS_Foliage_Desert_small_Agave_Cactus_03.png"/>
+  </tile>
+  <tile id="18">
+   <image width="85" height="128" source="52633/GSS_Foliage_Desert_small_Agave_Cactus_04.png"/>
+  </tile>
+  <tile id="19">
+   <image width="128" height="84" source="52633/GSS_Foliage_Desert_small_Bush_01.png"/>
+  </tile>
+  <tile id="20">
+   <image width="128" height="116" source="52633/GSS_Foliage_Desert_small_Bush_02.png"/>
+  </tile>
+  <tile id="21">
+   <image width="72" height="128" source="52633/GSS_Foliage_Desert_small_Cactus_02.png"/>
+  </tile>
+  <tile id="22">
+   <image width="83" height="128" source="52633/GSS_Foliage_Desert_small_Cactus_03.png"/>
+  </tile>
+  <tile id="23">
+   <image width="69" height="128" source="52633/GSS_Foliage_Desert_small_Cactus_04.png"/>
+  </tile>
+  <tile id="24">
+   <image width="125" height="83" source="52633/GSS_Foliage_Desert_small_Cactus_05.png"/>
+  </tile>
+  <tile id="25">
+   <image width="128" height="86" source="52633/GSS_Foliage_Desert_small_Cactus_06.png"/>
+  </tile>
+  <tile id="26">
+   <image width="51" height="128" source="52633/GSS_Foliage_Desert_small_Cactus_07.png"/>
+  </tile>
+  <tile id="27">
+   <image width="128" height="105" source="52633/GSS_Foliage_Desert_small_Cactus_09.png"/>
+  </tile>
+  <tile id="28">
+   <image width="128" height="94" source="52633/GSS_Foliage_Desert_small_Cactus_10.png"/>
+  </tile>
+  <tile id="29">
+   <image width="111" height="128" source="52633/GSS_Foliage_Desert_small_Cactus_11.png"/>
+  </tile>
+  <tile id="30">
+   <image width="77" height="128" source="52633/GSS_Foliage_Desert_small_Cactus_12.png"/>
+  </tile>
+  <tile id="31">
+   <image width="65" height="128" source="52633/GSS_Foliage_Desert_small_Cactus_13.png"/>
+  </tile>
+  <tile id="32">
+   <image width="71" height="128" source="52633/GSS_Foliage_Desert_small_Cactus_14.png"/>
+  </tile>
+  <tile id="33">
+   <image width="65" height="128" source="52633/GSS_Foliage_Desert_small_Cactus_15.png"/>
+  </tile>
+  <tile id="34">
+   <image width="103" height="99" source="52633/GSS_Foliage_Desert_small_Flower_01.png"/>
+  </tile>
+  <tile id="35">
+   <image width="100" height="99" source="52633/GSS_Foliage_Desert_small_Flower_02.png"/>
+  </tile>
+  <tile id="36">
+   <image width="116" height="93" source="52633/GSS_Foliage_Desert_small_Flower_03.png"/>
+  </tile>
+  <tile id="37">
+   <image width="55" height="66" source="52633/GSS_Foliage_Desert_small_Flower_04.png"/>
+  </tile>
+  <tile id="38">
+   <image width="128" height="105" source="52633/GSS_Foliage_forest_berrybush.png"/>
+  </tile>
+  <tile id="39">
+   <image width="42" height="128" source="52633/GSS_Foliage_Forest_big_cypress_01.png"/>
+  </tile>
+  <tile id="40">
+   <image width="50" height="128" source="52633/GSS_Foliage_Forest_big_cypress_02.png"/>
+  </tile>
+  <tile id="41">
+   <image width="45" height="128" source="52633/GSS_Foliage_Forest_big_cypress_03.png"/>
+  </tile>
+  <tile id="42">
+   <image width="128" height="123" source="52633/GSS_Foliage_Forest_big_stone_01.png"/>
+  </tile>
+  <tile id="43">
+   <image width="128" height="123" source="52633/GSS_Foliage_Forest_big_stone_02.png"/>
+  </tile>
+  <tile id="44">
+   <image width="91" height="128" source="52633/GSS_Foliage_Forest_big_tree_leaf_01.png"/>
+  </tile>
+  <tile id="45">
+   <image width="64" height="128" source="52633/GSS_Foliage_Forest_big_tree_needle_03.png"/>
+  </tile>
+  <tile id="46">
+   <image width="67" height="128" source="52633/GSS_Foliage_Forest_big_tree_needle_04.png"/>
+  </tile>
+  <tile id="47">
+   <image width="128" height="111" source="52633/GSS_Foliage_forest_bush (4).png"/>
+  </tile>
+  <tile id="48">
+   <image width="128" height="102" source="52633/GSS_Foliage_forest_bush (5).png"/>
+  </tile>
+  <tile id="49">
+   <image width="128" height="87" source="52633/GSS_Foliage_Forest_deadBush (3).png"/>
+  </tile>
+  <tile id="50">
+   <image width="109" height="128" source="52633/GSS_Foliage_Forest_deadbush(5).png"/>
+  </tile>
+  <tile id="51">
+   <image width="65" height="128" source="52633/GSS_Foliage_Forest_deadTree (1).png"/>
+  </tile>
+  <tile id="52">
+   <image width="74" height="128" source="52633/GSS_Foliage_Forest_deadTree (2).png"/>
+  </tile>
+  <tile id="53">
+   <image width="57" height="128" source="52633/GSS_Foliage_Forest_deadTree (4).png"/>
+  </tile>
+  <tile id="54">
+   <image width="128" height="128" source="52633/GSS_Foliage_Forest_small_bush_01.png"/>
+  </tile>
+  <tile id="55">
+   <image width="118" height="128" source="52633/GSS_Foliage_Forest_small_bush_02.png"/>
+  </tile>
+  <tile id="56">
+   <image width="128" height="109" source="52633/GSS_Foliage_Forest_small_clover_01.png"/>
+  </tile>
+  <tile id="57">
+   <image width="76" height="111" source="52633/GSS_Foliage_Forest_small_clover_02.png"/>
+  </tile>
+  <tile id="58">
+   <image width="128" height="118" source="52633/GSS_Foliage_Forest_small_clover_03.png"/>
+  </tile>
+  <tile id="59">
+   <image width="128" height="88" source="52633/GSS_Foliage_Forest_small_fern_01.png"/>
+  </tile>
+  <tile id="60">
+   <image width="128" height="97" source="52633/GSS_Foliage_Forest_small_fern_02.png"/>
+  </tile>
+  <tile id="61">
+   <image width="128" height="111" source="52633/GSS_Foliage_Forest_small_flower_01.png"/>
+  </tile>
+  <tile id="62">
+   <image width="111" height="128" source="52633/GSS_Foliage_Forest_small_flower_02.png"/>
+  </tile>
+  <tile id="63">
+   <image width="73" height="128" source="52633/GSS_Foliage_Forest_small_flower_03.png"/>
+  </tile>
+  <tile id="64">
+   <image width="128" height="103" source="52633/GSS_Foliage_Forest_small_grass_01.png"/>
+  </tile>
+  <tile id="65">
+   <image width="128" height="104" source="52633/GSS_Foliage_Forest_small_grass_02.png"/>
+  </tile>
+  <tile id="66">
+   <image width="128" height="90" source="52633/GSS_Foliage_Forest_small_grass_03.png"/>
+  </tile>
+  <tile id="67">
+   <image width="128" height="110" source="52633/GSS_Foliage_Forest_small_grass_04.png"/>
+  </tile>
+  <tile id="68">
+   <image width="128" height="86" source="52633/GSS_Foliage_Forest_small_grass_05.png"/>
+  </tile>
+  <tile id="69">
+   <image width="128" height="128" source="52633/GSS_Foliage_Forest_small_grass_06.png"/>
+  </tile>
+  <tile id="70">
+   <image width="128" height="82" source="52633/GSS_Foliage_Forest_small_grass_07.png"/>
+  </tile>
+  <tile id="71">
+   <image width="128" height="75" source="52633/GSS_Foliage_Forest_small_grass_08.png"/>
+  </tile>
+  <tile id="72">
+   <image width="50" height="66" source="52633/GSS_Foliage_Forest_small_mushroom_01.png"/>
+  </tile>
+  <tile id="73">
+   <image width="97" height="77" source="52633/GSS_Foliage_Forest_small_mushroom_02.png"/>
+  </tile>
+  <tile id="74">
+   <image width="95" height="110" source="52633/GSS_Foliage_Forest_small_mushroom_03.png"/>
+  </tile>
+  <tile id="75">
+   <image width="48" height="65" source="52633/GSS_Foliage_Forest_small_mushroom_04.png"/>
+  </tile>
+  <tile id="76">
+   <image width="128" height="123" source="52633/GSS_Foliage_Forest_small_tree_log_01.png"/>
+  </tile>
+  <tile id="77">
+   <image width="54" height="128" source="52633/GSS_Foliage_Forest_small_tree_log_02.png"/>
+  </tile>
+  <tile id="78">
+   <image width="128" height="123" source="52633/GSS_Foliage_Forest_small_tree_log_03.png"/>
+  </tile>
+  <tile id="79">
+   <image width="128" height="113" source="52633/GSS_Foliage_Forest_small_tree_stump_01.png"/>
+  </tile>
+  <tile id="80">
+   <image width="128" height="115" source="52633/GSS_Foliage_Forest_small_tree_stump_02.png"/>
+  </tile>
+  <tile id="81">
+   <image width="128" height="100" source="52633/GSS_Foliage_Forest_small_tree_stump_03.png"/>
+  </tile>
+  <tile id="82">
+   <image width="104" height="128" source="52633/GSS_Foliage_reed (1).png"/>
+  </tile>
+  <tile id="83">
+   <image width="64" height="128" source="52633/GSS_Foliage_reed (2).png"/>
+  </tile>
+  <tile id="84">
+   <image width="104" height="128" source="52633/GSS_Foliage_reed (3).png"/>
+  </tile>
+  <tile id="85">
+   <image width="104" height="128" source="52633/GSS_Foliage_reed (4).png"/>
+  </tile>
+  <tile id="86">
+   <image width="104" height="128" source="52633/GSS_Foliage_reed (5).png"/>
+  </tile>
+  <tile id="87">
+   <image width="104" height="128" source="52633/GSS_Foliage_reed (6).png"/>
+  </tile>
+  <tile id="88">
+   <image width="128" height="99" source="52633/GSS_Foliage_reed (7).png"/>
+  </tile>
+  <tile id="89">
+   <image width="128" height="97" source="52633/GSS_Foliage_reed (8).png"/>
+  </tile>
+  <tile id="90">
+   <image width="128" height="95" source="52633/GSS_Foliage_stone (1).png"/>
+  </tile>
+  <tile id="91">
+   <image width="95" height="83" source="52633/GSS_Foliage_stone (2).png"/>
+  </tile>
+  <tile id="92">
+   <image width="128" height="90" source="52633/GSS_Foliage_stone (3).png"/>
+  </tile>
+  <tile id="93">
+   <image width="128" height="90" source="52633/GSS_Foliage_waterbuds.png"/>
+  </tile>
+  <tile id="94">
+   <image width="128" height="69" source="52633/GSS_Foliage_waterplant (2).png"/>
+  </tile>
+  <tile id="95">
+   <image width="82" height="50" source="52633/GSS_Foliage_waterplant 1.png"/>
+  </tile>
+  <tile id="96">
+   <image width="101" height="62" source="52633/GSS_Foliage_waterplant 2.png"/>
+  </tile>
+  <tile id="97">
+   <image width="128" height="93" source="52633/GSS_Foliage_waterplant 3.png"/>
+  </tile>
+  <tile id="98">
+   <image width="128" height="93" source="52633/GSS_Foliage_waterplant 4.png"/>
+  </tile>
+  <tile id="99">
+   <image width="128" height="93" source="52633/GSS_Foliage_waterplant 5.png"/>
+  </tile>
+  <tile id="100">
+   <image width="44" height="26" source="52633/GSS_Foliage_waterplant 6.png"/>
+  </tile>
+  <tile id="101">
+   <image width="128" height="69" source="52633/GSS_Foliage_waterplant.png"/>
+  </tile>
+ </tileset>
+ <layer name="ground" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   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
+  </data>
+ </layer>
+ <layer name="collision" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
+  </data>
+ </layer>
+ <layer name="decoration_below" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
+  </data>
+ </layer>
+ <layer name="decoration_top" width="100" height="100">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T+1lC6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAbnEAAAQ==
+  </data>
+ </layer>
+</map>

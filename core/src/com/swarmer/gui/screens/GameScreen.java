@@ -47,14 +47,13 @@ public class GameScreen implements Screen {
 	public GameScreen(final SwarmerMain game) {
 		this.game = game;
 		camera = ScreenManager.camera;
-		map = new TmxMapLoader().load("alb.tmx");
+		map = new TmxMapLoader().load("newmap.tmx");
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
 		mapWidth = layer.getWidth() * layer.getTileWidth();
 		mapHeight = layer.getHeight() * layer.getTileHeight();
 
 		backgroundLayers = new int[]{0, 1, 2};
 		foregroundLayers = new int[]{3};
-
 
 		graph = new Graph(map);
 
@@ -70,7 +69,7 @@ public class GameScreen implements Screen {
 
 		TiledMapTileLayer lay0 = map.getLayers().getByType(TiledMapTileLayer.class).get(2);
 
-		TiledMapTile tile = map.getLayers().getByType(TiledMapTileLayer.class).get(1).getCell(0, 0).getTile();
+		TiledMapTile tile = map.getLayers().getByType(TiledMapTileLayer.class).get(0).getCell(0, 0).getTile();
 		for(int i = 0; i < 200; i++) {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
 			int y = ThreadLocalRandom.current().nextInt(1, 99);
@@ -84,7 +83,8 @@ public class GameScreen implements Screen {
 
 		renderer = new IsometricTiledMapRenderer(map);
 
-		for(int i = 0; i < 0; i++) {
+		int playerCount = 3;
+		for(int i = 0; i < playerCount; i++) {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
 			int y = ThreadLocalRandom.current().nextInt(1, 99);
 
