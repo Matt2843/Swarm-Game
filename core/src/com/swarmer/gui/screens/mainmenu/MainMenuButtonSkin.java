@@ -16,7 +16,7 @@ public class MainMenuButtonSkin extends TextButton.TextButtonStyle {
 
 	public MainMenuButtonSkin() {
 		skin = new Skin();
-		buttonAtlas = new TextureAtlas(Gdx.files.internal("button.atlas"));
+		buttonAtlas = new TextureAtlas(Gdx.files.internal("MainMenu/MainMenuButton.atlas"));
 		skin.addRegions(buttonAtlas);
 		this.font = new BitmapFont();
 		this.up = skin.getDrawable("button-up");
