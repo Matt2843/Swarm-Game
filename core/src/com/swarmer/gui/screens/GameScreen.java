@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.swarmer.game.structures.Hive;
 import com.swarmer.game.units.Ant;
 import com.swarmer.game.input.SwamerInputProcessor;
 import com.swarmer.game.SwarmerMain;
@@ -41,6 +42,7 @@ public class GameScreen implements Screen {
 	private InputMultiplexer IM;
 	private Vector2 vec = new Vector2();
 	private ArrayList<Ant> ants = new ArrayList<>();
+	private ArrayList<Hive> hives = new ArrayList<>();
 	private int[] backgroundLayers;
 	private int[] foregroundLayers;
 
@@ -89,7 +91,7 @@ public class GameScreen implements Screen {
 			int y = ThreadLocalRandom.current().nextInt(1, 99);
 
 			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
-				ants.add(new Ant((TiledMapTileLayer) map.getLayers().get(1), graph.nodes[x][y]));
+				hives.add(new Hive(graph.nodes[x][y]));
 			}
 		}
 	}
@@ -110,6 +112,10 @@ public class GameScreen implements Screen {
 		renderer.getBatch().begin();
 		for(Ant ant : ants) {
 			ant.draw(renderer.getBatch());
+		}
+
+		for(Hive hive: hives) {
+			hive.draw(renderer.getBatch());
 		}
 		renderer.getBatch().end();
 
