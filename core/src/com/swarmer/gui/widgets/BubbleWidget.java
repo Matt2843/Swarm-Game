@@ -6,9 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-/**
- * Created by Matt on 08-03-2017.
- */
 public class BubbleWidget extends ImageButton {
 
     private Skin skin;
@@ -24,5 +21,4 @@ public class BubbleWidget extends ImageButton {
         bubbleAtlas = new TextureAtlas(Gdx.files.internal("roundButton.atlas"));
         this.setSkin(skin);
     }
-
 }
