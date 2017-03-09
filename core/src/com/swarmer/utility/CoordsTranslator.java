@@ -44,7 +44,7 @@ public class CoordsTranslator {
 
 	public Vector2 getTileCoordinates(float sx, float sy) {
 		float x = Math.round(-(tileWidth * sy - tileHeight * sx) / (tileWidth * tileHeight));
-		float y = Math.round((tileWidth * sy + tileHeight * sx) / (tileWidth * tileHeight) - 1);
+		float y = Math.round((tileWidth * sy + tileHeight * sx) / (tileWidth * tileHeight)-1);
 		return new Vector2(x, y);
 	}
 

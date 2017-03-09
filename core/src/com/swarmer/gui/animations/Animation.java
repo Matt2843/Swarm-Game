@@ -52,7 +52,7 @@ public class Animation<T> {
 	
 	public void draw(Batch batch, float stateTime, float x, float y){
 		region = (TextureRegion) animation.getKeyFrame(stateTime);
-		batch.draw(region, x, y, originX, originY, region.getRegionWidth(), region.getRegionWidth(), scaleX, scaleY, rotation);
+		batch.draw(region, x, y, region.getRegionWidth() / 2, region.getRegionHeight() / 2, region.getRegionWidth(), region.getRegionHeight(), 2, 2, rotation);
 	}
 }
 

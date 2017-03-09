@@ -29,7 +29,7 @@ public class AnimationLibrary {
 			antAnimation.put(str, new Animation<TextureRegion>(1f/20f, textureAtlas.findRegions(str), 3f, 3f));
 		}
 		
-		antAnimation.put("stance_down", new Animation<TextureRegion>(1f/4f, textureAtlas.findRegions("stance_down"), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP_PINGPONG, .35f, .35f));
+		antAnimation.put("stance_down", new Animation<TextureRegion>(1f/4f, textureAtlas.findRegions("stance_down"), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP_PINGPONG, 3f, 3f));
 	}
 
 	public static AnimationLibrary getInstance() {
