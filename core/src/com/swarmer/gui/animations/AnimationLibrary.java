@@ -23,20 +23,13 @@ public class AnimationLibrary {
 	public void initializeAntAnimations() {
 		antAnimation = new HashMap<>();
 
-		HashMap<String, Float> animationlist = new HashMap<>();
-		animationlist.put("running_left",		1f/20f);
-		animationlist.put("running_up_left",	1f/20f);
-		animationlist.put("running_up",			1f/20f);
-		animationlist.put("running_up_right",	1f/20f);
-		animationlist.put("running_right",		1f/20f);
-		animationlist.put("running_down_right",	1f/20f);
-		animationlist.put("running_down",		1f/20f);
-		animationlist.put("running_down_left",	1f/20f);
-		animationlist.put("stance_down",		1f/4f);
-
-		for (Map.Entry<String, Float> animation : animationlist.entrySet()) {
-			antAnimation.put(animation.getKey(), new Animation(animation.getValue(), textureAtlas.findRegions(animation.getKey()), .35f, .35f));
+		String[] animationlist = {"running_left", "running_up_left", "running_up", "running_up_right", "running_right", "running_down_right", "running_down", "running_down_left"}
+		
+		for (String str : animationlist) {
+			antAnimation.put(str, new Animation(1f/20f, textureAtlas.findRegions(str), .35f, .35f));
 		}
+		
+		antAnimation.put("stance_down", new Animation(1f/4f, textureAtlas.findRegions("stance_down"), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.PINGPONG, .35f, .35f));
 	}
 
 	public static AnimationLibrary getInstance() {
