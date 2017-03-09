@@ -19,6 +19,22 @@ public class Animation {
 		public float rotation;
 		
 	public Animation(float frameDuration, Array<TextureRegion> keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode playMode, float originX, float originY, float scaleX, float scaleY, float rotation) {
+		init(frameDuration, keyFrames, playMode, originX, originY, scaleX, scaleY, rotation);
+	}
+	
+	public Animation(float frameDuration, Array<TextureRegion> keyFrames, float scaleX, float scaleY) {
+		init(frameDuration, keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP, 0f, 0f, scaleX, scaleY, 0f);
+	}
+	
+	public Animation(float frameDuration, Array<TextureRegion> keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode playMode, float scaleX, float scaleY) {
+		init(frameDuration, keyFrames, playMode, 0f, 0f, scaleX, scaleY, 0f);
+	}
+	
+	public Animation(float frameDuration, Array<TextureRegion> keyFrames) {
+		init(frameDuration, keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP, 0f, 0f, 1f, 1f, 0f);
+	}
+	
+	private void init(float frameDuration, Array<TextureRegion> keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode playMode, float originX, float originY, float scaleX, float scaleY, float rotation){
 		this.frameDuration = frameDuration;
 		this.keyFrames = keyFrames;
 		this.playMode = playMode;
@@ -28,18 +44,6 @@ public class Animation {
 		this.scaleY = scaleY;
 		this.rotation = rotation;
 		initializeAnimation();
-	}
-	
-	public Animation(float frameDuration, Array<TextureRegion> keyFrames, float scaleX, float scaleY) {
-		Animation(frameDuration, keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP, 0f, 0f, scaleX, scaleY, 0f);
-	}
-	
-	public Animation(float frameDuration, Array<TextureRegion> keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode playMode, float scaleX, float scaleY) {
-		new Animation(frameDuration, keyFrames, playMode, 0f, 0f, scaleX, scaleY, 0f);
-	}
-	
-	public Animation(float frameDuration, Array<TextureRegion> keyFrames) {
-		new Animation(frameDuration, keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP, 0f, 0f, 1f, 1f, 0f);
 	}
 	
 	public void initializeAnimation(){
