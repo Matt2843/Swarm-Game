@@ -15,7 +15,7 @@ public class AnimationLibrary {
 
 	private static TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("Ant/atlas/iceant.atlas"));
 
-	public static HashMap<String, Animation<TextureRegion>> antAnimation;
+	public static HashMap<String, Animation> antAnimation;
 
 	// Prevent instantiation
 	private AnimationLibrary() {
@@ -37,7 +37,7 @@ public class AnimationLibrary {
 		animationlist.put("stance_down",		1f/4f);
 
 		for (Map.Entry<String, Float> animation : animationlist.entrySet()) {
-			antAnimation.put(animation.getKey(), new Animation<TextureRegion>(animation.getValue(), textureAtlas.findRegions(animation.getKey()), Animation.PlayMode.LOOP));
+			antAnimation.put(animation.getKey(), new Animation(animation.getValue(), textureAtlas.findRegions(animation.getKey()), .35f, .35f));
 		}
 	}
 
