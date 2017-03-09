@@ -29,6 +29,10 @@ public class Animation {
 		MyAnimation(frameDuration, keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP, 0f, 0f, scaleX, scaleY, 0f);
 	}
 	
+	public Animation(float frameDuration, Array<? extends T> keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode playMode, float scaleX, float scaleY) {
+		MyAnimation(frameDuration, keyFrames, playMode, 0f, 0f, scaleX, scaleY, 0f);
+	}
+	
 	public Animation(float frameDuration, Array<? extends T> keyFrames) {
 		MyAnimation(frameDuration, keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP, 0f, 0f, 1f, 1f, 0f);
 	}
