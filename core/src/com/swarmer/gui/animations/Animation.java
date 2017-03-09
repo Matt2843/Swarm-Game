@@ -46,8 +46,8 @@ public class Animation {
 		initializeAnimation();
 	}
 	
-	public void initializeAnimation(){
-		animation = new com.badlogic.gdx.graphics.g2d.Animation<TextureRegion>(frameDuration, keyFrames, playMode);
+	private void initializeAnimation(){
+		animation = new com.badlogic.gdx.graphics.g2d.Animation<>(frameDuration, keyFrames, playMode);
 	}
 	
 	public void draw(Batch batch, float stateTime, float x, float y){
