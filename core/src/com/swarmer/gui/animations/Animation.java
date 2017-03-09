@@ -1,3 +1,8 @@
+package com.swarmer.gui.animations;
+
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 
 public class Animation {
 		
@@ -6,14 +11,14 @@ public class Animation {
 		public TextureRegion region;
 		
 		public float frameDuration;
-		public Array<? extends T> keyFrames;
+		public Array<TextureRegion> keyFrames;
 		public com.badlogic.gdx.graphics.g2d.Animation.PlayMode playMode;
 		
 		public float originX, originY;
 		public float scaleX, scaleY;
 		public float rotation;
 		
-	public Animation(float frameDuration, Array<? extends T> keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode playMode, float originX, float originY, float scaleX, float scaleY, float rotation) {
+	public Animation(float frameDuration, Array<TextureRegion> keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode playMode, float originX, float originY, float scaleX, float scaleY, float rotation) {
 		this.frameDuration = frameDuration;
 		this.keyFrames = keyFrames;
 		this.playMode = playMode;
@@ -25,16 +30,16 @@ public class Animation {
 		initializeAnimation();
 	}
 	
-	public Animation(float frameDuration, Array<? extends T> keyFrames, float scaleX, float scaleY) {
-		MyAnimation(frameDuration, keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP, 0f, 0f, scaleX, scaleY, 0f);
+	public Animation(float frameDuration, Array<TextureRegion> keyFrames, float scaleX, float scaleY) {
+		Animation(frameDuration, keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP, 0f, 0f, scaleX, scaleY, 0f);
 	}
 	
-	public Animation(float frameDuration, Array<? extends T> keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode playMode, float scaleX, float scaleY) {
-		MyAnimation(frameDuration, keyFrames, playMode, 0f, 0f, scaleX, scaleY, 0f);
+	public Animation(float frameDuration, Array<TextureRegion> keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode playMode, float scaleX, float scaleY) {
+		new Animation(frameDuration, keyFrames, playMode, 0f, 0f, scaleX, scaleY, 0f);
 	}
 	
-	public Animation(float frameDuration, Array<? extends T> keyFrames) {
-		MyAnimation(frameDuration, keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP, 0f, 0f, 1f, 1f, 0f);
+	public Animation(float frameDuration, Array<TextureRegion> keyFrames) {
+		new Animation(frameDuration, keyFrames, com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP, 0f, 0f, 1f, 1f, 0f);
 	}
 	
 	public void initializeAnimation(){
