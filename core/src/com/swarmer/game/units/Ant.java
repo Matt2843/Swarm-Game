@@ -57,8 +57,10 @@ public class Ant {
 			direction = "running_up";
 		}
 
-		TextureRegion frame = AnimationLibrary.antAnimation.get(direction).getKeyFrame(stateTime, true);
-		batch.draw(frame, getX(), getY(), 0, 0, frame.getRegionWidth(), frame.getRegionHeight(), .35f, .35f, 0);
+		//TextureRegion frame = AnimationLibrary.antAnimation.get(direction).getKeyFrame(stateTime, true);
+		//batch.draw(frame, getX(), getY(), 0, 0, frame.getRegionWidth(), frame.getRegionHeight(), .35f, .35f, 0);
+
+		AnimationLibrary.antAnimation.get(direction).draw(batch, stateTime, getX(), getY());
 	}
 
 	private void update(float delta) {
