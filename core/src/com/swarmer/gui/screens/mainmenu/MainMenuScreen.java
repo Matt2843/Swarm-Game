@@ -3,6 +3,7 @@ package com.swarmer.gui.screens.mainmenu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.screens.ScreenManager;
+import com.swarmer.gui.widgets.BubbleWidget;
 
 public class MainMenuScreen extends Stage implements Screen {
 
@@ -61,7 +63,6 @@ public class MainMenuScreen extends Stage implements Screen {
 			}
 		});
 
-
 		buttonGroup.setPosition(getWidth() / 2 - buttons[0].getWidth() / 2, getHeight() / 2 + 5 * buttons[0].getHeight() / 2 - buttons[0].getHeight());
 		addActor(buttonGroup);
 	}
@@ -71,7 +72,7 @@ public class MainMenuScreen extends Stage implements Screen {
 	}
 
 	@Override public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(1, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		act(delta);
 		draw();
