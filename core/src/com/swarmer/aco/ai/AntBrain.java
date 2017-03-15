@@ -13,7 +13,8 @@ public class AntBrain {
 	 *  TODO: What should determine the edge selection beside pheromone strength?
 	 */
 	
-	private float c1 = 0.8f;
+	private float C1 = 0.8f;
+	private float c1;
 	
 	private Boolean bool = false;
 	private String state = "Seek";
@@ -27,6 +28,7 @@ public class AntBrain {
 		this.PLAYER_ID = PLAYER_ID;
 		currentNode = startingNode;
 		previousNode = currentNode;
+		c1 = C1;
 	}
 	
 	public Edge determineNextPath() {
@@ -55,10 +57,16 @@ public class AntBrain {
 		previousNode = currentNode;
 		currentNode = nextEdge.getNode();
 		
-		if(currentNode.getResource() != null && currentNode.getResource().getQuantity() > 0) {
+		if(currentNode.hasResource() && currentNode.getResource().getQuantity() > 0) {
 			c1 = 1f;
 			state = "Returning";
 			bool = true;
+		}
+		
+		if(currentNode.isHome()) {
+			c1 = C1;
+			state = "Seek";
+			bool = false;
 		}
 		
 		if(state.equals("Returning")){
@@ -122,4 +130,5 @@ public class AntBrain {
 	}
 	
 }
+
 
