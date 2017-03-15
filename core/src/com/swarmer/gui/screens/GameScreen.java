@@ -71,7 +71,7 @@ public class GameScreen implements Screen {
 
 		TiledMapTileLayer lay0 = map.getLayers().getByType(TiledMapTileLayer.class).get(2);
 
-		TiledMapTile tile = map.getLayers().getByType(TiledMapTileLayer.class).get(0).getCell(0, 0).getTile();
+		TiledMapTile tile = map.getLayers().getByType(TiledMapTileLayer.class).get(3).getCell(0, 0).getTile();
 		for(int i = 0; i < 200; i++) {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
 			int y = ThreadLocalRandom.current().nextInt(1, 99);

@@ -26,7 +26,7 @@ public class Ant {
 
 		brain = new AntBrain("Matt", startNode);
 
-		food = 10;
+		food = 200;
 		desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(startNode.getPosition());
 
 		setX(desiredPosition.x);
@@ -69,7 +69,7 @@ public class Ant {
 
 	private void update(float delta) {
 
-		int speed = 50;
+		int speed = 80;
 
 		velocity.x = 0;
 		velocity.y = 0;
