@@ -6,6 +6,7 @@ import com.swarmer.aco.graph.resources.Food;
 
 public class Node {
 	
+	private isHome = false;
 	private final Vector2 position;
 	private Array<com.swarmer.aco.graph.Edge> connectedEdges;
 	
@@ -29,6 +30,14 @@ public class Node {
 		connectedEdges.add(e);
 	}
 
+	public Boolean isHome() {
+		return isHome;
+	}
+	
+	public Boolean hasResource() {
+		return resource != null;
+	}
+	
 	public Resource getResource() {
 		return resource;
 	}
