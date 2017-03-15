@@ -2,6 +2,7 @@ package com.swarmer.aco.graph;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.swarmer.aco.graph.resources.Food;
 
 public class Node {
 	

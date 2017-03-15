@@ -68,7 +68,7 @@ public class Ant {
 		velocity.y = 0;
 
 		if(brain.getPreviousNode().getResource() != null) { // Ophiocordyceps unilateralis
-			return;
+		//	return;
 		}
 
 		if(Math.round(getX()) < Math.round(desiredPosition.x)) {
