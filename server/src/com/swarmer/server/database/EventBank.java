@@ -9,6 +9,7 @@ import com.swarmer.shared.resources.Resource;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Matt on 03/16/2017.
@@ -20,26 +21,47 @@ public class EventBank implements Serializable {
     public EventBank() {
         playerResourceData = new HashMap<>();
     }
-    
-    public void purchase(PlayerInformation player, Product desiredProduct) {
-        // TODO: Implement Product abstract class, and decide which products can be purchased.
-        // TODO: Check if player has currency to purchase product
-        // TODO: Add data structure for players inventory / stash.
+
+    public boolean purchase(final PlayerInformation playerInformation, Product desiredProduct) throws PlayerNotFoundException {
+        if(playerResourceData.containsKey(playerInformation)) {
+            for(Map.Entry<Resource, Integer> entry : desiredProduct.getCost().entrySet()) {
+                if(playerHasResource(playerInformation, entry.getKey())) {
+                    if(playerResourceData.get(playerInformation).get(entry.getKey().getType()).getQuantity() < entry.getValue()) {
+                        return false;
+                    }
+                } else return false;
+            }
+            return true;
+        } else {
+            throw new PlayerNotFoundException("Failed purchase: The player information does not exist in the database");
+        }
     }
 
     public void removePlayer(PlayerInformation playerInformation) throws PlayerNotFoundException {
         if(playerResourceData.containsKey(playerInformation)) {
             playerResourceData.remove(playerInformation);
         } else {
-            throw new PlayerNotFoundException("The player information does not exist in the database");
+            throw new PlayerNotFoundException("Failed to remove player: The player information does not exist in the database");
         }
     }
 
     public void addNewPlayer(PlayerInformation playerInformation) throws PlayerAlreadyExistsException {
         if(playerResourceData.containsKey(playerInformation)) {
-            throw new PlayerAlreadyExistsException("The player information already exists in the database");
+            throw new PlayerAlreadyExistsException("Failed to add new player: The player information already exists in the database");
         } else {
             playerResourceData.put(playerInformation, new HashMap<String, Resource>());
+        }
+    }
+
+    public boolean playerHasResource(PlayerInformation playerInformation, Resource resource) throws PlayerNotFoundException {
+        if(playerResourceData.containsKey(playerInformation)) {
+            if(playerResourceData.get(playerInformation).containsKey(resource)) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            throw new PlayerNotFoundException("Failed to test if player has resource: The player does not exist in the database");
         }
     }
 

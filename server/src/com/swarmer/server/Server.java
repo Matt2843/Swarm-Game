@@ -36,13 +36,12 @@ public class Server extends Thread {
 		}
 	}
 
-	private void waitForConnection() throws IOException, InterruptedException {
+	private void waitForConnection() throws IOException {
 		while(running) {
 			System.out.println("Awaiting connection.. :)");
 			connection = server.accept();
 			Connection newClient = new Connection(connection);
 			newClient.start();
-			Thread.sleep(50);
 		}
 	}
 	
