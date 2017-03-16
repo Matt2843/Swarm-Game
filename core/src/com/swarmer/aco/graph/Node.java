@@ -8,7 +8,7 @@ public class Node {
 	private final Vector2 position;
 	private Array<com.swarmer.aco.graph.Edge> connectedEdges;
 	
-	private Resource resource = null;
+	private com.swarmer.shared.Resource resource = null;
 	
 	public Node(Vector2 position) {
 		this.position = position;
@@ -28,11 +28,11 @@ public class Node {
 		connectedEdges.add(e);
 	}
 
-	public Resource getResource() {
+	public com.swarmer.shared.Resource getResource() {
 		return resource;
 	}
 
-	public void setResource(Resource resource) {
+	public void setResource(com.swarmer.shared.Resource resource) {
 		this.resource = resource;
 	}
 

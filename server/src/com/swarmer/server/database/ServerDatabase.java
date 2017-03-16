@@ -1,6 +1,7 @@
 package com.swarmer.server.database;
 
 import com.swarmer.server.utility.GameEvent;
+import com.swarmer.shared.PlayerInformation;
 
 import java.io.*;
 import java.util.HashMap;
@@ -11,10 +12,15 @@ import java.util.HashMap;
 public class ServerDatabase {
 
     public static HashMap<String, GameEvent> currentEvents;
+    public static HashMap<PlayerInformation, String> playerDatabase;
 
-    public ServerDatabase() {
+    private ServerDatabase() {
+        // PREVENT INSTANTIATION.
+    }
+
+    public static void initializeDatabase() {
         try {
-            configureDataStructure();
+            setupHashMaps();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -23,12 +29,14 @@ public class ServerDatabase {
         saveData();
     }
 
-    private void configureDataStructure() throws IOException, ClassNotFoundException {
+    private static void setupHashMaps() throws IOException, ClassNotFoundException {
         String path = "data/CurrentEvents.db";
         currentEvents = (HashMap<String, GameEvent>) (new File(path).exists() ? readFileToObject(path) : new HashMap<>());
+        path = "data/PlayerDatabase.db";
+        playerDatabase = (HashMap<PlayerInformation, String>) (new File(path).exists() ? readFileToObject(path) : new HashMap<>());
     }
 
-    private Object readFileToObject(String path) throws IOException, ClassNotFoundException {
+    private static Object readFileToObject(String path) throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream(new File(path));
         ObjectInputStream ois = new ObjectInputStream(fis);
         Object target = ois.readObject();
@@ -36,14 +44,14 @@ public class ServerDatabase {
         return target;
     }
 
-    private void saveObjectToFile(String path, Object object) throws IOException {
+    private static void saveObjectToFile(String path, Object object) throws IOException {
         FileOutputStream fos = new FileOutputStream(path);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(object);
         oos.close();
     }
 
-    private void updateAndSaveDatabase() {
+    private static void updateAndSaveDatabase() {
         if(!new File("data").exists()) {
             File dir = new File("data");
             dir.mkdir();
@@ -55,7 +63,7 @@ public class ServerDatabase {
         }
     }
 
-    private void saveData() {
+    private static void saveData() {
         new Thread(new Runnable() {
             @Override
             public void run() {

@@ -1,4 +1,4 @@
-package com.swarmer.aco.graph;
+package com.swarmer.shared;
 
 public abstract class Resource {
 	
@@ -25,5 +25,9 @@ public abstract class Resource {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	public void addQuantity(int quantity) {
+		this.quantity += quantity;
 	}
 }

@@ -1,14 +1,10 @@
 package com.swarmer.server;
 
-import com.swarmer.server.database.ServerDatabase;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server extends Thread {
-
-	public static ServerDatabase database = new ServerDatabase();
 
 	private ServerSocket server;
 	private Socket connection;

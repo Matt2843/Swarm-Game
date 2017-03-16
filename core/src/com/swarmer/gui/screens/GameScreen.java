@@ -20,7 +20,7 @@ import com.swarmer.game.input.SwamerInputProcessor;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.game.input.SwarmerGestureDetector;
 import com.swarmer.aco.graph.Graph;
-import com.swarmer.aco.graph.resources.Food;
+import com.swarmer.shared.Food;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;

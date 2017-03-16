@@ -1,6 +1,4 @@
-package com.swarmer.aco.graph.resources;
-
-import com.swarmer.shared.Resource;
+package com.swarmer.shared;
 
 public class Food extends Resource {
 
