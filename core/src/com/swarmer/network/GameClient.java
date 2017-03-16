@@ -1,6 +1,6 @@
 package com.swarmer.network;
 
-import com.swarmer.shared.Message;
+import com.swarmer.shared.communication.Message;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

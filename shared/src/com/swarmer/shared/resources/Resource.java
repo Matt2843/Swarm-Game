@@ -1,4 +1,4 @@
-package com.swarmer.shared;
+package com.swarmer.shared.resources;
 
 public abstract class Resource {
 	
@@ -25,6 +25,12 @@ public abstract class Resource {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	public void removeQuantity(int quantity) {
+		if(this.quantity > 0 + quantity) {
+			this.quantity -= quantity;
+		}
 	}
 
 	public void addQuantity(int quantity) {

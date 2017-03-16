@@ -1,7 +1,7 @@
 package com.swarmer.server.database;
 
 import com.swarmer.server.utility.GameEvent;
-import com.swarmer.shared.PlayerInformation;
+import com.swarmer.shared.communication.PlayerInformation;
 
 import java.io.*;
 import java.util.HashMap;

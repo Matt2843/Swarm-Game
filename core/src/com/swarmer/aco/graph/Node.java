@@ -2,7 +2,7 @@ package com.swarmer.aco.graph;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.swarmer.shared.Resource;
+import com.swarmer.shared.resources.Resource;
 
 public class Node {
 
@@ -49,7 +49,7 @@ public class Node {
 		return resource;
 	}
 
-	public void setResource(com.swarmer.shared.Resource resource) {
+	public void setResource(Resource resource) {
 		this.resource = resource;
 	}
 

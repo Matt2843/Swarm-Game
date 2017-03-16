@@ -2,7 +2,7 @@ package com.swarmer.server.utility;
 
 import com.swarmer.server.Connection;
 import com.swarmer.server.database.GameDatabase;
-import com.swarmer.shared.Message;
+import com.swarmer.shared.communication.Message;
 
 import java.io.IOException;
 

@@ -1,6 +1,6 @@
 package com.swarmer.server;
 
-import com.swarmer.shared.Message;
+import com.swarmer.shared.communication.Message;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,10 +17,10 @@ public class Connection extends Thread {
 
 	@Override
 	public void run() {
-		com.swarmer.shared.Message message = null;
+		Message message = null;
 		try {
 			do {
-				message = (com.swarmer.shared.Message) input.readObject();
+				message = (Message) input.readObject();
 				System.out.println(message.getMessage());
 			} while(!message.getMessage().equals("STOPSERVER"));
 		} catch(Exception e) {
