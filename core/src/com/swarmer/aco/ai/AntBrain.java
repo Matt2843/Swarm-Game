@@ -63,7 +63,7 @@ public class AntBrain {
 			bool = true;
 		}
 		
-		if(currentNode.isHome()) {
+		if(currentNode.isHome(PLAYER_ID)) {
 			c1 = C1;
 			state = "Seek";
 			bool = false;
