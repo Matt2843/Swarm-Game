@@ -7,6 +7,8 @@ import com.swarmer.aco.graph.resources.Food;
 public class Node {
 
 	private boolean isHome = false;
+	private String owner;
+
 	private final Vector2 position;
 	private Array<com.swarmer.aco.graph.Edge> connectedEdges;
 	
@@ -30,12 +32,13 @@ public class Node {
 		connectedEdges.add(e);
 	}
 
-	public Boolean isHome() {
-		return isHome;
+	public Boolean isHome(String playerID) {
+		return isHome && owner.equals(playerID);
 	}
 
 	public void setHome(String playerID) {
 		this.isHome = true;
+		this.owner = playerID;
 	}
 	
 	public Boolean hasResource() {
