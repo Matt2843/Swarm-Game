@@ -7,8 +7,8 @@ public class Pheromone {
 		quantity = i;
 	}
 	
-	public void addPheromone() {
-		quantity += 1;
+	public void addPheromone(int amount) {
+		quantity += amount;
 	}
 	
 	public void decreasePheromone() {

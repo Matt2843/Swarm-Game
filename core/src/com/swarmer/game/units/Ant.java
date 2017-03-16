@@ -16,6 +16,7 @@ public class Ant {
 
 	private float x;
 	private float y;
+	private float food;
 
 	private AntBrain brain;
 
@@ -25,6 +26,7 @@ public class Ant {
 
 		brain = new AntBrain("Matt", startNode);
 
+		food = 200;
 		desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(startNode.getPosition());
 
 		setX(desiredPosition.x);
@@ -38,36 +40,45 @@ public class Ant {
 		stateTime += delta;
 		update(delta);
 
-		String direction = "stance_down";
-		if(velocity.x > 0 && velocity.y > 0) {
-			direction = "running_up_right";
-		} else if(velocity.x > 0 && velocity.y == 0) {
-			direction = "running_right";
-		} else if(velocity.x > 0 && velocity.y < 0) {
-			direction = "running_down_right";
-		} else if(velocity.x == 0 && velocity.y < 0) {
-			direction = "running_down";
-		} else if(velocity.x < 0 && velocity.y < 0) {
-			direction = "running_down_left";
-		} else if(velocity.x < 0 && velocity.y == 0) {
-			direction = "running_left";
-		} else if(velocity.x < 0 && velocity.y > 0) {
-			direction = "running_up_left";
-		} else if(velocity.x == 0 && velocity.y > 0) {
-			direction = "running_up";
+		String animation = "stance_down";
+
+		if (food <= 0) {
+			animation = "die_down";
 		}
 
-		AnimationLibrary.antAnimation.get(direction).draw(batch, stateTime, getX(), getY());
+		if(velocity.x > 0 && velocity.y > 0) {
+			animation = "running_up_right";
+		} else if(velocity.x > 0 && velocity.y == 0) {
+			animation = "running_right";
+		} else if(velocity.x > 0 && velocity.y < 0) {
+			animation = "running_down_right";
+		} else if(velocity.x == 0 && velocity.y < 0) {
+			animation = "running_down";
+		} else if(velocity.x < 0 && velocity.y < 0) {
+			animation = "running_down_left";
+		} else if(velocity.x < 0 && velocity.y == 0) {
+			animation = "running_left";
+		} else if(velocity.x < 0 && velocity.y > 0) {
+			animation = "running_up_left";
+		} else if(velocity.x == 0 && velocity.y > 0) {
+			animation = "running_up";
+		}
+
+		AnimationLibrary.antAnimation.get(animation).draw(batch, stateTime, getX(), getY());
 	}
 
 	private void update(float delta) {
 
-		int speed = 30;
+		int speed = 80;
 
 		velocity.x = 0;
 		velocity.y = 0;
 
 		if(brain.getPreviousNode().getResource() != null) { // Ophiocordyceps unilateralis
+		//	return;
+		}
+
+		if (food <= 0) {
 			return;
 		}
 
@@ -88,6 +99,7 @@ public class Ant {
 
 		if(Math.abs(getX() - desiredPosition.x) < 10 && Math.abs(getY() - desiredPosition.y) < 10) {
 			desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(brain.determineNextPath().getNode().getPosition());
+			food -= 1;
 		}
 	}
 
