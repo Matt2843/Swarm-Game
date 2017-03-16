@@ -36,4 +36,20 @@ public abstract class Resource {
 	public void addQuantity(int quantity) {
 		this.quantity += quantity;
 	}
+
+	@Override public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Resource resource = (Resource) o;
+
+		if (quantity != resource.quantity) return false;
+		return type != null ? type.equals(resource.type) : resource.type == null;
+	}
+
+	@Override public int hashCode() {
+		int result = quantity;
+		result = 31 * result + (type != null ? type.hashCode() : 0);
+		return result;
+	}
 }

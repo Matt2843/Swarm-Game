@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Server extends Thread {
+public class MotherShip extends Thread {
 
 	private ServerSocket server;
 	private Socket connection;
@@ -12,8 +12,12 @@ public class Server extends Thread {
 	
 	private boolean running = true;
 	
-	public Server(int port) {
+	public MotherShip(int port) {
 		this.port = port;
+	}
+
+	public void createEventNode(String description, int nodeId) {
+
 	}
 	
 	@Override public void run() {
@@ -22,7 +26,6 @@ public class Server extends Thread {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-
 		startServer();
 	}
 
@@ -51,6 +54,6 @@ public class Server extends Thread {
 	}
 	
 	public static void main(String[] args) {
-		new Server(1234).start();
+		new MotherShip(1234).start();
 	}
 }
