@@ -32,7 +32,7 @@ public class AnimationLibrary {
 		String[] dieAnimations = {"die_left", "die_up_left", "die_up", "die_up_right", "die_right", "die_down_right", "die_down", "die_down_left"};
 
 		for (String str : dieAnimations) {
-			antAnimation.put(str, new Animation<TextureRegion>(1f/6f, textureAtlas.findRegions(str), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.NORMAL, 1, 1));
+			antAnimation.put(str, new Animation<TextureRegion>(1f/2f, textureAtlas.findRegions(str), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.NORMAL, 1, 1));
 		}
 		
 		antAnimation.put("stance_down", new Animation<TextureRegion>(1f/4f, textureAtlas.findRegions("stance_down"), com.badlogic.gdx.graphics.g2d.Animation.PlayMode.LOOP_PINGPONG, 1, 1));

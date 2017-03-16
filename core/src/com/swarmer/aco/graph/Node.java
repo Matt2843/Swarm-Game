@@ -5,8 +5,8 @@ import com.badlogic.gdx.utils.Array;
 import com.swarmer.aco.graph.resources.Food;
 
 public class Node {
-	
-	private isHome = false;
+
+	private boolean isHome = false;
 	private final Vector2 position;
 	private Array<com.swarmer.aco.graph.Edge> connectedEdges;
 	
@@ -32,6 +32,10 @@ public class Node {
 
 	public Boolean isHome() {
 		return isHome;
+	}
+
+	public void setHome(String playerID) {
+		this.isHome = true;
 	}
 	
 	public Boolean hasResource() {

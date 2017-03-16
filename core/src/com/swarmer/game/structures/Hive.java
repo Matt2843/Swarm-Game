@@ -19,6 +19,7 @@ public class Hive extends Structure {
 
 
 	public Hive(Node placement) {
+		placement.setHome("Matt");
 		Vector2 position = CoordsTranslator.getInstance().getScreenCoordinates(placement.getPosition());
 
 		Sprite sprite = new Sprite(new Texture("structures/hive.png"));
