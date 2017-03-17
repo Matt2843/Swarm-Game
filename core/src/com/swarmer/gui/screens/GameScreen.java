@@ -20,6 +20,7 @@ import com.swarmer.game.input.SwamerInputProcessor;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.game.input.SwarmerGestureDetector;
 import com.swarmer.aco.graph.Graph;
+import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.resources.Food;
 
 import java.util.ArrayList;
@@ -89,9 +90,9 @@ public class GameScreen implements Screen {
 		for(int i = 0; i < playerCount; i++) {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
 			int y = ThreadLocalRandom.current().nextInt(1, 99);
-
+			Player player = new Player("Alias", ++i);
 			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
-				hives.add(new Hive(graph.nodes[x][y]));
+				hives.add(new Hive(player, graph.nodes[x][y]));
 			}
 		}
 	}

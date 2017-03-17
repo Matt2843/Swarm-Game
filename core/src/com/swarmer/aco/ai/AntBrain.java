@@ -5,6 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.badlogic.gdx.utils.Array;
 import com.swarmer.aco.graph.Edge;
 import com.swarmer.aco.graph.Node;
+import com.swarmer.shared.communication.Player;
 
 public class AntBrain {
 	
@@ -22,10 +23,10 @@ public class AntBrain {
 	private Edge nextEdge;
 	private Node currentNode;
 	private Node previousNode;
-	private final String PLAYER_ID;
+	private final Player owner;
 	
-	public AntBrain(String PLAYER_ID, Node startingNode) {
-		this.PLAYER_ID = PLAYER_ID;
+	public AntBrain(Player owner, Node startingNode) {
+		this.owner = owner;
 		currentNode = startingNode;
 		previousNode = currentNode;
 		c1 = C1;
@@ -63,16 +64,16 @@ public class AntBrain {
 			bool = true;
 		}
 		
-		if(currentNode.isHome()) {
+		if(currentNode.isHome(owner)) {
 			c1 = C1;
 			state = "Seek";
 			bool = false;
 		}
 		
 		if(state.equals("Returning")){
-			nextEdge.getPheromones(PLAYER_ID).addPheromone(100);
+			nextEdge.getPheromones(owner).addPheromone(100);
 		} else if(state.equals("Seek")) {
-			nextEdge.getPheromones(PLAYER_ID).addPheromone(1);
+			nextEdge.getPheromones(owner).addPheromone(1);
 		}
 		
 		previousEdge = nextEdge.reverse;
@@ -83,7 +84,7 @@ public class AntBrain {
 		int totalPheromones = 0;
 		for(Edge evaluationEdge : currentNode.getConnectedEdges()) {
 			if(evaluationEdge != previousEdge) {
-				totalPheromones += evaluationEdge.getPheromones(PLAYER_ID).getQuantity();
+				totalPheromones += evaluationEdge.getPheromones(owner).getQuantity();
 			}
 		}
 		return totalPheromones;
@@ -96,7 +97,7 @@ public class AntBrain {
 			for(Edge evaluationEdge : currentNode.getConnectedEdges()) {
 				if(evaluationEdge != previousEdge) {
 					if(totalPheromones > 0) {
-						float pheromone = (float) evaluationEdge.getPheromones(PLAYER_ID).getQuantity();
+						float pheromone = (float) evaluationEdge.getPheromones(owner).getQuantity();
 						decision = pheromone / totalPheromones * c1 + defaultProbability * (1 - c1);
 					} else {
 						decision = defaultProbability;

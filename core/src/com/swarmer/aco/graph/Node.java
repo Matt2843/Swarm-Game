@@ -2,12 +2,13 @@ package com.swarmer.aco.graph;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.resources.Resource;
 
 public class Node {
 
 	private boolean isHome = false;
-	private String owner;
+	private Player owner;
 
 	private final Vector2 position;
 	private Array<com.swarmer.aco.graph.Edge> connectedEdges;
@@ -32,13 +33,13 @@ public class Node {
 		connectedEdges.add(e);
 	}
 
-	public Boolean isHome(String playerID) {
-		return isHome && owner.equals(playerID);
+	public Boolean isHome(Player player) {
+		return isHome && owner.equals(player);
 	}
 
-	public void setHome(String playerID) {
+	public void setHome(Player owner) {
 		this.isHome = true;
-		this.owner = playerID;
+		this.owner = owner;
 	}
 	
 	public Boolean hasResource() {

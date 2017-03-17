@@ -52,7 +52,6 @@ public class GameClient extends Thread {
 			System.out.println(message.getMessage());
 		}
 		while(message.getMessage().contains("STOPCONNECTION"));
-		
 	}
 	
 	private void connectToService() throws UnknownHostException, IOException {
@@ -64,8 +63,7 @@ public class GameClient extends Thread {
 		output.flush();
 		input = new ObjectInputStream(client.getInputStream());
 	}
-	
-	
+
 	public void cleanUp() {
 		try {
 			output.close();

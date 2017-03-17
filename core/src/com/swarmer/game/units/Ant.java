@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.swarmer.aco.ai.AntBrain;
 import com.swarmer.gui.animations.AnimationLibrary;
+import com.swarmer.shared.communication.Player;
 import com.swarmer.utility.CoordsTranslator;
 import com.swarmer.aco.graph.Node;
 
@@ -22,9 +23,9 @@ public class Ant {
 
 	private Vector2 desiredPosition;
 
-	public Ant(TiledMapTileLayer layer, Node startNode) {
+	public Ant(Player owner, TiledMapTileLayer layer, Node startNode) {
 
-		brain = new AntBrain("Matt", startNode);
+		brain = new AntBrain(owner, startNode);
 
 		food = 200;
 		desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(startNode.getPosition());

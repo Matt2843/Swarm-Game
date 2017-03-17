@@ -35,7 +35,7 @@ public class SwamerInputProcessor implements InputProcessor {
 		// ignore if its not left mouse button or first touch pointer
 		if(button == Input.Buttons.RIGHT) {
 			Vector2 tileCoords = CoordsTranslator.getInstance().getTileCoordinatesFromScreen(screenX, screenY);
-			Temp.spawn((int) tileCoords.x, (int) tileCoords.y);
+			//Temp.spawn((int) tileCoords.x, (int) tileCoords.y);
 		} else if(button == Input.Buttons.LEFT || pointer == 0) {
 			PreX = screenX;
 			PreY = screenY;

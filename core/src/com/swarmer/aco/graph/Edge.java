@@ -1,10 +1,12 @@
 package com.swarmer.aco.graph;
 
+import com.swarmer.shared.communication.Player;
+
 import java.util.HashMap;
 
 public class Edge {
 	
-	private HashMap<String, Pheromone> pheromones;
+	private HashMap<Player, Pheromone> pheromones;
 	private String PATH_ID;
 
 	public Edge reverse;
@@ -28,18 +30,18 @@ public class Edge {
 		return PATH_ID;
 	}
 	
-	public Pheromone getPheromones(String key) {
-		if(!pheromones.containsKey(key)) {
-			pheromones.put(key, new Pheromone(0));
+	public Pheromone getPheromones(Player player) {
+		if(!pheromones.containsKey(player)) {
+			pheromones.put(player, new Pheromone(0));
 		}
-		return pheromones.get(key);
+		return pheromones.get(player);
 	}
 	
-	public HashMap<String, Pheromone> getPheromones() {
+	public HashMap<Player, Pheromone> getPheromones() {
 		return pheromones;
 	}
 	
-	public void setPheromones(HashMap<String, Pheromone> pheromones) {
+	public void setPheromones(HashMap<Player, Pheromone> pheromones) {
 		this.pheromones = pheromones;
 	}
 
