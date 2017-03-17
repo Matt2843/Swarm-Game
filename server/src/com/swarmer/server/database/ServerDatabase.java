@@ -1,6 +1,6 @@
 package com.swarmer.server.database;
 
-import com.swarmer.server.utility.GameEvent;
+import com.swarmer.server.nodes.ServerNode;
 import com.swarmer.shared.communication.PlayerInformation;
 
 import java.io.*;
@@ -11,8 +11,8 @@ import java.util.HashMap;
  */
 public class ServerDatabase {
 
-    public static HashMap<String, GameEvent> currentEvents;
     public static HashMap<PlayerInformation, String> playerDatabase;
+    public static HashMap<Integer, ServerNode> serverNodes;
 
     private ServerDatabase() {
         // PREVENT INSTANTIATION.
@@ -30,10 +30,10 @@ public class ServerDatabase {
     }
 
     private static void setupHashMaps() throws IOException, ClassNotFoundException {
-        String path = "data/CurrentEvents.db";
-        currentEvents = (HashMap<String, GameEvent>) (new File(path).exists() ? readFileToObject(path) : new HashMap<>());
-        path = "data/PlayerDatabase.db";
+        String path = "data/PlayerDatabase.db";
         playerDatabase = (HashMap<PlayerInformation, String>) (new File(path).exists() ? readFileToObject(path) : new HashMap<>());
+        path = "data/ServerNodes.db";
+        serverNodes = (HashMap<Integer, ServerNode>) (new File(path).exists() ? readFileToObject(path) : new HashMap<>());
     }
 
     private static Object readFileToObject(String path) throws IOException, ClassNotFoundException {
@@ -57,7 +57,8 @@ public class ServerDatabase {
             dir.mkdir();
         }
         try {
-            saveObjectToFile("data/CurrentEvents.db", currentEvents);
+            saveObjectToFile("data/CurrentEvents.db", playerDatabase);
+            saveObjectToFile("data/ServerNodes.db", serverNodes);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,12 +70,12 @@ public class ServerDatabase {
             public void run() {
                 int minutes = 5 * 60;
                 while(true) {
+                    updateAndSaveDatabase();
                     try {
                         Thread.sleep(minutes * 1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    updateAndSaveDatabase();
                 }
             }
         }).start();
