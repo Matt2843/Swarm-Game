@@ -26,17 +26,21 @@ public class GameClient extends Thread {
 	public GameClient(String host, int port) {
 		this.host = host;
 		this.port = port;
+
 	}
 	
 	@Override public void run() {
 		try {
 			connectToService();
 			setupStreams();
-			sendMessage(new Message("Hello"));
-			whileConnected();
-		} catch(Exception e) {
+			sendMessage(new Message("JOIN"));
+			sendMessage(new Message("ADD5"));
+			sendMessage(new Message("ADD5"));
+			sendMessage(new Message("SUB5"));
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		whileConnected();
 	}
 	
 	public void sendMessage(Message m) throws IOException {
@@ -44,14 +48,18 @@ public class GameClient extends Thread {
 		output.flush();
 	}
 	
-	private void whileConnected() throws ClassNotFoundException, IOException {
+	private void whileConnected() {
 		Message message = null;
-		do
-		{
-			message = (Message) input.readObject();
-			System.out.println(message.getMessage());
-		}
-		while(message.getMessage().contains("STOPCONNECTION"));
+		do {
+			try {
+				message = (Message) input.readObject();
+				System.out.println(message.getMessage());
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		} while(!message.getMessage().equals("STOPCONNECTION"));
 	}
 	
 	private void connectToService() throws UnknownHostException, IOException {
