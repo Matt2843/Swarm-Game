@@ -1,7 +1,7 @@
 package com.swarmer.server.database;
 
 import com.swarmer.server.nodes.ServerNode;
-import com.swarmer.shared.communication.PlayerInformation;
+import com.swarmer.shared.communication.Player;
 
 import java.io.*;
 import java.util.HashMap;
@@ -11,7 +11,7 @@ import java.util.HashMap;
  */
 public class ServerDatabase {
 
-    public static HashMap<PlayerInformation, String> playerDatabase;
+    public static HashMap<Player, String> playerDatabase;
     public static HashMap<Integer, ServerNode> serverNodes;
 
     private ServerDatabase() {
@@ -31,7 +31,7 @@ public class ServerDatabase {
 
     private static void setupHashMaps() throws IOException, ClassNotFoundException {
         String path = "data/PlayerDatabase.db";
-        playerDatabase = (HashMap<PlayerInformation, String>) (new File(path).exists() ? readFileToObject(path) : new HashMap<>());
+        playerDatabase = (HashMap<Player, String>) (new File(path).exists() ? readFileToObject(path) : new HashMap<>());
         path = "data/ServerNodes.db";
         serverNodes = (HashMap<Integer, ServerNode>) (new File(path).exists() ? readFileToObject(path) : new HashMap<>());
     }

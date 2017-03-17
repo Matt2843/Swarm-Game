@@ -3,12 +3,11 @@ package com.swarmer.server;
 import com.swarmer.server.database.ServerDatabase;
 import com.swarmer.server.nodes.EventNode;
 import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.PlayerInformation;
+import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.exceptions.PlayerAlreadyExistsException;
 import com.swarmer.shared.exceptions.PlayerNotFoundException;
 import com.swarmer.shared.resources.Food;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -23,12 +22,12 @@ public class Connection extends Thread {
 	private Socket client = null;
 	private String clientIP = "";
 
-	private PlayerInformation playerInformation;
+	private Player player;
 
 	public Connection(Socket connection) throws IOException {
 		client = connection;
 		clientIP = client.getRemoteSocketAddress().toString();
-		playerInformation = new PlayerInformation(UUID.randomUUID().toString(), 333);
+		player = new Player(UUID.randomUUID().toString(), 333);
 		setupStreams();
 	}
 
@@ -53,13 +52,13 @@ public class Connection extends Thread {
 		switch (message.getMessage()) {
 			case "JOIN":
 				((EventNode)ServerDatabase.serverNodes.get(1234)).addClient(this);
-				((EventNode)ServerDatabase.serverNodes.get(1234)).getEventBank().addNewPlayer(playerInformation);
+				((EventNode)ServerDatabase.serverNodes.get(1234)).getEventBank().addNewPlayer(player);
 				break;
 			case "ADD5":
-				((EventNode)ServerDatabase.serverNodes.get(1234)).getEventBank().addResourceToPlayer(playerInformation, new Food(), 5);
+				((EventNode)ServerDatabase.serverNodes.get(1234)).getEventBank().addResourceToPlayer(player, new Food(), 5);
 				break;
 			case "SUB5":
-				((EventNode)ServerDatabase.serverNodes.get(1234)).getEventBank().removeResourceFromPlayer(playerInformation, new Food(), 5);
+				((EventNode)ServerDatabase.serverNodes.get(1234)).getEventBank().removeResourceFromPlayer(player, new Food(), 5);
 				break;
 			default:
 				break;

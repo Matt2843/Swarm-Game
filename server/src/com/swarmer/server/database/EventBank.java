@@ -1,6 +1,6 @@
 package com.swarmer.server.database;
 
-import com.swarmer.shared.communication.PlayerInformation;
+import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.Product;
 import com.swarmer.shared.exceptions.PlayerAlreadyExistsException;
 import com.swarmer.shared.exceptions.PlayerNotFoundException;
@@ -16,17 +16,17 @@ import java.util.Map;
  */
 public class EventBank implements Serializable {
 
-    private HashMap<PlayerInformation, HashMap<String, Resource>> playerResourceData;
+    private HashMap<Player, HashMap<String, Resource>> playerResourceData;
 
     public EventBank() {
         playerResourceData = new HashMap<>();
     }
 
-    public boolean purchase(final PlayerInformation playerInformation, Product desiredProduct) throws PlayerNotFoundException {
-        if(playerResourceData.containsKey(playerInformation)) {
+    public boolean purchase(final Player player, Product desiredProduct) throws PlayerNotFoundException {
+        if(playerResourceData.containsKey(player)) {
             for(Map.Entry<Resource, Integer> entry : desiredProduct.getCost().entrySet()) {
-                if(playerHasResource(playerInformation, entry.getKey())) {
-                    if(playerResourceData.get(playerInformation).get(entry.getKey().getType()).getQuantity() < entry.getValue()) {
+                if(playerHasResource(player, entry.getKey())) {
+                    if(playerResourceData.get(player).get(entry.getKey().getType()).getQuantity() < entry.getValue()) {
                         return false;
                     }
                 } else return false;
@@ -37,25 +37,25 @@ public class EventBank implements Serializable {
         }
     }
 
-    public void removePlayer(PlayerInformation playerInformation) throws PlayerNotFoundException {
-        if(playerResourceData.containsKey(playerInformation)) {
-            playerResourceData.remove(playerInformation);
+    public void removePlayer(Player player) throws PlayerNotFoundException {
+        if(playerResourceData.containsKey(player)) {
+            playerResourceData.remove(player);
         } else {
             throw new PlayerNotFoundException("Failed to remove player: The player information does not exist in the database");
         }
     }
 
-    public void addNewPlayer(PlayerInformation playerInformation) throws PlayerAlreadyExistsException {
-        if(playerResourceData.containsKey(playerInformation)) {
+    public void addNewPlayer(Player player) throws PlayerAlreadyExistsException {
+        if(playerResourceData.containsKey(player)) {
             throw new PlayerAlreadyExistsException("Failed to add new player: The player information already exists in the database");
         } else {
-            playerResourceData.put(playerInformation, new HashMap<String, Resource>());
+            playerResourceData.put(player, new HashMap<String, Resource>());
         }
     }
 
-    public boolean playerHasResource(PlayerInformation playerInformation, Resource resource) throws PlayerNotFoundException {
-        if(playerResourceData.containsKey(playerInformation)) {
-            if(playerResourceData.get(playerInformation).containsKey(resource)) {
+    public boolean playerHasResource(Player player, Resource resource) throws PlayerNotFoundException {
+        if(playerResourceData.containsKey(player)) {
+            if(playerResourceData.get(player).containsKey(resource)) {
                 return true;
             } else {
                 return false;
@@ -65,31 +65,31 @@ public class EventBank implements Serializable {
         }
     }
 
-    public void removeResourceFromPlayer(PlayerInformation playerInformation, Resource resource, int quantity) throws PlayerNotFoundException {
-        if(playerResourceData.containsKey(playerInformation)) {
-            if(playerResourceData.get(playerInformation).get(resource.getType()).getQuantity() > quantity) {
-                playerResourceData.get(playerInformation).get(resource.getType()).removeQuantity(quantity);
-            } else playerResourceData.get(playerInformation).get(resource.getType()).setQuantity(0);
-            System.out.println(playerInformation.getPlayerAlias() + " has: " + playerResourceData.get(playerInformation).get(resource.getType()).getQuantity() + " " + resource.getType());
+    public void removeResourceFromPlayer(Player player, Resource resource, int quantity) throws PlayerNotFoundException {
+        if(playerResourceData.containsKey(player)) {
+            if(playerResourceData.get(player).get(resource.getType()).getQuantity() > quantity) {
+                playerResourceData.get(player).get(resource.getType()).removeQuantity(quantity);
+            } else playerResourceData.get(player).get(resource.getType()).setQuantity(0);
+            System.out.println(player.getAlias() + " has: " + playerResourceData.get(player).get(resource.getType()).getQuantity() + " " + resource.getType());
         } else {
             throw new PlayerNotFoundException("The player information given does not match any player information in the database.");
         }
     }
 
-    public void addResourceToPlayer(PlayerInformation playerInformation, Resource resource, int quantity) throws PlayerNotFoundException {
-        if(playerResourceData.containsKey(playerInformation)) {
-            if(playerResourceData.get(playerInformation).containsValue(resource)) {
-                playerResourceData.get(playerInformation).get(resource.getType()).addQuantity(quantity);
+    public void addResourceToPlayer(Player player, Resource resource, int quantity) throws PlayerNotFoundException {
+        if(playerResourceData.containsKey(player)) {
+            if(playerResourceData.get(player).containsValue(resource)) {
+                playerResourceData.get(player).get(resource.getType()).addQuantity(quantity);
             } else {
                 switch(resource.getType()) {
                     case "Food":
-                        playerResourceData.get(playerInformation).put("Food", new Food(quantity));
+                        playerResourceData.get(player).put("Food", new Food(quantity));
                         break;
                     default:
                         break;
                 }
             }
-            System.out.println(playerInformation.getPlayerAlias() + " has: " + playerResourceData.get(playerInformation).get(resource.getType()).getQuantity() + " " + resource.getType());
+            System.out.println(player.getAlias() + " has: " + playerResourceData.get(player).get(resource.getType()).getQuantity() + " " + resource.getType());
         } else {
             throw new PlayerNotFoundException("The player information given does not match any player information in the database");
         }
