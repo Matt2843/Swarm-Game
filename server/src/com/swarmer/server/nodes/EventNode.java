@@ -12,15 +12,12 @@ import java.util.ArrayList;
  */
 public class EventNode extends ServerNode {
 
-    private int eventNodeId;
-    private String eventNodeDescription;
     private ArrayList<Connection> connectedClients;
 
-    private static EventBank eventBank;
+    private EventBank eventBank;
 
-    public EventNode(int eventNodeId, String eventNodeDescription) {
-        this.eventNodeId = eventNodeId;
-        this.eventNodeDescription = eventNodeDescription;
+    public EventNode(String nodeDescription, int nodeId) {
+        super(nodeDescription, nodeId);
     }
 
     @Override public void run() {
@@ -38,6 +35,11 @@ public class EventNode extends ServerNode {
         if(!connectedClients.contains(client)) {
             connectedClients.add(client);
         }
+        try {
+            broadcast(new Message("Client: " + client.getClientIP() + " joined the event."));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void removeClient(Connection client) {
@@ -46,21 +48,7 @@ public class EventNode extends ServerNode {
         }
     }
 
-    @Override public String toString() {
-        return "EventNode{" +
-                "eventNodeId=" + eventNodeId +
-                ", eventNodeDescription='" + eventNodeDescription + '\'' +
-                '}';
+    public EventBank getEventBank() {
+        return eventBank;
     }
-
-    @Override public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        EventNode eventNode = (EventNode) o;
-
-        if (eventNodeId != eventNode.eventNodeId) return false;
-        return eventNodeDescription != null ? eventNodeDescription.equals(eventNode.eventNodeDescription) : eventNode.eventNodeDescription == null;
-    }
-
 }

@@ -5,6 +5,10 @@ package com.swarmer.server.nodes;
  */
 public class GreetingNode extends ServerNode {
 
+    public GreetingNode(String nodeDescription, int nodeId) {
+        super(nodeDescription, nodeId);
+    }
+
     // TODO: First client server contact, Establish connection
 
 

@@ -5,6 +5,10 @@ package com.swarmer.server.nodes;
  */
 public class AuthenticationNode extends ServerNode {
 
+    public AuthenticationNode(String nodeDescription, int nodeId) {
+        super(nodeDescription, nodeId);
+    }
+
     // TODO: Authenticate user credentials
 
 }

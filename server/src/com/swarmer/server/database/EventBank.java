@@ -67,25 +67,29 @@ public class EventBank implements Serializable {
 
     public void removeResourceFromPlayer(PlayerInformation playerInformation, Resource resource, int quantity) throws PlayerNotFoundException {
         if(playerResourceData.containsKey(playerInformation)) {
-            playerResourceData.get(playerInformation).get(resource.getType()).removeQuantity(quantity);
+            if(playerResourceData.get(playerInformation).get(resource.getType()).getQuantity() > quantity) {
+                playerResourceData.get(playerInformation).get(resource.getType()).removeQuantity(quantity);
+            } else playerResourceData.get(playerInformation).get(resource.getType()).setQuantity(0);
+            System.out.println(playerInformation.getPlayerAlias() + " has: " + playerResourceData.get(playerInformation).get(resource.getType()).getQuantity() + " " + resource.getType());
         } else {
             throw new PlayerNotFoundException("The player information given does not match any player information in the database.");
         }
     }
 
-    public void addResourceToPlayer(PlayerInformation player, Resource resource, int quantity) throws PlayerNotFoundException {
-        if(playerResourceData.containsKey(player)) {
-            if(playerResourceData.get(player).values().contains(resource.getType())) { // Not sure about this check.
-                playerResourceData.get(player).get(resource.getType()).addQuantity(quantity);
+    public void addResourceToPlayer(PlayerInformation playerInformation, Resource resource, int quantity) throws PlayerNotFoundException {
+        if(playerResourceData.containsKey(playerInformation)) {
+            if(playerResourceData.get(playerInformation).containsValue(resource)) {
+                playerResourceData.get(playerInformation).get(resource.getType()).addQuantity(quantity);
             } else {
                 switch(resource.getType()) {
                     case "Food":
-                        playerResourceData.get(player).put("Food", new Food(quantity));
+                        playerResourceData.get(playerInformation).put("Food", new Food(quantity));
                         break;
                     default:
                         break;
                 }
             }
+            System.out.println(playerInformation.getPlayerAlias() + " has: " + playerResourceData.get(playerInformation).get(resource.getType()).getQuantity() + " " + resource.getType());
         } else {
             throw new PlayerNotFoundException("The player information given does not match any player information in the database");
         }

@@ -3,21 +3,16 @@ package com.swarmer.shared.resources;
 public abstract class Resource {
 	
 	private int quantity;
-	private String type = null;
+
+	public Resource() {
+		this.quantity = 0;
+	}
 	
 	public Resource(int quantity) {
 		this.quantity = quantity;
 	}
-	
-	public void setType(String type) {
-		this.type = type;
-	}
 
-	;
-
-	public String getType() {
-		return this.type;
-	}
+	public abstract String getType();
 
 	public int getQuantity() {
 		return quantity;
@@ -28,7 +23,7 @@ public abstract class Resource {
 	}
 
 	public void removeQuantity(int quantity) {
-		if(this.quantity > 0 + quantity) {
+		if (this.quantity > 0 + quantity) {
 			this.quantity -= quantity;
 		}
 	}
@@ -38,18 +33,13 @@ public abstract class Resource {
 	}
 
 	@Override public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-
-		Resource resource = (Resource) o;
-
-		if (quantity != resource.quantity) return false;
-		return type != null ? type.equals(resource.type) : resource.type == null;
+		Resource that = (Resource) o;
+		if(this.getType() == that.getType())
+			return true;
+		return false;
 	}
 
 	@Override public int hashCode() {
-		int result = quantity;
-		result = 31 * result + (type != null ? type.hashCode() : 0);
-		return result;
+		return quantity;
 	}
 }
