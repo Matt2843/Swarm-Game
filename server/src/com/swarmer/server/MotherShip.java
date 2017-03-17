@@ -1,8 +1,11 @@
 package com.swarmer.server;
 
 import com.swarmer.server.database.ServerDatabase;
+import com.swarmer.server.nodes.AuthenticationNode;
 import com.swarmer.server.nodes.EventNode;
+import com.swarmer.server.nodes.GreetingNode;
 import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.exceptions.UnkownServerNodeException;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -15,18 +18,10 @@ public class MotherShip extends Thread {
 	private final int port;
 	
 	private boolean running = true;
-
-
 	
 	public MotherShip(int port) {
 		this.port = port;
 		ServerDatabase.initializeDatabase();
-	}
-
-	public void createEventNode(String eventNodeDescription, int eventNodeId) {
-		EventNode eventNode = new EventNode(eventNodeDescription, eventNodeId);
-		eventNode.start();
-		ServerDatabase.serverNodes.put(eventNodeId, eventNode);
 	}
 	
 	@Override public void run() {
@@ -65,6 +60,12 @@ public class MotherShip extends Thread {
 	public static void main(String[] args) {
 		MotherShip ms = new MotherShip(1234);
 		ms.start();
-		ms.createEventNode("Test Node", 1234);
+		try {
+			ServerDatabase.createServerNode(new GreetingNode());
+			ServerDatabase.createServerNode(new AuthenticationNode());
+			ServerDatabase.createServerNode(new EventNode());
+		} catch (UnkownServerNodeException e) {
+			e.printStackTrace();
+		}
 	}
 }

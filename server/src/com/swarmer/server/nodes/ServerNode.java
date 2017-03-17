@@ -1,6 +1,8 @@
 package com.swarmer.server.nodes;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by Matt on 03/16/2017.
@@ -8,32 +10,40 @@ import java.io.Serializable;
 public abstract class ServerNode extends Thread implements Serializable {
 
     private static final long serialVersionUID = -234873247238948932L;
+    private String nodeId;
 
-    protected String nodeDescription;
-    protected int nodeId;
+    private ArrayList<ServerNode> parents;
+    private ArrayList<ServerNode> children;
 
-    public ServerNode(String nodeDescription, int nodeId) {
-        this.nodeDescription = nodeDescription;
-        this.nodeId = nodeId;
+    protected ServerNode() {
+        nodeId = UUID.randomUUID().toString();
     }
 
-    @Override public boolean equals(Object o) {
+    public abstract String getDescription();
+
+    public String getNodeId() {
+        return nodeId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         ServerNode that = (ServerNode) o;
 
-        return nodeId == that.nodeId;
+        return nodeId != null ? nodeId.equals(that.nodeId) : that.nodeId == null;
     }
 
-    @Override public int hashCode() {
-        return nodeId;
+    @Override
+    public int hashCode() {
+        return nodeId != null ? nodeId.hashCode() : 0;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "ServerNode{" +
-                "nodeDescription='" + nodeDescription + '\'' +
-                ", nodeId=" + nodeId +
+                "nodeId='" + nodeId + '\'' +
                 '}';
     }
 }

@@ -9,7 +9,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class GameClient extends Thread {
+public final class GameClient extends Thread {
 	
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
@@ -20,27 +20,20 @@ public class GameClient extends Thread {
 	private Socket client;
 	
 	public GameClient() {
-		
-	}
-
-	public GameClient(String host, int port) {
-		this.host = host;
-		this.port = port;
-
+		// DO NOT INSTANTIATE THIS CLASS
 	}
 	
 	@Override public void run() {
 		try {
 			connectToService();
 			setupStreams();
-			sendMessage(new Message("JOIN"));
-			sendMessage(new Message("ADD5"));
-			sendMessage(new Message("ADD5"));
-			sendMessage(new Message("SUB5"));
+			whileConnected();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
-		whileConnected();
+
 	}
 	
 	public void sendMessage(Message m) throws IOException {
@@ -48,17 +41,11 @@ public class GameClient extends Thread {
 		output.flush();
 	}
 	
-	private void whileConnected() {
+	private void whileConnected() throws IOException, ClassNotFoundException {
 		Message message = null;
 		do {
-			try {
-				message = (Message) input.readObject();
-				System.out.println(message.getMessage());
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
+			message = (Message) input.readObject();
+			System.out.println(message.getMessage());
 		} while(!message.getMessage().equals("STOPCONNECTION"));
 	}
 	

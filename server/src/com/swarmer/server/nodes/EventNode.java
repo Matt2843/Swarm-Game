@@ -16,8 +16,8 @@ public class EventNode extends ServerNode {
 
     private EventBank eventBank;
 
-    public EventNode(String nodeDescription, int nodeId) {
-        super(nodeDescription, nodeId);
+    public EventNode() {
+        super();
     }
 
     @Override public void run() {
@@ -50,5 +50,11 @@ public class EventNode extends ServerNode {
 
     public EventBank getEventBank() {
         return eventBank;
+    }
+
+
+    @Override
+    public String getDescription() {
+        return "EventNode";
     }
 }

@@ -1,8 +1,14 @@
 package com.swarmer.server.database;
 
+import com.sun.istack.internal.NotNull;
+import com.swarmer.server.nodes.AuthenticationNode;
+import com.swarmer.server.nodes.EventNode;
+import com.swarmer.server.nodes.GreetingNode;
 import com.swarmer.server.nodes.ServerNode;
 import com.swarmer.shared.communication.Player;
+import com.swarmer.shared.exceptions.UnkownServerNodeException;
 
+import java.awt.*;
 import java.io.*;
 import java.util.HashMap;
 
@@ -12,7 +18,7 @@ import java.util.HashMap;
 public class ServerDatabase {
 
     public static HashMap<Player, String> playerDatabase;
-    public static HashMap<Integer, ServerNode> serverNodes;
+    public static HashMap<String, ServerNode> serverNodes;
 
     private ServerDatabase() {
         // PREVENT INSTANTIATION.
@@ -33,7 +39,18 @@ public class ServerDatabase {
         String path = "data/PlayerDatabase.db";
         playerDatabase = (HashMap<Player, String>) (new File(path).exists() ? readFileToObject(path) : new HashMap<>());
         path = "data/ServerNodes.db";
-        serverNodes = (HashMap<Integer, ServerNode>) (new File(path).exists() ? readFileToObject(path) : new HashMap<>());
+        serverNodes = (HashMap<String, ServerNode>) (new File(path).exists() ? readFileToObject(path) : new HashMap<>());
+    }
+
+    public static void createServerNode(ServerNode serverNode) throws UnkownServerNodeException {
+        if(serverNode instanceof EventNode
+                ||  serverNode instanceof AuthenticationNode
+                ||  serverNode instanceof GreetingNode) {
+            serverNode.start();
+            serverNodes.put(serverNode.getNodeId(), serverNode);
+        } else {
+            throw new UnkownServerNodeException();
+        }
     }
 
     private static Object readFileToObject(String path) throws IOException, ClassNotFoundException {
