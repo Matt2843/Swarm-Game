@@ -1,14 +1,12 @@
 package com.swarmer.server.database;
 
-import com.sun.istack.internal.NotNull;
 import com.swarmer.server.nodes.AuthenticationNode;
-import com.swarmer.server.nodes.EventNode;
+import com.swarmer.server.nodes.GameNode;
 import com.swarmer.server.nodes.GreetingNode;
 import com.swarmer.server.nodes.ServerNode;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.exceptions.UnkownServerNodeException;
 
-import java.awt.*;
 import java.io.*;
 import java.util.HashMap;
 
@@ -43,7 +41,7 @@ public class ServerDatabase {
     }
 
     public static void createServerNode(ServerNode serverNode) throws UnkownServerNodeException {
-        if(serverNode instanceof EventNode
+        if(serverNode instanceof GameNode
                 ||  serverNode instanceof AuthenticationNode
                 ||  serverNode instanceof GreetingNode) {
             serverNode.start();

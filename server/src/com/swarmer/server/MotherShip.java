@@ -2,9 +2,8 @@ package com.swarmer.server;
 
 import com.swarmer.server.database.ServerDatabase;
 import com.swarmer.server.nodes.AuthenticationNode;
-import com.swarmer.server.nodes.EventNode;
+import com.swarmer.server.nodes.GameNode;
 import com.swarmer.server.nodes.GreetingNode;
-import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.exceptions.UnkownServerNodeException;
 
 import java.io.IOException;
@@ -63,7 +62,7 @@ public class MotherShip extends Thread {
 		try {
 			ServerDatabase.createServerNode(new GreetingNode());
 			ServerDatabase.createServerNode(new AuthenticationNode());
-			ServerDatabase.createServerNode(new EventNode());
+			ServerDatabase.createServerNode(new GameNode());
 		} catch (UnkownServerNodeException e) {
 			e.printStackTrace();
 		}

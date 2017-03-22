@@ -10,14 +10,14 @@ import java.util.ArrayList;
 /**
  * Created by Matt on 03/16/2017.
  */
-public class EventNode extends ServerNode {
+public class GameNode extends ServerNode {
 
     private ArrayList<Connection> connectedClients;
 
     private EventBank eventBank;
 
-    public EventNode() {
-        super();
+    public GameNode(ArrayList<ServerNode> parents){
+        super(parents);
     }
 
     @Override public void run() {
@@ -55,6 +55,6 @@ public class EventNode extends ServerNode {
 
     @Override
     public String getDescription() {
-        return "EventNode";
+        return "GameNode";
     }
 }

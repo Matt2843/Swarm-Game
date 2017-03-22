@@ -1,7 +1,7 @@
 package com.swarmer.server;
 
 import com.swarmer.server.database.ServerDatabase;
-import com.swarmer.server.nodes.EventNode;
+import com.swarmer.server.nodes.GameNode;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.exceptions.PlayerAlreadyExistsException;
@@ -51,14 +51,14 @@ public class Connection extends Thread {
 	private void react(Message message) throws PlayerNotFoundException, PlayerAlreadyExistsException {
 		switch (message.getMessage()) {
 			case "JOIN":
-				((EventNode)ServerDatabase.serverNodes.get(1234)).addClient(this);
-				((EventNode)ServerDatabase.serverNodes.get(1234)).getEventBank().addNewPlayer(player);
+				((GameNode)ServerDatabase.serverNodes.get(1234)).addClient(this);
+				((GameNode)ServerDatabase.serverNodes.get(1234)).getEventBank().addNewPlayer(player);
 				break;
 			case "ADD5":
-				((EventNode)ServerDatabase.serverNodes.get(1234)).getEventBank().addResourceToPlayer(player, new Food(), 5);
+				((GameNode)ServerDatabase.serverNodes.get(1234)).getEventBank().addResourceToPlayer(player, new Food(), 5);
 				break;
 			case "SUB5":
-				((EventNode)ServerDatabase.serverNodes.get(1234)).getEventBank().removeResourceFromPlayer(player, new Food(), 5);
+				((GameNode)ServerDatabase.serverNodes.get(1234)).getEventBank().removeResourceFromPlayer(player, new Food(), 5);
 				break;
 			default:
 				break;

@@ -19,6 +19,11 @@ public abstract class ServerNode extends Thread implements Serializable {
         nodeId = UUID.randomUUID().toString();
     }
 
+    protected ServerNode(ArrayList<ServerNode> parents) {
+        nodeId = UUID.randomUUID().toString();
+        this.parents = parents != null ? parents : new ArrayList<ServerNode>();
+    }
+
     public abstract String getDescription();
 
     public String getNodeId() {
@@ -45,5 +50,21 @@ public abstract class ServerNode extends Thread implements Serializable {
         return "ServerNode{" +
                 "nodeId='" + nodeId + '\'' +
                 '}';
+    }
+
+    public void setParents(ArrayList<ServerNode> parents) {
+        this.parents = parents;
+    }
+
+    public void setChildren(ArrayList<ServerNode> children) {
+        this.children = children;
+    }
+
+    public ArrayList<ServerNode> getParents() {
+        return parents;
+    }
+
+    public ArrayList<ServerNode> getChildren() {
+        return children;
     }
 }
