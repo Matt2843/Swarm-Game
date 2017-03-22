@@ -13,12 +13,7 @@ import java.util.ArrayList;
 public class GameNode extends ServerNode {
 
     private ArrayList<Connection> connectedClients;
-
     private EventBank eventBank;
-
-    public GameNode(ArrayList<ServerNode> parents){
-        super(parents);
-    }
 
     @Override public void run() {
         eventBank = new EventBank();
@@ -52,6 +47,9 @@ public class GameNode extends ServerNode {
         return eventBank;
     }
 
+    @Override public String generateInsertQuery() {
+        return "INSERT INTO game_nodes (id) VALUES ('" + getNodeId() + "')";
+    }
 
     @Override
     public String getDescription() {
