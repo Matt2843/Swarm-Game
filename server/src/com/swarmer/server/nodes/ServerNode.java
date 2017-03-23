@@ -15,7 +15,7 @@ import java.util.UUID;
  */
 public abstract class ServerNode extends Thread implements Serializable {
 
-    private static int usersConnected = 0;
+    public static int usersConnected = 0;
     private static List<Connection> activeConnections;
 
     private static final long serialVersionUID = 1L;
@@ -24,16 +24,23 @@ public abstract class ServerNode extends Thread implements Serializable {
     public ServerNode() {
         nodeId = UUID.randomUUID().toString();
         activeConnections = new ArrayList<>();
-        addNodeToDatabase();
-    }
 
-    private void addNodeToDatabase() {
         try {
             MotherShip.addNode(this);
         } catch (UnkownServerNodeException e) {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override public void run() {
+        while(true) {
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -55,24 +62,14 @@ public abstract class ServerNode extends Thread implements Serializable {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ServerNode that = (ServerNode) o;
-
-        return nodeId != null ? nodeId.equals(that.nodeId) : that.nodeId == null;
-    }
-
-    @Override
     public int hashCode() {
         return nodeId != null ? nodeId.hashCode() : 0;
     }
 
     @Override
     public String toString() {
-        return "ServerNode{" +
-                "nodeId='" + nodeId + '\'' +
+        return super.toString() + " -- ServerNode{" +
+                "nodeId='" + nodeId + '\'' + " " + getDescription() +
                 '}';
     }
 }

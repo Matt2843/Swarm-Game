@@ -19,7 +19,7 @@ public class AuthenticationNode extends ServerNode {
     }
 
     @Override public String generateInsertQuery() {
-        return "INSERT INTO authentication_nodes (id) VALUES ('" + getNodeId() + "')";
+        return "INSERT INTO authentication_nodes (id, user_count) VALUES ('" + getNodeId() + "'," + usersConnected + ")";
     }
 
     @Override

@@ -7,8 +7,11 @@ import com.swarmer.shared.exceptions.UnkownServerNodeException;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 public class MotherShip {
+
+	private static HashMap<String, ServerNode> allActiveNodes;
 
 	private static java.sql.Connection mySqlConnection;
 	private final String sqlServerIp;
@@ -18,8 +21,10 @@ public class MotherShip {
 		new AcceptConnections(1111).start();
 		this.sqlServerIp = sqlServerIp;
 		this.port = port;
+
+		allActiveNodes = new HashMap<>();
 		try {
-			mySqlConnection = DriverManager.getConnection("jdbc:mysql:/" + sqlServerIp + ":" + port + "/swarmer", "root", "");
+			mySqlConnection = DriverManager.getConnection("jdbc:mysql://" + sqlServerIp + ":" + port + "/swarmer", "root", "");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -31,6 +36,7 @@ public class MotherShip {
 
 	public static void addNode(ServerNode node) throws UnkownServerNodeException, SQLException {
 		mySqlConnection.createStatement().executeUpdate(node.generateInsertQuery());
+		allActiveNodes.put(node.getNodeId(), node);
 	}
 
 	public static void main(String[] args) {
@@ -39,7 +45,9 @@ public class MotherShip {
 		 * The following code sets up 2 default nodes (which are needed for the network architecture to work).
 		 */
 
-		AuthenticationNode defAuthenticatioNode = new AuthenticationNode();
-		LobbyNode defLobbyNode = new LobbyNode();
+		new AuthenticationNode().start();
+		new LobbyNode().start();
+
+		getNextNode();
 	}
 }

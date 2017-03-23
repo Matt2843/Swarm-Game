@@ -48,7 +48,7 @@ public class GameNode extends ServerNode {
     }
 
     @Override public String generateInsertQuery() {
-        return "INSERT INTO game_nodes (id) VALUES ('" + getNodeId() + "')";
+        return "INSERT INTO game_nodes (id, user_count) VALUES ('" + getNodeId() + "'," + usersConnected + ")";
     }
 
     @Override

@@ -34,7 +34,7 @@ public class AcceptConnections extends Thread {
     private void waitForConnection() throws IOException {
         while(running) {
             connection = server.accept();
-            Connection newCon = new Connection(connection, MotherShip.getNextNode());
+            Connection newCon = new Connection(connection, null);
             newCon.start();
         }
     }

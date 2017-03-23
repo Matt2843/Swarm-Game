@@ -42,8 +42,7 @@ public class ServerDatabase {
 
     public static void createServerNode(ServerNode serverNode) throws UnkownServerNodeException {
         if(serverNode instanceof GameNode
-                ||  serverNode instanceof AuthenticationNode
-                ||  serverNode instanceof AcceptConnections) {
+                ||  serverNode instanceof AuthenticationNode) {
             serverNode.start();
             serverNodes.put(serverNode.getNodeId(), serverNode);
         } else {
