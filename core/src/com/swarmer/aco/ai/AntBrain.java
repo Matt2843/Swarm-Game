@@ -15,8 +15,7 @@ public class AntBrain {
 	
 	private float C1 = 0.8f;
 	private float c1;
-	
-	private Boolean bool = false;
+
 	private String state = "Seek";
 	private Edge previousEdge;
 	private Edge nextEdge;
@@ -46,13 +45,8 @@ public class AntBrain {
 				break;
 			}
 		}
-		
-		//if(bool){
-		//	nextEdge = previousEdge;
-		//	bool = false;
-		//} else {
-			nextEdge = currentNode.getConnectedEdges().get(decision);
-		//}
+
+		nextEdge = currentNode.getConnectedEdges().get(decision);
 		
 		previousNode = currentNode;
 		currentNode = nextEdge.getNode();
@@ -60,13 +54,11 @@ public class AntBrain {
 		if(currentNode.hasResource() && currentNode.getResource().getQuantity() > 0) {
 			c1 = 1f;
 			state = "Returning";
-			bool = true;
 		}
 		
 		if(currentNode.isHome(PLAYER_ID)) {
 			c1 = C1;
 			state = "Seek";
-			bool = false;
 		}
 		
 		if(state.equals("Returning")){
