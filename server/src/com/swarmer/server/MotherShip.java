@@ -27,7 +27,7 @@ public class MotherShip extends Thread {
 		this.port = port;
 		try {
 
-			mySqlConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/swarmer", "root", "");
+			mySqlConnection = DriverManager.getConnection("jdbc:mysql://90.184.152.225:3306/swarmer", "georg", "123");
 
 		} catch (SQLException e) {
 			e.printStackTrace();
