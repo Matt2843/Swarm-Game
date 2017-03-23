@@ -18,7 +18,8 @@ public class Ant {
 	private float y;
 	private float food;
 
-	private float speed = 1f;
+	private float speed = 100f;
+	private float zero  = speed / 5;
 
 	private AntBrain brain;
 
@@ -52,8 +53,8 @@ public class Ant {
 								,{"running_up", "stance_down", "running_down"}
 								,{"running_up_right", "running_right", "running_down_right"}};
 
-		int i = velocity.x > 10 ? 2 : (velocity.x < -10 ? 0 : 1);
-		int j = velocity.y > 10 ? 0 : (velocity.y < -10 ? 2 : 1);
+		int i = velocity.x > zero ? 2 : (velocity.x < -zero ? 0 : 1);
+		int j = velocity.y > zero ? 0 : (velocity.y < -zero ? 2 : 1);
 
 		AnimationLibrary.antAnimation.get(directions[i][j]).draw(batch, stateTime, getX(), getY());
 	}
@@ -67,13 +68,15 @@ public class Ant {
 			return;
 		}
 
-		velocity.x = (desiredPosition.x - getX()) * speed;
-		velocity.y = (desiredPosition.y - getY()) * speed;
+		velocity.x = desiredPosition.x - getX();
+		velocity.y = desiredPosition.y - getY();
+
+		velocity.setLength(speed);
 
 		setX(getX() + velocity.x * delta);
 		setY(getY() + velocity.y * delta);
 
-		if(Math.round(getX() - desiredPosition.x) == 0 && Math.round(getY() - desiredPosition.y) == 0) {
+		if(Math.abs(Math.round(getX() - desiredPosition.x)) < 10 && Math.abs(Math.round(getY() - desiredPosition.y)) < 10) {
 			desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(brain.determineNextPath().getNode().getPosition());
 			food -= 1;
 		}
