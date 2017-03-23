@@ -47,16 +47,14 @@ public class Ant {
 
 		if (food <= 0) {
 			animation = "die_down";
+		} else {
+			String[][] directions = {{"running_up_left", "running_left", "running_down_left"}, {"running_up", "stance_down", "running_down"}, {"running_up_right", "running_right", "running_down_right"}};
+
+			int i = velocity.x > zero ? 2 : (velocity.x < -zero ? 0 : 1);
+			int j = velocity.y > zero ? 0 : (velocity.y < -zero ? 2 : 1);
+			animation = directions[i][j];
 		}
-
-		String[][] directions = {{"running_up_left", "running_left", "running_down_left"}
-								,{"running_up", "stance_down", "running_down"}
-								,{"running_up_right", "running_right", "running_down_right"}};
-
-		int i = velocity.x > zero ? 2 : (velocity.x < -zero ? 0 : 1);
-		int j = velocity.y > zero ? 0 : (velocity.y < -zero ? 2 : 1);
-
-		AnimationLibrary.antAnimation.get(directions[i][j]).draw(batch, stateTime, getX(), getY());
+		AnimationLibrary.antAnimation.get(animation).draw(batch, stateTime, getX(), getY());
 	}
 
 	private void update(float delta) {
