@@ -20,6 +20,7 @@ public class Ant {
 
 	private float speed = 100f;
 	private float zero  = speed / 5;
+	private String animation;
 
 	private AntBrain brain;
 
@@ -42,8 +43,6 @@ public class Ant {
 		float delta = Gdx.graphics.getDeltaTime();
 		stateTime += delta;
 		update(delta);
-
-		String animation = "stance_down";
 
 		if (food <= 0) {
 			animation = "die_down";
