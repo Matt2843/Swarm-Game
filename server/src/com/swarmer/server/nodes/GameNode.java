@@ -31,7 +31,7 @@ public class GameNode extends ServerNode {
             connectedClients.add(client);
         }
         try {
-            broadcast(new Message("Client: " + client.getClientIP() + " joined the event."));
+            broadcast(new Message("Client: " + client.getClientIp() + " joined the event."));
         } catch (IOException e) {
             e.printStackTrace();
         }

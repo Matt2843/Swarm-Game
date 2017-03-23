@@ -18,7 +18,7 @@ public abstract class ServerNode extends Thread implements Serializable {
     private static int usersConnected = 0;
     private static List<Connection> activeConnections;
 
-    private static final long serialVersionUID = -234873247238948932L;
+    private static final long serialVersionUID = 1L;
     private String nodeId;
 
     public ServerNode() {
@@ -39,7 +39,7 @@ public abstract class ServerNode extends Thread implements Serializable {
 
     public static void removeConnection(Connection connection) {
         activeConnections.remove(connection);
-        usersConnected -= 1;
+        if(usersConnected > 0) usersConnected -= 1;
     }
 
     public static void addConnection(Connection connection) {

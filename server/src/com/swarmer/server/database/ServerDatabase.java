@@ -2,7 +2,7 @@ package com.swarmer.server.database;
 
 import com.swarmer.server.nodes.AuthenticationNode;
 import com.swarmer.server.nodes.GameNode;
-import com.swarmer.server.nodes.GreetingNode;
+import com.swarmer.server.AcceptConnections;
 import com.swarmer.server.nodes.ServerNode;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.exceptions.UnkownServerNodeException;
@@ -43,7 +43,7 @@ public class ServerDatabase {
     public static void createServerNode(ServerNode serverNode) throws UnkownServerNodeException {
         if(serverNode instanceof GameNode
                 ||  serverNode instanceof AuthenticationNode
-                ||  serverNode instanceof GreetingNode) {
+                ||  serverNode instanceof AcceptConnections) {
             serverNode.start();
             serverNodes.put(serverNode.getNodeId(), serverNode);
         } else {

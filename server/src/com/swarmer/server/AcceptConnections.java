@@ -1,6 +1,7 @@
-package com.swarmer.server.nodes;
+package com.swarmer.server;
 
 import com.swarmer.server.Connection;
+import com.swarmer.server.MotherShip;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -9,7 +10,7 @@ import java.net.Socket;
 /**
  * Created by Matt on 03/16/2017.
  */
-public class GreetingNode extends ServerNode {
+public class AcceptConnections extends Thread {
 
     private ServerSocket server;
     private Socket connection;
@@ -17,7 +18,7 @@ public class GreetingNode extends ServerNode {
 
     private boolean running = true;
 
-    public GreetingNode(int port) {
+    public AcceptConnections(int port) {
         this.port = port;
     }
 
@@ -33,21 +34,10 @@ public class GreetingNode extends ServerNode {
     private void waitForConnection() throws IOException {
         while(running) {
             connection = server.accept();
-            Connection newCon = new Connection(connection, this);
+            Connection newCon = new Connection(connection, MotherShip.getNextNode());
             newCon.start();
         }
     }
-
-    @Override public String generateInsertQuery() {
-        return "INSERT INTO greeting_nodes (id) VALUES ('" + getNodeId() + "')";
-    }
-
-    @Override
-    public String getDescription() {
-        return "GreetingNode";
-    }
-
     // TODO: First client server contact, Establish connection
-
 
 }
