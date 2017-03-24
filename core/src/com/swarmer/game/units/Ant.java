@@ -19,6 +19,10 @@ public class Ant {
 	private float y;
 	private float food;
 
+	private float speed = 100f;
+	private float zero  = speed / 5;
+	private String animation;
+
 	private AntBrain brain;
 
 	private Vector2 desiredPosition;
@@ -41,40 +45,19 @@ public class Ant {
 		stateTime += delta;
 		update(delta);
 
-		String animation = "stance_down";
-
 		if (food <= 0) {
 			animation = "die_down";
-		}
+		} else {
+			String[][] directions = {{"running_up_left", "running_left", "running_down_left"}, {"running_up", "stance_down", "running_down"}, {"running_up_right", "running_right", "running_down_right"}};
 
-		if(velocity.x > 0 && velocity.y > 0) {
-			animation = "running_up_right";
-		} else if(velocity.x > 0 && velocity.y == 0) {
-			animation = "running_right";
-		} else if(velocity.x > 0 && velocity.y < 0) {
-			animation = "running_down_right";
-		} else if(velocity.x == 0 && velocity.y < 0) {
-			animation = "running_down";
-		} else if(velocity.x < 0 && velocity.y < 0) {
-			animation = "running_down_left";
-		} else if(velocity.x < 0 && velocity.y == 0) {
-			animation = "running_left";
-		} else if(velocity.x < 0 && velocity.y > 0) {
-			animation = "running_up_left";
-		} else if(velocity.x == 0 && velocity.y > 0) {
-			animation = "running_up";
+			int i = velocity.x > zero ? 2 : (velocity.x < -zero ? 0 : 1);
+			int j = velocity.y > zero ? 0 : (velocity.y < -zero ? 2 : 1);
+			animation = directions[i][j];
 		}
-
 		AnimationLibrary.antAnimation.get(animation).draw(batch, stateTime, getX(), getY());
 	}
 
 	private void update(float delta) {
-
-		int speed = 80;
-
-		velocity.x = 0;
-		velocity.y = 0;
-
 		if(brain.getPreviousNode().getResource() != null) { // Ophiocordyceps unilateralis
 		//	return;
 		}
@@ -83,22 +66,15 @@ public class Ant {
 			return;
 		}
 
-		if(Math.round(getX()) < Math.round(desiredPosition.x)) {
-			velocity.x = speed;
-		} else if(Math.round(getX()) > Math.round(desiredPosition.x)) {
-			velocity.x = -speed;
-		}
+		velocity.x = desiredPosition.x - getX();
+		velocity.y = desiredPosition.y - getY();
 
-		if(Math.round(getY()) < Math.round(desiredPosition.y)) {
-			velocity.y = speed;
-		} else if(Math.round(getY()) > Math.round(desiredPosition.y)) {
-			velocity.y = -speed;
-		}
+		velocity.setLength(speed);
 
 		setX(getX() + velocity.x * delta);
 		setY(getY() + velocity.y * delta);
 
-		if(Math.abs(getX() - desiredPosition.x) < 10 && Math.abs(getY() - desiredPosition.y) < 10) {
+		if(Math.abs(Math.round(getX() - desiredPosition.x)) < 10 && Math.abs(Math.round(getY() - desiredPosition.y)) < 10) {
 			desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(brain.determineNextPath().getNode().getPosition());
 			food -= 1;
 		}

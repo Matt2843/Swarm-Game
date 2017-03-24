@@ -48,12 +48,12 @@ public class AntBrain {
 			}
 		}
 		
-		if(bool){
-			nextEdge = previousEdge;
-			bool = false;
-		} else {
+		//if(bool){
+		//	nextEdge = previousEdge;
+		//	bool = false;
+		//} else {
 			nextEdge = currentNode.getConnectedEdges().get(decision);
-		}
+		//}
 		
 		previousNode = currentNode;
 		currentNode = nextEdge.getNode();
