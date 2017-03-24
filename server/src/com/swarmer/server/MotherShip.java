@@ -23,7 +23,6 @@ public class MotherShip {
 	private final int port;
 
 	public MotherShip(String sqlServerIp, int port) {
-		new GreetingNode(1111).start();
 		this.sqlServerIp = sqlServerIp;
 		this.port = port;
 
@@ -33,6 +32,7 @@ public class MotherShip {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		new GreetingNode(1111).start();
 	}
 
 	/**
@@ -55,6 +55,8 @@ public class MotherShip {
 		} else throw new CorruptedDatabaseException();
 	}
 
+
+
 	public static void addNode(ServerNode node) throws UnkownServerNodeException, SQLException {
 		mySqlConnection.createStatement().executeUpdate(node.generateInsertQuery());
 		allActiveNodes.put(node.getNodeId(), node);
@@ -70,8 +72,7 @@ public class MotherShip {
 		 * The following code sets up 2 default nodes (which are needed for the network architecture to work).
 		 */
 
-		AuthenticationNode authenticationNode = new AuthenticationNode();
-		authenticationNode.start();
+		new AuthenticationNode().start();
 		new LobbyNode().start();
 		new LobbyNode().start();
 		new LobbyNode().start();

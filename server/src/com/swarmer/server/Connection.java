@@ -1,5 +1,6 @@
 package com.swarmer.server;
 
+import com.swarmer.server.nodes.AuthenticationNode;
 import com.swarmer.server.nodes.ServerNode;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
@@ -43,8 +44,8 @@ public class Connection extends Thread {
 
 	private void react(Message message) {
 		switch (message.getMessage()) {
-			case "LOBBY":
-
+			case "test":
+				((AuthenticationNode) attachedNode).authenticateUser();
 				break;
 			default:
 				break;

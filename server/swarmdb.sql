@@ -26,3 +26,11 @@ CREATE TABLE game_nodes(
 	user_count INT UNSIGNED NOT NULL,
 	PRIMARY KEY(id)
 );
+
+DROP TABLE IF EXISTS user_information;
+CREATE TABLE user_information(
+  id VARCHAR(255) NOT NULL,
+	user_name VARCHAR(255) NOT NULL,
+	user_password VARCHAR(255) NOT NULL,
+	PRIMARY KEY(id)
+);

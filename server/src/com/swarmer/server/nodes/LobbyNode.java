@@ -5,6 +5,10 @@ package com.swarmer.server.nodes;
  */
 public class LobbyNode extends ServerNode {
 
+    public LobbyNode() {
+        addNodeToMothership();
+    }
+
     @Override public String generateInsertQuery() {
         return "INSERT INTO lobby_nodes (id, user_count) VALUES ('" + getNodeId() + "'," + usersConnected + ")";
     }

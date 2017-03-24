@@ -7,6 +7,10 @@ import com.swarmer.shared.communication.Player;
  */
 public class AuthenticationNode extends ServerNode {
 
+    public AuthenticationNode() {
+        addNodeToMothership();
+    }
+
     public void addPlayer(Player player, String hashedPassword) {
 
     }

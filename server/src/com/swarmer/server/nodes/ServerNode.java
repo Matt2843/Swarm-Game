@@ -2,8 +2,10 @@ package com.swarmer.server.nodes;
 
 import com.swarmer.server.Connection;
 import com.swarmer.server.MotherShip;
+import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.exceptions.UnkownServerNodeException;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,15 +18,17 @@ import java.util.UUID;
 public abstract class ServerNode extends Thread implements Serializable {
 
     public static int usersConnected = 0;
-    private static List<Connection> activeConnections;
+    protected static List<Connection> activeConnections;
 
     private static final long serialVersionUID = 1L;
     private String nodeId;
 
-    public ServerNode() {
+    protected ServerNode() {
         nodeId = UUID.randomUUID().toString();
         activeConnections = new ArrayList<>();
+    }
 
+    protected void addNodeToMothership() {
         try {
             MotherShip.addNode(this);
         } catch (UnkownServerNodeException e) {
@@ -41,6 +45,12 @@ public abstract class ServerNode extends Thread implements Serializable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    protected void broadcast(Message message) throws IOException {
+        for(Connection con : activeConnections) {
+            con.sendMessage(message);
         }
     }
 
