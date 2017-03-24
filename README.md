@@ -5,4 +5,4 @@ A multiplayer experience where people are in charge of a colony, and providing f
 The game will be built as a mobile application, using web servers to handle the critical logic and by that preventing cheating. We plan to keep track of every player and the players can check rankings and profile information on a website. The application database will be built on the shared memory concept of tuple spaces.
 
 
-##Ants
+## Ants
