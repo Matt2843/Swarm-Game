@@ -93,12 +93,15 @@ project(":server") {
         compile project(":shared")
         compile "com.sparkjava:spark-core:$sparkVersion"
         compile "com.sparkjava:spark-template-handlebars:$sparkVersion"
+        compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
     }
 }
 
 project(":shared") {
     apply plugin: "java"
 }
+
+defaultTasks 'flywayMigrate'
 
 tasks.eclipse.doLast {
     delete ".project"

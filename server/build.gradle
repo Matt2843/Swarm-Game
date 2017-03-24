@@ -1,3 +1,19 @@
+buildscript {
+    dependencies {
+        classpath 'org.flywaydb:flyway-core:4.1.2'
+    }
+}
+
+plugins {
+    id "org.flywaydb.flyway" version "4.1.2"
+}
+
+flyway {
+    url = 'jdbc:mysql://localhost/swarmer'
+    user = 'root'
+    password = ''
+}
+
 apply plugin: "java"
 
 targetCompatibility = 1.7
@@ -9,3 +25,5 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 eclipse.project {
     name = appName + "-server"
 }
+
+build.dependsOn(flywayMigrate)

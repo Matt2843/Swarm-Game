@@ -1,16 +1,21 @@
 package com.swarmer.server;
 
 import com.swarmer.server.database.ServerDatabase;
-import com.swarmer.server.nodes.AuthenticationNode;
-import com.swarmer.server.nodes.GameNode;
-import com.swarmer.server.nodes.GreetingNode;
+import com.swarmer.server.nodes.*;
 import com.swarmer.shared.exceptions.UnkownServerNodeException;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.TimeZone;
 
 public class MotherShip extends Thread {
+
+	public static java.sql.Connection mySqlConnection;
 
 	private ServerSocket server;
 	private Socket connection;
@@ -20,7 +25,17 @@ public class MotherShip extends Thread {
 	
 	public MotherShip(int port) {
 		this.port = port;
-		ServerDatabase.initializeDatabase();
+		try {
+
+			mySqlConnection = DriverManager.getConnection("jdbc:mysql://localhost/swarmer", "root", "");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void addNode(ServerNode node) throws UnkownServerNodeException, SQLException {
+		mySqlConnection.createStatement().executeUpdate(node.generateInsertQuery());
 	}
 	
 	@Override public void run() {
@@ -55,16 +70,15 @@ public class MotherShip extends Thread {
 		/*
 		* TODO: implement cleanUp method of server class!! */
 	}
+
+
 	
 	public static void main(String[] args) {
 		MotherShip ms = new MotherShip(1234);
 		ms.start();
-		try {
-			ServerDatabase.createServerNode(new GreetingNode());
-			ServerDatabase.createServerNode(new AuthenticationNode());
-			ServerDatabase.createServerNode(new GameNode());
-		} catch (UnkownServerNodeException e) {
-			e.printStackTrace();
-		}
+
+
+		LobbyNode ln = new LobbyNode();
+		GreetingNode gn = new GreetingNode();
 	}
 }
