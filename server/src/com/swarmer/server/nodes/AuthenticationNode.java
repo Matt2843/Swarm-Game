@@ -8,10 +8,6 @@ import com.swarmer.shared.communication.Player;
  */
 public class AuthenticationNode extends ServerNode {
 
-    public AuthenticationNode() {
-        super();
-    }
-
     public void addPlayer(Player player, String hashedPassword) {
         if(!ServerDatabase.playerDatabase.containsKey(player)) {
             ServerDatabase.playerDatabase.put(player, hashedPassword);
@@ -20,6 +16,10 @@ public class AuthenticationNode extends ServerNode {
 
     public void authenticateUser() {
         // TODO: Authenticate user credentials
+    }
+
+    @Override public String generateInsertQuery() {
+        return "INSERT INTO authentication_nodes (id) VALUES ('" + getNodeId() + "')";
     }
 
     @Override

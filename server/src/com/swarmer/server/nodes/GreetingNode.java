@@ -5,8 +5,8 @@ package com.swarmer.server.nodes;
  */
 public class GreetingNode extends ServerNode {
 
-    public GreetingNode() {
-        super();
+    @Override public String generateInsertQuery() {
+        return "INSERT INTO greeting_nodes (id) VALUES ('" + getNodeId() + "')";
     }
 
     @Override

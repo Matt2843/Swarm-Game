@@ -1,7 +1,10 @@
 package com.swarmer.server.nodes;
 
+import com.swarmer.server.MotherShip;
+import com.swarmer.shared.exceptions.UnkownServerNodeException;
+
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.UUID;
 
 /**
@@ -12,16 +15,21 @@ public abstract class ServerNode extends Thread implements Serializable {
     private static final long serialVersionUID = -234873247238948932L;
     private String nodeId;
 
-    private ArrayList<ServerNode> parents;
-    private ArrayList<ServerNode> children;
-
-    protected ServerNode() {
+    public ServerNode() {
         nodeId = UUID.randomUUID().toString();
+        addNodeToDatabase();
     }
 
-    protected ServerNode(ArrayList<ServerNode> parents) {
-        nodeId = UUID.randomUUID().toString();
-        this.parents = parents != null ? parents : new ArrayList<ServerNode>();
+    public abstract String generateInsertQuery();
+
+    private void addNodeToDatabase() {
+        try {
+            MotherShip.addNode(this);
+        } catch (UnkownServerNodeException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public abstract String getDescription();
@@ -50,21 +58,5 @@ public abstract class ServerNode extends Thread implements Serializable {
         return "ServerNode{" +
                 "nodeId='" + nodeId + '\'' +
                 '}';
-    }
-
-    public void setParents(ArrayList<ServerNode> parents) {
-        this.parents = parents;
-    }
-
-    public void setChildren(ArrayList<ServerNode> children) {
-        this.children = children;
-    }
-
-    public ArrayList<ServerNode> getParents() {
-        return parents;
-    }
-
-    public ArrayList<ServerNode> getChildren() {
-        return children;
     }
 }
