@@ -25,5 +25,3 @@ sourceSets.main.java.srcDirs = [ "src/" ]
 eclipse.project {
     name = appName + "-server"
 }
-
-build.dependsOn flywayMigrate
