@@ -13,4 +13,8 @@ public class LobbyNode extends ServerNode {
     public String getDescription() {
         return "Lobby Node";
     }
+
+    @Override public String nextInPrimitiveChain() {
+        return null;
+    }
 }

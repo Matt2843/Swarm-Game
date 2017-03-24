@@ -1,6 +1,5 @@
 package com.swarmer.server.nodes;
 
-import com.swarmer.server.database.ServerDatabase;
 import com.swarmer.shared.communication.Player;
 
 /**
@@ -9,9 +8,7 @@ import com.swarmer.shared.communication.Player;
 public class AuthenticationNode extends ServerNode {
 
     public void addPlayer(Player player, String hashedPassword) {
-        if(!ServerDatabase.playerDatabase.containsKey(player)) {
-            ServerDatabase.playerDatabase.put(player, hashedPassword);
-        }
+
     }
 
     public void authenticateUser() {
@@ -24,7 +21,11 @@ public class AuthenticationNode extends ServerNode {
 
     @Override
     public String getDescription() {
-        return "AuthenticationNode";
+        return "Authentication Node";
+    }
+
+    @Override public String nextInPrimitiveChain() {
+        return "lobby_nodes";
     }
 
 }

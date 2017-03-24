@@ -43,8 +43,8 @@ public class Connection extends Thread {
 
 	private void react(Message message) {
 		switch (message.getMessage()) {
-			case "":
-				// TODO: Implement custom protocol. CASE: Join Node of Type x.
+			case "LOBBY":
+
 				break;
 			default:
 				break;

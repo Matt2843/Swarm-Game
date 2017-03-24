@@ -53,6 +53,10 @@ public class GameNode extends ServerNode {
 
     @Override
     public String getDescription() {
-        return "GameNode";
+        return "Game Node";
+    }
+
+    @Override public String nextInPrimitiveChain() {
+        return null;
     }
 }

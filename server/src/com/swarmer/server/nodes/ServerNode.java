@@ -56,6 +56,7 @@ public abstract class ServerNode extends Thread implements Serializable {
 
     public abstract String generateInsertQuery();
     public abstract String getDescription();
+    public abstract String nextInPrimitiveChain();
 
     public String getNodeId() {
         return nodeId;

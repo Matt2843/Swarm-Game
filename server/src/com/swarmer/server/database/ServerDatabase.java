@@ -2,7 +2,6 @@ package com.swarmer.server.database;
 
 import com.swarmer.server.nodes.AuthenticationNode;
 import com.swarmer.server.nodes.GameNode;
-import com.swarmer.server.AcceptConnections;
 import com.swarmer.server.nodes.ServerNode;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.exceptions.UnkownServerNodeException;
