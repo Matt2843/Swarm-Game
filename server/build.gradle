@@ -26,4 +26,4 @@ eclipse.project {
     name = appName + "-server"
 }
 
-defaultTasks 'flywayMigrate'
+build.dependsOn(flywayMigrate)

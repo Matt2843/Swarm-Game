@@ -101,6 +101,8 @@ project(":shared") {
     apply plugin: "java"
 }
 
+defaultTasks 'flywayMigrate'
+
 tasks.eclipse.doLast {
     delete ".project"
 }
