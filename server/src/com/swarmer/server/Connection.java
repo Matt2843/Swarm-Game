@@ -1,33 +1,31 @@
 package com.swarmer.server;
 
-import com.swarmer.server.database.ServerDatabase;
-import com.swarmer.server.nodes.GameNode;
+import com.swarmer.server.nodes.AuthenticationNode;
+import com.swarmer.server.nodes.ServerNode;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
-import com.swarmer.shared.exceptions.PlayerAlreadyExistsException;
-import com.swarmer.shared.exceptions.PlayerNotFoundException;
-import com.swarmer.shared.resources.Food;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.UUID;
 
 public class Connection extends Thread {
 	
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
 	
-	private Socket client = null;
-	private String clientIP = "";
+	private Socket connection = null;
+	private String clientIp = "";
+
+	private ServerNode attachedNode;
 
 	private Player player;
 
-	public Connection(Socket connection) throws IOException {
-		client = connection;
-		clientIP = client.getRemoteSocketAddress().toString();
-		player = new Player(UUID.randomUUID().toString(), 333);
+	public Connection(Socket connection, ServerNode attachedNode) throws IOException {
+		this.connection = connection;
+		this.attachedNode = attachedNode;
+		clientIp = connection.getRemoteSocketAddress().toString();
 		setupStreams();
 	}
 
@@ -37,28 +35,17 @@ public class Connection extends Thread {
 		try {
 			do {
 				message = (Message) input.readObject();
-				try {
-					react(message);
-				} catch (PlayerAlreadyExistsException e) {
-					e.printStackTrace();
-				}
-			} while(!message.getMessage().equals("STOPSERVER"));
+				react(message);
+			} while(true); // TODO: CHANGE STOP CONDITION.
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void react(Message message) throws PlayerNotFoundException, PlayerAlreadyExistsException {
+	private void react(Message message) {
 		switch (message.getMessage()) {
-			case "JOIN":
-				((GameNode)ServerDatabase.serverNodes.get(1234)).addClient(this);
-				((GameNode)ServerDatabase.serverNodes.get(1234)).getEventBank().addNewPlayer(player);
-				break;
-			case "ADD5":
-				((GameNode)ServerDatabase.serverNodes.get(1234)).getEventBank().addResourceToPlayer(player, new Food(), 5);
-				break;
-			case "SUB5":
-				((GameNode)ServerDatabase.serverNodes.get(1234)).getEventBank().removeResourceFromPlayer(player, new Food(), 5);
+			case "test":
+				((AuthenticationNode) attachedNode).authenticateUser();
 				break;
 			default:
 				break;
@@ -71,12 +58,12 @@ public class Connection extends Thread {
 	}
 
 	private void setupStreams() throws IOException {
-		output = new ObjectOutputStream(client.getOutputStream());
+		output = new ObjectOutputStream(connection.getOutputStream());
 		output.flush();
-		input = new ObjectInputStream(client.getInputStream());
+		input = new ObjectInputStream(connection.getInputStream());
 	}
 	
-	public String getClientIP() {
-		return clientIP;
+	public String getClientIp() {
+		return clientIp;
 	}
 }

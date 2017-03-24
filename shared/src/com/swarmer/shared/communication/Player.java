@@ -8,11 +8,11 @@ import java.io.Serializable;
 public final class Player implements Serializable {
 
     private String alias;
-    private int ID;
+    private int id;
 
-    public Player(String alias, int ID) {
+    public Player(String alias, int id) {
         this.alias = alias;
-        this.ID = ID;
+        this.id = id;
     }
 
     public String getAlias() {
@@ -23,12 +23,12 @@ public final class Player implements Serializable {
         this.alias = alias;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override public boolean equals(Object player) {
@@ -37,16 +37,16 @@ public final class Player implements Serializable {
 
         Player that = (Player) player;
 
-        return ID == that.ID && (alias != null ? player.equals(that.getAlias()) : that.getAlias() == null);
+        return id == that.id && (alias != null ? player.equals(that.getAlias()) : that.getAlias() == null);
     }
 
     @Override public int hashCode() {
         int result = alias != null ? alias.hashCode() : 0;
-        result = 31 * result + ID;
+        result = 31 * result + id;
         return result;
     }
 
     @Override public String toString() {
-        return "p" + alias + "i" + ID;
+        return "p" + alias + "i" + id;
     }
 }

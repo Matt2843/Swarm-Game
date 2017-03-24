@@ -12,35 +12,11 @@ import java.util.ArrayList;
  */
 public class GameNode extends ServerNode {
 
-    private ArrayList<Connection> connectedClients;
     private EventBank eventBank;
 
-    @Override public void run() {
+    public GameNode() {
         eventBank = new EventBank();
-        connectedClients = new ArrayList<>();
-    }
-
-    public void broadcast(Message message) throws IOException {
-        for(Connection connection : connectedClients) {
-            connection.sendMessage(message);
-        }
-    }
-
-    public void addClient(Connection client) {
-        if(!connectedClients.contains(client)) {
-            connectedClients.add(client);
-        }
-        try {
-            broadcast(new Message("Client: " + client.getClientIP() + " joined the event."));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void removeClient(Connection client) {
-        if(connectedClients.contains(client)) {
-            connectedClients.remove(client);
-        }
+        addNodeToMothership();
     }
 
     public EventBank getEventBank() {
@@ -48,11 +24,15 @@ public class GameNode extends ServerNode {
     }
 
     @Override public String generateInsertQuery() {
-        return "INSERT INTO game_nodes (id) VALUES ('" + getNodeId() + "')";
+        return "INSERT INTO game_nodes (id, user_count) VALUES ('" + getNodeId() + "'," + usersConnected + ")";
     }
 
     @Override
     public String getDescription() {
-        return "GameNode";
+        return "Game Node";
+    }
+
+    @Override public String nextInPrimitiveChain() {
+        return null;
     }
 }
