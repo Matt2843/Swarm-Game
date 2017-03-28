@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonWriter;
 
 /**
  * Created by Matt on 03/28/2017.
@@ -19,31 +21,19 @@ public class MainMenuLoginBox extends Table {
     private TextField accountName;
     private TextField password;
 
-    private Label accountNameLabel;
-    private Label passwordLabel;
-
     private Skin textFieldSkin;
-    private TextureAtlas defaultAtlas;
-    private TextField.TextFieldStyle textFieldStyle;
+
+    private FileHandle uiskin = Gdx.files.internal("default/skin/uiskin.json");
 
     public MainMenuLoginBox() {
         createFields();
     }
 
     private void createFields() {
-        textFieldSkin = new Skin();
+        textFieldSkin = new Skin(uiskin);
 
-        defaultAtlas = new TextureAtlas(Gdx.files.internal("default/skin/uiskin.atlas"));
-
-        textFieldSkin.addRegions(defaultAtlas);
-        textFieldSkin.add("default", new BitmapFont());
-
-        textFieldStyle = new TextField.TextFieldStyle();
-        textFieldStyle.background = textFieldSkin.getDrawable("textfield");
-        textFieldStyle.font = textFieldSkin.getFont("default");
-
-        accountName = new TextField("123", textFieldStyle);
-        password = new TextField("321", textFieldStyle);
+        accountName = new TextField("", textFieldSkin);
+        password = new TextField("", textFieldSkin);
 
         //accountNameLabel = new Label("Account Name:", textFieldSkin);
         //passwordLabel = new Label("Password:", textFieldSkin);
