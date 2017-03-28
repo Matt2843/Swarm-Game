@@ -26,7 +26,7 @@ public class MotherShip {
 
 		allActiveNodes = new HashMap<>();
 		try {
-			mySqlConnection = DriverManager.getConnection("jdbc:mysql://" + sqlServerIp + ":" + port + "/swarmer", "root", "");
+			mySqlConnection = DriverManager.getConnection("jdbc:mysql://" + sqlServerIp + ":" + port + "/swarmer?serverTimezone=Europe/Copenhagen", "root", "");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -53,8 +53,6 @@ public class MotherShip {
 		} else throw new CorruptedDatabaseException();
 	}
 
-
-
 	public static void addNode(ServerNode node) throws UnkownServerNodeException, SQLException {
 		mySqlConnection.createStatement().executeUpdate(node.generateInsertQuery());
 		allActiveNodes.put(node.getNodeId(), node);
@@ -66,13 +64,24 @@ public class MotherShip {
 
 	public static void main(String[] args) {
 		MotherShip ms = new MotherShip("localhost", 3306);
-		/**
+		/*
 		 * The following code sets up 2 default nodes (which are needed for the network architecture to work).
 		 */
 
-		new AuthenticationNode().start();
-		new LobbyNode().start();
-		new LobbyNode().start();
-		new LobbyNode().start();
+		/*
+		 * TODO: This should not exist when using servers
+		 *
+		 * Refresh nodes at launch
+		 */
+		try {
+			mySqlConnection.createStatement().execute("DELETE FROM authentication_nodes");
+			mySqlConnection.createStatement().execute("DELETE FROM lobby_nodes");
+			mySqlConnection.createStatement().execute("DELETE FROM game_nodes");
+
+			new AuthenticationNode().start();
+			new LobbyNode().start();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
