@@ -51,7 +51,7 @@ public class MainMenuScreen extends Stage implements Screen {
 		TextButton loginButton = new TextButton("Login", new MainMenuButtonSkin());
 		loginButton.addCaptureListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
-				System.out.println("Hello World");
+				addActor(new MainMenuLoginBox());
 			}
 		});
 
@@ -75,7 +75,6 @@ public class MainMenuScreen extends Stage implements Screen {
 			spriteBatch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		spriteBatch.end();
 
-		act(delta);
 		draw();
 	}
 
