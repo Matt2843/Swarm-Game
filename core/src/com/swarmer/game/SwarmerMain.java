@@ -8,8 +8,6 @@ import com.swarmer.network.GameClient;
 
 public class SwarmerMain extends Game {
 
-	public static GameClient gameClient;
-
 	public void create() {
 		establishNetworkConnection();
 
@@ -21,7 +19,7 @@ public class SwarmerMain extends Game {
 	}
 
 	private void establishNetworkConnection() {
-		gameClient = new GameClient();
+		GameClient.initializeGameClient();
 	}
 
 	public void render() {

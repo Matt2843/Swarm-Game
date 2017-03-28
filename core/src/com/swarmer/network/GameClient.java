@@ -1,13 +1,13 @@
 package com.swarmer.network;
 
 import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.exceptions.GameClientNotInstantiatedException;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public final class GameClient extends Thread {
 	
@@ -15,12 +15,26 @@ public final class GameClient extends Thread {
 	private ObjectInputStream input;
 	
 	private String host = "localhost";
-	private int port = 1234;
+	private int port = 1111;
 	
 	private Socket client;
+
+	private static GameClient gc;
 	
-	public GameClient() {
+	private GameClient() {
 		// DO NOT INSTANTIATE THIS CLASS
+	}
+
+	public static void initializeGameClient() {
+		gc = new GameClient();
+		gc.start();
+	}
+
+	public static GameClient getInstance() throws GameClientNotInstantiatedException {
+		if(gc == null) {
+			throw new GameClientNotInstantiatedException("Please call initializeGameClient()");
+		}
+		return gc;
 	}
 	
 	@Override public void run() {
@@ -32,8 +46,9 @@ public final class GameClient extends Thread {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		} finally {
+			cleanUp();
 		}
-
 	}
 	
 	public void sendMessage(Message m) throws IOException {
@@ -47,9 +62,10 @@ public final class GameClient extends Thread {
 			message = (Message) input.readObject();
 			System.out.println(message.getMessage());
 		} while(!message.getMessage().equals("STOPCONNECTION"));
+		cleanUp();
 	}
 	
-	private void connectToService() throws UnknownHostException, IOException {
+	private void connectToService() throws IOException {
 		client = new Socket(InetAddress.getByName(host), port);
 	}
 
@@ -66,7 +82,6 @@ public final class GameClient extends Thread {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public static void main(String[] args) {

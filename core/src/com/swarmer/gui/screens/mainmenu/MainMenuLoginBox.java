@@ -2,7 +2,9 @@ package com.swarmer.gui.screens.mainmenu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 /**
  * Created by Matt on 03/28/2017.
@@ -36,13 +38,20 @@ public class MainMenuLoginBox extends Table {
 
         login = new TextButton("Login", defaultSkin);
 
-        add(accountNameLabel).width(150);
+        login.addCaptureListener(new ChangeListener() {
+            @Override public void changed(ChangeEvent event, Actor actor) {
+
+            }
+        });
+
+        defaults().width(150);
+        add(accountNameLabel);
         add(accountName);
         row();
-        add(passwordLabel).width(150);
+        add(passwordLabel);
         add(password);
         row();
-        add(login).colspan(2);
+        add(login).colspan(2).width(300);
 
         setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 5);
     }
