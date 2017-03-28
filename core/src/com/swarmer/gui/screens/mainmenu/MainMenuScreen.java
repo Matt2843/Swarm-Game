@@ -47,20 +47,7 @@ public class MainMenuScreen extends Stage implements Screen {
 
 	private void create() {
 		loadBackground();
-		buttonGroup = new Group();
-		TextButton loginButton = new TextButton("Login", new MainMenuButtonSkin());
-		loginButton.addCaptureListener(new ChangeListener() {
-			@Override public void changed(ChangeEvent event, Actor actor) {
-				addActor(new MainMenuLoginBox());
-			}
-		});
-
-		buttonGroup.addActor(loginButton);
-
-		buttonGroup.setOrigin(loginButton.getWidth() / 2, loginButton.getHeight() / 2);
-		buttonGroup.setPosition(Gdx.graphics.getWidth() / 2 - (loginButton.getWidth() / 2), Gdx.graphics.getHeight() / 5 - (loginButton.getHeight() / 2));
-
-		addActor(buttonGroup);
+		addActor(new MainMenuLoginBox());
 	}
 
 	@Override public void show() {
