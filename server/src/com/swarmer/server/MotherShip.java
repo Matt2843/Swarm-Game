@@ -30,11 +30,8 @@ public class MotherShip {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
 		new GreetingNode(1111).start();
-		new AuthenticationNode().start();
-		new LobbyNode().start();
-		new LobbyNode().start();
-		new LobbyNode().start();
 	}
 
 	/**
