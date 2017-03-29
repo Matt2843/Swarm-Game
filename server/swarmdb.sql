@@ -33,5 +33,6 @@ CREATE TABLE user_information(
 	id VARCHAR(255) NOT NULL,
 	user_name VARCHAR(255) NOT NULL,
 	user_password VARCHAR(255) NOT NULL,
+	user_salt VARCHAR(255) NOT NULL,
 	PRIMARY KEY(id)
 );
