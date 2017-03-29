@@ -60,11 +60,26 @@ public final class GameClient extends Thread {
 		Message message = null;
 		do {
 			message = (Message) input.readObject();
-			System.out.println(message.getOpcode());
+			react(message);
 		} while(message.getOpcode() != 0);
 		cleanUp();
 	}
-	
+
+	private void react(Message message) {
+		switch(message.getOpcode()) {
+			case 110: // Login succeeded
+				break;
+			case 111: // Login failed
+				break;
+			case 202: // User created
+				break;
+			case 203: // User creation failed
+				break;
+			default:
+				break;
+		}
+	}
+
 	private void connectToService() throws IOException {
 		client = new Socket(InetAddress.getByName(host), port);
 	}

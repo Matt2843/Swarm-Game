@@ -31,7 +31,6 @@ public class AuthenticationNode extends ServerNode {
             String hashedPassword = HashingTools.hashPassword(password, salt);
 
             if(!userExists(username)) {
-                System.out.println(HashingTools.bytesToHex(salt));
                 MotherShip.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES ('" + UUID.randomUUID().toString() + "','" + username + "','" + hashedPassword + "','" + HashingTools.bytesToHex(salt) + "')");
                 return true;
             }

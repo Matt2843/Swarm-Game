@@ -1,6 +1,5 @@
 package com.swarmer.gui.screens.mainmenu;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -17,11 +16,11 @@ import java.io.IOException;
  */
 public class MainMenuLoginBox extends Table {
 
-    private TextField accountName;
+    private TextField userName;
     private TextField password;
     private TextField verifyPassword;
 
-    private Label accountNameLabel;
+    private Label userNameLabel;
     private Label passwordLabel;
     private Label verifyPasswordLabel;
 
@@ -39,8 +38,8 @@ public class MainMenuLoginBox extends Table {
     private void createFields() {
         defaultSkin = new Skin(uiskin);
 
-        accountName = new TextField("", defaultSkin);
-        accountNameLabel = new Label("Account Name: ", defaultSkin);
+        userName = new TextField("", defaultSkin);
+        userNameLabel = new Label("Account Name: ", defaultSkin);
 
         password = new TextField("", defaultSkin);
         passwordLabel = new Label("Password: ", defaultSkin);
@@ -56,11 +55,19 @@ public class MainMenuLoginBox extends Table {
 
         login.addCaptureListener(new ChangeListener() {
             @Override public void changed(ChangeEvent event, Actor actor) {
+                String[] textFieldData = null;
                 try {
-                    if(login.getText().equals("Create")) {
-
+                    if(userName.getText().matches("^[a-zA-Z0-9][a-zA-Z0-9.-_']{1,28}[a-zA-Z0-9]$")) {
+                        textFieldData = new String[]{userName.getText(), verifyPassword.getText()};
                     } else {
-                        GameClient.getInstance().sendMessage(new Message(100));
+                        // TODO: Inform user that he's slightly retarded
+                    }
+                    if(login.getText().toString().equals("Create")) {
+                        if(password.getText().equals(verifyPassword.getText())) {
+                            GameClient.getInstance().sendMessage(new Message(201, textFieldData));
+                        }
+                    } else {
+                        GameClient.getInstance().sendMessage(new Message(109, textFieldData));
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -80,8 +87,8 @@ public class MainMenuLoginBox extends Table {
         });
 
         defaults().width(125);
-        add(accountNameLabel);
-        add(accountName).width(225);
+        add(userNameLabel);
+        add(userName).width(225);
         row();
         add(passwordLabel);
         add(password).width(225);

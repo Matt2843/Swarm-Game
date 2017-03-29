@@ -4,6 +4,7 @@ import com.swarmer.server.nodes.AuthenticationNode;
 import com.swarmer.server.nodes.ServerNode;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
+import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -35,25 +36,48 @@ public class Connection extends Thread {
 		do {
 			try {
 				message = (Message) input.readObject();
+				react(message);
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
+			} catch (OperationInWrongServerNodeException e) {
+				e.printStackTrace();
 			}
-			react(message);
 		} while(message.getOpcode() != 0); // TODO: CHANGE STOP CONDITION.
 		cleanUp();
 	}
 
-	private void react(Message message) {
+	private void react(Message message) throws IOException, OperationInWrongServerNodeException {
+		Object receivedObject = message.getObject();
 		switch (message.getOpcode()) {
-			case 100:
-				String password = "burger";
-				char[] charPw = password.toCharArray();
-				((AuthenticationNode) attachedNode).createUser("Albert", charPw);
+			case 109: // Login, the object is a String[] containing (String username, String password) - TODO: should be an encrypted object.
+				if(attachedNode.getDescription().equals("Authentication Node")) {
+					String username = ((String[])receivedObject)[0];
+					char[] password = ((String[])receivedObject)[0].toCharArray();
+					boolean evaluate = ((AuthenticationNode) attachedNode).authenticateUser(username, password);
+					if(evaluate) {
+						sendMessage(new Message(110));
+					} else {
+						sendMessage(new Message(111));
+					}
+				} else {
+					throw new OperationInWrongServerNodeException("Attempted to invoke function calls in a wrong type of ServerNode");
+				}
 				break;
-			case 201: // Create user, the object is a tuple containing (String username, char[] password) - should be an encrypted object.
-
+			case 201: // Create user, the object is a String[] containing (String username, String password) - TODO: should be an encrypted object.
+				if(attachedNode.getDescription().equals("Authentication Node")) {
+					String username = ((String[])receivedObject)[0];
+					char[] password = ((String[])receivedObject)[0].toCharArray();
+					boolean evaluate = ((AuthenticationNode) attachedNode).createUser(username, password);
+					if(evaluate) {
+						sendMessage(new Message(202));
+					} else {
+						sendMessage(new Message(203));
+					}
+				} else {
+					throw new OperationInWrongServerNodeException("Attempted to invoke function calls in a wrong type of ServerNode");
+				}
 				break;
 			default:
 				break;
