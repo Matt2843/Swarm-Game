@@ -1,6 +1,7 @@
 -- Host: 127.0.0.1    Database: swarmer
 -- ------------------------------------------------------
 -- Server version	5.5.5-10.2.4-MariaDB
+DROP DATABASE swarmer;
 
 SET GLOBAL time_zone="+01:00";
 CREATE DATABASE IF NOT EXISTS swarmer;
@@ -29,7 +30,7 @@ CREATE TABLE game_nodes(
 
 DROP TABLE IF EXISTS user_information;
 CREATE TABLE user_information(
-  id VARCHAR(255) NOT NULL,
+	id VARCHAR(255) NOT NULL,
 	user_name VARCHAR(255) NOT NULL,
 	user_password VARCHAR(255) NOT NULL,
 	PRIMARY KEY(id)

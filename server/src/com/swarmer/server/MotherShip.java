@@ -31,6 +31,10 @@ public class MotherShip {
 			e.printStackTrace();
 		}
 		new GreetingNode(1111).start();
+		new AuthenticationNode().start();
+		new LobbyNode().start();
+		new LobbyNode().start();
+		new LobbyNode().start();
 	}
 
 	/**
@@ -45,6 +49,7 @@ public class MotherShip {
 
 		ResultSet queryResult = mySqlConnection.createStatement().executeQuery("SELECT * FROM " + currentNode.nextInPrimitiveChain() + " ORDER BY user_count ASC LIMIT 1");
 		String queryStringValue = "";
+
 		while(queryResult.next()) {
 			queryStringValue = queryResult.getString(1);
 		}
@@ -52,8 +57,6 @@ public class MotherShip {
 			return allActiveNodes.get(queryStringValue);
 		} else throw new CorruptedDatabaseException();
 	}
-
-
 
 	public static void addNode(ServerNode node) throws UnkownServerNodeException, SQLException {
 		mySqlConnection.createStatement().executeUpdate(node.generateInsertQuery());
@@ -69,10 +72,5 @@ public class MotherShip {
 		/**
 		 * The following code sets up 2 default nodes (which are needed for the network architecture to work).
 		 */
-
-		new AuthenticationNode().start();
-		new LobbyNode().start();
-		new LobbyNode().start();
-		new LobbyNode().start();
 	}
 }

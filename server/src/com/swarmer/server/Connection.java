@@ -32,14 +32,17 @@ public class Connection extends Thread {
 	@Override
 	public void run() {
 		Message message = null;
-		try {
-			do {
+		do {
+			try {
 				message = (Message) input.readObject();
-				react(message);
-			} while(true); // TODO: CHANGE STOP CONDITION.
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			System.out.println(message.getMessage());
+			react(message);
+		} while(true); // TODO: CHANGE STOP CONDITION.
 	}
 
 	private void react(Message message) {
