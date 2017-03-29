@@ -1,6 +1,15 @@
 package com.swarmer.server.nodes;
 
+import com.google.common.hash.Hashing;
+import com.swarmer.server.MotherShip;
+import com.swarmer.server.security.HashingTools;
 import com.swarmer.shared.communication.Player;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.UUID;
 
 /**
  * Created by Matt on 08-03-2017.
@@ -11,12 +20,44 @@ public class AuthenticationNode extends ServerNode {
         addNodeToMothership();
     }
 
-    public void addPlayer(Player player, String hashedPassword) {
-
+    private boolean userExists(String username) throws SQLException {
+        return MotherShip.sqlExecuteQuery("SELECT 1 FROM users WHERE username='" + username + "'").last();
     }
 
-    public void authenticateUser() {
-        // TODO: Authenticate user credentials
+    public boolean createUser(String username, char[] password) {
+        byte[] salt = new byte[32];
+        try {
+            SecureRandom.getInstanceStrong().nextBytes(salt);
+            String hashedPassword = HashingTools.hashPassword(password, salt);
+
+            if(!userExists(username)) {
+                System.out.println(HashingTools.bytesToHex(salt));
+                MotherShip.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES ('" + UUID.randomUUID().toString() + "','" + username + "','" + hashedPassword + "','" + HashingTools.bytesToHex(salt) + "')");
+                return true;
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean authenticateUser(String username, char[] password) {
+        try {
+            if(userExists(username)) {
+                String saltHex = MotherShip.sqlExecuteQueryToString("SELECT password_salt FROM users WHERE username='" + username + "'");
+                byte[] saltBytes = HashingTools.hexToBytes(saltHex);
+                String hashedPassword = HashingTools.hashPassword(password, saltBytes);
+                String hashedPasswordFromDatabase = MotherShip.sqlExecuteQueryToString("SELECT password FROM users WHERE username='" + username + "'");
+                if(hashedPassword.equals(hashedPasswordFromDatabase)) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override public String generateInsertQuery() {

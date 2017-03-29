@@ -3,33 +3,28 @@ package com.swarmer.shared.communication;
 import java.io.Serializable;
 
 public class Message implements Serializable {
-
-	/*
-	TODO: Transform this class to hold the data to be broadcast between players.
-	 */
-	
 	private static final long serialVersionUID = -3726114245181941134L;
 	
-	private final String message;
+	private final int opcode;
 	private final Object object;
 	
-	public Message(String message) {
-		this.message = message;
+	public Message(int opcode) {
+		this.opcode = opcode;
 		this.object = null;
 	}
 	
 	public Message(Object object) {
-		this.message = null;
+		this.opcode = 0;
 		this.object = object;
 	}
 	
-	public Message(String message, Object object) {
-		this.message = message;
+	public Message(int opcode, Object object) {
+		this.opcode = opcode;
 		this.object = object;
 	}
 
-	public String getMessage() {
-		return message;
+	public int getOpcode() {
+		return opcode;
 	}
 
 	public Object getObject() {

@@ -60,8 +60,8 @@ public final class GameClient extends Thread {
 		Message message = null;
 		do {
 			message = (Message) input.readObject();
-			System.out.println(message.getMessage());
-		} while(!message.getMessage().equals("STOPCONNECTION"));
+			System.out.println(message.getOpcode());
+		} while(message.getOpcode() != 0);
 		cleanUp();
 	}
 	
