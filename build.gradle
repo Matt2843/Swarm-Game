@@ -99,6 +99,10 @@ project(":server") {
 
 project(":shared") {
     apply plugin: "java"
+
+    dependencies {
+        compile "org.javatuples:javatuples:1.2"
+    }
 }
 
 defaultTasks 'flywayMigrate'
