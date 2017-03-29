@@ -5,6 +5,10 @@ import com.swarmer.gui.animations.AnimationLibrary;
 import com.swarmer.gui.screens.ScreenLib;
 import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.network.GameClient;
+import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.exceptions.GameClientNotInstantiatedException;
+
+import java.io.IOException;
 
 public class SwarmerMain extends Game {
 
@@ -27,5 +31,13 @@ public class SwarmerMain extends Game {
 	}
 
 	public void dispose() {
+		try {
+			GameClient.getInstance().sendMessage(new Message(0));
+			GameClient.getInstance().cleanUp();
+		} catch (GameClientNotInstantiatedException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

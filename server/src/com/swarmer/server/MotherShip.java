@@ -37,6 +37,23 @@ public class MotherShip {
 		new LobbyNode().start();
 	}
 
+	public static void sqlExecute(String query) throws SQLException {
+		mySqlConnection.createStatement().execute(query);
+	}
+
+	public static String sqlExecuteQueryToString(String query) throws SQLException {
+		ResultSet queryResult = sqlExecuteQuery(query);
+		String result = "";
+		while(queryResult.next()) {
+			result = queryResult.getString(1);
+		}
+		return result;
+	}
+
+	public static ResultSet sqlExecuteQuery(String query) throws SQLException {
+		return mySqlConnection.createStatement().executeQuery(query);
+	}
+
 	/**
 	 * A method used to return the next primitive server node in the initial connection chain.
 	 * @param currentNode a ServerNode which the client is currently connected to.
@@ -47,12 +64,8 @@ public class MotherShip {
 	public static ServerNode findNextPrimitiveNode(ServerNode currentNode) throws SQLException, CorruptedDatabaseException {
 		if(currentNode instanceof LobbyNode || currentNode instanceof GameNode) return null;
 
-		ResultSet queryResult = mySqlConnection.createStatement().executeQuery("SELECT * FROM " + currentNode.nextInPrimitiveChain() + " ORDER BY user_count ASC LIMIT 1");
-		String queryStringValue = "";
+		String queryStringValue = sqlExecuteQueryToString("SELECT * FROM " + currentNode.nextInPrimitiveChain() + " ORDER BY user_count ASC LIMIT 1");
 
-		while(queryResult.next()) {
-			queryStringValue = queryResult.getString(1);
-		}
 		if(allActiveNodes.containsKey(queryStringValue)) {
 			return allActiveNodes.get(queryStringValue);
 		} else throw new CorruptedDatabaseException();

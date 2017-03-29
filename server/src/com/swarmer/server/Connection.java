@@ -40,15 +40,20 @@ public class Connection extends Thread {
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
-			System.out.println(message.getMessage());
 			react(message);
-		} while(true); // TODO: CHANGE STOP CONDITION.
+		} while(message.getOpcode() != 0); // TODO: CHANGE STOP CONDITION.
+		cleanUp();
 	}
 
 	private void react(Message message) {
-		switch (message.getMessage()) {
-			case "test":
-				((AuthenticationNode) attachedNode).authenticateUser();
+		switch (message.getOpcode()) {
+			case 100:
+				String password = "burger";
+				char[] charPw = password.toCharArray();
+				((AuthenticationNode) attachedNode).createUser("Albert", charPw);
+				break;
+			case 201: // Create user, the object is a tuple containing (String username, char[] password) - should be an encrypted object.
+
 				break;
 			default:
 				break;
@@ -64,6 +69,15 @@ public class Connection extends Thread {
 		output = new ObjectOutputStream(connection.getOutputStream());
 		output.flush();
 		input = new ObjectInputStream(connection.getInputStream());
+	}
+
+	private void cleanUp() {
+		try {
+			output.close();
+			input.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public String getClientIp() {
