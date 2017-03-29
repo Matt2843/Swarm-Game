@@ -9,7 +9,7 @@ plugins {
 }
 
 flyway {
-    url = 'jdbc:mysql://localhost/swarmer'
+    url = 'jdbc:mysql://localhost/swarmer?serverTimezone=Europe/Copenhagen'
     user = 'root'
     password = ''
 }
