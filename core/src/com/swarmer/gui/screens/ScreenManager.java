@@ -1,5 +1,6 @@
 package com.swarmer.gui.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.IntMap;
@@ -33,15 +34,21 @@ public final class ScreenManager {
 		this.game = game;
 	}
 
-	public void show(ScreenLib screenLib) {
+	public void show(final ScreenLib screenLib) {
 		if(game == null) {
 			return;
 		}
-		if(!screens.containsKey(screenLib.ordinal())) {
-			screens.put(screenLib.ordinal(), screenLib.getScreenInstance());
-		}
-		currentScreen = screens.get(screenLib.ordinal());
-		game.setScreen(currentScreen);
+
+		Gdx.app.postRunnable(new Runnable() {
+			@Override
+			public void run() {
+				if(!screens.containsKey(screenLib.ordinal())) {
+					screens.put(screenLib.ordinal(), screenLib.getScreenInstance());
+				}
+				currentScreen = screens.get(screenLib.ordinal());
+				game.setScreen(currentScreen);
+			}
+		});
 	}
 
 	public void dispose(ScreenLib screenLib) {

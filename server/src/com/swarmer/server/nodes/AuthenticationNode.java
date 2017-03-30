@@ -1,13 +1,10 @@
 package com.swarmer.server.nodes;
 
-import com.google.common.hash.Hashing;
 import com.swarmer.server.MotherShip;
 import com.swarmer.server.security.HashingTools;
-import com.swarmer.shared.communication.Player;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -34,11 +31,12 @@ public class AuthenticationNode extends ServerNode {
                 MotherShip.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES ('" + UUID.randomUUID().toString() + "','" + username + "','" + hashedPassword + "','" + HashingTools.bytesToHex(salt) + "')");
                 return true;
             }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
+
         return false;
     }
 
