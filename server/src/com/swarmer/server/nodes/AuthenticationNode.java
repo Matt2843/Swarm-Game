@@ -18,7 +18,7 @@ public class AuthenticationNode extends ServerNode {
     }
 
     private boolean userExists(String username) throws SQLException {
-        return MotherShip.sqlExecuteQuery("SELECT 1 FROM users WHERE username='" + username + "'").last();
+        return MotherShip.sqlExecuteQuery("SELECT 1 FROM users WHERE username=?", username).last();
     }
 
     public boolean createUser(String username, char[] password) {

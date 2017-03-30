@@ -38,9 +38,9 @@ public class MotherShip {
 	public static void sqlExecute(String query, String... values) throws SQLException {
 		PreparedStatement statement = mySqlConnection.prepareStatement(query);
 		for(int i = 0; i < values.length; i++) {
-			statement.setString(i, values[i]);
+			statement.setString(i + 1, values[i]);
 		}
-		statement.executeQuery();
+		statement.execute();
 	}
 
 	public static String sqlExecuteQueryToString(String query) throws SQLException {
@@ -52,8 +52,12 @@ public class MotherShip {
 		return result;
 	}
 
-	public static ResultSet sqlExecuteQuery(String query) throws SQLException {
-		return mySqlConnection.createStatement().executeQuery(query);
+	public static ResultSet sqlExecuteQuery(String query, String... values) throws SQLException {
+		PreparedStatement statement = mySqlConnection.prepareStatement(query);
+		for(int i = 0; i < values.length; i++) {
+			statement.setString(i + 1, values[i]);
+		}
+		return statement.executeQuery();
 	}
 
 	/**
