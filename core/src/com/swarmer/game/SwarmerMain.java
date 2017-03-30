@@ -19,7 +19,7 @@ public class SwarmerMain extends Game {
 		AnimationLibrary.getInstance().initializeAntAnimations();
 
 		// TODO: Start main menu at launch
-		ScreenManager.getInstance().show(ScreenLib.GAME_SCREEN);
+		ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
 	}
 
 	private void establishNetworkConnection() {

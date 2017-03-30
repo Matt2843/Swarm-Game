@@ -43,9 +43,13 @@ public class MainMenuLoginBox extends Table {
 
         password = new TextField("", defaultSkin);
         passwordLabel = new Label("Password: ", defaultSkin);
+        password.setPasswordCharacter('*');
+        password.setPasswordMode(true);
 
         verifyPassword = new TextField("", defaultSkin);
         verifyPasswordLabel = new Label("Verify Password: ", defaultSkin);
+        verifyPassword.setPasswordCharacter('*');
+        verifyPassword.setPasswordMode(true);
 
         verifyPassword.setVisible(false);
         verifyPasswordLabel.setVisible(false);
@@ -57,7 +61,7 @@ public class MainMenuLoginBox extends Table {
             @Override public void changed(ChangeEvent event, Actor actor) {
                 String[] textFieldData = null;
                 try {
-                    if(userName.getText().matches("^[a-zA-Z0-9][a-zA-Z0-9.-_']{1,28}[a-zA-Z0-9]$")) {
+                    if(userName.getText().matches("^[a-zA-Z0-9][a-zA-Z0-9_\\-']{1,28}[a-zA-Z0-9]$")) {
                         textFieldData = new String[]{userName.getText(), verifyPassword.getText()};
                     } else {
                         // TODO: Inform user that he's slightly retarded
