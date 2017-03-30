@@ -13,13 +13,13 @@ import java.io.IOException;
 public class SwarmerMain extends Game {
 
 	public void create() {
-		establishNetworkConnection();
+		//establishNetworkConnection();
 
 		ScreenManager.getInstance().initialize(this);
 		AnimationLibrary.getInstance().initializeAntAnimations();
 
 		// TODO: Start main menu at launch
-		ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
+		ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
 	}
 
 	private void establishNetworkConnection() {

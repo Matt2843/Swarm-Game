@@ -11,19 +11,19 @@ public enum ScreenLib {
 
 	MAIN_MENU_SCREEN {
 		@Override protected Screen getScreenInstance() {
-			return new MainMenuScreen(com.swarmer.gui.screens.ScreenManager.getInstance().getGame(), 1280, 800);
+			return new MainMenuScreen(1280, 800);
 		}
 	},
 
 	LOBBY_SCREEN {
 		@Override protected Screen getScreenInstance () {
-			return new LobbyScreen(com.swarmer.gui.screens.ScreenManager.getInstance().getGame(), 1280, 800);
+			return new LobbyScreen(1280, 800);
 		}
 	},
 
 	GAME_SCREEN {
 		@Override protected Screen getScreenInstance() {
-			return new GameScreen(com.swarmer.gui.screens.ScreenManager.getInstance().getGame());
+			return new GameScreen();
 		}
 	};
 

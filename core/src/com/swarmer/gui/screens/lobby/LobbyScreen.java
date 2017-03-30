@@ -1,20 +1,14 @@
 package com.swarmer.gui.screens.lobby;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.swarmer.game.SwarmerMain;
-import com.swarmer.gui.screens.ScreenLib;
-import com.swarmer.gui.screens.ScreenManager;
 
 public class LobbyScreen extends Stage implements Screen {
 
@@ -22,12 +16,9 @@ public class LobbyScreen extends Stage implements Screen {
     private Sprite backgroundSprite;
     private SpriteBatch spriteBatch;
 
-    private final SwarmerMain game;
+    private Table contentPane;
 
-    private Group buttonGroup;
-
-    public LobbyScreen(final SwarmerMain game, int width, int height) {
-        this.game = game;
+    public LobbyScreen(int width, int height) {
         setViewport(new StretchViewport(width, height));
         create();
     }
@@ -39,15 +30,16 @@ public class LobbyScreen extends Stage implements Screen {
     }
 
     private void handleInput() {
-        if(Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            ScreenManager.getInstance().show(ScreenLib.GAME_SCREEN);
-        }
+        // TODO: Handle user input in the game lobby screen
     }
 
     private void create() {
-        System.out.println("Lobby Screen");
         loadBackground();
-        addActor(new GameList(getWidth(), getHeight()));
+        contentPane = new Table();
+        contentPane.setSize(getWidth(), getHeight());
+        contentPane.add(new LobbyWidget(getWidth() / 2, getHeight() / 3));
+        addActor(contentPane);
+        // TODO: Add actors here.
     }
 
     @Override public void show() {

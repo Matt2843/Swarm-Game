@@ -7,13 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.screens.ScreenLib;
 import com.swarmer.gui.screens.ScreenManager;
 
@@ -23,12 +19,9 @@ public class MainMenuScreen extends Stage implements Screen {
 	private Sprite backgroundSprite;
 	private SpriteBatch spriteBatch;
 
-	private final SwarmerMain game;
-
 	private Group buttonGroup;
 
-	public MainMenuScreen(final SwarmerMain game, int width, int height) {
-		this.game = game;
+	public MainMenuScreen(int width, int height) {
 		setViewport(new StretchViewport(width, height));
 		create();
 	}
