@@ -63,8 +63,9 @@ public class LobbyScreen extends Stage implements Screen {
             }
         });
 
-        contentPane.add(test2).expandX();
-        contentPane.add(test1).expandX();
+        contentPane.add(test1);
+        contentPane.row();
+        contentPane.add(test2);
 
         addActor(contentPane);
         // TODO: Add actors here.

@@ -8,13 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 public class LobbyWidget extends Table {
 
     public static LobbyUserList2 lobbyUserList;
+    public static LobbyChat lobbyChat;
 
     public LobbyWidget(float width, float height) {
-        lobbyUserList = new LobbyUserList2(width / 2, height);
-        lobbyUserList.addUserToList("Georg");
-        lobbyUserList.addUserToList("Georg");
-
         setSize(width, height);
+        lobbyUserList = new LobbyUserList2((float) (width * 0.3), height);
+        lobbyChat = new LobbyChat((float) (width * 0.7), height);
+
         add(lobbyUserList);
+        add(lobbyChat);
     }
 }
