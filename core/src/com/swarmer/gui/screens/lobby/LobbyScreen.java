@@ -6,8 +6,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class LobbyScreen extends Stage implements Screen {
@@ -37,7 +41,31 @@ public class LobbyScreen extends Stage implements Screen {
         loadBackground();
         contentPane = new Table();
         contentPane.setSize(getWidth(), getHeight());
-        contentPane.add(new LobbyWidget(getWidth() / 2, getHeight() / 3));
+
+        final LobbyWidget lw = new LobbyWidget(getWidth() / 2, getHeight() / 3);
+
+        contentPane.add(lw);
+        contentPane.row();
+
+        Skin defaultSkin = new Skin(Gdx.files.internal("default/skin/uiskin.json"));
+        TextButton test1 = new TextButton("Add Georg", defaultSkin);
+        TextButton test2 = new TextButton("Remove Georg", defaultSkin);
+
+        test1.addCaptureListener(new ChangeListener() {
+            @Override public void changed(ChangeEvent event, Actor actor) {
+                lw.lobbyUserList.addUserToList("Georg");
+            }
+        });
+
+        test2.addCaptureListener(new ChangeListener() {
+            @Override public void changed(ChangeEvent event, Actor actor) {
+                lw.lobbyUserList.removeUserFromList("Georg");
+            }
+        });
+
+        contentPane.add(test2).expandX();
+        contentPane.add(test1).expandX();
+
         addActor(contentPane);
         // TODO: Add actors here.
     }
