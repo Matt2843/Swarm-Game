@@ -61,8 +61,7 @@ public class AuthenticationNode extends ServerNode {
         return "INSERT INTO authentication_nodes (id, user_count) VALUES ('" + getNodeId() + "'," + usersConnected + ")";
     }
 
-    @Override
-    public String getDescription() {
+    @Override  public String getDescription() {
         return "Authentication Node";
     }
 
