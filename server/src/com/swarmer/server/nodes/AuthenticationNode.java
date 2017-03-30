@@ -1,13 +1,10 @@
 package com.swarmer.server.nodes;
 
-import com.google.common.hash.Hashing;
 import com.swarmer.server.MotherShip;
 import com.swarmer.server.security.HashingTools;
-import com.swarmer.shared.communication.Player;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
