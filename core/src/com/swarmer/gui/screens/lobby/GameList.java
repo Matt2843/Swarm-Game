@@ -33,6 +33,8 @@ public class GameList extends Table {
         games = new List<>(defaultSkin);
         games.setItems(gameList);
         scrollPane = new ScrollPane(games);
+
+        addActor(scrollPane);
     }
 
     public void addGameListEntry(String id, GameListEntry entry) {
