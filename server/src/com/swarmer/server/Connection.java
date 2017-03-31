@@ -6,6 +6,7 @@ import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
 
+import javax.crypto.CipherInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
