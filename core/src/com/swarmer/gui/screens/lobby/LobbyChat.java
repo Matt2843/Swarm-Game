@@ -40,7 +40,6 @@ public class LobbyChat extends Table {
 		chatWindow.setWrap(true);
 
 		scrollChat = new ScrollPane(chatWindow);
-		scrollChat.setScrollingDisabled(true, false);
 		scrollChat.setForceScroll(false, true);
 
 		userInput = new TextField("", StyleSheet.defaultSkin);
@@ -68,6 +67,8 @@ public class LobbyChat extends Table {
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 		chatWindow.getText().append("[" + sdf.format(new Timestamp(System.currentTimeMillis())) + "] " + username + ": " + message + "\n");
 		chatWindow.invalidateHierarchy();
+		scrollChat.layout();
+		scrollChat.scrollTo(0, 0, 0, 0);
 	}
 
 	private void addWidgets() {
