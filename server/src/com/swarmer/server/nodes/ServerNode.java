@@ -48,7 +48,7 @@ public abstract class ServerNode extends Thread implements Serializable {
         }
     }
 
-    protected void broadcast(Message message) throws IOException {
+    public void broadcast(Message message) throws IOException {
         for(Connection con : activeConnections) {
             con.sendMessage(message);
         }

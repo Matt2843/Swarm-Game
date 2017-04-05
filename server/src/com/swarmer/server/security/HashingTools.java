@@ -14,28 +14,9 @@ public final class HashingTools {
     private static final int iterations = 10;
     private static final int keyLength = 256;
 
-    /**
-     *         byte[] salt = new byte[32];
-     String password = "Burger";
-     char[] pw = password.toCharArray();
-     int iterations = 10;
-     int keylenght = 256;
-     try {
-     SecureRandom.getInstanceStrong().nextBytes(salt);
-     System.out.println(bytesToHex(hashPassword(pw, salt, iterations, keylenght)));
-
-
-
-     } catch (NoSuchAlgorithmException e) {
-     e.printStackTrace();
-     }
-     */
-
     private HashingTools() {
         // Don't Instantiate Me!
     }
-
-
 
     public static String hashPassword(final char[] password, final byte[] salt) {
         try {

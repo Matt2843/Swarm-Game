@@ -17,10 +17,8 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.swarmer.game.structures.Hive;
 import com.swarmer.game.units.Ant;
 import com.swarmer.game.input.SwamerInputProcessor;
-import com.swarmer.game.SwarmerMain;
 import com.swarmer.game.input.SwarmerGestureDetector;
 import com.swarmer.aco.graph.Graph;
-import com.swarmer.network.GameClient;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.resources.Food;
 
@@ -35,7 +33,6 @@ public class GameScreen implements Screen {
 	private final static float VP_HEIGHT = 720 * INV_SCALE;
 	public static TiledMap map;
 	public static Graph graph;
-	private final SwarmerMain game;
 	public boolean dragging;
 	private IsometricTiledMapRenderer renderer;
 	private OrthographicCamera camera;
@@ -48,8 +45,7 @@ public class GameScreen implements Screen {
 	private int[] backgroundLayers;
 	private int[] foregroundLayers;
 
-	public GameScreen(final SwarmerMain game) {
-		this.game = game;
+	public GameScreen() {
 		camera = ScreenManager.camera;
 		map = new TmxMapLoader().load("newmap.tmx");
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
