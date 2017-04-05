@@ -1,6 +1,7 @@
 package com.swarmer.gui.screens.lobby;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -36,6 +36,9 @@ public class LobbyScreen extends Stage implements Screen {
 
     private void handleInput() {
         // TODO: Handle user input in the game lobby screen
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            LobbyChat.sendInput.toggle();
+        }
     }
 
     private void create() {

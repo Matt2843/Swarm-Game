@@ -1,11 +1,11 @@
 package com.swarmer.aco.ai;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 import com.badlogic.gdx.utils.Array;
 import com.swarmer.aco.graph.Edge;
 import com.swarmer.aco.graph.Node;
 import com.swarmer.shared.communication.Player;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class AntBrain {
 	

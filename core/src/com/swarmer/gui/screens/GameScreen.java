@@ -17,10 +17,8 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.swarmer.game.structures.Hive;
 import com.swarmer.game.units.Ant;
 import com.swarmer.game.input.SwamerInputProcessor;
-import com.swarmer.game.SwarmerMain;
 import com.swarmer.game.input.SwarmerGestureDetector;
 import com.swarmer.aco.graph.Graph;
-import com.swarmer.network.GameClient;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.resources.Food;
 

@@ -6,20 +6,24 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.swarmer.gui.StyleSheet;
+import com.swarmer.network.GameClient;
+import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.exceptions.GameClientNotInstantiatedException;
+
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Matt on 03/30/2017.
  */
 public class LobbyChat extends Table {
 
-	private TextField userInput;
-	private TextButton sendInput;
-
-	private Label lobbyStatus;
-
-	private ScrollPane scrollChat;
-
-	private Label chatWindow;
+	private static TextField userInput;
+	public static TextButton sendInput;
+	private static Label lobbyStatus;
+	private static ScrollPane scrollChat;
+	private static Label chatWindow;
 
 	public LobbyChat(float width, float height) {
 		setSize(width, height);
@@ -31,28 +35,39 @@ public class LobbyChat extends Table {
 		lobbyStatus = new Label("Connected to Lobby: Not Connected", StyleSheet.defaultSkin);
 
 		chatWindow = new Label("", StyleSheet.defaultSkin);
+		chatWindow.clear();
 		chatWindow.setAlignment(Align.topLeft);
 		chatWindow.setWrap(true);
 
 		scrollChat = new ScrollPane(chatWindow);
 		scrollChat.setScrollingDisabled(true, false);
-		scrollChat.setFadeScrollBars(false);
+		scrollChat.setForceScroll(false, true);
 
 		userInput = new TextField("", StyleSheet.defaultSkin);
 
 		sendInput = new TextButton("Send", StyleSheet.defaultSkin);
 		sendInput.addCaptureListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
-				if(chatWindow.getText().toString().equals("")) {
-					chatWindow.clear();
-					chatWindow.setText(userInput.getText());
-				} else {
-					chatWindow.setText(chatWindow.getText() + "\n" + userInput.getText());
-					layout();
-					scrollChat.scrollTo(0,0,0,0);
+				if(!userInput.getText().toString().equals("")) {
+					try {
+						GameClient.getInstance().sendMessage(new Message(301, ""));
+					} catch (IOException e) {
+						e.printStackTrace();
+					} catch (GameClientNotInstantiatedException e) {
+						e.printStackTrace();
+					}
+					//TODO: Delete this shit
+					appendToChatWindow("Georg", userInput.getText());
+					userInput.setText("");
 				}
 			}
 		});
+	}
+
+	public static void appendToChatWindow(String username, String message) {
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		chatWindow.getText().append("[" + sdf.format(new Timestamp(System.currentTimeMillis())) + "] " + username + ": " + message + "\n");
+		chatWindow.invalidateHierarchy();
 	}
 
 	private void addWidgets() {
