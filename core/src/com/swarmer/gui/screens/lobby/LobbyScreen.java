@@ -23,6 +23,9 @@ public class LobbyScreen extends Stage implements Screen {
 
     private Table contentPane;
 
+    private LobbyChat lobbyChat;
+    private LobbyUserList2 lobbyUserList2;
+
     public LobbyScreen(int width, int height) {
         setViewport(new StretchViewport(width, height));
         create();
@@ -37,7 +40,7 @@ public class LobbyScreen extends Stage implements Screen {
     private void handleInput() {
         // TODO: Handle user input in the game lobby screen
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            LobbyChat.sendInput.toggle();
+            lobbyChat.pressSendInput();
         }
     }
 
@@ -46,9 +49,15 @@ public class LobbyScreen extends Stage implements Screen {
         contentPane = new Table();
         contentPane.setSize(getWidth(), getHeight());
 
-        final LobbyWidget lw = new LobbyWidget((float) (getWidth()*0.8), getHeight()/2);
+        final Table middleSection = new Table();
 
-        contentPane.add(lw);
+        lobbyUserList2 = new LobbyUserList2((float) (getWidth() * 0.8 * 0.3), getHeight() / 2);
+        lobbyChat = new LobbyChat((float) (getWidth() * 0.8 * 0.7), getHeight() / 2);
+
+        middleSection.add(lobbyUserList2);
+        middleSection.add(lobbyChat);
+
+        contentPane.add(middleSection);
         contentPane.row();
 
         // TODO: Delete these test buttons
@@ -57,13 +66,13 @@ public class LobbyScreen extends Stage implements Screen {
 
         test1.addCaptureListener(new ChangeListener() {
             @Override public void changed(ChangeEvent event, Actor actor) {
-                lw.lobbyUserList.addUserToList("Georg");
+                lobbyUserList2.addUserToList("Georg");
             }
         });
 
         test2.addCaptureListener(new ChangeListener() {
             @Override public void changed(ChangeEvent event, Actor actor) {
-                lw.lobbyUserList.removeUserFromList("Georg");
+                lobbyUserList2.removeUserFromList("Georg");
             }
         });
 

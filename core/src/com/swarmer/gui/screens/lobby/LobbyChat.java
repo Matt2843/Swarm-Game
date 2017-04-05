@@ -1,6 +1,5 @@
 package com.swarmer.gui.screens.lobby;
 
-
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -19,11 +18,11 @@ import java.text.SimpleDateFormat;
  */
 public class LobbyChat extends Table {
 
-	private static TextField userInput;
-	public static TextButton sendInput;
-	private static Label lobbyStatus;
-	private static ScrollPane scrollChat;
-	private static Label chatWindow;
+	private TextField userInput;
+	private TextButton sendInput;
+	private Label lobbyStatus;
+	private ScrollPane scrollChat;
+	private Label chatWindow;
 
 	public LobbyChat(float width, float height) {
 		setSize(width, height);
@@ -39,7 +38,7 @@ public class LobbyChat extends Table {
 		chatWindow.setAlignment(Align.topLeft);
 		chatWindow.setWrap(true);
 
-		scrollChat = new ScrollPane(chatWindow);
+		scrollChat = new ScrollPane(chatWindow, StyleSheet.defaultSkin);
 		scrollChat.setForceScroll(false, true);
 
 		userInput = new TextField("", StyleSheet.defaultSkin);
@@ -55,6 +54,7 @@ public class LobbyChat extends Table {
 					} catch (GameClientNotInstantiatedException e) {
 						e.printStackTrace();
 					}
+
 					//TODO: Delete this shit
 					appendToChatWindow("Georg", userInput.getText());
 					userInput.setText("");
@@ -63,11 +63,19 @@ public class LobbyChat extends Table {
 		});
 	}
 
-	public static void appendToChatWindow(String username, String message) {
+	public void pressSendInput() {
+		sendInput.toggle();
+	}
+
+	public void appendToChatWindow(String username, String message) {
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-		chatWindow.getText().append("[" + sdf.format(new Timestamp(System.currentTimeMillis())) + "] " + username + ": " + message + "\n");
+		message = "[" + sdf.format(new Timestamp(System.currentTimeMillis())) + "]" + username + ": " + message;
+		if(!chatWindow.getText().toString().equals("")) {
+			message = "\n" + message;
+		}
+
+		chatWindow.getText().append(message);
 		chatWindow.invalidateHierarchy();
-		scrollChat.layout();
 		scrollChat.scrollTo(0, 0, 0, 0);
 	}
 
