@@ -1,16 +1,14 @@
 package com.swarmer.gui.screens.lobby;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.swarmer.gui.StyleSheet;
 
 import java.util.HashMap;
 
 public class GameList extends Table {
 
-    private Skin defaultSkin;
     private ScrollPane scrollPane;
     private HashMap<String, GameListEntry> gameList;
     private List<HashMap> games;
@@ -24,13 +22,12 @@ public class GameList extends Table {
     }
 
     private void createFields() {
-        defaultSkin = new Skin(Gdx.files.internal("default/skin/uiskin.json"));
 
         gameList = new HashMap<>();
         gameList.put("asdasd", new GameListEntry("test1", "3", getWidth(), getHeight()));
         gameList.put("asdasd", new GameListEntry("test2", "2", getWidth(), getHeight()));
 
-        games = new List<>(defaultSkin);
+        games = new List<>(StyleSheet.defaultSkin);
         games.setItems(gameList);
         scrollPane = new ScrollPane(games);
 

@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.swarmer.gui.StyleSheet;
 
 public class LobbyScreen extends Stage implements Screen {
 
@@ -42,14 +43,14 @@ public class LobbyScreen extends Stage implements Screen {
         contentPane = new Table();
         contentPane.setSize(getWidth(), getHeight());
 
-        final LobbyWidget lw = new LobbyWidget(getWidth() / 2, getHeight() / 3);
+        final LobbyWidget lw = new LobbyWidget((float) (getWidth()*0.8), getHeight()/2);
 
         contentPane.add(lw);
         contentPane.row();
 
-        Skin defaultSkin = new Skin(Gdx.files.internal("default/skin/uiskin.json"));
-        TextButton test1 = new TextButton("Add Georg", defaultSkin);
-        TextButton test2 = new TextButton("Remove Georg", defaultSkin);
+        // TODO: Delete these test buttons
+        TextButton test1 = new TextButton("Add Georg", StyleSheet.defaultSkin);
+        TextButton test2 = new TextButton("Remove Georg", StyleSheet.defaultSkin);
 
         test1.addCaptureListener(new ChangeListener() {
             @Override public void changed(ChangeEvent event, Actor actor) {
