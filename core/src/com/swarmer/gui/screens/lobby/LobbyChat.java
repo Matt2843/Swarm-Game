@@ -36,7 +36,7 @@ public class LobbyChat extends Table {
 
 		scrollChat = new ScrollPane(chatWindow);
 		scrollChat.setScrollingDisabled(true, false);
-		scrollChat.setFadeScrollBars(false);
+		scrollChat.setupOverscroll(0, 0, 0);
 
 		userInput = new TextField("", StyleSheet.defaultSkin);
 
