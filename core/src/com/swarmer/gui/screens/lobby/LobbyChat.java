@@ -48,15 +48,12 @@ public class LobbyChat extends Table {
 			@Override public void changed(ChangeEvent event, Actor actor) {
 				if(!userInput.getText().toString().equals("")) {
 					try {
-						GameClient.getInstance().sendMessage(new Message(301, ""));
+						GameClient.getInstance().sendMessage(new Message(301, userInput.getText()));
 					} catch (IOException e) {
 						e.printStackTrace();
 					} catch (GameClientNotInstantiatedException e) {
 						e.printStackTrace();
 					}
-
-					//TODO: Delete this shit
-					appendToChatWindow("Georg", userInput.getText());
 					userInput.setText("");
 				}
 			}
@@ -69,13 +66,13 @@ public class LobbyChat extends Table {
 
 	public void appendToChatWindow(String username, String message) {
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-		message = "[" + sdf.format(new Timestamp(System.currentTimeMillis())) + "]" + username + ": " + message;
+		message = "[" + sdf.format(new Timestamp(System.currentTimeMillis())) + "] " + username + ": " + message;
 		if(!chatWindow.getText().toString().equals("")) {
 			message = "\n" + message;
 		}
-
 		chatWindow.getText().append(message);
 		chatWindow.invalidateHierarchy();
+		scrollChat.layout();
 		scrollChat.scrollTo(0, 0, 0, 0);
 	}
 

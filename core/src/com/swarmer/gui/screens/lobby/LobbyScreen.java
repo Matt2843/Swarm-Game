@@ -23,7 +23,7 @@ public class LobbyScreen extends Stage implements Screen {
 
     private Table contentPane;
 
-    private LobbyChat lobbyChat;
+    public static LobbyChat lobbyChat;
     private LobbyUserList2 lobbyUserList2;
 
     public LobbyScreen(int width, int height) {

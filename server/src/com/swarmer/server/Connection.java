@@ -1,8 +1,10 @@
 package com.swarmer.server;
 
 import com.swarmer.server.nodes.AuthenticationNode;
+import com.swarmer.server.nodes.LobbyNode;
 import com.swarmer.server.nodes.ServerNode;
 import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
 
 import java.io.IOException;
@@ -20,7 +22,7 @@ public class Connection extends Thread {
 
 	private ServerNode attachedNode;
 
-	private Player player;
+	private Player player = null;
 
 	public Connection(Socket connection, ServerNode attachedNode) throws IOException {
 		this.connection = connection;
@@ -78,6 +80,12 @@ public class Connection extends Thread {
 					throw new OperationInWrongServerNodeException("Attempted to invoke function calls in a wrong type of ServerNode");
 				}
 				break;
+			case 301:
+				if(attachedNode instanceof LobbyNode) {
+					String[] broadcastObject = {(String) message.getObject(), player.getAlias()};
+					attachedNode.broadcast(new Message(304, broadcastObject));
+				}
+				break;
 			default:
 				break;
 		}
@@ -105,5 +113,13 @@ public class Connection extends Thread {
 	
 	public String getClientIp() {
 		return clientIp;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.screens.ScreenLib;
 import com.swarmer.gui.screens.ScreenManager;
+import com.swarmer.gui.screens.lobby.LobbyScreen;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.exceptions.GameClientNotInstantiatedException;
 
@@ -80,6 +81,10 @@ public final class GameClient extends Thread {
 				ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
 				break;
 			case 203: // User creation failed
+				break;
+			case 304: // Received message in lobby chat
+				String[] receivedMessageArray = (String[]) message.getObject();
+				LobbyScreen.lobbyChat.appendToChatWindow(receivedMessageArray[1], receivedMessageArray[0]);
 				break;
 			default:
 				break;
