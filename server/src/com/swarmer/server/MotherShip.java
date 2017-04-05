@@ -43,8 +43,8 @@ public class MotherShip {
 		statement.execute();
 	}
 
-	public static String sqlExecuteQueryToString(String query) throws SQLException {
-		ResultSet queryResult = sqlExecuteQuery(query);
+	public static String sqlExecuteQueryToString(String query, String... values) throws SQLException {
+		ResultSet queryResult = sqlExecuteQuery(query, values);
 		String result = "";
 		while(queryResult.next()) {
 			result = queryResult.getString(1);
