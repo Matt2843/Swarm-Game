@@ -6,6 +6,7 @@ import com.swarmer.shared.exceptions.UnkownServerNodeException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -34,8 +35,12 @@ public class MotherShip {
 		new GreetingNode(1111).start();
 	}
 
-	public static void sqlExecute(String query) throws SQLException {
-		mySqlConnection.createStatement().execute(query);
+	public static void sqlExecute(String query, String... values) throws SQLException {
+		PreparedStatement statement = mySqlConnection.prepareStatement(query);
+		for(int i = 0; i < values.length; i++) {
+			statement.setString(i + 1, values[i]);
+		}
+		statement.execute();
 	}
 
 	public static String sqlExecuteQueryToString(String query) throws SQLException {
@@ -47,8 +52,12 @@ public class MotherShip {
 		return result;
 	}
 
-	public static ResultSet sqlExecuteQuery(String query) throws SQLException {
-		return mySqlConnection.createStatement().executeQuery(query);
+	public static ResultSet sqlExecuteQuery(String query, String... values) throws SQLException {
+		PreparedStatement statement = mySqlConnection.prepareStatement(query);
+		for(int i = 0; i < values.length; i++) {
+			statement.setString(i + 1, values[i]);
+		}
+		return statement.executeQuery();
 	}
 
 	/**

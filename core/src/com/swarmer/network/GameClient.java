@@ -1,5 +1,9 @@
 package com.swarmer.network;
 
+import com.badlogic.gdx.Game;
+import com.swarmer.game.SwarmerMain;
+import com.swarmer.gui.screens.ScreenLib;
+import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.exceptions.GameClientNotInstantiatedException;
 
@@ -10,7 +14,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 public final class GameClient extends Thread {
-	
+
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 	
@@ -20,7 +24,7 @@ public final class GameClient extends Thread {
 	private Socket client;
 
 	private static GameClient gc;
-	
+
 	private GameClient() {
 		// DO NOT INSTANTIATE THIS CLASS
 	}
@@ -68,10 +72,12 @@ public final class GameClient extends Thread {
 	private void react(Message message) {
 		switch(message.getOpcode()) {
 			case 110: // Login succeeded
+				ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
 				break;
 			case 111: // Login failed
 				break;
 			case 202: // User created
+				ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
 				break;
 			case 203: // User creation failed
 				break;
@@ -97,10 +103,5 @@ public final class GameClient extends Thread {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public static void main(String[] args) {
-		GameClient client = new GameClient();
-		client.start();
 	}
 }

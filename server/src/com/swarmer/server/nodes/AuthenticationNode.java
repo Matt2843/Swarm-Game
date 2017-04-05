@@ -13,60 +13,60 @@ import java.util.UUID;
  */
 public class AuthenticationNode extends ServerNode {
 
-    public AuthenticationNode() {
-        addNodeToMothership();
-    }
+	public AuthenticationNode() {
+		addNodeToMothership();
+	}
 
-    private boolean userExists(String username) throws SQLException {
-        return MotherShip.sqlExecuteQuery("SELECT 1 FROM users WHERE username='" + username + "'").last();
-    }
+	private boolean userExists(String username) throws SQLException {
+		return MotherShip.sqlExecuteQuery("SELECT 1 FROM users WHERE username=?", username).last();
+	}
 
-    public boolean createUser(String username, char[] password) {
-        byte[] salt = new byte[32];
-        try {
-            SecureRandom.getInstanceStrong().nextBytes(salt);
-            String hashedPassword = HashingTools.hashPassword(password, salt);
+	public boolean createUser(String username, char[] password) {
+		byte[] salt = new byte[32];
+		try {
+			SecureRandom.getInstanceStrong().nextBytes(salt);
+			String hashedPassword = HashingTools.hashPassword(password, salt);
 
-            if(!userExists(username)) {
-                MotherShip.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES ('" + UUID.randomUUID().toString() + "','" + username + "','" + hashedPassword + "','" + HashingTools.bytesToHex(salt) + "')");
-                return true;
-            }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+			if(!userExists(username)) {
+				MotherShip.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES ('" + UUID.randomUUID().toString() + "'," + "?" + ",'" + hashedPassword + "','" + HashingTools.bytesToHex(salt) + "')", username);
+				return true;
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} catch(NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 
-    public boolean authenticateUser(String username, char[] password) {
-        try {
-            if(userExists(username)) {
-                String saltHex = MotherShip.sqlExecuteQueryToString("SELECT password_salt FROM users WHERE username='" + username + "'");
-                byte[] saltBytes = HashingTools.hexToBytes(saltHex);
-                String hashedPassword = HashingTools.hashPassword(password, saltBytes);
-                String hashedPasswordFromDatabase = MotherShip.sqlExecuteQueryToString("SELECT password FROM users WHERE username='" + username + "'");
-                if(hashedPassword.equals(hashedPasswordFromDatabase)) {
-                    return true;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+		return false;
+	}
 
-    @Override public String generateInsertQuery() {
-        return "INSERT INTO authentication_nodes (id, user_count) VALUES ('" + getNodeId() + "'," + usersConnected + ")";
-    }
+	public boolean authenticateUser(String username, char[] password) {
+		try {
+			if(userExists(username)) {
+				String saltHex = MotherShip.sqlExecuteQueryToString("SELECT password_salt FROM users WHERE username='" + username + "'");
+				byte[] saltBytes = HashingTools.hexToBytes(saltHex);
+				String hashedPassword = HashingTools.hashPassword(password, saltBytes);
+				String hashedPasswordFromDatabase = MotherShip.sqlExecuteQueryToString("SELECT password FROM users WHERE username='" + username + "'");
+				if(hashedPassword.equals(hashedPasswordFromDatabase)) {
+					return true;
+				}
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
-    @Override
-    public String getDescription() {
-        return "Authentication Node";
-    }
+	@Override public String generateInsertQuery() {
+		return "INSERT INTO authentication_nodes (id, user_count) VALUES ('" + getNodeId() + "'," + usersConnected + ")";
+	}
 
-    @Override public String nextInPrimitiveChain() {
-        return "lobby_nodes";
-    }
+	@Override public String getDescription() {
+		return "Authentication Node";
+	}
+
+	@Override public String nextInPrimitiveChain() {
+		return "lobby_nodes";
+	}
 
 }
