@@ -34,9 +34,8 @@ public class LobbyChat extends Table {
 		chatWindow.setAlignment(Align.topLeft);
 		chatWindow.setWrap(true);
 
-		scrollChat = new ScrollPane(chatWindow);
-		scrollChat.setScrollingDisabled(true, false);
-		scrollChat.setupOverscroll(0, 0, 0);
+		scrollChat = new ScrollPane(chatWindow, StyleSheet.defaultSkin);
+		scrollChat.setForceScroll(false, true);
 
 		userInput = new TextField("", StyleSheet.defaultSkin);
 
