@@ -85,6 +85,7 @@ public class LobbyScreen extends Stage implements Screen {
         spriteBatch.end();
 
         draw();
+        act(delta);
     }
 
     @Override public void resize(int width, int height) {

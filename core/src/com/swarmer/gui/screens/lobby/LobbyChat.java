@@ -18,21 +18,13 @@ public class LobbyChat extends Table {
 	private Label lobbyStatus;
 
 	private ScrollPane scrollChat;
+
 	private Label chatWindow;
 
 	public LobbyChat(float width, float height) {
 		setSize(width, height);
 		configureWidgets();
 		addWidgets();
-	}
-
-	private void addWidgets() {
-		add(lobbyStatus).width(getWidth()).height((float) (getHeight() * 0.08)).colspan(2);
-		row();
-		add(scrollChat).width(getWidth()).height((float) (getHeight() * 0.84)).expandX().colspan(2);
-		row();
-		add(userInput).height((float) (getHeight() * 0.08)).width((float) (getWidth() * 0.8));
-		add(sendInput).height((float) (getHeight() * 0.08)).width((float) (getWidth() * 0.2));
 	}
 
 	private void configureWidgets() {
@@ -56,8 +48,19 @@ public class LobbyChat extends Table {
 					chatWindow.setText(userInput.getText());
 				} else {
 					chatWindow.setText(chatWindow.getText() + "\n" + userInput.getText());
+					layout();
+					scrollChat.scrollTo(0,0,0,0);
 				}
 			}
 		});
+	}
+
+	private void addWidgets() {
+		add(lobbyStatus).width(getWidth()).height((float) (getHeight() * 0.08)).colspan(2);
+		row();
+		add(scrollChat).width(getWidth()).height((float) (getHeight() * 0.84)).expandX().colspan(2);
+		row();
+		add(userInput).height((float) (getHeight() * 0.08)).width((float) (getWidth() * 0.8));
+		add(sendInput).height((float) (getHeight() * 0.08)).width((float) (getWidth() * 0.2));
 	}
 }
