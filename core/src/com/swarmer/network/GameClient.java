@@ -19,7 +19,7 @@ public final class GameClient extends Thread {
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 	
-	private String host = "10.16.169.99";
+	private String host = "127.0.0.1";
 	private int port = 1111;
 	
 	private Socket client;

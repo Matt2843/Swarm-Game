@@ -1,6 +1,6 @@
 package com.swarmer.server.nodes;
 
-import com.swarmer.server.Connection;
+import com.swarmer.shared.communication.Connection;
 import com.swarmer.server.MotherShip;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.exceptions.UnkownServerNodeException;

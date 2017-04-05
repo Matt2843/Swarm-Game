@@ -1,5 +1,6 @@
 package com.swarmer.server.database;
 
+import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.Product;
 import com.swarmer.shared.exceptions.PlayerAlreadyExistsException;
 import com.swarmer.shared.exceptions.PlayerNotFoundException;

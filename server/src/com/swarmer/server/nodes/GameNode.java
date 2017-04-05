@@ -1,11 +1,6 @@
 package com.swarmer.server.nodes;
 
-import com.swarmer.server.Connection;
 import com.swarmer.server.database.EventBank;
-import com.swarmer.shared.communication.Message;
-
-import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by Matt on 03/16/2017.
