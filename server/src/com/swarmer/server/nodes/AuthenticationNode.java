@@ -18,7 +18,7 @@ public class AuthenticationNode extends ServerNode {
 	}
 
 	private boolean userExists(String username) throws SQLException {
-		return MotherShip.sqlExecuteQuery("SELECT 1 FROM users WHERE username=?", username).last();
+		return MotherShip.sqlExecuteQuery("SELECT 1 FROM users WHERE username = ?", username).last();
 	}
 
 	public boolean createUser(String username, char[] password) {
@@ -28,7 +28,7 @@ public class AuthenticationNode extends ServerNode {
 			String hashedPassword = HashingTools.hashPassword(password, salt);
 
 			if(!userExists(username)) {
-				MotherShip.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES ('" + UUID.randomUUID().toString() + "'," + "?" + ",'" + hashedPassword + "','" + HashingTools.bytesToHex(salt) + "')", username);
+				MotherShip.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES ('" + UUID.randomUUID().toString() + "',?,'" + hashedPassword + "','" + HashingTools.bytesToHex(salt) + "')", username);
 				return true;
 			}
 		} catch(SQLException e) {
@@ -43,10 +43,10 @@ public class AuthenticationNode extends ServerNode {
 	public boolean authenticateUser(String username, char[] password) {
 		try {
 			if(userExists(username)) {
-				String saltHex = MotherShip.sqlExecuteQueryToString("SELECT password_salt FROM users WHERE username='" + username + "'");
+				String saltHex = MotherShip.sqlExecuteQueryToString("SELECT password_salt FROM users WHERE username = ?", username);
 				byte[] saltBytes = HashingTools.hexToBytes(saltHex);
 				String hashedPassword = HashingTools.hashPassword(password, saltBytes);
-				String hashedPasswordFromDatabase = MotherShip.sqlExecuteQueryToString("SELECT password FROM users WHERE username='" + username + "'");
+				String hashedPasswordFromDatabase = MotherShip.sqlExecuteQueryToString("SELECT password FROM users WHERE username = ?", username);
 				if(hashedPassword.equals(hashedPasswordFromDatabase)) {
 					return true;
 				}
