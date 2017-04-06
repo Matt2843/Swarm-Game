@@ -13,6 +13,22 @@ import java.io.IOException;
  */
 public class Protocol {
 
+    private static Protocol instance = null;
+
+    private Protocol() {
+        // DO NOT INSTANTIATE THIS CLASS
+    }
+
+    /**
+     * Always call this method to access the protocol.
+     * @return the static instance of the protocol
+     */
+    public Protocol getInstance() {
+        if(instance != null) return instance;
+        instance = new Protocol();
+        return instance;
+    }
+
     public void react(Message message, Connection callerConnection) throws OperationInWrongServerNodeException, IOException {
         Player player = callerConnection.getPlayer();
         ServerNode attachedNode = callerConnection.getAttachedNode();
