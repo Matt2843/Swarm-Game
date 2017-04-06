@@ -22,12 +22,18 @@ public class MotherShipProtocol extends Protocol {
 			case 3: // Create "user" in database, .getObject() = String[] {username, hashedPassword, salt}
 				addUserCredentialsToDatabase(((String[]) message.getObject())[0], ((String[]) message.getObject())[1], ((String[]) message.getObject())[2]);
 				break;
-			case 4: // Authenticate user in database, .getObject() = String[] {username, hashedPassword}
-				authenticateUserInDatabase(((String[]) message.getObject())[0], ((String[]) message.getObject())[1]);
+			case 4: // Authenticate user in database, .getObject() = String[] {username, password}
+				sendCredentialsAndDatabaseCredentialsToAuthenticationNode((String[]) message.getObject());
 				break;
 			default:
 				break;
 		}
+	}
+
+	private void sendCredentialsAndDatabaseCredentialsToAuthenticationNode(String[] object) throws SQLException, IOException {
+		String saltFromDatabase = MotherShip.mySQLConnection.sqlExecuteQueryToString("SELECT salt FROM users WHERE username = ?", object[0]);
+		String hasedPasswordFromDatabase = MotherShip.mySQLConnection.sqlExecuteQueryToString("SELECT password FROM users WHERE username = ?", object[0]);
+		caller.sendMessage(new Message(14, new String[] {object[0], object[1], saltFromDatabase, hasedPasswordFromDatabase}));
 	}
 
 	private boolean userExistsInDatabase(String username) throws SQLException, IOException {
@@ -44,10 +50,10 @@ public class MotherShipProtocol extends Protocol {
 		}
 	}
 
-	private void authenticateUserInDatabase(String username, String hashedPassword) throws SQLException, IOException {
+	private void authenticateUserInDatabase(String username) throws SQLException, IOException {
 		if(userExistsInDatabase(username)) {
 			String hashedPasswordFromDatabase = MotherShip.mySQLConnection.sqlExecuteQueryToString("SELECT password FROM users WHERE username = ?", username);
-			caller.sendMessage(new Message(14, hashedPassword.equals(hashedPasswordFromDatabase)));
+			caller.sendMessage(new Message(14, hashedPasswordFromDatabase));
 		} else {
 			caller.sendMessage(new Message(14, false));
 		}

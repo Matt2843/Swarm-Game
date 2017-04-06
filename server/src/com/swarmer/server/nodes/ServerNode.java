@@ -15,14 +15,15 @@ public abstract class ServerNode implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private final String nodeUUID = UUID.randomUUID().toString();
     protected int usersConnected = 0;
 
     protected ServerSocket serverSocket;
     protected Socket connection;
 
-    protected TCPConnection motherShipConnection;
+    protected static TCPConnection motherShipConnection;
 
-    private final String nodeUUID = UUID.randomUUID().toString();
+
 
     protected ServerNode(int port) throws IOException {
         initializeServerSocket(port);

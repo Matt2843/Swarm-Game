@@ -3,6 +3,7 @@ package com.swarmer.shared.communication;
 import com.swarmer.shared.communication.Message;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 /**
@@ -10,6 +11,6 @@ import java.sql.SQLException;
  */
 public abstract class Protocol {
 
-	protected abstract void react(Message message, Connection caller) throws IOException, SQLException;
+	protected abstract void react(Message message, Connection caller) throws IOException, SQLException, NoSuchAlgorithmException;
 
 }
