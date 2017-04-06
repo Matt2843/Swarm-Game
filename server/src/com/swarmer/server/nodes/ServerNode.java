@@ -64,6 +64,10 @@ public abstract class ServerNode extends Thread implements Serializable {
         usersConnected += 1;
     }
 
+    public List<Connection> getActiveConnections() {
+        return activeConnections;
+    }
+
     public abstract String generateInsertQuery();
     public abstract String getDescription();
     public abstract String nextInPrimitiveChain();

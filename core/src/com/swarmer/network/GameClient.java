@@ -19,7 +19,7 @@ public final class GameClient extends Thread {
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 	
-	private String host = "10.16.169.99";
+	private String host = "localhost";
 	private int port = 1111;
 	
 	private Socket client;
@@ -65,6 +65,7 @@ public final class GameClient extends Thread {
 		Message message = null;
 		do {
 			message = (Message) input.readObject();
+			System.out.println("Message Received + " + message.getOpcode());
 			react(message);
 		} while(message.getOpcode() != 0);
 		cleanUp();
@@ -83,6 +84,7 @@ public final class GameClient extends Thread {
 			case 203: // User creation failed
 				break;
 			case 304: // Received message in lobby chat
+				System.out.println("Hello hello" + message.getObject().toString());
 				String[] receivedMessageArray = (String[]) message.getObject();
 				LobbyScreen.lobbyChat.appendToChatWindow(receivedMessageArray[1], receivedMessageArray[0]);
 				break;

@@ -7,8 +7,11 @@ import java.io.Serializable;
  */
 public final class Player implements Serializable {
 
-	private String alias;
-	private int id;
+	private String alias = null;
+	private int id = 0;
+
+	public Player() {
+	}
 
 	public Player(String alias, int id) {
 		this.alias = alias;

@@ -22,7 +22,7 @@ public class Connection extends Thread {
 
 	private ServerNode attachedNode;
 
-	private Player player = null;
+	private Player player = new Player();
 
 	public Connection(Socket connection, ServerNode attachedNode) throws IOException {
 		this.connection = connection;
@@ -37,6 +37,7 @@ public class Connection extends Thread {
 		do {
 			try {
 				message = (Message) input.readObject();
+				System.out.println("Message Received + " + message.getOpcode());
 				react(message);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -58,6 +59,7 @@ public class Connection extends Thread {
 					char[] password = ((String[])receivedObject)[0].toCharArray();
 					boolean evaluate = ((AuthenticationNode) attachedNode).authenticateUser(username, password);
 					if(evaluate) {
+						player.setAlias(username);
 						sendMessage(new Message(110));
 					} else {
 						sendMessage(new Message(111));
@@ -65,6 +67,8 @@ public class Connection extends Thread {
 				} else {
 					throw new OperationInWrongServerNodeException("Attempted to invoke function calls in a wrong type of ServerNode");
 				}
+				// TODO: Figure out how to add connection to the correct list and remove when left.
+				attachedNode.addConnection(this);
 				break;
 			case 201: // Create user, the object is a String[] containing (String username, String password) - TODO: should be an encrypted object.
 				if(attachedNode.getDescription().equals("Authentication Node")) {
@@ -81,10 +85,8 @@ public class Connection extends Thread {
 				}
 				break;
 			case 301:
-				if(attachedNode instanceof LobbyNode) {
-					String[] broadcastObject = {(String) message.getObject(), player.getAlias()};
-					attachedNode.broadcast(new Message(304, broadcastObject));
-				}
+				String[] broadcastObject = {(String) message.getObject(), player.getAlias()};
+				attachedNode.broadcast(new Message(304, broadcastObject));
 				break;
 			default:
 				break;
