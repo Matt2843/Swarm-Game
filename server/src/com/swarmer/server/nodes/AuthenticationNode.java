@@ -21,22 +21,28 @@ public class AuthenticationNode extends ServerNode {
 	// TODO: USE THIS IN FUTURE
 	private SecureTCPConnection secureTCPConnection;
 	private TCPConnection tcpConnection;
-	private final AuthenticationProtocol authenticationProtocol = new AuthenticationProtocol();
 
-	private static MySQLConnection mySQLConnection = new MySQLConnection("localhost", 3306);
+	private final AuthenticationProtocol authenticationProtocol = new AuthenticationProtocol();
 
 	protected AuthenticationNode(int port) throws IOException {
 		super(port);
 	}
 
+	@Override protected void setupMotherShipConnection() throws IOException {
+		motherShipConnection = new TCPConnection(new Socket("localhost", 1110), authenticationProtocol);
+		new Thread(motherShipConnection).start();
+	}
+
 	@Override protected void handleConnection(Socket connection) throws IOException {
-		secureTCPConnection = new SecureTCPConnection(connection, authenticationProtocol);
+		// TODO: use this in the future when the secure connection is tested.
+		// secureTCPConnection = new SecureTCPConnection(connection, authenticationProtocol);
 
 		tcpConnection = new TCPConnection(connection, authenticationProtocol);
-		tcpConnection.run();
+		new Thread(tcpConnection).start();
 	}
 
 	private static boolean userExists(String username) throws SQLException {
+
 		return mySQLConnection.sqlExecuteQuery("SELECT 1 FROM users WHERE username = ?", username).last();
 	}
 

@@ -1,12 +1,11 @@
 package com.swarmer.server.nodes;
 
-import com.swarmer.server.MySQLConnection;
+import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.SQLException;
 import java.util.UUID;
 
 /**
@@ -21,13 +20,14 @@ public abstract class ServerNode implements Serializable {
     protected ServerSocket serverSocket;
     protected Socket connection;
 
-    protected MySQLConnection mySQLConnection = new MySQLConnection("localhost", 3306);
+    protected TCPConnection motherShipConnection;
 
     private final String nodeUUID = UUID.randomUUID().toString();
 
     protected ServerNode(int port) throws IOException {
         initializeServerSocket(port);
         notifyMySQLServer();
+        setupMotherShipConnection();
         awaitConnection(connection);
     }
 
@@ -36,11 +36,7 @@ public abstract class ServerNode implements Serializable {
     }
 
     protected void notifyMySQLServer() {
-        try {
-            mySQLConnection.sqlExecute(generateInsertQuery());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        // TODO: notify through mothership
     }
 
     private void awaitConnection(Socket connection) throws IOException {
@@ -50,7 +46,8 @@ public abstract class ServerNode implements Serializable {
         }
     }
 
-    public abstract String generateInsertQuery();
+    protected abstract void setupMotherShipConnection() throws IOException;
+
     public abstract String getDescription();
 
     protected abstract void handleConnection(Socket connection) throws IOException;

@@ -11,19 +11,20 @@ import java.sql.SQLException;
 public class MotherShip {
 
 	public static MySQLConnection mySQLConnection = new MySQLConnection("localhost", 3306);
-
 	private final MotherShipProtocol mothershipProtocol = new MotherShipProtocol();
 
-	private ServerSocket server;
+	private ServerSocket serverSocket;
 	private Socket connection;
-
 	private final int port;
 
-	public MotherShip(int port) throws IOException {
+	public MotherShip(int port) {
 		this.port = port;
-		mySQLConnection = new MySQLConnection("localhost", 3306);
 		clearDatabase();
-		awaitConnection();
+		try {
+			awaitConnection();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void clearDatabase() {
@@ -37,19 +38,15 @@ public class MotherShip {
 	}
 
 	private void awaitConnection() throws IOException {
-		server = new ServerSocket(port);
+		serverSocket = new ServerSocket(port);
 		while(true) {
-			connection = server.accept();
+			connection = serverSocket.accept();
 			TCPConnection tcpConnection = new TCPConnection(connection, mothershipProtocol);
 			new Thread(tcpConnection).start();
 		}
 	}
 
 	public static void main(String[] args) {
-		try {
-			MotherShip ms = new MotherShip(1110);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		MotherShip ms = new MotherShip(1110);
 	}
 }

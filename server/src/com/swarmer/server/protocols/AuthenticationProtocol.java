@@ -17,6 +17,11 @@ public class AuthenticationProtocol extends Protocol {
 	@Override protected void react(Message message, Connection caller) throws IOException {
 		this.caller = caller;
 		switch (message.getOpcode()) {
+			case 13:
+
+				break;
+			case 14:
+				break;
 			case 109:
 				loginUser((String[]) message.getObject());
 				break;
