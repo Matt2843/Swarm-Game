@@ -124,4 +124,8 @@ public class Connection extends Thread {
 	public Player getPlayer() {
 		return player;
 	}
+
+	public ServerNode getAttachedNode() {
+		return attachedNode;
+	}
 }
