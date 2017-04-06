@@ -4,7 +4,6 @@ import com.swarmer.gui.screens.ScreenLib;
 import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.gui.screens.lobby.LobbyScreen;
 import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.SecureConnection;
 import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
 
 import java.io.IOException;

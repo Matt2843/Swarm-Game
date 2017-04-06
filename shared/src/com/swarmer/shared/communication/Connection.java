@@ -3,67 +3,26 @@ package com.swarmer.shared.communication;
 import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 
-public abstract class Connection extends Thread {
-	
-	protected ObjectInputStream input;
-	protected ObjectOutputStream output;
-	
-	protected Socket connection = null;
-	protected String clientIp = "";
+public abstract class Connection implements Runnable {
 
+	protected String correspondentsIp = "";
 	protected Player player = null;
 
-	public Connection(Socket connection) throws IOException {
-		this.connection = connection;
-		clientIp = connection.getRemoteSocketAddress().toString();
-		setupStreams();
+	abstract public void run();
+
+	protected void react(Message message) throws IOException, OperationInWrongServerNodeException {
+		//Protocol.getInstance().react(message);
 	}
 
-	@Override public void run() {
-		Message message = null;
-		do {
-			try {
-				message = (Message) input.readObject();
-				react(message);
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (OperationInWrongServerNodeException e) {
-				e.printStackTrace();
-			}
-		} while(message.getOpcode() != 0); // TODO: CHANGE STOP CONDITION.
-		cleanUp();
-	}
+	abstract public void sendMessage(Message m) throws IOException;
 
-	abstract protected void react(Message message) throws IOException, OperationInWrongServerNodeException;
+	abstract protected void setupStreams() throws IOException;
 
-	public void sendMessage(Message m) throws IOException {
-		output.writeObject(m);
-		output.flush();
-	}
-
-	protected void setupStreams() throws IOException {
-		output = new ObjectOutputStream(connection.getOutputStream());
-		output.flush();
-		input = new ObjectInputStream(connection.getInputStream());
-	}
-
-	private void cleanUp() {
-		try {
-			output.close();
-			input.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	abstract protected void cleanUp();
 	
-	public String getClientIp() {
-		return clientIp;
+	public String getCorrespondentsIp() {
+		return correspondentsIp;
 	}
 
 	public void setPlayer(Player player) {

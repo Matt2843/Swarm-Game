@@ -1,6 +1,5 @@
 package com.swarmer.server.nodes;
 
-import com.swarmer.server.ServerConnection;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.server.MotherShip;
 import com.swarmer.shared.exceptions.CorruptedDatabaseException;
@@ -44,7 +43,7 @@ public class GreetingNode extends ServerNode {
     private void waitForConnection() throws IOException, UnkownServerNodeException, SQLException, CorruptedDatabaseException {
         while(running) {
             connection = server.accept();
-            Connection newCon = new ServerConnection(connection, MotherShip.findNextPrimitiveNode(this));
+            Connection newCon = new ServerTCPConnection(connection, MotherShip.findNextPrimitiveNode(this));
             newCon.start();
         }
     }

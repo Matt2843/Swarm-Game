@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
@@ -13,21 +12,17 @@ import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.spec.GCMParameterSpec;
-import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public abstract class SecureConnection extends Connection {
-
+public class SecureTCPConnection extends TCPConnection {
 	protected Cipher cipher;
 
-	public SecureConnection(Socket connection) throws IOException {
+	public SecureTCPConnection(Socket connection) throws IOException {
 		super(connection);
 	}
 
 	@Override protected void setupStreams() throws IOException {
 		//cipher = new Cipher(new CipherSpi(), new Provider(name, version, info), transformation);
-		System.out.println("Something");
 		try {
 			cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
 			SecretKeySpec skeySpec = new SecretKeySpec(KeyGenerator.getInstance("AES").generateKey().getEncoded(), "AES");
