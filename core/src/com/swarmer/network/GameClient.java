@@ -1,7 +1,5 @@
 package com.swarmer.network;
 
-import com.badlogic.gdx.Game;
-import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.screens.ScreenLib;
 import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.gui.screens.lobby.LobbyScreen;
@@ -19,7 +17,7 @@ public final class GameClient extends Thread {
 	private ObjectOutputStream output;
 	private ObjectInputStream input;
 	
-	private String host = "10.16.137.101";
+	private String host = "127.0.0.1";
 	private int port = 1111;
 	
 	private Socket client;
