@@ -1,8 +1,13 @@
 package com.swarmer.server.nodes;
 
-import com.swarmer.server.MotherShip;
+import com.swarmer.server.MySQLConnection;
+import com.swarmer.server.protocols.AuthenticationProtocol;
 import com.swarmer.server.security.HashingTools;
+import com.swarmer.shared.communication.SecureTCPConnection;
+import com.swarmer.shared.communication.TCPConnection;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.SQLException;
@@ -13,22 +18,36 @@ import java.util.UUID;
  */
 public class AuthenticationNode extends ServerNode {
 
-	public AuthenticationNode() {
-		addNodeToMothership();
+	// TODO: USE THIS IN FUTURE
+	private SecureTCPConnection secureTCPConnection;
+	private TCPConnection tcpConnection;
+	private final AuthenticationProtocol authenticationProtocol = new AuthenticationProtocol();
+
+	private static MySQLConnection mySQLConnection = new MySQLConnection("localhost", 3306);
+
+	protected AuthenticationNode(int port) throws IOException {
+		super(port);
 	}
 
-	private boolean userExists(String username) throws SQLException {
-		return MotherShip.sqlExecuteQuery("SELECT 1 FROM users WHERE username = ?", username).last();
+	@Override protected void handleConnection(Socket connection) throws IOException {
+		secureTCPConnection = new SecureTCPConnection(connection, authenticationProtocol);
+
+		tcpConnection = new TCPConnection(connection, authenticationProtocol);
+		tcpConnection.run();
 	}
 
-	public boolean createUser(String username, char[] password) {
+	private static boolean userExists(String username) throws SQLException {
+		return mySQLConnection.sqlExecuteQuery("SELECT 1 FROM users WHERE username = ?", username).last();
+	}
+
+	public static boolean createUser(String username, char[] password) {
 		byte[] salt = new byte[32];
 		try {
 			SecureRandom.getInstanceStrong().nextBytes(salt);
 			String hashedPassword = HashingTools.hashPassword(password, salt);
 
 			if(!userExists(username)) {
-				MotherShip.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES ('" + UUID.randomUUID().toString() + "',?,'" + hashedPassword + "','" + HashingTools.bytesToHex(salt) + "')", username);
+				mySQLConnection.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES ('" + UUID.randomUUID().toString() + "',?,'" + hashedPassword + "','" + HashingTools.bytesToHex(salt) + "')", username);
 				return true;
 			}
 		} catch(SQLException e) {
@@ -36,17 +55,16 @@ public class AuthenticationNode extends ServerNode {
 		} catch(NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
-
 		return false;
 	}
 
-	public boolean authenticateUser(String username, char[] password) {
+	public static boolean authenticateUser(String username, char[] password) {
 		try {
 			if(userExists(username)) {
-				String saltHex = MotherShip.sqlExecuteQueryToString("SELECT password_salt FROM users WHERE username = ?", username);
+				String saltHex = mySQLConnection.sqlExecuteQueryToString("SELECT password_salt FROM users WHERE username = ?", username);
 				byte[] saltBytes = HashingTools.hexToBytes(saltHex);
 				String hashedPassword = HashingTools.hashPassword(password, saltBytes);
-				String hashedPasswordFromDatabase = MotherShip.sqlExecuteQueryToString("SELECT password FROM users WHERE username = ?", username);
+				String hashedPasswordFromDatabase = mySQLConnection.sqlExecuteQueryToString("SELECT password FROM users WHERE username = ?", username);
 				if(hashedPassword.equals(hashedPasswordFromDatabase)) {
 					return true;
 				}
@@ -58,15 +76,19 @@ public class AuthenticationNode extends ServerNode {
 	}
 
 	@Override public String generateInsertQuery() {
-		return "INSERT INTO authentication_nodes (id, user_count) VALUES ('" + getNodeId() + "'," + usersConnected + ")";
+		return "INSERT INTO authentication_nodes (id, user_count) VALUES ('" + getNodeUUID() + "'," + usersConnected + ")";
 	}
 
 	@Override public String getDescription() {
 		return "Authentication Node";
 	}
 
-	@Override public String nextInPrimitiveChain() {
-		return "lobby_nodes";
+	public static void main(String[] args) {
+		try {
+			AuthenticationNode authenticationNode = new AuthenticationNode(1111);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -17,7 +17,7 @@ public class MySQLConnection {
 		}
 	}
 
-	public static void sqlExecute(String query, String... values) throws SQLException {
+	public void sqlExecute(String query, String... values) throws SQLException {
 		PreparedStatement statement = mySqlConnection.prepareStatement(query);
 		for(int i = 0; i < values.length; i++) {
 			statement.setString(i + 1, values[i]);
@@ -25,7 +25,7 @@ public class MySQLConnection {
 		statement.execute();
 	}
 
-	public static ResultSet sqlExecuteQuery(String query, String... values) throws SQLException {
+	public ResultSet sqlExecuteQuery(String query, String... values) throws SQLException {
 		PreparedStatement statement = mySqlConnection.prepareStatement(query);
 		for(int i = 0; i < values.length; i++) {
 			statement.setString(i + 1, values[i]);
@@ -34,7 +34,7 @@ public class MySQLConnection {
 	}
 
 
-	public static String sqlExecuteQueryToString(String query, String... values) throws SQLException {
+	public String sqlExecuteQueryToString(String query, String... values) throws SQLException {
 		ResultSet queryResult = sqlExecuteQuery(query, values);
 		String result = "";
 		while(queryResult.next()) {

@@ -1,5 +1,8 @@
 package com.swarmer.server;
 
+import com.swarmer.server.protocols.MotherShipProtocol;
+import com.swarmer.shared.communication.TCPConnection;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -7,39 +10,45 @@ import java.sql.SQLException;
 
 public class MotherShip {
 
-	public MySQLConnection mySQLConnection;
+	public static MySQLConnection mySQLConnection = new MySQLConnection("localhost", 3306);
+
+	private final MotherShipProtocol mothershipProtocol = new MotherShipProtocol();
 
 	private ServerSocket server;
 	private Socket connection;
+
 	private final int port;
 
-	public MotherShip(int port) {
+	public MotherShip(int port) throws IOException {
 		this.port = port;
 		mySQLConnection = new MySQLConnection("localhost", 3306);
+		clearDatabase();
 		awaitConnection();
 	}
 
-	private void awaitConnection() {
+	private void clearDatabase() {
 		try {
-			server = new ServerSocket(port);
-			while(true) {
-				connection = server.accept();
-				// TODO: Start a thread Connection and re-route this.
-			}
-		} catch (IOException e) {
+			mySQLConnection.sqlExecute("DELETE FROM authentication_nodes");
+			mySQLConnection.sqlExecute("DELETE FROM lobby_nodes");
+			mySQLConnection.sqlExecute("DELETE FROM game_nodes");
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void main(String[] args) {
-		MotherShip ms = new MotherShip(1234);
+	private void awaitConnection() throws IOException {
+		server = new ServerSocket(port);
+		while(true) {
+			connection = server.accept();
+			TCPConnection tcpConnection = new TCPConnection(connection, mothershipProtocol);
+			new Thread(tcpConnection).start();
+		}
+	}
 
-		// Clear db?
+	public static void main(String[] args) {
 		try {
-			ms.mySQLConnection.sqlExecute("DELETE FROM authentication_nodes");
-			ms.mySQLConnection.sqlExecute("DELETE FROM lobby_nodes");
-			ms.mySQLConnection.sqlExecute("DELETE FROM game_nodes");
-		} catch (SQLException e) {
+			MotherShip ms = new MotherShip(1110);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
