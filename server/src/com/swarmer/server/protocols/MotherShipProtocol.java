@@ -25,7 +25,7 @@ public class MotherShipProtocol extends Protocol {
 				break;
 			case 2: // New node added to architecture, add it to db.
 				String[] object = (String[]) message.getObject();
-				String ip = ((TCPConnection) caller).getConnection().getRemoteSocketAddress().toString();
+				String ip = ((TCPConnection) caller).getConnection().getInetAddress().toString();
 				String port = object[0];
 				String nodeType = object[1];
 				System.out.println("ip: " + ip + " port: " + port + " node type: " + nodeType);
