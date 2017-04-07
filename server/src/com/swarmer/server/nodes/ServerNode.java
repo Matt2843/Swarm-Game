@@ -1,11 +1,14 @@
 package com.swarmer.server.nodes;
 
+import com.swarmer.shared.communication.Connection;
+import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -21,14 +24,11 @@ public abstract class ServerNode implements Serializable {
     protected ServerSocket serverSocket;
     protected Socket connection;
 
-    protected static TCPConnection motherShipConnection;
-
-
+    protected static HashMap<Player, Connection> activeConnections = new HashMap<>();
 
     protected ServerNode(int port) throws IOException {
         initializeServerSocket(port);
         notifyMySQLServer();
-        setupMotherShipConnection();
         awaitConnection(connection);
     }
 
@@ -47,11 +47,28 @@ public abstract class ServerNode implements Serializable {
         }
     }
 
-    protected abstract void setupMotherShipConnection() throws IOException;
+    protected Connection getActiveConnection(Player player) {
+        if(activeConnections.containsKey(player))
+            return activeConnections.get(player);
+        else return null;
+    }
 
-    public abstract String getDescription();
+    protected boolean addActiveConnection(Player player, Connection connection) {
+        if(!activeConnections.containsKey(player)) {
+            activeConnections.put(player, connection);
+            return true;
+        } else return false;
+    }
+
+    protected boolean removeActiveConnection(Player player) {
+        if(activeConnections.containsKey(player)) {
+            activeConnections.remove(player);
+            return true;
+        } else return false;
+    }
 
     protected abstract void handleConnection(Socket connection) throws IOException;
+    public abstract String getDescription();
 
     public String getNodeUUID() {
         return nodeUUID;

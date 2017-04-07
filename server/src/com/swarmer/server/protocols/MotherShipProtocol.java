@@ -19,6 +19,12 @@ public class MotherShipProtocol extends Protocol {
 	@Override protected void react(Message message, Connection caller) throws SQLException, IOException {
 		this.caller = caller;
 		switch (message.getOpcode()) {
+			case 109: // Create user forwarded message from authentication node.
+				if (!userExistsInDatabase(((String[]) message.getObject())[0])) {
+					MotherShip.mySQLConnection.sqlExecute("");
+				}
+				break;
+
 			case 3: // Create "user" in database, .getObject() = String[] {username, hashedPassword, salt}
 				addUserCredentialsToDatabase(((String[]) message.getObject())[0], ((String[]) message.getObject())[1], ((String[]) message.getObject())[2]);
 				break;

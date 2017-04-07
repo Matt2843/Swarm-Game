@@ -19,19 +19,11 @@ public class AuthenticationProtocol extends Protocol {
 	@Override protected void react(Message message, Connection caller) throws IOException, NoSuchAlgorithmException {
 		this.caller = caller;
 		switch (message.getOpcode()) {
-			case 13: // State of user creation, if object is true the user was succesfully created if object is false, the user was not created.
-
-				break;
-			case 14: { // .getObject() = {username, password, password salt, hashed password}
-				String[] object = (String[]) message.getObject();
-				authenticateCredentials(object[0], object[1], object[2], object[3]);
-				break;
-			}
 			case 109:
-				createUser((String[]) message.getObject());
+				createUser(message);
 				break;
 			case 201:
-				authenticateUser((String[]) message.getObject());
+				authenticateUser(message);
 				break;
 			default:
 				break;
@@ -39,24 +31,11 @@ public class AuthenticationProtocol extends Protocol {
 
 	}
 
-	private void authenticateCredentials(String username, String password, String salt, String hashedPassword) {
-		password = HashingTools.hashPassword(password.toCharArray(), HashingTools.hexToBytes(salt));
-		if(password.equals(hashedPassword)) {
-			// SUCCESS
-		} else {
-			// FAIL
-		}
+	private void createUser(Message message) throws IOException, NoSuchAlgorithmException {
+		AuthenticationNode.createUser(message);
 	}
 
-	private void createUser(String[] credentials) throws IOException, NoSuchAlgorithmException {
-		String username = credentials[0];
-		String password = credentials[1];
-		AuthenticationNode.createUser(username, password);
-	}
-
-	private void authenticateUser(String[] credentials) throws IOException {
-		String username = credentials[0];
-		String password = credentials[1];
-		AuthenticationNode.authenticateUser(username, password);
+	private void authenticateUser(Message message) throws IOException {
+		AuthenticationNode.authenticateUser(message);
 	}
 }

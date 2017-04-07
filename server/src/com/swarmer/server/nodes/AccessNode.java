@@ -21,19 +21,15 @@ public class AccessNode extends ServerNode {
 		super(port);
 	}
 
-	@Override public String generateInsertQuery() {
-		return null;
-	}
-
-	@Override public String getDescription() {
-		return "Access Node";
-	}
-
 	@Override protected void handleConnection(Socket connection) throws IOException {
 		// TODO: transition to this later, when secure channel is tested
 		// secureTCPConnection = new SecureTCPConnection(connection, accessProtocol);
 
 		tcpConnection = new TCPConnection(connection, accessProtocol);
 		new Thread(tcpConnection).start();
+	}
+
+	@Override public String getDescription() {
+		return "Access Node";
 	}
 }
