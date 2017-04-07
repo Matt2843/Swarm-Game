@@ -4,6 +4,7 @@ import com.swarmer.server.MotherShip;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Protocol;
+import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -19,12 +20,21 @@ public class MotherShipProtocol extends Protocol {
 	@Override protected void react(Message message, Connection caller) throws SQLException, IOException {
 		this.caller = caller;
 		switch (message.getOpcode()) {
+			case 1: // Get best quality authentication node from db.
+
+				break;
+			case 2: // New node added to architecture, add it to db.
+				String[] object = (String[]) message.getObject();
+				String ip = ((TCPConnection) caller).getConnection().getRemoteSocketAddress().toString();
+				String port = object[0];
+				String nodeType = object[1];
+				System.out.println("ip: " + ip + " port: " + port + " node type: " + nodeType);
+				break;
 			case 109: // Create user forwarded message from authentication node.
 				if (!userExistsInDatabase(((String[]) message.getObject())[0])) {
 					MotherShip.mySQLConnection.sqlExecute("");
 				}
 				break;
-
 			case 3: // Create "user" in database, .getObject() = String[] {username, hashedPassword, salt}
 				addUserCredentialsToDatabase(((String[]) message.getObject())[0], ((String[]) message.getObject())[1], ((String[]) message.getObject())[2]);
 				break;

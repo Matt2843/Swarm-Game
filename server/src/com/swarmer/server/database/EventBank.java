@@ -70,7 +70,7 @@ public class EventBank implements Serializable {
             if(playerResourceData.get(player).get(resource.getType()).getQuantity() > quantity) {
                 playerResourceData.get(player).get(resource.getType()).removeQuantity(quantity);
             } else playerResourceData.get(player).get(resource.getType()).setQuantity(0);
-            System.out.println(player.getAlias() + " has: " + playerResourceData.get(player).get(resource.getType()).getQuantity() + " " + resource.getType());
+            System.out.println(player.getUsername() + " has: " + playerResourceData.get(player).get(resource.getType()).getQuantity() + " " + resource.getType());
         } else {
             throw new PlayerNotFoundException("The player information given does not match any player information in the database.");
         }
@@ -89,7 +89,7 @@ public class EventBank implements Serializable {
                         break;
                 }
             }
-            System.out.println(player.getAlias() + " has: " + playerResourceData.get(player).get(resource.getType()).getQuantity() + " " + resource.getType());
+            System.out.println(player.getUsername() + " has: " + playerResourceData.get(player).get(resource.getType()).getQuantity() + " " + resource.getType());
         } else {
             throw new PlayerNotFoundException("The player information given does not match any player information in the database");
         }

@@ -5,6 +5,8 @@ import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
 public class UDPConnection extends Connection {
 	protected ObjectOutputStream output;
@@ -42,6 +44,10 @@ public class UDPConnection extends Connection {
 				e.printStackTrace();
 			} catch (OperationInWrongServerNodeException e) {
 				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		} while(message.getOpcode() != 0); // TODO: CHANGE STOP CONDITION.
 		cleanUp();
@@ -63,7 +69,7 @@ public class UDPConnection extends Connection {
 		input = new ObjectInputStream(iaos);
 	}
 
-	@Override protected void cleanUp() {
+	@Override public void cleanUp() {
 		try {
 			output.close();
 		} catch (IOException e) {

@@ -14,11 +14,19 @@ import java.util.concurrent.Future;
 
 public class AuthenticationNode extends ServerNode {
 
-	private final AuthenticationProtocol authenticationProtocol = new AuthenticationProtocol();
+	private static final AuthenticationProtocol authenticationProtocol = new AuthenticationProtocol();
 	private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 	protected AuthenticationNode(int port) throws IOException {
 		super(port);
+	}
+
+	public static boolean createUser(Message message) throws ExecutionException, InterruptedException, IOException {
+		Future<Message> futureResult = executorService.submit(new MotherShipCallable(message, authenticationProtocol));
+		return (boolean) futureResult.get().getObject();
+	}
+
+	public static void authenticateUser(Message message) {
 
 	}
 
@@ -31,10 +39,5 @@ public class AuthenticationNode extends ServerNode {
 	@Override
 	public String getDescription() {
 		return null;
-	}
-
-	public static boolean createUser(Message message) throws ExecutionException, InterruptedException, IOException {
-		Future<Message> futureResult = executorService.submit(new MotherShipCallable(message, new AuthenticationProtocol()));
-		return (boolean) futureResult.get().getObject();
 	}
 }

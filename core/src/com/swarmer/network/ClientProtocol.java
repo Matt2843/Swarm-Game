@@ -6,10 +6,13 @@ import com.swarmer.gui.screens.lobby.LobbyScreen;
 import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
 public class ClientProtocol extends Protocol {
-	
-	@Override public void react(Message message) {
+
+	@Override
+	protected void react(Message message, Connection caller) throws IOException, SQLException, NoSuchAlgorithmException {
 		switch (message.getOpcode()) {
 			case 110: // Login succeeded
 				ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
@@ -29,6 +32,6 @@ public class ClientProtocol extends Protocol {
 			default:
 				break;
 		}
-	}
 
+	}
 }

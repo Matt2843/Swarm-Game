@@ -1,6 +1,7 @@
 package com.swarmer.server.nodes;
 
 import com.swarmer.shared.communication.Connection;
+import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.TCPConnection;
 
@@ -28,7 +29,7 @@ public abstract class ServerNode implements Serializable {
 
     protected ServerNode(int port) throws IOException {
         initializeServerSocket(port);
-        notifyMySQLServer();
+        notifyMotherShip(port);
         awaitConnection(connection);
     }
 
@@ -36,8 +37,15 @@ public abstract class ServerNode implements Serializable {
         serverSocket = new ServerSocket(port);
     }
 
-    protected void notifyMySQLServer() {
-        // TODO: notify through mothership
+    private void notifyMotherShip(int port) {
+        try {
+            TCPConnection motherShipConnection = new TCPConnection(new Socket("127.0.0.1", 1110), null);
+            motherShipConnection.start();
+            String[] object = new String[] {String.valueOf(serverSocket.getLocalPort()), getDescription()};
+            motherShipConnection.sendMessage(new Message(2, object));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void awaitConnection(Socket connection) throws IOException {

@@ -24,7 +24,11 @@ public class SwarmerMain extends Game {
 	}
 
 	private void establishNetworkConnection() {
-		GameClient.initializeGameClient();
+		try {
+			GameClient.getInstance();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void render() {
@@ -33,10 +37,8 @@ public class SwarmerMain extends Game {
 
 	public void dispose() {
 		try {
-			GameClient.getInstance().sendMessage(new Message(0));
+			GameClient.getInstance().tcp.sendMessage(new Message(0));
 			GameClient.getInstance().cleanUp();
-		} catch (GameClientNotInstantiatedException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

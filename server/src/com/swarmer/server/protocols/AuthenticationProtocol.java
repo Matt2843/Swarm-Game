@@ -8,6 +8,7 @@ import com.swarmer.shared.communication.Protocol;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Matt on 04/06/2017.
@@ -31,8 +32,16 @@ public class AuthenticationProtocol extends Protocol {
 
 	}
 
-	private void createUser(Message message) throws IOException, NoSuchAlgorithmException {
-		AuthenticationNode.createUser(message);
+	private void createUser(Message message) {
+		try {
+			AuthenticationNode.createUser(message);
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void authenticateUser(Message message) throws IOException {

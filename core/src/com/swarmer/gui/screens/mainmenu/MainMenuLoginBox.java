@@ -68,14 +68,12 @@ public class MainMenuLoginBox extends Table {
                     }
                     if(login.getText().toString().equals("Create")) {
                         if(password.getText().equals(verifyPassword.getText())) {
-                            GameClient.getInstance().sendMessage(new Message(201, textFieldData));
+                            GameClient.getInstance().tcp.sendMessage(new Message(201, textFieldData));
                         }
                     } else {
-                        GameClient.getInstance().sendMessage(new Message(109, textFieldData));
+                        GameClient.getInstance().tcp.sendMessage(new Message(109, textFieldData));
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (GameClientNotInstantiatedException e) {
                     e.printStackTrace();
                 }
             }

@@ -12,15 +12,13 @@ public class LobbyNode extends ServerNode {
         super(port);
     }
 
-    @Override public String generateInsertQuery() {
-        return null;
+    @Override
+    protected void handleConnection(Socket connection) throws IOException {
+
     }
 
-    @Override public String getDescription() {
+    @Override
+    public String getDescription() {
         return null;
-    }
-
-    @Override protected void handleConnection(Socket connection) throws IOException {
-
     }
 }

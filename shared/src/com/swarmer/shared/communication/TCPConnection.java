@@ -55,12 +55,16 @@ public class TCPConnection extends Connection {
 		input = new ObjectInputStream(connection.getInputStream());
 	}
 
-	@Override protected void cleanUp() {
+	@Override public void cleanUp() {
 		try {
 			output.close();
 			input.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Socket getConnection() {
+		return connection;
 	}
 }

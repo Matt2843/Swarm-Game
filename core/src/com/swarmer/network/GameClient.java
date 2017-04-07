@@ -11,20 +11,20 @@ import java.net.Socket;
 public final class GameClient {
 	
 	private String host = "127.0.0.1";
-	private int port = 1111;
+	private int port = 1110;
 
-	private static TCPConnection tcp;
-	private static UDPConnection udp;
-	private static SecureTCPConnection stcp;
+	public static TCPConnection tcp;
+	//public static UDPConnection udp;
+	//public static SecureTCPConnection stcp;
 	
 	private static GameClient gc;
 
 	private GameClient() throws IOException {
 		// DO NOT INSTANTIATE THIS CLASS
 		tcp = new TCPConnection(new Socket(host, port), new ClientProtocol());
-		udp = new UDPConnection(new DatagramSocket(port), new ClientProtocol());
-		stcp = new SecureTCPConnection(new Socket(host, port), new ClientProtocol());
-		tcp.start(); udp.start(); stcp.start();
+		//udp = new UDPConnection(new DatagramSocket(port), new ClientProtocol());
+		//stcp = new SecureTCPConnection(new Socket(host, port), new ClientProtocol());
+		tcp.start(); //udp.start(); stcp.start();
 	}
 
 	public static GameClient getInstance() throws IOException {
@@ -33,5 +33,11 @@ public final class GameClient {
 			gc = new GameClient();
 		}
 		return gc;
+	}
+
+	public static void cleanUp() {
+		tcp.cleanUp();
+		//udp.cleanUp();
+		//stcp.cleanUp();
 	}
 }
