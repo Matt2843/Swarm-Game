@@ -42,7 +42,7 @@ public class MotherShip {
 		while(true) {
 			connection = serverSocket.accept();
 			TCPConnection tcpConnection = new TCPConnection(connection, mothershipProtocol);
-			new Thread(tcpConnection).start();
+			tcpConnection.start();
 		}
 	}
 

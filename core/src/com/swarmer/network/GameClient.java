@@ -1,14 +1,11 @@
 package com.swarmer.network;
 
-import com.badlogic.gdx.Game;
-import com.swarmer.game.SwarmerMain;
-import com.swarmer.gui.screens.ScreenLib;
-import com.swarmer.gui.screens.ScreenManager;
-import com.swarmer.gui.screens.lobby.LobbyScreen;
-import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.exceptions.GameClientNotInstantiatedException;
+import com.swarmer.shared.communication.SecureTCPConnection;
+import com.swarmer.shared.communication.TCPConnection;
+import com.swarmer.shared.communication.UDPConnection;
 
-import java.net.InetAddress;
+import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.Socket;
 
 public final class GameClient {
@@ -22,15 +19,15 @@ public final class GameClient {
 	
 	private static GameClient gc;
 
-	private GameClient() {
+	private GameClient() throws IOException {
 		// DO NOT INSTANTIATE THIS CLASS
-		tcp = new TCPConnection(new Socket(host, port), protocol);
-		udp = new UDPConnection(new DatagramSocket(host, port), protocol);
-		stcp = new SecureTCPConnection(new Socket(host, port), protocol);
+		tcp = new TCPConnection(new Socket(host, port), new ClientProtocol());
+		udp = new UDPConnection(new DatagramSocket(port), new ClientProtocol());
+		stcp = new SecureTCPConnection(new Socket(host, port), new ClientProtocol());
 		tcp.start(); udp.start(); stcp.start();
 	}
 
-	public static GameClient getInstance() {
+	public static GameClient getInstance() throws IOException {
 		if(gc == null) {
 			//throw new GameClientNotInstantiatedException("Please call initializeGameClient()");
 			gc = new GameClient();

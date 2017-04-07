@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
 public class TCPConnection extends Connection {
 
@@ -32,6 +34,10 @@ public class TCPConnection extends Connection {
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (OperationInWrongServerNodeException e) {
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		} while(message.getOpcode() != 0); // TODO: CHANGE STOP CONDITION.

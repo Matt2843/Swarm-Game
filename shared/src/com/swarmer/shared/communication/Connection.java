@@ -3,8 +3,10 @@ package com.swarmer.shared.communication;
 import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
-public abstract class Connection implements Runnable {
+public abstract class Connection extends Thread {
 
 	protected String correspondentsIp = "";
 	protected Player player = null;
@@ -17,7 +19,7 @@ public abstract class Connection implements Runnable {
 
 	abstract public void run();
 
-	protected void react(Message message) throws IOException, OperationInWrongServerNodeException {
+	protected void react(Message message) throws IOException, OperationInWrongServerNodeException, SQLException, NoSuchAlgorithmException {
 		protocol.react(message, this);
 	}
 

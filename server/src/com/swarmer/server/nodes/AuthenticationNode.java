@@ -25,7 +25,7 @@ public class AuthenticationNode extends ServerNode {
 	@Override
 	protected void handleConnection(Socket connection) throws IOException {
 		TCPConnection clientConnection = new TCPConnection(connection, authenticationProtocol);
-		new Thread(clientConnection).start();
+		clientConnection.start();
 	}
 
 	@Override
@@ -33,8 +33,8 @@ public class AuthenticationNode extends ServerNode {
 		return null;
 	}
 
-	public static boolean createUser(Message message) throws ExecutionException, InterruptedException {
-		Future<Message> futureResult = executorService.submit(new MotherShipCallable(message));
+	public static boolean createUser(Message message) throws ExecutionException, InterruptedException, IOException {
+		Future<Message> futureResult = executorService.submit(new MotherShipCallable(message, new AuthenticationProtocol()));
 		return (boolean) futureResult.get().getObject();
 	}
 }

@@ -26,7 +26,7 @@ public class AccessNode extends ServerNode {
 		// secureTCPConnection = new SecureTCPConnection(connection, accessProtocol);
 
 		tcpConnection = new TCPConnection(connection, accessProtocol);
-		new Thread(tcpConnection).start();
+		tcpConnection.start();
 	}
 
 	@Override public String getDescription() {
