@@ -7,14 +7,9 @@ import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
 
-/**
- * Created by Matt on 04/06/2017.
- */
-public class ClientProtocol {
-
-
-
-	public void react(Message message) {
+public class ClientProtocol extends Protocol {
+	
+	@Override public void react(Message message) {
 		switch (message.getOpcode()) {
 			case 110: // Login succeeded
 				ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
