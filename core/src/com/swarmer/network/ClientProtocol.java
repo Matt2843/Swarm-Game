@@ -14,6 +14,9 @@ public class ClientProtocol extends Protocol {
 	@Override
 	protected void react(Message message, Connection caller) throws IOException, SQLException, NoSuchAlgorithmException {
 		switch (message.getOpcode()) {
+			case 1: // TEST
+				System.out.println(message.toString());
+				break;
 			case 110: // Login succeeded
 				ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
 				break;
@@ -25,7 +28,6 @@ public class ClientProtocol extends Protocol {
 			case 203: // User creation failed
 				break;
 			case 304: // Received message in lobby chat
-				System.out.println("Hello hello" + message.getObject().toString());
 				String[] receivedMessageArray = (String[]) message.getObject();
 				LobbyScreen.lobbyChat.appendToChatWindow(receivedMessageArray[1], receivedMessageArray[0]);
 				break;

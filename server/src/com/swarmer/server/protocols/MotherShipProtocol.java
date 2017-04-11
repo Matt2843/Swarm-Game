@@ -24,11 +24,9 @@ public class MotherShipProtocol extends Protocol {
 
 				break;
 			case 2: // New node added to architecture, add it to db.
-				String[] object = (String[]) message.getObject();
-				String ip = ((TCPConnection) caller).getConnection().getInetAddress().toString();
-				String port = object[0];
-				String nodeType = object[1];
-				System.out.println("ip: " + ip + " port: " + port + " node type: " + nodeType);
+				String[] queryDetails = (String[]) message.getObject();
+				MotherShip.mySQLConnection.sqlExecute("INSERT INTO access_nodes (id, ip_address, port, user_count) VALUES (?, ?, ?, ?)", UUID.randomUUID().toString(), ((TCPConnection) caller).getConnection().getInetAddress().toString(), queryDetails[0], "0");
+
 				break;
 			case 109: // Create user forwarded message from authentication node.
 				if (!userExistsInDatabase(((String[]) message.getObject())[0])) {

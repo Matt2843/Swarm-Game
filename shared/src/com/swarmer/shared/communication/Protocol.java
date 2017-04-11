@@ -11,6 +11,19 @@ import java.sql.SQLException;
  */
 public abstract class Protocol {
 
+	protected Message futureMessage = null;
+
 	protected abstract void react(Message message, Connection caller) throws IOException, SQLException, NoSuchAlgorithmException;
+
+	public Message getFutureMessage() {
+		while(futureMessage == null) {
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		return futureMessage;
+	}
 
 }

@@ -1,18 +1,12 @@
 package com.swarmer.server.protocols;
 
-import com.swarmer.server.MotherShip;
 import com.swarmer.server.nodes.AccessNode;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.MotherShipCallable;
 import com.swarmer.shared.communication.Protocol;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Created by Matt on 04/06/2017.
@@ -27,16 +21,18 @@ public class AccessProtocol extends Protocol {
 			case 1: // request best quality authentication_node from DB through mothership
 				getAuthenticationNode(message);
 				break;
+			case 999:
+				futureMessage = message;
+				break;
 			default:
 				break;
 		}
-
 	}
 
 	private void getAuthenticationNode(Message message) {
-		Message sqlRespond = null;
 		try {
-			sqlRespond = AccessNode.getBestQualityAuthenticationNode(message);
+			Message sqlRespond = AccessNode.getBestQualityAuthenticationNode(message);
+			System.out.println(sqlRespond.toString());
 			caller.sendMessage(sqlRespond);
 		} catch (IOException e) {
 			e.printStackTrace();

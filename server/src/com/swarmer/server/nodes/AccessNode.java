@@ -2,7 +2,7 @@ package com.swarmer.server.nodes;
 
 import com.swarmer.server.protocols.AccessProtocol;
 import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.MotherShipCallable;
+import com.swarmer.server.MotherShipCallable;
 import com.swarmer.shared.communication.SecureTCPConnection;
 import com.swarmer.shared.communication.TCPConnection;
 
@@ -29,7 +29,9 @@ public class AccessNode extends ServerNode {
 	}
 
 	public static Message getBestQualityAuthenticationNode(Message message) throws IOException, ExecutionException, InterruptedException {
+		System.out.println(message.toString());
 		Future<Message> futureResult = executorService.submit(new MotherShipCallable(message, accessProtocol));
+		System.out.println(futureResult.get());
 		return futureResult.get();
 	}
 
@@ -41,12 +43,12 @@ public class AccessNode extends ServerNode {
 	}
 
 	@Override public String getDescription() {
-		return "Access Node";
+		return "access_nodes";
 	}
 
 	public static void main(String[] args) {
 		try {
-			AccessNode an = new AccessNode(1111);
+			new AccessNode(1111);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

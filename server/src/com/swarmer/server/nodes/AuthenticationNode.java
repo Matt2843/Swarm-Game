@@ -2,7 +2,7 @@ package com.swarmer.server.nodes;
 
 import com.swarmer.server.protocols.AuthenticationProtocol;
 import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.MotherShipCallable;
+import com.swarmer.server.MotherShipCallable;
 import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
@@ -38,6 +38,14 @@ public class AuthenticationNode extends ServerNode {
 
 	@Override
 	public String getDescription() {
-		return null;
+		return "authentication_nodes";
+	}
+
+	public static void main(String[] args) {
+		try {
+			new AuthenticationNode(1112);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

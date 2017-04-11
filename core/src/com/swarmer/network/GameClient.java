@@ -1,5 +1,6 @@
 package com.swarmer.network;
 
+import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.SecureTCPConnection;
 import com.swarmer.shared.communication.TCPConnection;
 import com.swarmer.shared.communication.UDPConnection;
@@ -11,7 +12,7 @@ import java.net.Socket;
 public final class GameClient {
 	
 	private String host = "127.0.0.1";
-	private int port = 1110;
+	private int port = 1111;
 
 	public static TCPConnection tcp;
 	//public static UDPConnection udp;
@@ -25,6 +26,7 @@ public final class GameClient {
 		//udp = new UDPConnection(new DatagramSocket(port), new ClientProtocol());
 		//stcp = new SecureTCPConnection(new Socket(host, port), new ClientProtocol());
 		tcp.start(); //udp.start(); stcp.start();
+		tcp.sendMessage(new Message(1));
 	}
 
 	public static GameClient getInstance() throws IOException {
