@@ -32,7 +32,7 @@ public class TCPConnection extends Connection {
 				message = (Message) input.readObject();
 				react(message);
 			} catch (IOException e) {
-				e.printStackTrace();
+				System.out.println("WHY GOD WHY");
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (OperationInWrongServerNodeException e) {
@@ -42,7 +42,6 @@ public class TCPConnection extends Connection {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			System.out.println("opcode: " + message.getOpcode() + " stop: " + stop);
 		} while(message.getOpcode() != 0 && !stop); // TODO: CHANGE STOP CONDITION.
 		cleanUp();
 	}
