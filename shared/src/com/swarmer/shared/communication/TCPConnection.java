@@ -16,7 +16,7 @@ public class TCPConnection extends Connection {
 
 	protected Socket connection = null;
 
-	protected Boolean stop = false;
+	private boolean stop = false;
 
 	public TCPConnection(Socket connection, Protocol protocol) throws IOException {
 		super(protocol);
@@ -44,6 +44,10 @@ public class TCPConnection extends Connection {
 			}
 		} while(message.getOpcode() != 0 && !stop); // TODO: CHANGE STOP CONDITION.
 		cleanUp();
+	}
+
+	public void stopConnection() {
+		stop = true;
 	}
 
 	@Override public void sendMessage(Message m) throws IOException {

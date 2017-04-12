@@ -19,7 +19,12 @@ public class AuthenticationProtocol extends Protocol {
 
 	@Override protected void react(Message message, Connection caller) throws IOException, NoSuchAlgorithmException {
 		this.caller = caller;
+		System.out.println("Authentication node protocol received message: " + message.toString());
 		switch (message.getOpcode()) {
+			case 1:
+				System.out.println("NEW USER CONNECTED AND SENT 1");
+
+				break;
 			case 109:
 				createUser(message);
 				break;

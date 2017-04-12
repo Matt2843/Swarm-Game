@@ -24,11 +24,7 @@ public class SwarmerMain extends Game {
 	}
 
 	private void establishNetworkConnection() {
-		try {
-			GameClient.getInstance();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		GameClient.getInstance();
 	}
 
 	public void render() {

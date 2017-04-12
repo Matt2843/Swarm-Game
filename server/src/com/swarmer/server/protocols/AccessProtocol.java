@@ -31,7 +31,6 @@ public class AccessProtocol extends Protocol {
 	private void getAuthenticationNode(Message message) {
 		try {
 			Message sqlRespond = AccessNode.getBestQualityAuthenticationNode(message);
-			System.out.println(sqlRespond.toString());
 			caller.sendMessage(sqlRespond);
 		} catch (IOException e) {
 			e.printStackTrace();

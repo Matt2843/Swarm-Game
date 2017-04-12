@@ -34,9 +34,18 @@ public class ClientProtocol extends Protocol{
 				String[] receivedMessageArray = (String[]) message.getObject();
 				LobbyScreen.lobbyChat.appendToChatWindow(receivedMessageArray[1], receivedMessageArray[0]);
 				break;
+			case 999:
+				connectToAuthNode(message);
+				break;
 			default:
 				break;
 		}
+	}
 
+	private void connectToAuthNode(Message message) {
+		String[] receivedMessageArray = ((String) message.getObject()).split(":");
+		String ip = receivedMessageArray[0].replace("/", "");
+		int port = Integer.parseInt(receivedMessageArray[1]);
+		GameClient.getInstance().establishTCPConnection(ip, port);
 	}
 }
