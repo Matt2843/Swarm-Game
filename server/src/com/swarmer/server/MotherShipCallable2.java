@@ -16,6 +16,7 @@ import java.sql.SQLException;
 public class MotherShipCallable2 {
 
 	private Message futureResult = null;
+	private boolean threadFlag = true;
 
 	public MotherShipCallable2(Message message) {
 		try {
@@ -25,6 +26,7 @@ public class MotherShipCallable2 {
 					switch (message.getOpcode()) {
 						case 999:
 							futureResult = message;
+							
 							break;
 						default:
 							break;
@@ -43,17 +45,6 @@ public class MotherShipCallable2 {
 	}
 
 	public Message getFutureResult() {
-		new Thread(new Runnable() {
-			@Override public void run() {
-				while(futureResult == null) {
-					try {
-						Thread.sleep(200);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}).start();
 		return futureResult;
 	}
 }
