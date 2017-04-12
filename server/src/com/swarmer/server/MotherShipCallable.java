@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
  */
 public class MotherShipCallable implements Callable<Message> {
 
-	Message futureMessage = null;
+	private static Message futureMessage = null;
 
 	private class GenericProtocol extends Protocol {
 		@Override protected void react(Message message, Connection caller) throws IOException, SQLException, NoSuchAlgorithmException {
@@ -41,9 +41,18 @@ public class MotherShipCallable implements Callable<Message> {
 		}
 	}
 
-	@Override
-	public Message call() throws Exception {
-		System.out.println("Hello world");
+	private Message get() {
+		while(futureMessage == null) {
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		return futureMessage;
+	}
+
+	@Override public Message call() throws Exception {
+		return get();
 	}
 }
