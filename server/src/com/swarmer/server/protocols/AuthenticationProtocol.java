@@ -19,27 +19,26 @@ public class AuthenticationProtocol extends Protocol {
 
 	@Override protected void react(Message message, Connection caller) throws IOException, NoSuchAlgorithmException {
 		this.caller = caller;
-		System.out.println("Authentication node protocol received message: " + message.toString());
+		System.out.println("Authentication Node: " + message.toString());
 		switch (message.getOpcode()) {
 			case 1:
-				System.out.println("NEW USER CONNECTED AND SENT 1");
 
 				break;
 			case 109:
-				createUser(message);
+				authenticateUser(message);
 				break;
 			case 201:
-				authenticateUser(message);
+				createUser(message);
 				break;
 			default:
 				break;
 		}
-
 	}
 
 	private void createUser(Message message) {
 		try {
-			AuthenticationNode.createUser(message);
+			boolean queryState = AuthenticationNode.createUser(message);
+			caller.sendMessage(new Message(202, queryState));
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -50,6 +49,7 @@ public class AuthenticationProtocol extends Protocol {
 	}
 
 	private void authenticateUser(Message message) throws IOException {
-		AuthenticationNode.authenticateUser(message);
+		boolean queryState = AuthenticationNode.authenticateUser(message);
+		caller.sendMessage(new Message(110, queryState));
 	}
 }

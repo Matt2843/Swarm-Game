@@ -42,12 +42,19 @@ public class TCPConnection extends Connection {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			System.out.println("opcode: " + message.getOpcode() + " stop: " + stop);
 		} while(message.getOpcode() != 0 && !stop); // TODO: CHANGE STOP CONDITION.
 		cleanUp();
 	}
 
 	public void stopConnection() {
+		try {
+			sendMessage(new Message(0));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		stop = true;
+		cleanUp();
 	}
 
 	@Override public void sendMessage(Message m) throws IOException {
@@ -65,6 +72,7 @@ public class TCPConnection extends Connection {
 		try {
 			output.close();
 			input.close();
+			connection.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

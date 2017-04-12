@@ -23,13 +23,7 @@ public class MotherShipCallable2 {
 		try {
 			motherShipConnection = new TCPConnection(new Socket("127.0.0.1", 1110), new Protocol() {
 				@Override protected void react(Message message, Connection caller) throws IOException, SQLException, NoSuchAlgorithmException {
-					switch (message.getOpcode()) {
-						case 999:
-							futureResult = message;
-							break;
-						default:
-							break;
-					}
+					futureResult = message;
 				}
 			});
 			motherShipConnection.start();

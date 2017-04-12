@@ -1,33 +1,60 @@
 package com.swarmer.server.nodes;
 
+import com.swarmer.server.MotherShipCallable2;
 import com.swarmer.server.protocols.AuthenticationProtocol;
+import com.swarmer.server.security.HashingTools;
 import com.swarmer.shared.communication.Message;
-import com.swarmer.server.MotherShipCallable;
 import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.StringJoiner;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class AuthenticationNode extends ServerNode {
 
 	private static final AuthenticationProtocol authenticationProtocol = new AuthenticationProtocol();
-	private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 	protected AuthenticationNode(int port) throws IOException {
 		super(port);
 	}
 
 	public static boolean createUser(Message message) throws ExecutionException, InterruptedException, IOException {
-		Future<Message> futureResult = executorService.submit(new MotherShipCallable(message));
-		return (boolean) futureResult.get().getObject();
+		Object[] receivedObject = (Object[]) message.getObject();
+		String username = (String) receivedObject[0];
+		char[] password = (char[]) receivedObject[1];
+		byte[] salt = new byte[32];
+		try {
+			SecureRandom.getInstanceStrong().nextBytes(salt);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		String hashedPassword = HashingTools.hashPassword(password, salt);
+		MotherShipCallable2 msc = new MotherShipCallable2(new Message(message.getOpcode(), new String[] {username, hashedPassword, HashingTools.bytesToHex(salt)}));
+		return (boolean) msc.getFutureResult().getObject();
 	}
 
-	public static void authenticateUser(Message message) {
-
+	public static boolean authenticateUser(Message message) {
+		String username = (String) ((Object[])message.getObject())[0];
+		char[] password = (char[]) ((Object[])message.getObject())[1];
+		MotherShipCallable2 msc = new MotherShipCallable2(new Message(message.getOpcode(), username));
+		Message foundCredentials = msc.getFutureResult(); // password = [0], password_salt = [1]
+		if(foundCredentials.getObject().equals(null)) {
+			return false;
+		} else {
+			String hashedPasswordInDB = ((String[])foundCredentials.getObject())[0];
+			String saltInHex = ((String[])foundCredentials.getObject())[1];
+			byte[] salt = HashingTools.hexToBytes(saltInHex);
+			String passwordCheck = HashingTools.hashPassword(password, salt);
+			if(passwordCheck.equals(hashedPasswordInDB)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 
 	@Override

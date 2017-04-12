@@ -28,25 +28,44 @@ public class MotherShipProtocol extends Protocol {
 			case 2: // New node added to architecture, add it to db.
 				addNodeToDb(message);
 				break;
-			case 109: // Create user forwarded message from authentication node.
-				if (!userExistsInDatabase(((String[]) message.getObject())[0])) {
-					MotherShip.mySQLConnection.sqlExecute("");
-				}
+			case 109: // Authenticate user from forwarded message
+				authenticateUserInDatabase(message);
 				break;
-			case 3: // Create "user" in database, .getObject() = String[] {username, hashedPassword, salt}
-				addUserCredentialsToDatabase(((String[]) message.getObject())[0], ((String[]) message.getObject())[1], ((String[]) message.getObject())[2]);
-				break;
-			case 4: // Authenticate user in database, .getObject() = String[] {username, password}
-				sendCredentialsAndDatabaseCredentialsToAuthenticationNode((String[]) message.getObject());
+			case 201: // Create user forwarded message from authentication node.
+				addUserToDatabase(message);
 				break;
 			default:
 				break;
 		}
 	}
 
+	private void authenticateUserInDatabase(Message message) throws IOException, SQLException {
+		String receivedUsername = (String) message.getObject();
+		if(userExistsInDatabase(receivedUsername)) {
+			ResultSet resultSet = MotherShip.mySQLConnection.sqlExecuteQuery("SELECT password,password_salt FROM users WHERE username=? LIMIT 1", receivedUsername);
+			resultSet.next();
+			String[] result = new String[] {resultSet.getString("password"), resultSet.getString("password_salt")};
+			caller.sendMessage(new Message(997, result));
+		} else {
+			caller.sendMessage(new Message(997, null));
+		}
+	}
+
+
+	private void addUserToDatabase(Message message) throws IOException, SQLException {
+		String[] receivedObjects = (String[]) message.getObject();
+		if (!userExistsInDatabase(receivedObjects[0])) {
+			MotherShip.mySQLConnection.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES (?, ?, ?, ?)", UUID.randomUUID().toString(), receivedObjects[0], receivedObjects[1], receivedObjects[2]);
+			caller.sendMessage(new Message(998, true));
+		} else {
+			caller.sendMessage(new Message(998, false));
+		}
+	}
+
 	private void getNodeFromDb(Message message) throws IOException, SQLException {
 		String sqlQuery = "SELECT ip_address,port FROM " + message.getObject() + " ORDER BY user_count ASC LIMIT 1";
-		ResultSet resultSet = MotherShip.mySQLConnection.sqlExecuteQuery(sqlQuery); resultSet.next();
+		ResultSet resultSet = MotherShip.mySQLConnection.sqlExecuteQuery(sqlQuery);
+		resultSet.next();
 		String queryResult = resultSet.getString("ip_address") + ":" + resultSet.getString("port");
 		caller.sendMessage(new Message(999, queryResult));
 	}
@@ -57,34 +76,9 @@ public class MotherShipProtocol extends Protocol {
 		MotherShip.mySQLConnection.sqlExecute(sqlQuery, UUID.randomUUID().toString(), ((TCPConnection) caller).getConnection().getInetAddress().toString(), queryDetails[0], "0");
 	}
 
-	private void sendCredentialsAndDatabaseCredentialsToAuthenticationNode(String[] object) throws SQLException, IOException {
-		String saltFromDatabase = MotherShip.mySQLConnection.sqlExecuteQueryToString("SELECT salt FROM users WHERE username = ?", object[0]);
-		String hasedPasswordFromDatabase = MotherShip.mySQLConnection.sqlExecuteQueryToString("SELECT password FROM users WHERE username = ?", object[0]);
-		caller.sendMessage(new Message(14, new String[] {object[0], object[1], saltFromDatabase, hasedPasswordFromDatabase}));
-	}
-
 	private boolean userExistsInDatabase(String username) throws SQLException, IOException {
 		boolean userConnected = MotherShip.mySQLConnection.sqlExecuteQuery("SELECT 1 FROM users WHERE username = ?", username).last();
 		return userConnected;
-	}
-
-	private void addUserCredentialsToDatabase(String username, String hashedPassword, String salt) throws SQLException, IOException {
-		if(userExistsInDatabase(username)) {
-			MotherShip.mySQLConnection.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES ('" + UUID.randomUUID().toString() + "',?,'" + hashedPassword + "','" + salt + "')", username);
-			caller.sendMessage(new Message(13, true));
-		} else {
-			caller.sendMessage(new Message(13, false));
-		}
-	}
-
-	private void authenticateUserInDatabase(String username) throws SQLException, IOException {
-		if(userExistsInDatabase(username)) {
-			String hashedPasswordFromDatabase = MotherShip.mySQLConnection.sqlExecuteQueryToString("SELECT password FROM users WHERE username = ?", username);
-			caller.sendMessage(new Message(14, hashedPasswordFromDatabase));
-		} else {
-			caller.sendMessage(new Message(14, false));
-		}
-
 	}
 
 }

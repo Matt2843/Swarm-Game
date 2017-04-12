@@ -21,14 +21,18 @@ public class ClientProtocol extends Protocol{
 				System.out.println(message.toString());
 				break;
 			case 110: // Login succeeded
-				ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
+				if((boolean) message.getObject() == true)
+					ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
+				else {
+					// TODO: Notify user that login failed.
+				}
 				break;
-			case 111: // Login failed
-				break;
-			case 202: // User created
-				ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
-				break;
-			case 203: // User creation failed
+			case 202: // User creation state
+				if((boolean) message.getObject() == true)
+					ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
+				else {
+					// TODO: Notify user that user creation failed.
+				}
 				break;
 			case 304: // Received message in lobby chat
 				String[] receivedMessageArray = (String[]) message.getObject();

@@ -32,11 +32,6 @@ public class SwarmerMain extends Game {
 	}
 
 	public void dispose() {
-		try {
-			GameClient.getInstance().tcp.sendMessage(new Message(0));
-			GameClient.getInstance().cleanUp();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		GameClient.getInstance().tcp.stopConnection();
 	}
 }

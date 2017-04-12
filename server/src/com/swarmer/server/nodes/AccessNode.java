@@ -3,16 +3,12 @@ package com.swarmer.server.nodes;
 import com.swarmer.server.MotherShipCallable2;
 import com.swarmer.server.protocols.AccessProtocol;
 import com.swarmer.shared.communication.*;
-import com.swarmer.server.MotherShipCallable;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Created by Matt on 04/06/2017.

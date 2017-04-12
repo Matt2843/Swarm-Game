@@ -59,10 +59,10 @@ public class MainMenuLoginBox extends Table {
 
         login.addCaptureListener(new ChangeListener() {
             @Override public void changed(ChangeEvent event, Actor actor) {
-                String[] textFieldData = null;
+                Object[] textFieldData = null;
                 try {
                     if(userName.getText().matches("^[a-zA-Z0-9][a-zA-Z0-9_\\-']{1,28}[a-zA-Z0-9]$")) {
-                        textFieldData = new String[]{userName.getText(), verifyPassword.getText()};
+                        textFieldData = new Object[]{userName.getText(), password.getText().toCharArray()};
                     } else {
                         // TODO: Inform user that he's slightly retarded
                     }
