@@ -19,6 +19,6 @@ public class LobbyNode extends ServerNode {
 
     @Override
     public String getDescription() {
-        return null;
+        return "lobby_nodes";
     }
 }

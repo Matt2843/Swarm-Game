@@ -76,15 +76,19 @@ public class MainMenuLoginBox extends Table {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                loginState();
+                clearFields();
             }
         });
 
         createUser.addCaptureListener(new ChangeListener() {
             @Override public void changed(ChangeEvent event, Actor actor) {
-                verifyPassword.setVisible(true);
-                verifyPasswordLabel.setVisible(true);
-                login.setText("Create");
-                createUser.setVisible(false);
+                if(createUser.getText().toString().equals("Create User")) {
+                    createUserState();
+                } else {
+                    loginState();
+                }
+
             }
         });
 
@@ -104,4 +108,26 @@ public class MainMenuLoginBox extends Table {
 
         setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 5);
     }
+
+    private void createUserState() {
+        verifyPassword.setVisible(true);
+        verifyPasswordLabel.setVisible(true);
+        login.setText("Create");
+        createUser.setText("Cancel");
+    }
+
+    private void loginState() {
+        verifyPassword.setVisible(false);
+        verifyPasswordLabel.setVisible(false);
+        createUser.setText("Create User");
+        login.setText("Login");
+    }
+
+    private void clearFields() {
+        userName.setText("");
+        verifyPassword.setText("");
+        password.setText("");
+    }
+
+
 }
