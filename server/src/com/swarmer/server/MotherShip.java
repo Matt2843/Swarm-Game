@@ -29,6 +29,7 @@ public class MotherShip {
 
 	private void clearDatabase() {
 		try {
+			mySQLConnection.sqlExecute("DELETE FROM access_nodes");
 			mySQLConnection.sqlExecute("DELETE FROM authentication_nodes");
 			mySQLConnection.sqlExecute("DELETE FROM lobby_nodes");
 			mySQLConnection.sqlExecute("DELETE FROM game_nodes");

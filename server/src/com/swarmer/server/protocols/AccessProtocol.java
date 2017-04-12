@@ -17,12 +17,11 @@ public class AccessProtocol extends Protocol {
 
 	@Override protected void react(Message message, Connection caller) throws IOException {
 		this.caller = caller;
+		System.out.println("Access node protocol: " + message.toString());
+
 		switch (message.getOpcode()) {
 			case 1: // request best quality authentication_node from DB through mothership
-				getAuthenticationNode(message);
-				break;
-			case 999:
-				futureMessage = message;
+				getAuthenticationNode(new Message(1, "authentication_nodes"));
 				break;
 			default:
 				break;

@@ -1,11 +1,12 @@
 package com.swarmer.server;
 
-import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.Protocol;
-import com.swarmer.shared.communication.TCPConnection;
+import com.swarmer.shared.communication.*;
+import com.swarmer.shared.communication.Connection;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.concurrent.Callable;
 
 /**
@@ -13,11 +14,24 @@ import java.util.concurrent.Callable;
  */
 public class MotherShipCallable implements Callable<Message> {
 
-	private Protocol protocol;
+	Message futureMessage = null;
 
-	public MotherShipCallable(Message message, Protocol protocol) throws IOException {
-		this.protocol = protocol;
-		TCPConnection motherShipConnection = new TCPConnection(new Socket("127.0.0.1", 1110), protocol);
+	private class GenericProtocol extends Protocol {
+		@Override protected void react(Message message, Connection caller) throws IOException, SQLException, NoSuchAlgorithmException {
+			switch (message.getOpcode()) {
+				case 999:
+					futureMessage = message;
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	private GenericProtocol genericProtocol = new GenericProtocol();
+
+	public MotherShipCallable(Message message) throws IOException {
+		TCPConnection motherShipConnection = new TCPConnection(new Socket("127.0.0.1", 1110), genericProtocol);
 		motherShipConnection.start();
 		motherShipConnection.sendMessage(message);
 		try {
@@ -29,6 +43,7 @@ public class MotherShipCallable implements Callable<Message> {
 
 	@Override
 	public Message call() throws Exception {
-		return protocol.getFutureMessage();
+		System.out.println("Hello world");
+		return futureMessage;
 	}
 }

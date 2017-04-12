@@ -1,13 +1,14 @@
 package com.swarmer.server.nodes;
 
+import com.swarmer.server.MotherShipCallable2;
 import com.swarmer.server.protocols.AccessProtocol;
-import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.communication.*;
 import com.swarmer.server.MotherShipCallable;
-import com.swarmer.shared.communication.SecureTCPConnection;
-import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,8 +30,15 @@ public class AccessNode extends ServerNode {
 	}
 
 	public static Message getBestQualityAuthenticationNode(Message message) throws IOException, ExecutionException, InterruptedException {
-		Future<Message> futureResult = executorService.submit(new MotherShipCallable(message, accessProtocol));
-		return futureResult.get();
+		/*System.out.println(message.toString());
+		Future<Message> futureResult = executorService.submit(new MotherShipCallable(message));
+		System.out.println(futureResult.get());
+		System.out.println(futureResult.isDone());
+		System.out.println(" oadkaospkdsaposadk ");
+		return futureResult.get();*/
+		MotherShipCallable2 msc = new MotherShipCallable2(message);
+		System.out.println(msc.getFutureResult().toString());
+		return msc.getFutureResult();
 	}
 
 	@Override protected void handleConnection(Socket connection) throws IOException {

@@ -7,6 +7,7 @@ import com.swarmer.shared.communication.Protocol;
 import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -19,14 +20,13 @@ public class MotherShipProtocol extends Protocol {
 
 	@Override protected void react(Message message, Connection caller) throws SQLException, IOException {
 		this.caller = caller;
+		System.out.println("Message in mothership protocol: " + message.toString());
 		switch (message.getOpcode()) {
 			case 1: // Get best quality authentication node from db.
-
+				getNodeFromDb(message);
 				break;
 			case 2: // New node added to architecture, add it to db.
-				String[] queryDetails = (String[]) message.getObject();
-				MotherShip.mySQLConnection.sqlExecute("INSERT INTO access_nodes (id, ip_address, port, user_count) VALUES (?, ?, ?, ?)", UUID.randomUUID().toString(), ((TCPConnection) caller).getConnection().getInetAddress().toString(), queryDetails[0], "0");
-
+				addNodeToDb(message);
 				break;
 			case 109: // Create user forwarded message from authentication node.
 				if (!userExistsInDatabase(((String[]) message.getObject())[0])) {
@@ -42,6 +42,19 @@ public class MotherShipProtocol extends Protocol {
 			default:
 				break;
 		}
+	}
+
+	private void getNodeFromDb(Message message) throws IOException, SQLException {
+		String sqlQuery = "SELECT ip_address,port FROM " + message.getObject() + " ORDER BY user_count ASC LIMIT 1";
+		ResultSet resultSet = MotherShip.mySQLConnection.sqlExecuteQuery(sqlQuery); resultSet.next();
+		String queryResult = resultSet.getString("ip_address") + ":" + resultSet.getString("port");
+		caller.sendMessage(new Message(999, queryResult));
+	}
+
+	private void addNodeToDb(Message message) throws SQLException {
+		String[] queryDetails = (String[]) message.getObject();
+		String sqlQuery = "INSERT INTO " + queryDetails[1] + " (id, ip_address, port, user_count) VALUES (?, ?, ?, ?)";
+		MotherShip.mySQLConnection.sqlExecute(sqlQuery, UUID.randomUUID().toString(), ((TCPConnection) caller).getConnection().getInetAddress().toString(), queryDetails[0], "0");
 	}
 
 	private void sendCredentialsAndDatabaseCredentialsToAuthenticationNode(String[] object) throws SQLException, IOException {
