@@ -3,13 +3,15 @@ package com.swarmer.network;
 import com.swarmer.gui.screens.ScreenLib;
 import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.gui.screens.lobby.LobbyScreen;
-import com.swarmer.shared.communication.*;
+import com.swarmer.shared.communication.Connection;
+import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.communication.Protocol;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
-public class ClientProtocol extends Protocol {
+public class ClientProtocol extends Protocol{
 
 	@Override
 	protected void react(Message message, Connection caller) throws IOException, SQLException, NoSuchAlgorithmException {

@@ -16,6 +16,8 @@ public class TCPConnection extends Connection {
 
 	protected Socket connection = null;
 
+	protected Boolean stop = false;
+
 	public TCPConnection(Socket connection, Protocol protocol) throws IOException {
 		super(protocol);
 		this.connection = connection;
@@ -40,7 +42,7 @@ public class TCPConnection extends Connection {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		} while(message.getOpcode() != 0); // TODO: CHANGE STOP CONDITION.
+		} while(message.getOpcode() != 0 && !stop); // TODO: CHANGE STOP CONDITION.
 		cleanUp();
 	}
 
