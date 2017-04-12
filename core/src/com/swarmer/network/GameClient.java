@@ -6,7 +6,6 @@ import com.swarmer.shared.communication.TCPConnection;
 import com.swarmer.shared.communication.UDPConnection;
 
 import java.io.IOException;
-import java.net.DatagramSocket;
 import java.net.Socket;
 
 public final class GameClient {
