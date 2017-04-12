@@ -22,7 +22,7 @@ public class AuthenticationNode extends ServerNode {
 	}
 
 	public static boolean createUser(Message message) throws ExecutionException, InterruptedException, IOException {
-		Future<Message> futureResult = executorService.submit(new MotherShipCallable(message, authenticationProtocol));
+		Future<Message> futureResult = executorService.submit(new MotherShipCallable(message));
 		return (boolean) futureResult.get().getObject();
 	}
 

@@ -13,6 +13,7 @@ public class ClientProtocol extends Protocol {
 
 	@Override
 	protected void react(Message message, Connection caller) throws IOException, SQLException, NoSuchAlgorithmException {
+		System.out.println(message.toString());
 		switch (message.getOpcode()) {
 			case 1: // TEST
 				System.out.println(message.toString());
