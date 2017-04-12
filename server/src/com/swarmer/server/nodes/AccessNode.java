@@ -29,9 +29,7 @@ public class AccessNode extends ServerNode {
 	}
 
 	public static Message getBestQualityAuthenticationNode(Message message) throws IOException, ExecutionException, InterruptedException {
-		System.out.println(message.toString());
 		Future<Message> futureResult = executorService.submit(new MotherShipCallable(message, accessProtocol));
-		System.out.println(futureResult.get());
 		return futureResult.get();
 	}
 
