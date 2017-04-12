@@ -16,17 +16,17 @@ import java.sql.SQLException;
 public class MotherShipCallable2 {
 
 	private Message futureResult = null;
-	private boolean threadFlag = true;
+
+	private TCPConnection motherShipConnection;
 
 	public MotherShipCallable2(Message message) {
 		try {
-			TCPConnection motherShipConnection = new TCPConnection(new Socket("127.0.0.1", 1110), new Protocol() {
+			motherShipConnection = new TCPConnection(new Socket("127.0.0.1", 1110), new Protocol() {
 				@Override protected void react(Message message, Connection caller) throws IOException, SQLException, NoSuchAlgorithmException {
 					System.out.println(message.toString());
 					switch (message.getOpcode()) {
 						case 999:
 							futureResult = message;
-							
 							break;
 						default:
 							break;
@@ -35,16 +35,20 @@ public class MotherShipCallable2 {
 			});
 			motherShipConnection.start();
 			motherShipConnection.sendMessage(message);
-			motherShipConnection.join();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
-
 	}
 
 	public Message getFutureResult() {
+		while(futureResult == null) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		motherShipConnection.cleanUp();
 		return futureResult;
 	}
 }

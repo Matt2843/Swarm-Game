@@ -33,11 +33,9 @@ public class AccessNode extends ServerNode {
 		/*System.out.println(message.toString());
 		Future<Message> futureResult = executorService.submit(new MotherShipCallable(message));
 		System.out.println(futureResult.get());
-		System.out.println(futureResult.isDone());
-		System.out.println(" oadkaospkdsaposadk ");
+		System.out.println("Hello albertt");
 		return futureResult.get();*/
 		MotherShipCallable2 msc = new MotherShipCallable2(message);
-		System.out.println("Hello world: " + msc.getFutureResult().toString());
 		return msc.getFutureResult();
 	}
 
