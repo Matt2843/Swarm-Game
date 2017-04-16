@@ -24,11 +24,11 @@ public class SecureTCPConnection extends Connection {
 	protected ObjectInputStream input;
 	protected ObjectOutputStream output = null;
 
-	protected Cipher  inCipher;
-	protected Cipher  outCipher;
+	protected Cipher inCipher;
+	protected Cipher outCipher;
 
 	private KeyPair KEY = null;
-	private PublicKey publicKey;
+	private PublicKey exPublicKey;
 
 	protected Socket connection = null;
 	private boolean stop = false;
@@ -42,24 +42,17 @@ public class SecureTCPConnection extends Connection {
 
 	@Override protected void setupStreams() throws IOException {}
 
-	public PublicKey generateKeys() {
-		try {
-			KEY = KeyPairGenerator.getInstance("RSA").generateKeyPair();
-		} catch(NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+	public PublicKey getPublicKey() {
 		return KEY.getPublic();
 	}
 
-	public void setPublicKey(PublicKey publicKey) {
-		this.publicKey = publicKey;
+	public void setExternalPublicKey(PublicKey publicKey) {
+		exPublicKey = publicKey;
 	}
 
 	private void setupInputStreams() throws IOException {
 		try {
-			if(KEY == null){
-				generateKeys();
-			}
+			KEY = KeyPairGenerator.getInstance("RSA").generateKeyPair();
 
 			inCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 			outCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
@@ -82,7 +75,7 @@ public class SecureTCPConnection extends Connection {
 	private void setupOutputStreams() throws IOException {
 		try {
 			IvParameterSpec iv = new IvParameterSpec("aaaaaaaaaaaaaaaa".getBytes("UTF-8"));
-			outCipher.init(Cipher.DECRYPT_MODE, publicKey, iv);
+			outCipher.init(Cipher.DECRYPT_MODE, exPublicKey, iv);
 			output = new ObjectOutputStream(new CipherOutputStream(connection.getOutputStream(), outCipher));
 			output.flush();
 		} catch(InvalidKeyException e) {
@@ -124,11 +117,15 @@ public class SecureTCPConnection extends Connection {
 	}
 
 	@Override public void sendMessage(Message m) throws IOException {
-		if(output == null){
-			setupOutputStreams();
+		if(exPublicKey != null) {
+			if(output == null){
+				setupOutputStreams();
+			}
+			output.writeObject(m);
+			output.flush();
+		} else {
+			System.out.println("Cannot send message without an external public key!");
 		}
-		output.writeObject(m);
-		output.flush();
 	}
 
 	@Override public void cleanUp() {
