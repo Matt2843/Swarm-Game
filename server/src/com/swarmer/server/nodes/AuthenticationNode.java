@@ -3,7 +3,9 @@ package com.swarmer.server.nodes;
 import com.swarmer.server.MotherShipCallable2;
 import com.swarmer.server.protocols.AuthenticationProtocol;
 import com.swarmer.server.security.HashingTools;
+import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.communication.SecureTCPConnection;
 import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
@@ -35,7 +37,7 @@ public class AuthenticationNode extends ServerNode {
 		return (boolean) msc.getFutureResult().getObject();
 	}
 
-	public static boolean authenticateUser(Message message) {
+	public static boolean authenticateUser(Message message) throws IOException {
 		String username = (String) ((Object[])message.getObject())[0];
 		char[] password = (char[]) ((Object[])message.getObject())[1];
 		MotherShipCallable2 msc = new MotherShipCallable2(new Message(message.getOpcode(), username));

@@ -1,6 +1,7 @@
 package com.swarmer.network;
 
 import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.communication.SecureTCPConnection;
 import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
@@ -11,9 +12,11 @@ public final class GameClient {
 	private String host = "127.0.0.1";
 	private int port = 1111;
 
+	private static final ClientProtocol clientProtocol = new ClientProtocol();
+
 	public static TCPConnection tcp = null;
+	public static SecureTCPConnection stcp = null;
 	//public static UDPConnection udp;
-	//public static SecureTCPConnection stcp;
 	
 	private static GameClient gc;
 
@@ -41,7 +44,7 @@ public final class GameClient {
 			if(tcp != null) {
 				tcp.stopConnection();
 			}
-			tcp = new TCPConnection(new Socket(ip, port), new ClientProtocol());
+			tcp = new TCPConnection(new Socket(ip, port), clientProtocol);
 			tcp.start();
 			tcp.sendMessage(new Message(1));
 		} catch (IOException e) {
@@ -49,9 +52,21 @@ public final class GameClient {
 		}
 	}
 
+	public static void establishSecureTCPConnection(String ip, int port) {
+		try {
+			if(stcp != null) {
+				stcp.stopConnection();
+			}
+			stcp = new SecureTCPConnection(new Socket(ip, port), clientProtocol);
+			stcp.start();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void cleanUp() {
 		tcp.cleanUp();
+		stcp.cleanUp();
 		//udp.cleanUp();
-		//stcp.cleanUp();
 	}
 }

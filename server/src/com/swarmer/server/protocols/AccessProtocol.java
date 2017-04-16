@@ -4,6 +4,7 @@ import com.swarmer.server.nodes.AccessNode;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Protocol;
+import com.swarmer.shared.communication.SecureTCPConnection;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;

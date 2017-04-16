@@ -2,12 +2,11 @@ package com.swarmer.server.protocols;
 
 import com.swarmer.server.nodes.AuthenticationNode;
 import com.swarmer.server.security.HashingTools;
-import com.swarmer.shared.communication.Connection;
-import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.Protocol;
+import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -22,7 +21,6 @@ public class AuthenticationProtocol extends Protocol {
 		System.out.println("Authentication Node: " + message.toString());
 		switch (message.getOpcode()) {
 			case 1:
-
 				break;
 			case 109:
 				authenticateUser(message);
@@ -30,9 +28,18 @@ public class AuthenticationProtocol extends Protocol {
 			case 201:
 				createUser(message);
 				break;
+			case 1111:
+				establishSecureConnection(message, caller);
+				break;
 			default:
 				break;
 		}
+	}
+
+	private void establishSecureConnection(Message message, Connection caller) throws IOException {
+		SecureTCPConnection secureTCPConnection = new SecureTCPConnection(((TCPConnection)caller).getConnection(), this);
+		secureTCPConnection.setExternalPublicKey((PublicKey) message.getObject());
+		secureTCPConnection.start();
 	}
 
 	private void createUser(Message message) {
