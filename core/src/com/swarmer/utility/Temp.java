@@ -2,7 +2,7 @@ package com.swarmer.utility;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
-import com.swarmer.gui.screens.GameScreen;
+import com.swarmer.gui.screens.game.GameScreen;
 import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.game.units.Ant;
 import com.swarmer.shared.communication.Player;

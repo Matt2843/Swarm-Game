@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.swarmer.gui.screens.GameScreen;
+import com.swarmer.gui.screens.game.GameScreen;
 import com.swarmer.gui.screens.ScreenManager;
 
 public class CoordsTranslator {

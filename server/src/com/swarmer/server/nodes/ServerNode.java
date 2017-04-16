@@ -27,10 +27,14 @@ public abstract class ServerNode implements Serializable {
 
     protected static HashMap<Player, Connection> activeConnections = new HashMap<>();
 
-    protected ServerNode(int port) throws IOException {
-        initializeServerSocket(port);
-        notifyMotherShip(port);
-        awaitConnection(connection);
+    protected ServerNode(int port) {
+        try {
+            initializeServerSocket(port);
+            notifyMotherShip(port);
+            awaitConnection(connection);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void initializeServerSocket(int port) throws IOException {

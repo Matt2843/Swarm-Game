@@ -1,4 +1,4 @@
-package com.swarmer.gui.screens;
+package com.swarmer.gui.screens.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -19,6 +19,7 @@ import com.swarmer.game.units.Ant;
 import com.swarmer.game.input.SwamerInputProcessor;
 import com.swarmer.game.input.SwarmerGestureDetector;
 import com.swarmer.aco.graph.Graph;
+import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.resources.Food;
 

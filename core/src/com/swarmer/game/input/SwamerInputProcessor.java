@@ -5,11 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.swarmer.gui.screens.GameScreen;
+import com.swarmer.gui.screens.game.GameScreen;
 import com.swarmer.gui.screens.ScreenLib;
 import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.utility.CoordsTranslator;
-import com.swarmer.utility.Temp;
 
 public class SwamerInputProcessor implements InputProcessor {
 

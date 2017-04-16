@@ -10,15 +10,13 @@ import java.io.IOException;
 import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.StringJoiner;
 import java.util.concurrent.ExecutionException;
 
 public class AuthenticationNode extends ServerNode {
 
 	private static final AuthenticationProtocol authenticationProtocol = new AuthenticationProtocol();
 
-	protected AuthenticationNode(int port) throws IOException {
+	protected AuthenticationNode(int port) {
 		super(port);
 	}
 
@@ -42,7 +40,7 @@ public class AuthenticationNode extends ServerNode {
 		char[] password = (char[]) ((Object[])message.getObject())[1];
 		MotherShipCallable2 msc = new MotherShipCallable2(new Message(message.getOpcode(), username));
 		Message foundCredentials = msc.getFutureResult(); // password = [0], password_salt = [1]
-		if(foundCredentials.getObject().equals(null)) {
+		if(foundCredentials.getObject() == null) {
 			return false;
 		} else {
 			String hashedPasswordInDB = ((String[])foundCredentials.getObject())[0];
@@ -69,10 +67,6 @@ public class AuthenticationNode extends ServerNode {
 	}
 
 	public static void main(String[] args) {
-		try {
-			new AuthenticationNode(1112);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		new AuthenticationNode(1112);
 	}
 }
