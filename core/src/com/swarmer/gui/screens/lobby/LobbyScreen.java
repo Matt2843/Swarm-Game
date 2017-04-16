@@ -10,7 +10,6 @@ import com.swarmer.gui.StyleSheet;
 import com.swarmer.gui.screens.ScreenLib;
 import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.gui.widgets.SwarmerScreen;
-import com.swarmer.network.GameClient;
 
 public class LobbyScreen extends SwarmerScreen {
 
@@ -22,8 +21,8 @@ public class LobbyScreen extends SwarmerScreen {
     private LobbyUserList2 lobbyUserList2;
 
     @Override protected void create() {
-        addLogoutButton();
-
+        addReturnButton();
+        
         final Table middleSection = new Table();
 
         lobbyUserList2 = new LobbyUserList2((float) (getWidth() * 0.8 * 0.3), getHeight() / 2);
@@ -34,22 +33,18 @@ public class LobbyScreen extends SwarmerScreen {
 
         contentPane.add(middleSection);
         contentPane.row();
-
-        addActor(contentPane);
     }
 
-    private void addLogoutButton() {
-        TextButton logout = new TextButton("Logout ", StyleSheet.defaultSkin);
-        logout.addCaptureListener(new ChangeListener() {
+    private void addReturnButton() {
+        TextButton returnToPreLobbyScreen = new TextButton("Exit Lobby", StyleSheet.defaultSkin);
+        returnToPreLobbyScreen.addCaptureListener(new ChangeListener() {
             @Override public void changed(ChangeEvent event, Actor actor) {
-                ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
-                GameClient.getInstance().tcp.stopConnection();
-                GameClient.getInstance().tcp = null;
-                GameClient.getInstance().establishTCPConnection("127.0.0.1", 1111);
+                ScreenManager.getInstance().show(ScreenLib.PRE_LOBBY_SCREEN);
+                // TODO: Notify Server that the lobby was cancelled by the owner.
             }
         });
-        logout.setPosition(0, Gdx.graphics.getHeight() - logout.getHeight());
-        addActor(logout);
+        returnToPreLobbyScreen.setPosition(0, Gdx.graphics.getHeight() - returnToPreLobbyScreen.getHeight());
+        addActor(returnToPreLobbyScreen);
     }
 
     @Override protected void handleInput() {

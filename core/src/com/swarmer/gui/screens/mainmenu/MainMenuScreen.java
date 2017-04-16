@@ -13,7 +13,7 @@ public class MainMenuScreen extends SwarmerScreen {
 	}
 
 	@Override protected void create() {
-		addActor(new MainMenuLoginBox());
+		contentPane.add(new MainMenuLoginBox());
 	}
 
 	@Override protected void handleInput() {

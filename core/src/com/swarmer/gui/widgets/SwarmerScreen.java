@@ -24,6 +24,7 @@ public abstract class SwarmerScreen extends Stage implements Screen {
 		setViewport(new StretchViewport(width, height));
 		contentPane.setSize(width, height);
 		create();
+		addActor(contentPane);
 	}
 
 	protected abstract void create();
@@ -35,11 +36,8 @@ public abstract class SwarmerScreen extends Stage implements Screen {
 
 	@Override public void render(float delta) {
 		handleInput();
+		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		spriteBatch.begin();
-		spriteBatch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		spriteBatch.end();
 
 		draw();
 		act(delta);
