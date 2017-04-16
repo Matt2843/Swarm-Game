@@ -5,6 +5,7 @@ import com.swarmer.gui.animations.AnimationLibrary;
 import com.swarmer.gui.screens.ScreenLib;
 import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.network.GameClient;
+
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.exceptions.GameClientNotInstantiatedException;
 
@@ -23,7 +24,7 @@ public class SwarmerMain extends Game {
 	}
 
 	private void establishNetworkConnection() {
-		GameClient.initializeGameClient();
+		GameClient.getInstance();
 	}
 
 	public void render() {
@@ -31,13 +32,6 @@ public class SwarmerMain extends Game {
 	}
 
 	public void dispose() {
-		try {
-			GameClient.getInstance().sendMessage(new Message(0));
-			GameClient.getInstance().cleanUp();
-		} catch (GameClientNotInstantiatedException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		GameClient.getInstance().tcp.stopConnection();
 	}
 }

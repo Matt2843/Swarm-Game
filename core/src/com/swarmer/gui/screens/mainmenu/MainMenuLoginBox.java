@@ -59,34 +59,36 @@ public class MainMenuLoginBox extends Table {
 
         login.addCaptureListener(new ChangeListener() {
             @Override public void changed(ChangeEvent event, Actor actor) {
-                String[] textFieldData = null;
+                Object[] textFieldData = null;
                 try {
                     if(userName.getText().matches("^[a-zA-Z0-9][a-zA-Z0-9_\\-']{1,28}[a-zA-Z0-9]$")) {
-                        textFieldData = new String[]{userName.getText(), verifyPassword.getText()};
+                        textFieldData = new Object[]{userName.getText(), password.getText().toCharArray()};
                     } else {
                         // TODO: Inform user that he's slightly retarded
                     }
                     if(login.getText().toString().equals("Create")) {
                         if(password.getText().equals(verifyPassword.getText())) {
-                            GameClient.getInstance().sendMessage(new Message(201, textFieldData));
+                            GameClient.getInstance().tcp.sendMessage(new Message(201, textFieldData));
                         }
                     } else {
-                        GameClient.getInstance().sendMessage(new Message(109, textFieldData));
+                        GameClient.getInstance().tcp.sendMessage(new Message(109, textFieldData));
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                } catch (GameClientNotInstantiatedException e) {
-                    e.printStackTrace();
                 }
+                loginState();
+                clearFields();
             }
         });
 
         createUser.addCaptureListener(new ChangeListener() {
             @Override public void changed(ChangeEvent event, Actor actor) {
-                verifyPassword.setVisible(true);
-                verifyPasswordLabel.setVisible(true);
-                login.setText("Create");
-                createUser.setVisible(false);
+                if(createUser.getText().toString().equals("Create User")) {
+                    createUserState();
+                } else {
+                    loginState();
+                }
+
             }
         });
 
@@ -106,4 +108,26 @@ public class MainMenuLoginBox extends Table {
 
         setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 5);
     }
+
+    private void createUserState() {
+        verifyPassword.setVisible(true);
+        verifyPasswordLabel.setVisible(true);
+        login.setText("Create");
+        createUser.setText("Cancel");
+    }
+
+    private void loginState() {
+        verifyPassword.setVisible(false);
+        verifyPasswordLabel.setVisible(false);
+        createUser.setText("Create User");
+        login.setText("Login");
+    }
+
+    private void clearFields() {
+        userName.setText("");
+        verifyPassword.setText("");
+        password.setText("");
+    }
+
+
 }

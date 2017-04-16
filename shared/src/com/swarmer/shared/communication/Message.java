@@ -31,4 +31,10 @@ public class Message implements Serializable {
 		return object;
 	}
 
+	@Override public String toString() {
+		return "Message{" +
+				"opcode=" + opcode +
+				", object=" + object +
+				'}';
+	}
 }

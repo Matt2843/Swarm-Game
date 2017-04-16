@@ -1,90 +1,91 @@
 package com.swarmer.server.nodes;
 
-import com.swarmer.server.Connection;
-import com.swarmer.server.MotherShip;
+import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.exceptions.UnkownServerNodeException;
+import com.swarmer.shared.communication.Player;
+import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
  * Created by Matt on 03/16/2017.
  */
-public abstract class ServerNode extends Thread implements Serializable {
-
-    public static int usersConnected = 0;
-    protected static List<Connection> activeConnections;
+public abstract class ServerNode implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private String nodeId;
 
-    protected ServerNode() {
-        nodeId = UUID.randomUUID().toString();
-        activeConnections = new ArrayList<>();
+    private final String nodeUUID = UUID.randomUUID().toString();
+    protected int usersConnected = 0;
+
+    protected ServerSocket serverSocket;
+    protected Socket connection;
+
+    protected static HashMap<Player, Connection> activeConnections = new HashMap<>();
+
+    protected ServerNode(int port) throws IOException {
+        initializeServerSocket(port);
+        notifyMotherShip(port);
+        awaitConnection(connection);
     }
 
-    protected void addNodeToMothership() {
+    protected void initializeServerSocket(int port) throws IOException {
+        serverSocket = new ServerSocket(port);
+    }
+
+    private void notifyMotherShip(int port) {
         try {
-            MotherShip.addNode(this);
-        } catch (UnkownServerNodeException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+            TCPConnection motherShipConnection = new TCPConnection(new Socket("127.0.0.1", 1110), null);
+            motherShipConnection.start();
+            String[] object = new String[] {String.valueOf(serverSocket.getLocalPort()), getDescription()};
+            motherShipConnection.sendMessage(new Message(2, object));
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @Override public void run() {
+    private void awaitConnection(Socket connection) throws IOException {
         while(true) {
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            connection = serverSocket.accept();
+            handleConnection(connection);
         }
     }
 
-    public void broadcast(Message message) throws IOException {
-        for(Connection con : activeConnections) {
-            con.sendMessage(message);
-        }
+    protected Connection getActiveConnection(Player player) {
+        if(activeConnections.containsKey(player))
+            return activeConnections.get(player);
+        else return null;
     }
 
-    public static void removeConnection(Connection connection) {
-        activeConnections.remove(connection);
-        if(usersConnected > 0) usersConnected -= 1;
+    protected boolean addActiveConnection(Player player, Connection connection) {
+        if(!activeConnections.containsKey(player)) {
+            activeConnections.put(player, connection);
+            return true;
+        } else return false;
     }
 
-    public static void addConnection(Connection connection) {
-        activeConnections.add(connection);
-        usersConnected += 1;
+    protected boolean removeActiveConnection(Player player) {
+        if(activeConnections.containsKey(player)) {
+            activeConnections.remove(player);
+            return true;
+        } else return false;
     }
 
-    public List<Connection> getActiveConnections() {
-        return activeConnections;
-    }
-
-    public abstract String generateInsertQuery();
+    protected abstract void handleConnection(Socket connection) throws IOException;
     public abstract String getDescription();
-    public abstract String nextInPrimitiveChain();
 
-    public String getNodeId() {
-        return nodeId;
-    }
-
-    @Override
-    public int hashCode() {
-        return nodeId != null ? nodeId.hashCode() : 0;
+    public String getNodeUUID() {
+        return nodeUUID;
     }
 
     @Override
     public String toString() {
         return super.toString() + " -- ServerNode{" +
-                "nodeId='" + nodeId + '\'' + " " + getDescription() +
+                "nodeId='" + nodeUUID + '\'' + " " + getDescription() +
                 '}';
     }
 }

@@ -48,10 +48,8 @@ public class LobbyChat extends Table {
 			@Override public void changed(ChangeEvent event, Actor actor) {
 				if(!userInput.getText().toString().equals("")) {
 					try {
-						GameClient.getInstance().sendMessage(new Message(301, userInput.getText()));
+						GameClient.getInstance().tcp.sendMessage(new Message(301, userInput.getText()));
 					} catch (IOException e) {
-						e.printStackTrace();
-					} catch (GameClientNotInstantiatedException e) {
 						e.printStackTrace();
 					}
 					userInput.setText("");

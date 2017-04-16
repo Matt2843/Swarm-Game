@@ -1,5 +1,6 @@
 package com.swarmer.gui.screens.lobby;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -14,6 +15,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.swarmer.gui.StyleSheet;
+import com.swarmer.gui.screens.ScreenLib;
+import com.swarmer.gui.screens.ScreenManager;
+import com.swarmer.network.GameClient;
+import com.swarmer.shared.communication.Message;
+
+import java.io.IOException;
 
 public class LobbyScreen extends Stage implements Screen {
 
@@ -49,6 +56,8 @@ public class LobbyScreen extends Stage implements Screen {
         contentPane = new Table();
         contentPane.setSize(getWidth(), getHeight());
 
+        addLogoutButton();
+
         final Table middleSection = new Table();
 
         lobbyUserList2 = new LobbyUserList2((float) (getWidth() * 0.8 * 0.3), getHeight() / 2);
@@ -82,6 +91,20 @@ public class LobbyScreen extends Stage implements Screen {
 
         addActor(contentPane);
         // TODO: Add actors here.
+    }
+
+    private void addLogoutButton() {
+        TextButton logout = new TextButton("Logout ", StyleSheet.defaultSkin);
+        logout.addCaptureListener(new ChangeListener() {
+            @Override public void changed(ChangeEvent event, Actor actor) {
+                ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
+                GameClient.getInstance().tcp.stopConnection();
+                GameClient.getInstance().tcp = null;
+                GameClient.getInstance().establishTCPConnection("127.0.0.1", 1111);
+            }
+        });
+        logout.setPosition(0, Gdx.graphics.getHeight() - logout.getHeight());
+        addActor(logout);
     }
 
     @Override public void show() {

@@ -1,24 +1,24 @@
 package com.swarmer.server.nodes;
 
+import java.io.IOException;
+import java.net.Socket;
+
 /**
  * Created by Matt on 22-03-2017.
  */
 public class LobbyNode extends ServerNode {
 
-    public LobbyNode() {
-        addNodeToMothership();
+    protected LobbyNode(int port) throws IOException {
+        super(port);
     }
 
-    @Override public String generateInsertQuery() {
-        return "INSERT INTO lobby_nodes (id, user_count) VALUES ('" + getNodeId() + "'," + usersConnected + ")";
+    @Override
+    protected void handleConnection(Socket connection) throws IOException {
+
     }
 
     @Override
     public String getDescription() {
-        return "Lobby Node";
-    }
-
-    @Override public String nextInPrimitiveChain() {
-        return null;
+        return "lobby_nodes";
     }
 }

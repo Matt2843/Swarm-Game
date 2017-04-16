@@ -1,72 +1,78 @@
 package com.swarmer.server.nodes;
 
-import com.swarmer.server.MotherShip;
+import com.swarmer.server.MotherShipCallable2;
+import com.swarmer.server.protocols.AuthenticationProtocol;
 import com.swarmer.server.security.HashingTools;
+import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.communication.TCPConnection;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.SQLException;
-import java.util.UUID;
+import java.util.Arrays;
+import java.util.StringJoiner;
+import java.util.concurrent.ExecutionException;
 
-/**
- * Created by Matt on 08-03-2017.
- */
 public class AuthenticationNode extends ServerNode {
 
-	public AuthenticationNode() {
-		addNodeToMothership();
+	private static final AuthenticationProtocol authenticationProtocol = new AuthenticationProtocol();
+
+	protected AuthenticationNode(int port) throws IOException {
+		super(port);
 	}
 
-	private boolean userExists(String username) throws SQLException {
-		return MotherShip.sqlExecuteQuery("SELECT 1 FROM users WHERE username = ?", username).last();
-	}
-
-	public boolean createUser(String username, char[] password) {
+	public static boolean createUser(Message message) throws ExecutionException, InterruptedException, IOException {
+		Object[] receivedObject = (Object[]) message.getObject();
+		String username = (String) receivedObject[0];
+		char[] password = (char[]) receivedObject[1];
 		byte[] salt = new byte[32];
 		try {
 			SecureRandom.getInstanceStrong().nextBytes(salt);
-			String hashedPassword = HashingTools.hashPassword(password, salt);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		String hashedPassword = HashingTools.hashPassword(password, salt);
+		MotherShipCallable2 msc = new MotherShipCallable2(new Message(message.getOpcode(), new String[] {username, hashedPassword, HashingTools.bytesToHex(salt)}));
+		return (boolean) msc.getFutureResult().getObject();
+	}
 
-			if(!userExists(username)) {
-				MotherShip.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES ('" + UUID.randomUUID().toString() + "',?,'" + hashedPassword + "','" + HashingTools.bytesToHex(salt) + "')", username);
+	public static boolean authenticateUser(Message message) {
+		String username = (String) ((Object[])message.getObject())[0];
+		char[] password = (char[]) ((Object[])message.getObject())[1];
+		MotherShipCallable2 msc = new MotherShipCallable2(new Message(message.getOpcode(), username));
+		Message foundCredentials = msc.getFutureResult(); // password = [0], password_salt = [1]
+		if(foundCredentials.getObject().equals(null)) {
+			return false;
+		} else {
+			String hashedPasswordInDB = ((String[])foundCredentials.getObject())[0];
+			String saltInHex = ((String[])foundCredentials.getObject())[1];
+			byte[] salt = HashingTools.hexToBytes(saltInHex);
+			String passwordCheck = HashingTools.hashPassword(password, salt);
+			if(passwordCheck.equals(hashedPasswordInDB)) {
 				return true;
+			} else {
+				return false;
 			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		} catch(NoSuchAlgorithmException e) {
-			e.printStackTrace();
 		}
-
-		return false;
 	}
 
-	public boolean authenticateUser(String username, char[] password) {
+	@Override
+	protected void handleConnection(Socket connection) throws IOException {
+		TCPConnection clientConnection = new TCPConnection(connection, authenticationProtocol);
+		clientConnection.start();
+	}
+
+	@Override
+	public String getDescription() {
+		return "authentication_nodes";
+	}
+
+	public static void main(String[] args) {
 		try {
-			if(userExists(username)) {
-				String saltHex = MotherShip.sqlExecuteQueryToString("SELECT password_salt FROM users WHERE username = ?", username);
-				byte[] saltBytes = HashingTools.hexToBytes(saltHex);
-				String hashedPassword = HashingTools.hashPassword(password, saltBytes);
-				String hashedPasswordFromDatabase = MotherShip.sqlExecuteQueryToString("SELECT password FROM users WHERE username = ?", username);
-				if(hashedPassword.equals(hashedPasswordFromDatabase)) {
-					return true;
-				}
-			}
-		} catch(SQLException e) {
+			new AuthenticationNode(1112);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return false;
 	}
-
-	@Override public String generateInsertQuery() {
-		return "INSERT INTO authentication_nodes (id, user_count) VALUES ('" + getNodeId() + "'," + usersConnected + ")";
-	}
-
-	@Override public String getDescription() {
-		return "Authentication Node";
-	}
-
-	@Override public String nextInPrimitiveChain() {
-		return "lobby_nodes";
-	}
-
 }

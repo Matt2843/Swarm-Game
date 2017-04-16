@@ -7,31 +7,20 @@ import java.io.Serializable;
  */
 public final class Player implements Serializable {
 
-	private String alias = null;
-	private int id = 0;
+	private String username = null;
+	private String id = null;
 
-	public Player() {
-	}
-
-	public Player(String alias, int id) {
-		this.alias = alias;
+	public Player(String username, String id) {
+		this.username = username;
 		this.id = id;
 	}
 
-	public String getAlias() {
-		return alias;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setAlias(String alias) {
-		this.alias = alias;
-	}
-
-	public int getId() {
+	public String getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	@Override public boolean equals(Object player) {
@@ -40,16 +29,6 @@ public final class Player implements Serializable {
 
 		Player that = (Player) player;
 
-		return id == that.id && (alias != null ? player.equals(that.getAlias()) : that.getAlias() == null);
-	}
-
-	@Override public int hashCode() {
-		int result = alias != null ? alias.hashCode() : 0;
-		result = 31 * result + id;
-		return result;
-	}
-
-	@Override public String toString() {
-		return "p" + alias + "i" + id;
+		return id.equals(that.getId()) && username.equals(that.getUsername());
 	}
 }
