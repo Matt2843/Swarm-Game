@@ -19,8 +19,9 @@ public class SwarmerMain extends Game {
 		ScreenManager.getInstance().initialize(this);
 		AnimationLibrary.getInstance().initializeAntAnimations();
 
-		ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
+		//ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
 		//ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
+		ScreenManager.getInstance().show(ScreenLib.PRE_LOBBY_SCREEN);
 	}
 
 	private void establishNetworkConnection() {
