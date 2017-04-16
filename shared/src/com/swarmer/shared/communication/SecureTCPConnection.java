@@ -30,14 +30,19 @@ public class SecureTCPConnection extends Connection {
 	private KeyPair KEY = null;
 	private PublicKey exPublicKey;
 
-	protected Socket connection = null;
+	private Socket connection = null;
 	private boolean stop = false;
+
+	private Callable NonSecureTCP;
 
 	public SecureTCPConnection(Socket connection, Protocol protocol) throws IOException {
 		super(protocol);
 		this.connection = connection;
 		correspondentsIp = connection.getRemoteSocketAddress().toString();
 		setupInputStreams();
+
+		NonSecureTCP = new Callable(connection, new Message(1111, KEY.getPublic()));
+		exPublicKey = (PublicKey) NonSecureTCP.getFutureResult().getObject();
 	}
 
 	@Override protected void setupStreams() throws IOException {}
