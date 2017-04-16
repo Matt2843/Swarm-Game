@@ -37,14 +37,6 @@ public class SecureTCPConnection extends Connection {
 		super(protocol);
 		this.connection = connection;
 		correspondentsIp = connection.getRemoteSocketAddress().toString();
-		try {
-			inCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-			outCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-		} catch(NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch(NoSuchPaddingException e) {
-			e.printStackTrace();
-		}
 		setupInputStreams();
 	}
 
@@ -64,6 +56,10 @@ public class SecureTCPConnection extends Connection {
 			if(KEY == null){
 				generateKeys();
 			}
+
+			inCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			outCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+
 			IvParameterSpec iv = new IvParameterSpec("aaaaaaaaaaaaaaaa".getBytes("UTF-8"));
 
 			inCipher.init(Cipher.ENCRYPT_MODE, KEY.getPrivate(), iv);
@@ -71,6 +67,10 @@ public class SecureTCPConnection extends Connection {
 		} catch(InvalidKeyException e) {
 			e.printStackTrace();
 		} catch(InvalidAlgorithmParameterException e) {
+			e.printStackTrace();
+		} catch(NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch(NoSuchPaddingException e) {
 			e.printStackTrace();
 		}
 	}
