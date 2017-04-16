@@ -61,13 +61,7 @@ public class SecureTCPConnection extends Connection {
 
 			inCipher.init(Cipher.ENCRYPT_MODE, KEY.getPrivate(), iv);
 			input = new ObjectInputStream(new CipherInputStream(connection.getInputStream(), inCipher));
-		} catch(InvalidKeyException e) {
-			e.printStackTrace();
-		} catch(InvalidAlgorithmParameterException e) {
-			e.printStackTrace();
-		} catch(NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch(NoSuchPaddingException e) {
+		} catch(InvalidKeyException | InvalidAlgorithmParameterException | NoSuchPaddingException | NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
 	}
@@ -78,9 +72,7 @@ public class SecureTCPConnection extends Connection {
 			outCipher.init(Cipher.DECRYPT_MODE, exPublicKey, iv);
 			output = new ObjectOutputStream(new CipherOutputStream(connection.getOutputStream(), outCipher));
 			output.flush();
-		} catch(InvalidKeyException e) {
-			e.printStackTrace();
-		} catch(InvalidAlgorithmParameterException e) {
+		} catch(InvalidKeyException | InvalidAlgorithmParameterException e) {
 			e.printStackTrace();
 		}
 	}
@@ -93,13 +85,7 @@ public class SecureTCPConnection extends Connection {
 				react(message);
 			} catch (IOException e) {
 				System.out.println("WHY GOD WHY");
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (OperationInWrongServerNodeException e) {
-				e.printStackTrace();
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
+			} catch (ClassNotFoundException | OperationInWrongServerNodeException | SQLException | NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 		} while(message.getOpcode() != 0 && !stop); // TODO: CHANGE STOP CONDITION.
