@@ -42,7 +42,7 @@ public class AuthenticationNode extends ServerNode {
 		char[] password = (char[]) ((Object[])message.getObject())[1];
 		MotherShipCallable2 msc = new MotherShipCallable2(new Message(message.getOpcode(), username));
 		Message foundCredentials = msc.getFutureResult(); // password = [0], password_salt = [1]
-		if(foundCredentials.getObject().equals(null)) {
+		if(foundCredentials.getObject() == null) {
 			return false;
 		} else {
 			String hashedPasswordInDB = ((String[])foundCredentials.getObject())[0];
