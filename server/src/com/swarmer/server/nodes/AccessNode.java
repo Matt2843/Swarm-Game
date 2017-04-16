@@ -19,9 +19,8 @@ public class AccessNode extends ServerNode {
 	private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 	private SecureTCPConnection secureTCPConnection;
-	private TCPConnection tcpConnection;
 
-	protected AccessNode(int port) throws IOException {
+	protected AccessNode(int port) {
 		super(port);
 	}
 
@@ -38,7 +37,7 @@ public class AccessNode extends ServerNode {
 	@Override protected void handleConnection(Socket connection) throws IOException {
 		// TODO: transition to this later, when secure channel is tested
 		// secureTCPConnection = new SecureTCPConnection(connection, accessProtocol);
-		tcpConnection = new TCPConnection(connection, accessProtocol);
+		TCPConnection tcpConnection = new TCPConnection(connection, accessProtocol);
 		tcpConnection.start();
 	}
 
@@ -47,10 +46,6 @@ public class AccessNode extends ServerNode {
 	}
 
 	public static void main(String[] args) {
-		try {
-			new AccessNode(1111);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		new AccessNode(1111);
 	}
 }

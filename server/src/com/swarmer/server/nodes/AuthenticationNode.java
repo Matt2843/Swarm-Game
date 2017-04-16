@@ -10,15 +10,13 @@ import java.io.IOException;
 import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.StringJoiner;
 import java.util.concurrent.ExecutionException;
 
 public class AuthenticationNode extends ServerNode {
 
 	private static final AuthenticationProtocol authenticationProtocol = new AuthenticationProtocol();
 
-	protected AuthenticationNode(int port) throws IOException {
+	protected AuthenticationNode(int port) {
 		super(port);
 	}
 
@@ -69,10 +67,6 @@ public class AuthenticationNode extends ServerNode {
 	}
 
 	public static void main(String[] args) {
-		try {
-			new AuthenticationNode(1112);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		new AuthenticationNode(1112);
 	}
 }
