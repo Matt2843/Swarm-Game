@@ -28,7 +28,7 @@ public class SecureTCPConnection extends Connection {
 	protected Cipher  outCipher;
 
 	private KeyPair KEY = null;
-	public PublicKey publicKey;
+	private PublicKey publicKey;
 
 	protected Socket connection = null;
 	private boolean stop = false;
@@ -49,6 +49,10 @@ public class SecureTCPConnection extends Connection {
 			e.printStackTrace();
 		}
 		return KEY.getPublic();
+	}
+
+	public void setPublicKey(PublicKey publicKey) {
+		this.publicKey = publicKey;
 	}
 
 	private void setupInputStreams() throws IOException {
