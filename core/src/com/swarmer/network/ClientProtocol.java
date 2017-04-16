@@ -22,14 +22,14 @@ public class ClientProtocol extends Protocol{
 				break;
 			case 110: // Login succeeded
 				if((boolean) message.getObject() == true)
-					ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
+					ScreenManager.getInstance().show(ScreenLib.PRE_LOBBY_SCREEN);
 				else {
 					// TODO: Notify user that login failed.
 				}
 				break;
 			case 202: // User creation state
 				if((boolean) message.getObject() == true)
-					ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
+					ScreenManager.getInstance().show(ScreenLib.PRE_LOBBY_SCREEN);
 				else {
 					// TODO: Notify user that user creation failed.
 				}

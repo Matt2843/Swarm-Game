@@ -14,14 +14,14 @@ import java.io.IOException;
 public class SwarmerMain extends Game {
 
 	public void create() {
-		//establishNetworkConnection();
+		establishNetworkConnection();
 
 		ScreenManager.getInstance().initialize(this);
 		AnimationLibrary.getInstance().initializeAntAnimations();
 
+		ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
 		//ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
-		//ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
-		ScreenManager.getInstance().show(ScreenLib.PRE_LOBBY_SCREEN);
+		//ScreenManager.getInstance().show(ScreenLib.PRE_LOBBY_SCREEN);
 	}
 
 	private void establishNetworkConnection() {

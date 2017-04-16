@@ -56,8 +56,6 @@ public class PreLobbyScreen extends SwarmerScreen {
 		contentPane.row();
 		contentPane.add(startCompetitiveGameButton);
 		contentPane.add(startCasualGameButton);
-
-
 	}
 
 	private void addLogoutButton() {
