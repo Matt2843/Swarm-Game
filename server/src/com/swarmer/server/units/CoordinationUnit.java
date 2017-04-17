@@ -22,6 +22,15 @@ public class CoordinationUnit extends ServerUnit {
 		super(port);
 	}
 
+	public static LocationInformation findPlayerLocationInformation(String username) {
+		for(Player player : allConnectedUsers.keySet()) {
+			if(player.getUsername().equals(username)) {
+				return allConnectedUsers.get(player);
+			}
+		}
+		return null;
+	}
+
 	public static void changeLocationInformation(Player player, LocationInformation locationInformation) {
 		if(allConnectedUsers.containsKey(player)) {
 			allConnectedUsers.remove(player);
@@ -35,18 +44,11 @@ public class CoordinationUnit extends ServerUnit {
 		}
 	}
 
-	public static void removeConnection(Player player, LocationInformation locationInformation) {
+	public static void removeConnection(Player player) {
 		if(allConnectedUsers.containsKey(player)) {
 			allConnectedUsers.remove(player);
 		}
 	}
-
-	public static LocationInformation getLocationInformation(Player player) {
-		if(allConnectedUsers.containsKey(player)) {
-			return allConnectedUsers.get(player);
-		} else return null;
-	}
-
 
 	@Override protected void handleConnection(Socket connection) throws IOException {
 		TCPConnection tcpConnection = new TCPConnection(connection, coordinationProtocol);
