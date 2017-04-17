@@ -1,4 +1,4 @@
-CREATE TABLE game_nodes(
+CREATE TABLE coordination_units (
 	id VARCHAR(255) NOT NULL,
 	ip_address VARCHAR(255) NOT NULL,
 	port VARCHAR(255) NOT NULL,

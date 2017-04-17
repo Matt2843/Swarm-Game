@@ -24,11 +24,7 @@ public final class Player implements Serializable {
 	}
 
 	@Override public boolean equals(Object player) {
-		if (this == player) return true;
-		if (player == null || getClass() != player.getClass()) return false;
-
 		Player that = (Player) player;
-
-		return id.equals(that.getId()) && username.equals(that.getUsername());
+		return this.id.equals(that.getId()) && this.username.equals(that.getUsername());
 	}
 }

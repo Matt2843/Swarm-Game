@@ -8,7 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
 
-public class MotherShip {
+public class DatabaseController {
 
 	public static MySQLConnection mySQLConnection = new MySQLConnection("localhost", 3306);
 	private final MotherShipProtocol mothershipProtocol = new MotherShipProtocol();
@@ -17,7 +17,7 @@ public class MotherShip {
 	private Socket connection;
 	private final int port;
 
-	public MotherShip(int port) {
+	public DatabaseController(int port) {
 		this.port = port;
 		clearDatabase();
 		try {
@@ -29,10 +29,10 @@ public class MotherShip {
 
 	private void clearDatabase() {
 		try {
-			mySQLConnection.sqlExecute("DELETE FROM access_nodes");
-			mySQLConnection.sqlExecute("DELETE FROM authentication_nodes");
-			mySQLConnection.sqlExecute("DELETE FROM lobby_nodes");
-			mySQLConnection.sqlExecute("DELETE FROM game_nodes");
+			mySQLConnection.sqlExecute("DELETE FROM access_units");
+			mySQLConnection.sqlExecute("DELETE FROM authentication_units");
+			mySQLConnection.sqlExecute("DELETE FROM lobby_units");
+			mySQLConnection.sqlExecute("DELETE FROM game_units");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -48,6 +48,6 @@ public class MotherShip {
 	}
 
 	public static void main(String[] args) {
-		MotherShip ms = new MotherShip(1110);
+		DatabaseController ms = new DatabaseController(1110);
 	}
 }

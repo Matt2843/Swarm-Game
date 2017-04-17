@@ -1,6 +1,6 @@
-package com.swarmer.server.nodes;
+package com.swarmer.server.units;
 
-import com.swarmer.server.MotherShipCallable2;
+import com.swarmer.server.DatabaseControllerCallable;
 import com.swarmer.server.protocols.AccessProtocol;
 import com.swarmer.shared.communication.*;
 
@@ -13,14 +13,14 @@ import java.util.concurrent.Executors;
 /**
  * Created by Matt on 04/06/2017.
  */
-public class AccessNode extends ServerNode {
+public class AccessUnit extends ServerUnit {
 
 	private static final AccessProtocol accessProtocol = new AccessProtocol();
 	private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 	private SecureTCPConnection secureTCPConnection;
 
-	protected AccessNode(int port) {
+	protected AccessUnit(int port) {
 		super(port);
 	}
 
@@ -30,7 +30,7 @@ public class AccessNode extends ServerNode {
 		System.out.println(futureResult.get());
 		System.out.println("Hello albertt");
 		return futureResult.get();*/
-		MotherShipCallable2 msc = new MotherShipCallable2(message);
+		DatabaseControllerCallable msc = new DatabaseControllerCallable(message);
 		return msc.getFutureResult();
 	}
 
@@ -42,10 +42,10 @@ public class AccessNode extends ServerNode {
 	}
 
 	@Override public String getDescription() {
-		return "access_nodes";
+		return "access_units";
 	}
 
 	public static void main(String[] args) {
-		new AccessNode(1111);
+		new AccessUnit(1111);
 	}
 }

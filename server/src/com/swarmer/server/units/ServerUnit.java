@@ -1,4 +1,4 @@
-package com.swarmer.server.nodes;
+package com.swarmer.server.units;
 
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
@@ -15,7 +15,7 @@ import java.util.UUID;
 /**
  * Created by Matt on 03/16/2017.
  */
-public abstract class ServerNode implements Serializable {
+public abstract class ServerUnit implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,7 +27,7 @@ public abstract class ServerNode implements Serializable {
 
     protected static HashMap<Player, Connection> activeConnections = new HashMap<>();
 
-    protected ServerNode(int port) {
+    protected ServerUnit(int port) {
         try {
             initializeServerSocket(port);
             notifyMotherShip(port);
@@ -88,7 +88,7 @@ public abstract class ServerNode implements Serializable {
 
     @Override
     public String toString() {
-        return super.toString() + " -- ServerNode{" +
+        return super.toString() + " -- ServerUnit{" +
                 "nodeId='" + nodeUUID + '\'' + " " + getDescription() +
                 '}';
     }

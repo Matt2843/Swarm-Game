@@ -1,11 +1,9 @@
-package com.swarmer.server.nodes;
+package com.swarmer.server.units;
 
-import com.swarmer.server.MotherShipCallable2;
+import com.swarmer.server.DatabaseControllerCallable;
 import com.swarmer.server.protocols.AuthenticationProtocol;
 import com.swarmer.server.security.HashingTools;
-import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.SecureTCPConnection;
 import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
@@ -14,11 +12,11 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.concurrent.ExecutionException;
 
-public class AuthenticationNode extends ServerNode {
+public class AuthenticationUnit extends ServerUnit {
 
 	private static final AuthenticationProtocol authenticationProtocol = new AuthenticationProtocol();
 
-	protected AuthenticationNode(int port) {
+	protected AuthenticationUnit(int port) {
 		super(port);
 	}
 
@@ -33,14 +31,14 @@ public class AuthenticationNode extends ServerNode {
 			e.printStackTrace();
 		}
 		String hashedPassword = HashingTools.hashPassword(password, salt);
-		MotherShipCallable2 msc = new MotherShipCallable2(new Message(message.getOpcode(), new String[] {username, hashedPassword, HashingTools.bytesToHex(salt)}));
+		DatabaseControllerCallable msc = new DatabaseControllerCallable(new Message(message.getOpcode(), new String[] {username, hashedPassword, HashingTools.bytesToHex(salt)}));
 		return (boolean) msc.getFutureResult().getObject();
 	}
 
 	public static boolean authenticateUser(Message message) throws IOException {
 		String username = (String) ((Object[])message.getObject())[0];
 		char[] password = (char[]) ((Object[])message.getObject())[1];
-		MotherShipCallable2 msc = new MotherShipCallable2(new Message(message.getOpcode(), username));
+		DatabaseControllerCallable msc = new DatabaseControllerCallable(new Message(message.getOpcode(), username));
 		Message foundCredentials = msc.getFutureResult(); // password = [0], password_salt = [1]
 		if(foundCredentials.getObject() == null) {
 			return false;
@@ -65,10 +63,10 @@ public class AuthenticationNode extends ServerNode {
 
 	@Override
 	public String getDescription() {
-		return "authentication_nodes";
+		return "authentication_units";
 	}
 
 	public static void main(String[] args) {
-		new AuthenticationNode(1112);
+		new AuthenticationUnit(1112);
 	}
 }

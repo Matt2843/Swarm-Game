@@ -1,4 +1,4 @@
-CREATE TABLE access_nodes (
+CREATE TABLE authentication_units (
 	id VARCHAR(255) NOT NULL,
 	ip_address VARCHAR(255) NOT NULL,
 	port VARCHAR(255) NOT NULL,

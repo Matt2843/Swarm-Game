@@ -1,10 +1,9 @@
 package com.swarmer.server.protocols;
 
-import com.swarmer.server.nodes.AccessNode;
+import com.swarmer.server.units.AccessUnit;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Protocol;
-import com.swarmer.shared.communication.SecureTCPConnection;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -31,7 +30,7 @@ public class AccessProtocol extends Protocol {
 
 	private void getAuthenticationNode(Message message) {
 		try {
-			Message sqlRespond = AccessNode.getBestQualityAuthenticationNode(message);
+			Message sqlRespond = AccessUnit.getBestQualityAuthenticationNode(message);
 			caller.sendMessage(sqlRespond);
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -1,6 +1,6 @@
 package com.swarmer.server.protocols;
 
-import com.swarmer.server.MotherShip;
+import com.swarmer.server.DatabaseController;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Protocol;
@@ -42,7 +42,7 @@ public class MotherShipProtocol extends Protocol {
 	private void authenticateUserInDatabase(Message message) throws IOException, SQLException {
 		String receivedUsername = (String) message.getObject();
 		if(userExistsInDatabase(receivedUsername)) {
-			ResultSet resultSet = MotherShip.mySQLConnection.sqlExecuteQuery("SELECT password,password_salt FROM users WHERE username=? LIMIT 1", receivedUsername);
+			ResultSet resultSet = DatabaseController.mySQLConnection.sqlExecuteQuery("SELECT password,password_salt FROM users WHERE username=? LIMIT 1", receivedUsername);
 			resultSet.next();
 			String[] result = new String[] {resultSet.getString("password"), resultSet.getString("password_salt")};
 			caller.sendMessage(new Message(997, result));
@@ -55,7 +55,7 @@ public class MotherShipProtocol extends Protocol {
 	private void addUserToDatabase(Message message) throws IOException, SQLException {
 		String[] receivedObjects = (String[]) message.getObject();
 		if (!userExistsInDatabase(receivedObjects[0])) {
-			MotherShip.mySQLConnection.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES (?, ?, ?, ?)", UUID.randomUUID().toString(), receivedObjects[0], receivedObjects[1], receivedObjects[2]);
+			DatabaseController.mySQLConnection.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES (?, ?, ?, ?)", UUID.randomUUID().toString(), receivedObjects[0], receivedObjects[1], receivedObjects[2]);
 			caller.sendMessage(new Message(998, true));
 		} else {
 			caller.sendMessage(new Message(998, false));
@@ -64,7 +64,7 @@ public class MotherShipProtocol extends Protocol {
 
 	private void getNodeFromDb(Message message) throws IOException, SQLException {
 		String sqlQuery = "SELECT ip_address,port FROM " + message.getObject() + " ORDER BY user_count ASC LIMIT 1";
-		ResultSet resultSet = MotherShip.mySQLConnection.sqlExecuteQuery(sqlQuery);
+		ResultSet resultSet = DatabaseController.mySQLConnection.sqlExecuteQuery(sqlQuery);
 		resultSet.next();
 		String queryResult = resultSet.getString("ip_address") + ":" + resultSet.getString("port");
 		caller.sendMessage(new Message(999, queryResult));
@@ -73,11 +73,11 @@ public class MotherShipProtocol extends Protocol {
 	private void addNodeToDb(Message message) throws SQLException {
 		String[] queryDetails = (String[]) message.getObject();
 		String sqlQuery = "INSERT INTO " + queryDetails[1] + " (id, ip_address, port, user_count) VALUES (?, ?, ?, ?)";
-		MotherShip.mySQLConnection.sqlExecute(sqlQuery, UUID.randomUUID().toString(), ((TCPConnection) caller).getConnection().getInetAddress().toString(), queryDetails[0], "0");
+		DatabaseController.mySQLConnection.sqlExecute(sqlQuery, UUID.randomUUID().toString(), ((TCPConnection) caller).getConnection().getInetAddress().toString(), queryDetails[0], "0");
 	}
 
 	private boolean userExistsInDatabase(String username) throws SQLException, IOException {
-		boolean userConnected = MotherShip.mySQLConnection.sqlExecuteQuery("SELECT 1 FROM users WHERE username = ?", username).last();
+		boolean userConnected = DatabaseController.mySQLConnection.sqlExecuteQuery("SELECT 1 FROM users WHERE username = ?", username).last();
 		return userConnected;
 	}
 

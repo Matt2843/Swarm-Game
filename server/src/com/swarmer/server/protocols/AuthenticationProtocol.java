@@ -1,7 +1,6 @@
 package com.swarmer.server.protocols;
 
-import com.swarmer.server.nodes.AuthenticationNode;
-import com.swarmer.server.security.HashingTools;
+import com.swarmer.server.units.AuthenticationUnit;
 import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
@@ -44,7 +43,7 @@ public class AuthenticationProtocol extends Protocol {
 
 	private void createUser(Message message) {
 		try {
-			boolean queryState = AuthenticationNode.createUser(message);
+			boolean queryState = AuthenticationUnit.createUser(message);
 			caller.sendMessage(new Message(202, queryState));
 		} catch (ExecutionException e) {
 			e.printStackTrace();
@@ -56,7 +55,7 @@ public class AuthenticationProtocol extends Protocol {
 	}
 
 	private void authenticateUser(Message message) throws IOException {
-		boolean queryState = AuthenticationNode.authenticateUser(message);
+		boolean queryState = AuthenticationUnit.authenticateUser(message);
 		caller.sendMessage(new Message(110, queryState));
 	}
 }

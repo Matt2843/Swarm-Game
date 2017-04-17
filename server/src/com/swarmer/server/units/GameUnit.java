@@ -1,4 +1,4 @@
-package com.swarmer.server.nodes;
+package com.swarmer.server.units;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -6,9 +6,9 @@ import java.net.Socket;
 /**
  * Created by Matt on 03/16/2017.
  */
-public class GameNode extends ServerNode {
+public class GameUnit extends ServerUnit {
 
-    protected GameNode(int port) throws IOException {
+    protected GameUnit(int port) throws IOException {
         super(port);
     }
 
@@ -19,6 +19,6 @@ public class GameNode extends ServerNode {
 
     @Override
     public String getDescription() {
-        return null;
+        return "game_units";
     }
 }
