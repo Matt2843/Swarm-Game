@@ -28,21 +28,22 @@ public class SecureTCPConnection extends Connection {
 	protected Cipher outCipher;
 
 	private KeyPair KEY = null;
-	private PublicKey exPublicKey;
+	private PublicKey exPublicKey = null;
 
 	private Socket connection = null;
 	private boolean stop = false;
 
 	private Callable NonSecureTCP;
 
-	public SecureTCPConnection(Socket connection, Protocol protocol) throws IOException {
+	public SecureTCPConnection(Socket connection, Protocol protocol, KeyPair KEY, PublicKey exPublicKey) throws IOException {
 		super(protocol);
+		this.KEY = KEY;
+		this.exPublicKey = exPublicKey;
+
 		this.connection = connection;
 		correspondentsIp = connection.getRemoteSocketAddress().toString();
-		setupInputStreams();
-
-		NonSecureTCP = new Callable(connection, new Message(1111, KEY.getPublic()));
-		exPublicKey = (PublicKey) NonSecureTCP.getFutureResult().getObject();
+		setupCiphers();
+		setupIOStreams();
 	}
 
 	@Override protected void setupStreams() throws IOException {}
@@ -55,29 +56,34 @@ public class SecureTCPConnection extends Connection {
 		exPublicKey = publicKey;
 	}
 
-	private void setupInputStreams() throws IOException {
+	private void setupCiphers() throws IOException {
 		try {
-			KEY = KeyPairGenerator.getInstance("RSA").generateKeyPair();
-
 			inCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 			outCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-
-			IvParameterSpec iv = new IvParameterSpec("aaaaaaaaaaaaaaaa".getBytes("UTF-8"));
-
-			inCipher.init(Cipher.ENCRYPT_MODE, KEY.getPrivate(), iv);
-			input = new ObjectInputStream(new CipherInputStream(connection.getInputStream(), inCipher));
-		} catch(InvalidKeyException | InvalidAlgorithmParameterException | NoSuchPaddingException | NoSuchAlgorithmException e) {
+		} catch(NoSuchAlgorithmException | NoSuchPaddingException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void setupOutputStreams() throws IOException {
+	private void setupIOStreams() {
 		try {
-			IvParameterSpec iv = new IvParameterSpec("aaaaaaaaaaaaaaaa".getBytes("UTF-8"));
-			outCipher.init(Cipher.DECRYPT_MODE, exPublicKey, iv);
-			output = new ObjectOutputStream(new CipherOutputStream(connection.getOutputStream(), outCipher));
-			output.flush();
-		} catch(InvalidKeyException | InvalidAlgorithmParameterException e) {
+			inCipher.init(Cipher.DECRYPT_MODE, KEY.getPrivate());
+			outCipher.init(Cipher.ENCRYPT_MODE, exPublicKey);
+			CipherInputStream cis = new CipherInputStream(connection.getInputStream(), inCipher);
+			CipherOutputStream cos = new CipherOutputStream(connection.getOutputStream(), outCipher);
+			cos.flush();
+
+			System.out.println("1");
+			//output = new ObjectOutputStream(connection.getOutputStream());
+			output = new ObjectOutputStream(cos);
+			//output.flush();
+
+			System.out.println("2");
+
+			//input = new ObjectInputStream(connection.getInputStream());
+			input = new ObjectInputStream(cis);
+			System.out.println("3");
+		} catch(InvalidKeyException | IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -87,20 +93,25 @@ public class SecureTCPConnection extends Connection {
 		do {
 			try {
 				message = (Message) input.readObject();
+				System.out.println(message.toString());
 				react(message);
 			} catch (IOException e) {
 				System.out.println("WHY GOD WHY");
+				stop = true;
 			} catch (ClassNotFoundException | OperationInWrongServerNodeException | SQLException | NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 		} while(message.getOpcode() != 0 && !stop); // TODO: CHANGE STOP CONDITION.
-		cleanUp();
+		stop = true;
+		if(message.getOpcode() == 0) {
+			cleanUp();
+		}
 	}
 
 	public void stopConnection() {
 		try {
 			sendMessage(new Message(0));
-		} catch (IOException e) {
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 		stop = true;
@@ -108,14 +119,15 @@ public class SecureTCPConnection extends Connection {
 	}
 
 	@Override public void sendMessage(Message m) throws IOException {
-		if(exPublicKey != null) {
-			if(output == null){
-				setupOutputStreams();
+		if(!stop) {
+			if(exPublicKey != null) {
+				output.writeObject(m);
+				output.flush();
+			} else {
+				System.out.println("Cannot send message without an external public key!");
 			}
-			output.writeObject(m);
-			output.flush();
 		} else {
-			System.out.println("Cannot send message without an external public key!");
+			System.out.println("Connection Closed");
 		}
 	}
 

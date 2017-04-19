@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -45,10 +48,17 @@ public abstract class ServerUnit {
 
     private final String nodeUUID = UUID.randomUUID().toString();
 
+    public static KeyPair KEY = null;
+
     protected static HashMap<Player, Connection> activeConnections = new HashMap<>();
     protected int usersConnected = 0;
 
     protected ServerUnit() {
+        try {
+            KEY = KeyPairGenerator.getInstance("RSA").generateKeyPair();
+        } catch(NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         startConnectionThreads();
         notifyMotherShip();
     }
@@ -109,7 +119,8 @@ public abstract class ServerUnit {
                     connection = serverSocket.accept();
                     new TCPConnection(connection, getProtocol()).start();
                 } else if (serverSocketType == STCP) {
-                    //new SecureTCPConnection(connection, getProtocol()).start();
+                    connection = serverSocket.accept();
+                    new SecureTCPConnection(connection, getProtocol(), KEY, getProtocol().exPublicKey).start();
                     // TODO: IMPLEMENT THIS VITAL CODE :)
                 } else if (serverSocketType == UDP) {
                     // TODO: IMPLEMENT THIS VITAL CODE :)
