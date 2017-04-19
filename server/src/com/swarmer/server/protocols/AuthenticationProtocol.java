@@ -1,6 +1,7 @@
 package com.swarmer.server.protocols;
 
 import com.swarmer.server.units.AuthenticationUnit;
+import com.swarmer.server.units.ServerUnit;
 import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
@@ -11,11 +12,15 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by Matt on 04/06/2017.
  */
-public class AuthenticationProtocol extends Protocol {
+public class AuthenticationProtocol extends ServerProtocol {
 
 	private Connection caller;
 
-	@Override protected void react(Message message, Connection caller) throws IOException, NoSuchAlgorithmException {
+	public AuthenticationProtocol(ServerUnit serverUnit) {
+		super(serverUnit);
+	}
+
+	@Override protected void react(Message message, Connection caller) throws IOException {
 		this.caller = caller;
 		System.out.println("Authentication Node: " + message.toString());
 		switch (message.getOpcode()) {

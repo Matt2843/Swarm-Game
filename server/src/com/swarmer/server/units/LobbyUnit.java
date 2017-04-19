@@ -6,6 +6,7 @@ import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.UUID;
 
@@ -14,7 +15,7 @@ import java.util.UUID;
  */
 public class LobbyUnit extends ServerUnit {
 
-    private final LobbyProtocol lobbyProtocol = new LobbyProtocol();
+    private final LobbyProtocol lobbyProtocol = new LobbyProtocol(this);
 
     protected LobbyUnit(int port) {
         super(port);
@@ -37,7 +38,7 @@ public class LobbyUnit extends ServerUnit {
     }
 
     public static void main(String[] args) {
-        new LobbyUnit(1113);
+        new LobbyUnit(ServerUnit.LOBBY_UNIT_STCP_PORT);
     }
 
 }

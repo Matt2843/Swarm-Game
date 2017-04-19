@@ -14,10 +14,11 @@ import java.util.concurrent.ExecutionException;
 
 public class AuthenticationUnit extends ServerUnit {
 
-	private static final AuthenticationProtocol authenticationProtocol = new AuthenticationProtocol();
+	private static AuthenticationProtocol authenticationProtocol;
 
 	protected AuthenticationUnit(int port) {
 		super(port);
+		authenticationProtocol = new AuthenticationProtocol(this);
 	}
 
 	public static boolean createUser(Message message) throws ExecutionException, InterruptedException, IOException {
@@ -59,6 +60,7 @@ public class AuthenticationUnit extends ServerUnit {
 	protected void handleConnection(Socket connection) throws IOException {
 		TCPConnection clientConnection = new TCPConnection(connection, authenticationProtocol);
 		clientConnection.start();
+
 	}
 
 	@Override
@@ -67,6 +69,6 @@ public class AuthenticationUnit extends ServerUnit {
 	}
 
 	public static void main(String[] args) {
-		new AuthenticationUnit(1112);
+		new AuthenticationUnit(ServerUnit.AUTHENTICATION_UNIT_TCP_PORT);
 	}
 }

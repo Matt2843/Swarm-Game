@@ -8,7 +8,7 @@ import java.net.Socket;
  */
 public class GameUnit extends ServerUnit {
 
-    protected GameUnit(int port) throws IOException {
+    protected GameUnit(int port) {
         super(port);
     }
 
@@ -20,5 +20,9 @@ public class GameUnit extends ServerUnit {
     @Override
     public String getDescription() {
         return "game_units";
+    }
+
+    public static void main(String[] args) {
+        new GameUnit(ServerUnit.GAME_UNIT_TCP_PORT);
     }
 }

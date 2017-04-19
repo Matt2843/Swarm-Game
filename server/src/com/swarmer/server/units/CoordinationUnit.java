@@ -14,12 +14,13 @@ import java.util.HashMap;
  */
 public class CoordinationUnit extends ServerUnit {
 
-	private final CoordinationProtocol coordinationProtocol = new CoordinationProtocol();
+	private static CoordinationProtocol coordinationProtocol;
 
 	private static HashMap<Player, LocationInformation> allConnectedUsers = new HashMap<>();
 
 	protected CoordinationUnit(int port) {
 		super(port);
+		coordinationProtocol = new CoordinationProtocol(this);
 	}
 
 	public static LocationInformation findPlayerLocationInformation(String username) {
@@ -60,6 +61,6 @@ public class CoordinationUnit extends ServerUnit {
 	}
 
 	public static void main(String[] args) {
-		new CoordinationUnit(1100);
+		new CoordinationUnit(ServerUnit.COORDINATE_UNIT_TCP_PORT);
 	}
 }

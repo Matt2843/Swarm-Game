@@ -15,13 +15,14 @@ import java.util.concurrent.Executors;
  */
 public class AccessUnit extends ServerUnit {
 
-	private static final AccessProtocol accessProtocol = new AccessProtocol();
+	private static AccessProtocol accessProtocol;
 	private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 	private SecureTCPConnection secureTCPConnection;
 
-	protected AccessUnit(int port) {
+	private AccessUnit(int port) {
 		super(port);
+		accessProtocol = new AccessProtocol(this);
 	}
 
 	public static Message getBestQualityAuthenticationNode(Message message) throws IOException, ExecutionException, InterruptedException {
@@ -46,6 +47,6 @@ public class AccessUnit extends ServerUnit {
 	}
 
 	public static void main(String[] args) {
-		new AccessUnit(1111);
+		new AccessUnit(ServerUnit.ACCESS_UNIT_TCP_PORT);
 	}
 }

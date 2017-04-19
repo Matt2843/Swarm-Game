@@ -1,6 +1,7 @@
 package com.swarmer.server.protocols;
 
 import com.swarmer.server.DatabaseController;
+import com.swarmer.server.units.ServerUnit;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Protocol;
@@ -14,11 +15,19 @@ import java.util.UUID;
 /**
  * Created by Matt on 04/06/2017.
  */
-public class MotherShipProtocol extends Protocol {
+public class DatabaseControllerProtocol extends ServerProtocol {
 
 	private Connection caller;
 
-	@Override protected void react(Message message, Connection caller) throws SQLException, IOException {
+	public DatabaseControllerProtocol(ServerUnit serverUnit) {
+		super(serverUnit);
+	}
+
+	public DatabaseControllerProtocol() {
+		super(null);
+	}
+
+	@Override protected void react(Message message, Connection caller) throws IOException, SQLException {
 		this.caller = caller;
 		System.out.println("Message in mothership protocol: " + message.toString());
 		switch (message.getOpcode()) {
