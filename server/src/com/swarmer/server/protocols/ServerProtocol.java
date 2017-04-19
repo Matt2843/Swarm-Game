@@ -27,5 +27,9 @@ public abstract class ServerProtocol extends Protocol {
 		serverUnit.addActiveConnection(player, connection);
 	}
 
+	public void removeConnectionFromActiveConnections(Player player) {
+		serverUnit.removeActiveConnection(player);
+	}
+
 }
 

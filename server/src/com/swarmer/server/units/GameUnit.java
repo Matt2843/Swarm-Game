@@ -1,28 +1,33 @@
 package com.swarmer.server.units;
 
-import java.io.IOException;
-import java.net.Socket;
+import com.swarmer.server.protocols.GameProtocol;
+import com.swarmer.server.protocols.ServerProtocol;
 
 /**
  * Created by Matt on 03/16/2017.
  */
 public class GameUnit extends ServerUnit {
 
-    protected GameUnit(int port) {
-        super(port);
-    }
+	private final GameProtocol gameProtocol = new GameProtocol(this);
 
-    @Override
-    protected void handleConnection(Socket connection) throws IOException {
+	protected GameUnit() {
+		super();
+	}
 
-    }
+	@Override protected int getPort() {
+		return ServerUnit.GAME_UNIT_TCP_PORT;
+	}
 
-    @Override
-    public String getDescription() {
-        return "game_units";
-    }
+	@Override protected ServerProtocol getProtocol() {
+		return gameProtocol;
+	}
 
-    public static void main(String[] args) {
-        new GameUnit(ServerUnit.GAME_UNIT_TCP_PORT);
-    }
+	@Override
+	public String getDescription() {
+		return "game_units";
+	}
+
+	public static void main(String[] args) {
+		new GameUnit();
+	}
 }

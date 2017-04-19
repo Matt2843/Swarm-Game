@@ -1,6 +1,7 @@
 package com.swarmer.server;
 
 import com.swarmer.server.protocols.DatabaseControllerProtocol;
+import com.swarmer.server.units.ServerUnit;
 import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
@@ -48,6 +49,6 @@ public class DatabaseController {
 	}
 
 	public static void main(String[] args) {
-		DatabaseController ms = new DatabaseController(1110);
+		DatabaseController databaseController = new DatabaseController(ServerUnit.DATABASE_CONTROLLER_TCP_PORT);
 	}
 }

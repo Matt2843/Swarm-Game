@@ -2,27 +2,29 @@ package com.swarmer.server.units;
 
 import com.swarmer.server.DatabaseControllerCallable;
 import com.swarmer.server.protocols.AccessProtocol;
-import com.swarmer.shared.communication.*;
+import com.swarmer.server.protocols.ServerProtocol;
+import com.swarmer.shared.communication.Message;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Created by Matt on 04/06/2017.
  */
 public class AccessUnit extends ServerUnit {
 
-	private static AccessProtocol accessProtocol;
-	private static final ExecutorService executorService = Executors.newSingleThreadExecutor();
+	private final AccessProtocol accessProtocol = new AccessProtocol(this);
 
-	private SecureTCPConnection secureTCPConnection;
+	private AccessUnit() {
+		super();
+	}
 
-	private AccessUnit(int port) {
-		super(port);
-		accessProtocol = new AccessProtocol(this);
+	@Override protected int getPort() {
+		return ServerUnit.ACCESS_UNIT_TCP_PORT;
+	}
+
+	@Override protected ServerProtocol getProtocol() {
+		return accessProtocol;
 	}
 
 	public static Message getBestQualityAuthenticationNode(Message message) throws IOException, ExecutionException, InterruptedException {
@@ -35,18 +37,11 @@ public class AccessUnit extends ServerUnit {
 		return msc.getFutureResult();
 	}
 
-	@Override protected void handleConnection(Socket connection) throws IOException {
-		// TODO: transition to this later, when secure channel is tested
-		// secureTCPConnection = new SecureTCPConnection(connection, accessProtocol);
-		TCPConnection tcpConnection = new TCPConnection(connection, accessProtocol);
-		tcpConnection.start();
-	}
-
 	@Override public String getDescription() {
 		return "access_units";
 	}
 
 	public static void main(String[] args) {
-		new AccessUnit(ServerUnit.ACCESS_UNIT_TCP_PORT);
+		new AccessUnit();
 	}
 }

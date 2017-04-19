@@ -1,12 +1,10 @@
 package com.swarmer.server.units;
 
 import com.swarmer.server.protocols.CoordinationProtocol;
+import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.communication.Player;
-import com.swarmer.shared.communication.TCPConnection;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.util.HashMap;
 
 /**
@@ -14,13 +12,19 @@ import java.util.HashMap;
  */
 public class CoordinationUnit extends ServerUnit {
 
-	private static CoordinationProtocol coordinationProtocol;
-
+	private final CoordinationProtocol coordinationProtocol = new CoordinationProtocol(this);
 	private static HashMap<Player, LocationInformation> allConnectedUsers = new HashMap<>();
 
-	protected CoordinationUnit(int port) {
-		super(port);
-		coordinationProtocol = new CoordinationProtocol(this);
+	protected CoordinationUnit() {
+		super();
+	}
+
+	@Override protected int getPort() {
+		return ServerUnit.COORDINATE_UNIT_TCP_PORT;
+	}
+
+	@Override protected ServerProtocol getProtocol() {
+		return coordinationProtocol;
 	}
 
 	public static LocationInformation findPlayerLocationInformation(String username) {
@@ -51,16 +55,11 @@ public class CoordinationUnit extends ServerUnit {
 		}
 	}
 
-	@Override protected void handleConnection(Socket connection) throws IOException {
-		TCPConnection tcpConnection = new TCPConnection(connection, coordinationProtocol);
-		tcpConnection.start();
-	}
-
 	@Override public String getDescription() {
 		return "coordination_units";
 	}
 
 	public static void main(String[] args) {
-		new CoordinationUnit(ServerUnit.COORDINATE_UNIT_TCP_PORT);
+		new CoordinationUnit();
 	}
 }

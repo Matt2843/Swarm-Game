@@ -6,11 +6,6 @@ import com.swarmer.gui.screens.ScreenLib;
 import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.network.GameClient;
 
-import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.exceptions.GameClientNotInstantiatedException;
-
-import java.io.IOException;
-
 public class SwarmerMain extends Game {
 
 	public void create() {

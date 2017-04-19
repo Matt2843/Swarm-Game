@@ -4,7 +4,6 @@ import com.swarmer.server.units.AccessUnit;
 import com.swarmer.server.units.ServerUnit;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.Protocol;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -22,10 +21,10 @@ public class AccessProtocol extends ServerProtocol {
 
 	@Override protected void react(Message message, Connection caller) {
 		this.caller = caller;
-		System.out.println("Access node protocol: " + message.toString());
+		System.out.println("Access unit protocol: " + message.toString());
 		switch (message.getOpcode()) {
 			case 1: // request best quality authentication_node from DB through mothership
-				getAuthenticationNode(new Message(1, "authentication_nodes"));
+				getAuthenticationNode(new Message(1, "authentication_units"));
 				break;
 			default:
 				break;
