@@ -1,12 +1,10 @@
 package com.swarmer.server.units;
 
-import com.swarmer.server.units.utility.Lobby;
 import com.swarmer.server.protocols.LobbyProtocol;
+import com.swarmer.server.protocols.ServerProtocol;
+import com.swarmer.server.units.utility.Lobby;
 import com.swarmer.shared.communication.Player;
-import com.swarmer.shared.communication.TCPConnection;
 
-import java.io.IOException;
-import java.net.Socket;
 import java.util.UUID;
 
 /**
@@ -14,10 +12,18 @@ import java.util.UUID;
  */
 public class LobbyUnit extends ServerUnit {
 
-    private final LobbyProtocol lobbyProtocol = new LobbyProtocol();
+    private final LobbyProtocol lobbyProtocol = new LobbyProtocol(this);
 
-    protected LobbyUnit(int port) {
-        super(port);
+    protected LobbyUnit() {
+        super();
+    }
+
+    @Override protected int getPort() {
+        return ServerUnit.LOBBY_UNIT_TCP_PORT;
+    }
+
+    @Override protected ServerProtocol getProtocol() {
+        return lobbyProtocol;
     }
 
     public static String createLobby(Player lobbyOwner) {
@@ -27,17 +33,12 @@ public class LobbyUnit extends ServerUnit {
         return lobbyID;
     }
 
-    @Override protected void handleConnection(Socket connection) throws IOException {
-        TCPConnection tcpConnection = new TCPConnection(connection, lobbyProtocol);
-        tcpConnection.start();
-    }
-
     @Override public String getDescription() {
         return "lobby_units";
     }
 
     public static void main(String[] args) {
-        new LobbyUnit(1113);
+        new LobbyUnit();
     }
 
 }

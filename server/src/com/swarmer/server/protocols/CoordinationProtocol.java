@@ -1,6 +1,7 @@
 package com.swarmer.server.protocols;
 
 import com.swarmer.server.units.CoordinationUnit;
+import com.swarmer.server.units.ServerUnit;
 import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by Matt on 04/17/2017.
  */
-public class CoordinationProtocol extends Protocol {
+public class CoordinationProtocol extends ServerProtocol {
 
 	private Connection caller = null;
 
@@ -24,8 +25,12 @@ public class CoordinationProtocol extends Protocol {
 	private String connectedPlayerCurrentUnitIp;
 	private int connectedPlayerCurrentUnitPort;
 
+	public CoordinationProtocol(ServerUnit serverUnit) {
+		super(serverUnit);
+	}
 
-	@Override protected void react(Message message, Connection caller) throws IOException, SQLException, NoSuchAlgorithmException {
+
+	@Override protected void react(Message message, Connection caller) throws IOException, SQLException {
 		this.caller = caller;
 		System.out.println("Coordination Protocol: " + message.toString());
 		switch(message.getOpcode()) {

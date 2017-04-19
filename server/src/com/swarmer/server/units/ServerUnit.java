@@ -1,12 +1,10 @@
 package com.swarmer.server.units;
 
-import com.swarmer.shared.communication.Connection;
-import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.Player;
-import com.swarmer.shared.communication.TCPConnection;
+import com.swarmer.server.protocols.ServerProtocol;
+import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
-import java.io.Serializable;
+import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -15,79 +13,134 @@ import java.util.UUID;
 /**
  * Created by Matt on 03/16/2017.
  */
-public abstract class ServerUnit implements Serializable {
+public abstract class ServerUnit {
 
-    private static final long serialVersionUID = 1L;
+    public static final int TCP = 0;
+    public static final int STCP = 1;
+    public static final int UDP = 2;
+
+    public static final int DATABASE_CONTROLLER_TCP_PORT = 43100;
+    //public static final int DATABASE_CONTROLLER_STCP_PORT = 43101;
+    //public static final int DATABASE_CONTROLLER_UDP_PORT = 43102;
+
+    public static final int COORDINATE_UNIT_TCP_PORT = 43110;
+    //public static final int COORDINATE_UNIT_STCP_PORT = 43111;
+    //public static final int COORDINATE_UNIT_UDP_PORT = 43112;
+
+    public static final int ACCESS_UNIT_TCP_PORT = 43120;
+    //public static final int ACCESS_UNIT_STCP_PORT = 43121;
+    //public static final int ACCESS_UNIT_UDP_PORT = 43122;
+
+    public static final int AUTHENTICATION_UNIT_TCP_PORT = 43130;
+    //public static final int AUTHENTICATION_UNIT_STCP_PORT = 43131;
+    //public static final int AUTHENTICATION_UNIT_UDP_PORT = 43132;
+
+    public static final int LOBBY_UNIT_TCP_PORT = 43140;
+    //public static final int LOBBY_UNIT_STCP_PORT = 43141;
+    //public static final int LOBBY_UNIT_UDP_PORT = 43142;
+
+    public static final int GAME_UNIT_TCP_PORT = 43150;
+    //public static final int GAME_UNIT_STCP_PORT = 43151;
+    //public static final int GAME_UNIT_UDP_PORT = 43152;
 
     private final String nodeUUID = UUID.randomUUID().toString();
-    protected int usersConnected = 0;
-
-    protected ServerSocket serverSocket;
-    protected Socket connection;
 
     protected static HashMap<Player, Connection> activeConnections = new HashMap<>();
+    protected int usersConnected = 0;
 
-    protected ServerUnit(int port) {
+    protected ServerUnit() {
+        startConnectionThreads();
+        notifyMotherShip();
+    }
+
+    protected void startConnectionThreads() {
+        new ServerSocketThread(TCP).start();
+        new ServerSocketThread(STCP).start();
+        new ServerSocketThread(UDP).start();
+    }
+
+    private void notifyMotherShip() {
         try {
-            initializeServerSocket(port);
-            notifyMotherShip(port);
-            awaitConnection(connection);
+            TCPConnection databaseControllerConnection = new TCPConnection(new Socket("127.0.0.1", DATABASE_CONTROLLER_TCP_PORT), null);
+            databaseControllerConnection.start();
+            String[] object = new String[] {String.valueOf(getPort()), getDescription()};
+            databaseControllerConnection.sendMessage(new Message(2, object));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    protected void initializeServerSocket(int port) throws IOException {
-        serverSocket = new ServerSocket(port);
-    }
-
-    private void notifyMotherShip(int port) {
-        try {
-            TCPConnection motherShipConnection = new TCPConnection(new Socket("127.0.0.1", 1110), null);
-            motherShipConnection.start();
-            String[] object = new String[] {String.valueOf(serverSocket.getLocalPort()), getDescription()};
-            motherShipConnection.sendMessage(new Message(2, object));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void awaitConnection(Socket connection) throws IOException {
-        while(true) {
-            connection = serverSocket.accept();
-            handleConnection(connection);
-        }
-    }
-
-    protected Connection getActiveConnection(Player player) {
+    public Connection getActiveConnection(Player player) {
         if(activeConnections.containsKey(player))
             return activeConnections.get(player);
         else return null;
     }
 
-    protected boolean addActiveConnection(Player player, Connection connection) {
+    public boolean addActiveConnection(Player player, Connection connection) {
         if(!activeConnections.containsKey(player)) {
             activeConnections.put(player, connection);
             return true;
         } else return false;
     }
 
-    protected boolean removeActiveConnection(Player player) {
+    public boolean removeActiveConnection(Player player) {
         if(activeConnections.containsKey(player)) {
             activeConnections.remove(player);
             return true;
         } else return false;
     }
 
-    protected abstract void handleConnection(Socket connection) throws IOException;
-    public abstract String getDescription();
+    protected class ServerSocketThread extends Thread {
 
+        private int serverSocketType;
+
+        private ServerSocket serverSocket;
+        private DatagramSocket datagramSocket;
+
+        private Socket connection;
+
+        public ServerSocketThread(int serverSocketType) {
+            this.serverSocketType = serverSocketType;
+        }
+
+        private void awaitConnection() throws IOException {
+            while(true) {
+                if (serverSocketType == TCP) {
+                    connection = serverSocket.accept();
+                    new TCPConnection(connection, getProtocol()).start();
+                } else if (serverSocketType == STCP) {
+                    //new SecureTCPConnection(connection, getProtocol()).start();
+                    // TODO: IMPLEMENT THIS VITAL CODE :)
+                } else if (serverSocketType == UDP) {
+                    // TODO: IMPLEMENT THIS VITAL CODE :)
+                }
+            }
+        }
+
+        @Override public void run() {
+            try {
+                if (serverSocketType == TCP || serverSocketType == STCP) {
+                    serverSocket = new ServerSocket(getPort() + serverSocketType);
+                } else if (serverSocketType == UDP) {
+                    datagramSocket = new DatagramSocket(getPort() + serverSocketType);
+                }
+                awaitConnection();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    protected abstract int getPort();
+    protected abstract ServerProtocol getProtocol();
+
+    public abstract String getDescription();
     public String getNodeUUID() {
         return nodeUUID;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return super.toString() + " -- ServerUnit{" +
                 "nodeId='" + nodeUUID + '\'' + " " + getDescription() +
                 '}';

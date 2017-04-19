@@ -2,22 +2,21 @@ package com.swarmer.server.units;
 
 import com.swarmer.server.DatabaseControllerCallable;
 import com.swarmer.server.protocols.AuthenticationProtocol;
+import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.security.HashingTools;
 import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.concurrent.ExecutionException;
 
 public class AuthenticationUnit extends ServerUnit {
 
-	private static final AuthenticationProtocol authenticationProtocol = new AuthenticationProtocol();
+	private final AuthenticationProtocol authenticationProtocol = new AuthenticationProtocol(this);
 
-	protected AuthenticationUnit(int port) {
-		super(port);
+	protected AuthenticationUnit() {
+		super();
 	}
 
 	public static boolean createUser(Message message) throws ExecutionException, InterruptedException, IOException {
@@ -55,10 +54,12 @@ public class AuthenticationUnit extends ServerUnit {
 		}
 	}
 
-	@Override
-	protected void handleConnection(Socket connection) throws IOException {
-		TCPConnection clientConnection = new TCPConnection(connection, authenticationProtocol);
-		clientConnection.start();
+	@Override protected int getPort() {
+		return ServerUnit.AUTHENTICATION_UNIT_TCP_PORT;
+	}
+
+	@Override protected ServerProtocol getProtocol() {
+		return authenticationProtocol;
 	}
 
 	@Override
@@ -67,6 +68,6 @@ public class AuthenticationUnit extends ServerUnit {
 	}
 
 	public static void main(String[] args) {
-		new AuthenticationUnit(1112);
+		new AuthenticationUnit();
 	}
 }

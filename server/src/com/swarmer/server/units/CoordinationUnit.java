@@ -2,12 +2,9 @@ package com.swarmer.server.units;
 
 import com.swarmer.server.protocols.CoordinationProtocol;
 import com.swarmer.server.units.utility.GameQueueEntry;
+import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.communication.Player;
-import com.swarmer.shared.communication.TCPConnection;
-
-import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -16,21 +13,21 @@ import java.util.HashMap;
  */
 public class CoordinationUnit extends ServerUnit {
 
-	private final CoordinationProtocol coordinationProtocol = new CoordinationProtocol();
-
+	private final CoordinationProtocol coordinationProtocol = new CoordinationProtocol(this);
 	private static HashMap<Player, LocationInformation> allConnectedUsers = new HashMap<>();
 	private static HashMap<String, ArrayList<GameQueueEntry>> queue = new HashMap<>();
 
-	protected CoordinationUnit(int port) {
-		super(port);
-
+	private CoordinationUnit() {
+		super();
 		initializeQueue();
 	}
 
-	private void initializeQueue() {
-		queue.put("LOW", new ArrayList<GameQueueEntry>());
-		queue.put("MID", new ArrayList<GameQueueEntry>());
-		queue.put("HIGH", new ArrayList<GameQueueEntry>());
+	@Override protected int getPort() {
+		return ServerUnit.COORDINATE_UNIT_TCP_PORT;
+	}
+
+	@Override protected ServerProtocol getProtocol() {
+		return coordinationProtocol;
 	}
 
 	public static LocationInformation findPlayerLocationInformation(String username) {
@@ -61,17 +58,18 @@ public class CoordinationUnit extends ServerUnit {
 		}
 	}
 
-	@Override protected void handleConnection(Socket connection) throws IOException {
-		TCPConnection tcpConnection = new TCPConnection(connection, coordinationProtocol);
-		tcpConnection.start();
-	}
-
 	@Override public String getDescription() {
 		return "coordination_units";
 	}
 
 	public static void main(String[] args) {
-		new CoordinationUnit(1100);
+		new CoordinationUnit();
+	}
+
+	private void initializeQueue() {
+		queue.put("LOW", new ArrayList<GameQueueEntry>());
+		queue.put("MID", new ArrayList<GameQueueEntry>());
+		queue.put("HIGH", new ArrayList<GameQueueEntry>());
 	}
 
 	public static void findMatch(ArrayList<Player> players) {

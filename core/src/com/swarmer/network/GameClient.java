@@ -10,7 +10,7 @@ import java.net.Socket;
 public final class GameClient {
 	
 	private String host = "127.0.0.1";
-	private int port = 1111;
+	private int port = 43120;
 
 	private static final ClientProtocol clientProtocol = new ClientProtocol();
 

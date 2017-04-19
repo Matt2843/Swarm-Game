@@ -1,6 +1,7 @@
 package com.swarmer.server;
 
-import com.swarmer.server.protocols.MotherShipProtocol;
+import com.swarmer.server.protocols.DatabaseControllerProtocol;
+import com.swarmer.server.units.ServerUnit;
 import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 public class DatabaseController {
 
 	public static MySQLConnection mySQLConnection = new MySQLConnection("localhost", 3306);
-	private final MotherShipProtocol mothershipProtocol = new MotherShipProtocol();
+	private final DatabaseControllerProtocol mothershipProtocol = new DatabaseControllerProtocol();
 
 	private ServerSocket serverSocket;
 	private Socket connection;
@@ -48,6 +49,6 @@ public class DatabaseController {
 	}
 
 	public static void main(String[] args) {
-		DatabaseController ms = new DatabaseController(1110);
+		DatabaseController databaseController = new DatabaseController(ServerUnit.DATABASE_CONTROLLER_TCP_PORT);
 	}
 }

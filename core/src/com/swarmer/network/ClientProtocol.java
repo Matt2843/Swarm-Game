@@ -11,10 +11,9 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
-public class ClientProtocol extends Protocol{
+public class ClientProtocol extends Protocol {
 
-	@Override
-	protected void react(Message message, Connection caller) throws IOException, SQLException, NoSuchAlgorithmException {
+	@Override public void react(Message message, Connection caller) {
 		System.out.println(message.toString());
 		switch (message.getOpcode()) {
 			case 1: // TEST
