@@ -21,7 +21,7 @@ public class AccessProtocol extends Protocol {
 
 		switch (message.getOpcode()) {
 			case 1: // request best quality authentication_node from DB through mothership
-				getAuthenticationNode(new Message(1, "authentication_nodes"));
+				getAuthenticationNode(new Message(1, "authentication_units"));
 				break;
 			default:
 				break;

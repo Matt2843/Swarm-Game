@@ -10,6 +10,7 @@ import com.swarmer.shared.communication.Protocol;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by Matt on 04/17/2017.
@@ -40,9 +41,17 @@ public class CoordinationProtocol extends Protocol {
 			case 1153: // Retrieve user location information with the given username, object: {username}
 				findPlayer(message);
 				break;
+			case 1161:
+				findMatch(message);
 			default:
 				break;
 		}
+	}
+
+	private void findMatch(Message message) {
+		ArrayList<Player> players = (ArrayList<Player>) message.getObject();
+
+		CoordinationUnit.findMatch(players);
 	}
 
 	private void addPlayer(Message message) {

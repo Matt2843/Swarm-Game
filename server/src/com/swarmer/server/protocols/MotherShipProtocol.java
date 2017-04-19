@@ -55,7 +55,7 @@ public class MotherShipProtocol extends Protocol {
 	private void addUserToDatabase(Message message) throws IOException, SQLException {
 		String[] receivedObjects = (String[]) message.getObject();
 		if (!userExistsInDatabase(receivedObjects[0])) {
-			DatabaseController.mySQLConnection.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES (?, ?, ?, ?)", UUID.randomUUID().toString(), receivedObjects[0], receivedObjects[1], receivedObjects[2]);
+			DatabaseController.mySQLConnection.sqlExecute("INSERT INTO users (id, username, password, password_salt, ranking) VALUES (?, ?, ?, ?, ?)", UUID.randomUUID().toString(), receivedObjects[0], receivedObjects[1], receivedObjects[2], "0");
 			caller.sendMessage(new Message(998, true));
 		} else {
 			caller.sendMessage(new Message(998, false));
