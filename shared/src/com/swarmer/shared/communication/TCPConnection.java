@@ -47,9 +47,13 @@ public class TCPConnection extends Connection {
 		cleanUp();
 	}
 
-	public void stopConnection() {
+	public void stopConnection(Object... o) {
 		try {
-			sendMessage(new Message(0));
+			if(o.length > 0) {
+				sendMessage(new Message(0, o[0]));
+			} else {
+				sendMessage(new Message(0));
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

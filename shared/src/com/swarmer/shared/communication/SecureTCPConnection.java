@@ -15,6 +15,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -78,7 +79,6 @@ public class SecureTCPConnection extends Connection {
 			inCipher.init(Cipher.DECRYPT_MODE, KEY.getPrivate());
 			outCipher.init(Cipher.ENCRYPT_MODE, exPublicKey);
 
-
 			output = new ObjectOutputStream(connection.getOutputStream());
 			input = new ObjectInputStream(connection.getInputStream());
 
@@ -128,6 +128,7 @@ public class SecureTCPConnection extends Connection {
 		if(!stop) {
 			if(exPublicKey != null) {
 				try {
+					if(m.getObject() instanceof Arrays || )
 					output.writeObject(new SealedObject(m, outCipher));
 					output.flush();
 				} catch(IllegalBlockSizeException e) {
