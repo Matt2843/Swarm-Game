@@ -46,9 +46,7 @@ public class SecureTCPConnection extends Connection {
 	private Callable NonSecureTCP;
 
 	private ByteArrayOutputStream bos = null;
-	private ByteArrayInputStream bis = null;
 	private ObjectOutputStream out = null;
-	private ObjectInputStream in = null;
 
 
 	public SecureTCPConnection(Socket connection, Protocol protocol, KeyPair KEY, PublicKey exPublicKey) throws IOException {
@@ -140,13 +138,12 @@ public class SecureTCPConnection extends Connection {
 	private Message recreateMessage(ArrayList<SealedObject> lst) {
 		Message message = null;
 		try {
-			bos.flush();
-			out.flush();
+			ByteArrayOutputStream bout = new ByteArrayOutputStream();
 
 			for(SealedObject o: lst) {
-				bos.write((byte[]) o.getObject(inCipher));
+				bout.write((byte[]) o.getObject(inCipher));
 			}
-			in = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
+			ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bout.toByteArray()));
 			message = (Message) in.readObject();
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -163,8 +160,8 @@ public class SecureTCPConnection extends Connection {
 	private ArrayList<SealedObject> generateList(byte[] data) {
 		ArrayList<SealedObject> lst = new ArrayList<SealedObject>();
 		try {
-			bis = new ByteArrayInputStream(data);
-			byte[] bytes = new byte[244];
+			ByteArrayInputStream bis = new ByteArrayInputStream(data);
+			byte[] bytes = new byte[200];
 			while(bis.read(bytes) > 0) {
 				lst.add(new SealedObject(bytes, outCipher));
 			}
