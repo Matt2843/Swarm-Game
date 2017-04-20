@@ -49,7 +49,7 @@ public class TCPConnection extends Connection {
 
 	public void stopConnection(Object... o) {
 		try {
-			if (o.length > 0) {
+			if(o.length > 0) {
 				sendMessage(new Message(0, o[0]));
 			} else {
 				sendMessage(new Message(0));

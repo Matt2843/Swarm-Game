@@ -43,12 +43,6 @@ public final class GameClient {
 
 		establishTCPConnection(host, port);
 
-		try {
-			tcp.sendMessage(new Message(1));
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-
 		// TODO: FIX UDP + STCP
 		//udp = new UDPConnection(new DatagramSocket(port), new ClientProtocol());
 		//stcp = new SecureTCPConnection(new Socket(host, port), new ClientProtocol());
