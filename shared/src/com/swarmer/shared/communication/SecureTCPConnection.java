@@ -15,6 +15,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
@@ -43,6 +44,12 @@ public class SecureTCPConnection extends Connection {
 	private boolean stop = false;
 
 	private Callable NonSecureTCP;
+
+	private ByteArrayOutputStream bos = null;
+	private ByteArrayInputStream bis = null;
+	private ObjectOutputStream out = null;
+	private ObjectInputStream in = null;
+
 
 	public SecureTCPConnection(Socket connection, Protocol protocol, KeyPair KEY, PublicKey exPublicKey) throws IOException {
 		super(protocol);
@@ -82,6 +89,9 @@ public class SecureTCPConnection extends Connection {
 			output = new ObjectOutputStream(connection.getOutputStream());
 			input = new ObjectInputStream(connection.getInputStream());
 
+			bos = new ByteArrayOutputStream();
+			out = new ObjectOutputStream(bos);
+
 		} catch(InvalidKeyException | IOException e) {
 			e.printStackTrace();
 		}
@@ -91,22 +101,12 @@ public class SecureTCPConnection extends Connection {
 		Message message = null;
 		do {
 			try {
-				message = (Message) ((SealedObject) input.readObject()).getObject(inCipher);
+				message = (Message) recreateMessage((ArrayList<SealedObject>) input.readObject());
 				react(message);
 			} catch (IOException e) {
 				System.out.println("WHY GOD WHY");
 				stop = true;
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch(BadPaddingException e) {
-				e.printStackTrace();
-			} catch(IllegalBlockSizeException e) {
-				e.printStackTrace();
-			} catch(OperationInWrongServerNodeException e) {
-				e.printStackTrace();
-			} catch(NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			} catch(SQLException e) {
+			} catch (ClassNotFoundException | OperationInWrongServerNodeException | NoSuchAlgorithmException | SQLException e) {
 				e.printStackTrace();
 			}
 		} while(message.getOpcode() != 0 && !stop); // TODO: CHANGE STOP CONDITION.
@@ -127,13 +127,8 @@ public class SecureTCPConnection extends Connection {
 	@Override public void sendMessage(Message m) throws IOException {
 		if(!stop) {
 			if(exPublicKey != null) {
-				try {
-					if(m.getObject() instanceof Arrays || )
-					output.writeObject(new SealedObject(m, outCipher));
-					output.flush();
-				} catch(IllegalBlockSizeException e) {
-					e.printStackTrace();
-				}
+				output.writeObject(generateList(toByte(m)));
+				output.flush();
 			} else {
 				System.out.println("Cannot send message without an external public key!");
 			}
@@ -141,6 +136,57 @@ public class SecureTCPConnection extends Connection {
 			System.out.println("Connection Closed");
 		}
 	}
+
+	private Message recreateMessage(ArrayList<SealedObject> lst) {
+		Message message = null;
+		try {
+			bos.flush();
+			out.flush();
+
+			for(SealedObject o: lst) {
+				bos.write((byte[]) o.getObject(inCipher));
+			}
+			in = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
+			message = (Message) in.readObject();
+		} catch(IOException e) {
+			e.printStackTrace();
+		} catch(BadPaddingException e) {
+			e.printStackTrace();
+		} catch(IllegalBlockSizeException e) {
+			e.printStackTrace();
+		} catch(ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return message;
+	}
+
+	private ArrayList<SealedObject> generateList(byte[] data) {
+		ArrayList<SealedObject> lst = new ArrayList<SealedObject>();
+		try {
+			bis = new ByteArrayInputStream(data);
+			byte[] bytes = new byte[244];
+			while(bis.read(bytes) > 0) {
+				lst.add(new SealedObject(bytes, outCipher));
+			}
+		} catch(IOException e) {
+			e.printStackTrace();
+		} catch(IllegalBlockSizeException e) {
+			e.printStackTrace();
+		}
+		return lst;
+	}
+
+	private byte[] toByte(Message m) {
+		try {
+			bos.flush();
+			out.writeObject(m);
+			out.flush();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		return bos.toByteArray();
+	}
+
 
 	@Override public void cleanUp() {
 		try {
