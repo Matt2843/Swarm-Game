@@ -46,7 +46,7 @@ public final class ScreenManager {
 					screens.put(screenLib.ordinal(), screenLib.getScreenInstance());
 				}
 				currentScreen = screens.get(screenLib.ordinal());
-				if(currentScreen instanseof SwarmerScreen) {
+				if(currentScreen instanceof SwarmerScreen) {
 					((SwarmerScreen) currentScreen).setBackground();
 				}
 				game.setScreen(currentScreen);
