@@ -35,11 +35,12 @@ public class AuthenticationUnit extends ServerUnit {
 		String hashedPassword = HashingTools.hashPassword(password, salt);
 
 		DatabaseControllerCallable databaseControllerCallable = new DatabaseControllerCallable(new Message(message.getOpcode(), new String[] {username, hashedPassword, HashingTools.bytesToHex(salt)}));
-		if (databaseControllerCallable.getFutureResult().getObject() == null) {
+		Message futureResult = databaseControllerCallable.getFutureResult();
+		if (futureResult.getObject() == null) {
 			return null;
 		}
 
-		return (Player) databaseControllerCallable.getFutureResult().getObject();
+		return (Player) futureResult.getObject();
 	}
 
 	public static Player authenticateUser(Message message) throws IOException {

@@ -63,9 +63,10 @@ public class PreLobbyScreen extends SwarmerScreen {
 		logout.addCaptureListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
 				ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
-				GameClient.getInstance().tcp.stopConnection();
+				System.out.println("TEST: " + GameClient.getCurrentPlayer().toString());
+				GameClient.getInstance().tcp.stopConnection(GameClient.getCurrentPlayer());
 				GameClient.getInstance().tcp = null;
-				GameClient.getInstance().establishTCPConnection("127.0.0.1", 1111);
+				GameClient.getInstance().establishTCPConnection("127.0.0.1", 43120);
 			}
 		});
 		logout.setPosition(0, Gdx.graphics.getHeight() - logout.getHeight());

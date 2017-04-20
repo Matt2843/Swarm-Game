@@ -36,8 +36,8 @@ public class Callable {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("STOPPER NU");
 		tcpConnection.stopConnection();
+		System.out.println("STOPPER NU");
 		return futureResult;
 	}
 }

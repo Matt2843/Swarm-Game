@@ -52,7 +52,7 @@ public class AuthenticationProtocol extends ServerProtocol {
 	private void createUser(Message message) {
 		try {
 			Player createdPlayer = AuthenticationUnit.createUser(message);
-			new CoordinationUnitCallable(new Message(1150, new Object[]{createdPlayer, serverUnit.getDescription(), serverUnit.getPort()}));
+			new CoordinationUnitCallable(new Message(1150, new Object[]{createdPlayer, serverUnit.getDescription(), serverUnit.getPort()})).getFutureResult();
 			caller.sendMessage(new Message(202, createdPlayer));
 		} catch (ExecutionException e) {
 			e.printStackTrace();

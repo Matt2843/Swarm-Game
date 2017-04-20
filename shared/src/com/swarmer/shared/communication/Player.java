@@ -7,6 +7,8 @@ import java.io.Serializable;
  */
 public final class Player implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	private String username = null;
 	private String id = null;
 	private int rating;
@@ -32,5 +34,14 @@ public final class Player implements Serializable {
 	@Override public boolean equals(Object player) {
 		Player that = (Player) player;
 		return this.id.equals(that.getId()) && this.username.equals(that.getUsername());
+	}
+
+	@Override
+	public String toString() {
+		return "Player{" +
+				"username='" + username + '\'' +
+				", id='" + id + '\'' +
+				", rating=" + rating +
+				'}';
 	}
 }

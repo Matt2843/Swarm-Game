@@ -28,7 +28,6 @@ public class AccessProtocol extends ServerProtocol {
 				getAuthenticationUnit(new Message(message.getOpcode(), "authentication_units"));
 				break;
 			default:
-				super.react(message, caller);
 				break;
 		}
 	}
