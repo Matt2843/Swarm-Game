@@ -58,8 +58,8 @@ public class SecureTCPConnection extends Connection {
 
 	private void setupCiphers() throws IOException {
 		try {
-			inCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-			outCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			inCipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
+			outCipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
 		} catch(NoSuchAlgorithmException | NoSuchPaddingException e) {
 			e.printStackTrace();
 		}
@@ -78,8 +78,8 @@ public class SecureTCPConnection extends Connection {
 			output = new ObjectOutputStream(cos);
 			sendMessage(new Message(9876, new byte[1000]));
 			
-			cos.flush();
-			output.flush();
+			//cos.flush();
+			//output.flush();
 			
 			System.out.println("2");
 
