@@ -48,8 +48,7 @@ public class AuthenticationProtocol extends ServerProtocol {
 
 	private void createUser(Message message) {
 		try {
-			boolean queryState = AuthenticationUnit.createUser(message);
-			caller.sendMessage(new Message(202, queryState));
+			caller.sendMessage(new Message(202, AuthenticationUnit.createUser(message)));
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -60,7 +59,7 @@ public class AuthenticationProtocol extends ServerProtocol {
 	}
 
 	private void authenticateUser(Message message) throws IOException {
-		boolean queryState = AuthenticationUnit.authenticateUser(message);
-		caller.sendMessage(new Message(110, queryState));
+		Player authenticatedPlayer = AuthenticationUnit.authenticateUser(message);
+		caller.sendMessage(new Message(110, authenticatedPlayer));
 	}
 }

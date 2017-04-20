@@ -1,6 +1,7 @@
 package com.swarmer.network;
 
 import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.SecureTCPConnection;
 import com.swarmer.shared.communication.TCPConnection;
 
@@ -17,6 +18,8 @@ public final class GameClient {
 	public static TCPConnection tcp = null;
 	public static SecureTCPConnection stcp = null;
 	//public static UDPConnection udp;
+
+	private static Player currentPlayer;
 	
 	private static GameClient gc;
 
@@ -62,6 +65,14 @@ public final class GameClient {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(Player player) {
+		currentPlayer = player;
 	}
 
 	public static void cleanUp() {

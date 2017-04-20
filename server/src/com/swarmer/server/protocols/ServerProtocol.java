@@ -22,7 +22,16 @@ public abstract class ServerProtocol extends Protocol {
 		this.serverUnit = serverUnit;
 	}
 
-	@Override protected abstract void react(Message message, Connection caller) throws IOException, SQLException;
+	@Override protected void react(Message message, Connection caller) throws IOException, SQLException {
+		switch (message.getOpcode()) {
+			case 0:
+				break;
+			case 1:
+				break;
+			default:
+				break;
+		}
+	};
 
 	public boolean addConnectionToActiveConnections(Player player, Connection connection) throws IOException {
 		serverUnit.addActiveConnection(player, connection);

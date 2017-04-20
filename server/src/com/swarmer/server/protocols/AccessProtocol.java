@@ -6,6 +6,7 @@ import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -19,7 +20,7 @@ public class AccessProtocol extends ServerProtocol {
 		super(serverUnit);
 	}
 
-	@Override protected void react(Message message, Connection caller) {
+	@Override protected void react(Message message, Connection caller) throws IOException, SQLException {
 		this.caller = caller;
 		System.out.println("Access unit protocol: " + message.toString());
 		switch (message.getOpcode()) {
@@ -27,6 +28,7 @@ public class AccessProtocol extends ServerProtocol {
 				getAuthenticationNode(new Message(1, "authentication_units"));
 				break;
 			default:
+				super.react(message, caller);
 				break;
 		}
 	}

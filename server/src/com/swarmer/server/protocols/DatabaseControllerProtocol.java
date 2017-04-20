@@ -2,10 +2,7 @@ package com.swarmer.server.protocols;
 
 import com.swarmer.server.DatabaseController;
 import com.swarmer.server.units.ServerUnit;
-import com.swarmer.shared.communication.Connection;
-import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.Protocol;
-import com.swarmer.shared.communication.TCPConnection;
+import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -51,23 +48,24 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 	private void authenticateUserInDatabase(Message message) throws IOException, SQLException {
 		String receivedUsername = (String) message.getObject();
 		if(userExistsInDatabase(receivedUsername)) {
-			ResultSet resultSet = DatabaseController.mySQLConnection.sqlExecuteQuery("SELECT password,password_salt FROM users WHERE username=? LIMIT 1", receivedUsername);
+			ResultSet resultSet = DatabaseController.mySQLConnection.sqlExecuteQuery("SELECT * FROM users WHERE username=? LIMIT 1", receivedUsername);
 			resultSet.next();
-			String[] result = new String[] {resultSet.getString("password"), resultSet.getString("password_salt")};
-			caller.sendMessage(new Message(997, result));
+			Player player = new Player(resultSet.getString("id"), resultSet.getString("username"));
+			String[] password = new String[] {resultSet.getString("password"), resultSet.getString("password_salt")};
+			caller.sendMessage(new Message(997, new Object[]{player, password}));
 		} else {
 			caller.sendMessage(new Message(997, null));
 		}
 	}
 
-
 	private void addUserToDatabase(Message message) throws IOException, SQLException {
 		String[] receivedObjects = (String[]) message.getObject();
 		if (!userExistsInDatabase(receivedObjects[0])) {
-			DatabaseController.mySQLConnection.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES (?, ?, ?, ?)", UUID.randomUUID().toString(), receivedObjects[0], receivedObjects[1], receivedObjects[2]);
-			caller.sendMessage(new Message(998, true));
+			String id = UUID.randomUUID().toString();
+			DatabaseController.mySQLConnection.sqlExecute("INSERT INTO users (id, username, password, password_salt) VALUES (?, ?, ?, ?)", id, receivedObjects[0], receivedObjects[1], receivedObjects[2]);
+			caller.sendMessage(new Message(998, new Player(id, receivedObjects[0])));
 		} else {
-			caller.sendMessage(new Message(998, false));
+			caller.sendMessage(new Message(998, null));
 		}
 	}
 

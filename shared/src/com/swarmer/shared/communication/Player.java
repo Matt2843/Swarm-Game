@@ -10,9 +10,9 @@ public final class Player implements Serializable {
 	private String username = null;
 	private String id = null;
 
-	public Player(String username, String id) {
-		this.username = username;
+	public Player(String id, String username) {
 		this.id = id;
+		this.username = username;
 	}
 
 	public String getUsername() {
