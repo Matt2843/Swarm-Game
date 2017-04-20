@@ -69,19 +69,19 @@ public class SecureTCPConnection extends Connection {
 		try {
 			inCipher.init(Cipher.DECRYPT_MODE, KEY.getPrivate());
 			outCipher.init(Cipher.ENCRYPT_MODE, exPublicKey);
-			//CipherInputStream cis = new CipherInputStream(connection.getInputStream(), inCipher);
-			//CipherOutputStream cos = new CipherOutputStream(connection.getOutputStream(), outCipher);
-			//cos.flush();
+			CipherInputStream cis = new CipherInputStream(connection.getInputStream(), inCipher);
+			CipherOutputStream cos = new CipherOutputStream(connection.getOutputStream(), outCipher);
 
 			System.out.println("1");
-			output = new ObjectOutputStream(connection.getOutputStream());
-			//output = new ObjectOutputStream(cos);
-			output.flush();
+			//output = new ObjectOutputStream(connection.getOutputStream());
+			
+			output = new ObjectOutputStream(cos);
+			sendMessage(new Message(9876, null));
 
 			System.out.println("2");
 
-			input = new ObjectInputStream(connection.getInputStream());
-			//input = new ObjectInputStream(cis);
+			//input = new ObjectInputStream(connection.getInputStream());
+			input = new ObjectInputStream(cis);
 			System.out.println("3");
 		} catch(InvalidKeyException | IOException e) {
 			e.printStackTrace();
