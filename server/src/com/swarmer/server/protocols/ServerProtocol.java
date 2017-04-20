@@ -25,7 +25,6 @@ public abstract class ServerProtocol extends Protocol {
 	@Override protected void react(Message message, Connection caller) throws IOException, SQLException {
 		switch (message.getOpcode()) {
 			case 0:
-				System.out.println(message.getObject().toString());
 				removeConnectionFromActiveConnections((Player) message.getObject());
 				break;
 			case 1:
