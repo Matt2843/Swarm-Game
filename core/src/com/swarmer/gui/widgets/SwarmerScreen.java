@@ -32,10 +32,7 @@ public abstract class SwarmerScreen extends Stage implements Screen {
 
 	@Override public void render(float delta) {
 		handleInput();
-		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		//act(delta);
+		act(delta);
 		draw();
 	}
 
@@ -61,6 +58,15 @@ public abstract class SwarmerScreen extends Stage implements Screen {
 		backgroundTexture.dispose();
 	}
 
+	public void setBackground() {
+		setBackground(0.1f, 0.1f, 0.1f, 1f);
+	}
+	
+	public void setBackground(float r, float g, float b, float a) {
+		Gdx.gl.glClearColor(r, g, b, a);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+	}
+	
 	@Override public boolean keyTyped(char character) {
 
 		if(character == 'p'){
