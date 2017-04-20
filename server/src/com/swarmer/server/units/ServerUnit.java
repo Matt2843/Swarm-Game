@@ -109,7 +109,8 @@ public abstract class ServerUnit {
                     connection = serverSocket.accept();
                     new TCPConnection(connection, getProtocol()).start();
                 } else if (serverSocketType == STCP) {
-                    //new SecureTCPConnection(connection, getProtocol()).start();
+                    connection = serverSocket.accept();
+                    new SecureTCPConnection(connection, getProtocol()).start();
                     // TODO: IMPLEMENT THIS VITAL CODE :)
                 } else if (serverSocketType == UDP) {
                     // TODO: IMPLEMENT THIS VITAL CODE :)
