@@ -66,7 +66,7 @@ public class ClientProtocol extends Protocol {
 	private void secureConnectToAuthNode(Message message) {
 		GameClient.getInstance().establishSecureTCPConnection(ip, port, (PublicKey) message.getObject());
 		try {
-			GameClient.stcp.sendMessage(new Message(1111, GameClient.KEY.getPublic()));
+			GameClient.stcp.sendMessage(new Message(1111, null));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

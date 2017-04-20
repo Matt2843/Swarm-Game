@@ -2,6 +2,8 @@ package com.swarmer.shared.communication;
 
 import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -14,10 +16,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.sql.SQLException;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SealedObject;
 import javax.crypto.spec.IvParameterSpec;
 
 public class SecureTCPConnection extends Connection {
@@ -26,6 +31,9 @@ public class SecureTCPConnection extends Connection {
 
 	protected Cipher inCipher;
 	protected Cipher outCipher;
+
+	private CipherInputStream cis;
+	private CipherOutputStream cos;
 
 	private KeyPair KEY = null;
 	private PublicKey exPublicKey = null;
@@ -58,8 +66,8 @@ public class SecureTCPConnection extends Connection {
 
 	private void setupCiphers() throws IOException {
 		try {
-			inCipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
-			outCipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-1AndMGF1Padding");
+			inCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			outCipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
 		} catch(NoSuchAlgorithmException | NoSuchPaddingException e) {
 			e.printStackTrace();
 		}
@@ -69,23 +77,11 @@ public class SecureTCPConnection extends Connection {
 		try {
 			inCipher.init(Cipher.DECRYPT_MODE, KEY.getPrivate());
 			outCipher.init(Cipher.ENCRYPT_MODE, exPublicKey);
-			CipherInputStream cis = new CipherInputStream(connection.getInputStream(), inCipher);
-			CipherOutputStream cos = new CipherOutputStream(connection.getOutputStream(), outCipher);
 
-			System.out.println("1");
-			//output = new ObjectOutputStream(connection.getOutputStream());
-			
-			output = new ObjectOutputStream(cos);
-			sendMessage(new Message(9876, new byte[1000]));
-			
-			//cos.flush();
-			//output.flush();
-			
-			System.out.println("2");
 
-			//input = new ObjectInputStream(connection.getInputStream());
-			input = new ObjectInputStream(cis);
-			System.out.println("3");
+			output = new ObjectOutputStream(connection.getOutputStream());
+			input = new ObjectInputStream(connection.getInputStream());
+
 		} catch(InvalidKeyException | IOException e) {
 			e.printStackTrace();
 		}
@@ -95,13 +91,22 @@ public class SecureTCPConnection extends Connection {
 		Message message = null;
 		do {
 			try {
-				message = (Message) input.readObject();
-				System.out.println(message.toString());
+				message = (Message) ((SealedObject) input.readObject()).getObject(inCipher);
 				react(message);
 			} catch (IOException e) {
 				System.out.println("WHY GOD WHY");
 				stop = true;
-			} catch (ClassNotFoundException | OperationInWrongServerNodeException | SQLException | NoSuchAlgorithmException e) {
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch(BadPaddingException e) {
+				e.printStackTrace();
+			} catch(IllegalBlockSizeException e) {
+				e.printStackTrace();
+			} catch(OperationInWrongServerNodeException e) {
+				e.printStackTrace();
+			} catch(NoSuchAlgorithmException e) {
+				e.printStackTrace();
+			} catch(SQLException e) {
 				e.printStackTrace();
 			}
 		} while(message.getOpcode() != 0 && !stop); // TODO: CHANGE STOP CONDITION.
@@ -122,8 +127,12 @@ public class SecureTCPConnection extends Connection {
 	@Override public void sendMessage(Message m) throws IOException {
 		if(!stop) {
 			if(exPublicKey != null) {
-				output.writeObject(m);
-				output.flush();
+				try {
+					output.writeObject(new SealedObject(m, outCipher));
+					output.flush();
+				} catch(IllegalBlockSizeException e) {
+					e.printStackTrace();
+				}
 			} else {
 				System.out.println("Cannot send message without an external public key!");
 			}

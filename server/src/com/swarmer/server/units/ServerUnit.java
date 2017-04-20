@@ -52,7 +52,9 @@ public abstract class ServerUnit {
 
 	protected ServerUnit() {
 		try {
-			KEY = KeyPairGenerator.getInstance("RSA").generateKeyPair();
+			KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+			kpg.initialize(2048);
+			KEY = kpg.generateKeyPair();
 		} catch(NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
