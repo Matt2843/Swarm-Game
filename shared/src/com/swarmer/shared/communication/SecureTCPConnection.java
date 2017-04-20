@@ -80,7 +80,10 @@ public class SecureTCPConnection extends Connection {
 			sendMessage(new Message(9876, new byte[100]));
 			sendMessage(new Message(9876, new byte[100]));
 			sendMessage(new Message(9876, new byte[100]));
-
+			
+			cos.flush();
+			output.flush();
+			
 			System.out.println("2");
 
 			//input = new ObjectInputStream(connection.getInputStream());
