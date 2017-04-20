@@ -35,13 +35,13 @@ public final class GameClient {
 			e.printStackTrace();
 		}
 
-		/*establishTCPConnection(host, port);
+		establishTCPConnection(host, port);
 
 		try {
 			tcp.sendMessage(new Message(1));
 		} catch(IOException e) {
 			e.printStackTrace();
-		}*/
+		}
 
 		// TODO: FIX UDP + STCP
 		//udp = new UDPConnection(new DatagramSocket(port), new ClientProtocol());

@@ -9,16 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-/**
- * Created by Matt on 04/16/2017.
- */
 public abstract class SwarmerScreen extends Stage implements Screen {
 
 	private final SpriteBatch spriteBatch = new SpriteBatch();
 	private final Texture backgroundTexture = new Texture(Gdx.files.internal("swarmer-v1.png"));
 
 	protected Table contentPane = new Table();
-
 
 	protected SwarmerScreen(int width, int height) {
 		setViewport(new StretchViewport(width, height));
@@ -39,8 +35,8 @@ public abstract class SwarmerScreen extends Stage implements Screen {
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		//act(delta);
 		draw();
-		act(delta);
 	}
 
 	@Override public void resize(int width, int height) {
@@ -63,5 +59,14 @@ public abstract class SwarmerScreen extends Stage implements Screen {
 		super.dispose();
 		spriteBatch.dispose();
 		backgroundTexture.dispose();
+	}
+
+	@Override public boolean keyTyped(char character) {
+
+		if(character == 'p'){
+			Gdx.graphics.setContinuousRendering(!Gdx.graphics.isContinuousRendering());
+		}
+
+		return super.keyTyped(character);
 	}
 }

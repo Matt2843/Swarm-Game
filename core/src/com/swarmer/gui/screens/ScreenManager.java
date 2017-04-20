@@ -80,5 +80,4 @@ public final class ScreenManager {
 	public com.badlogic.gdx.Screen getScreen() {
 		return currentScreen;
 	}
-
 }

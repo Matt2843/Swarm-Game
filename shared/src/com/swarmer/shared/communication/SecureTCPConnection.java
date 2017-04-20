@@ -103,9 +103,7 @@ public class SecureTCPConnection extends Connection {
 			}
 		} while(message.getOpcode() != 0 && !stop); // TODO: CHANGE STOP CONDITION.
 		stop = true;
-		if(message.getOpcode() == 0) {
-			cleanUp();
-		}
+		cleanUp();
 	}
 
 	public void stopConnection() {
