@@ -76,7 +76,7 @@ public class SecureTCPConnection extends Connection {
 			//output = new ObjectOutputStream(connection.getOutputStream());
 			
 			output = new ObjectOutputStream(cos);
-			sendMessage(new Message(9876, null));
+			sendMessage(new Message(9876, new byte[16]));
 
 			System.out.println("2");
 
