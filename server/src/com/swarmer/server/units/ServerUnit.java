@@ -132,7 +132,7 @@ public abstract class ServerUnit {
 
     }
 
-    protected abstract int getPort();
+    public abstract int getPort();
     protected abstract ServerProtocol getProtocol();
 
     public abstract String getDescription();

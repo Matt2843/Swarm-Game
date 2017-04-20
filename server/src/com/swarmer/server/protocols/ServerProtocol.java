@@ -1,5 +1,6 @@
 package com.swarmer.server.protocols;
 
+import com.swarmer.server.CoordinationUnitCallable;
 import com.swarmer.server.units.ServerUnit;
 import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.communication.Connection;
@@ -23,12 +24,14 @@ public abstract class ServerProtocol extends Protocol {
 
 	@Override protected abstract void react(Message message, Connection caller) throws IOException, SQLException;
 
-	public void addConnectionToActiveConnections(Player player, Connection connection) {
+	public boolean addConnectionToActiveConnections(Player player, Connection connection) throws IOException {
 		serverUnit.addActiveConnection(player, connection);
+		return (boolean) new CoordinationUnitCallable(new Message(1150, new Object[]{player, serverUnit.getDescription(), serverUnit.getPort()})).getFutureResult().getObject();
 	}
 
-	public void removeConnectionFromActiveConnections(Player player) {
+	public boolean removeConnectionFromActiveConnections(Player player) throws IOException {
 		serverUnit.removeActiveConnection(player);
+		return (boolean) new CoordinationUnitCallable(new Message(1152, player)).getFutureResult().getObject();
 	}
 
 }

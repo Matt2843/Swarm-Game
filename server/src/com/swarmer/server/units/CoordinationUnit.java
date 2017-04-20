@@ -19,7 +19,7 @@ public class CoordinationUnit extends ServerUnit {
 		super();
 	}
 
-	@Override protected int getPort() {
+	@Override public int getPort() {
 		return ServerUnit.COORDINATE_UNIT_TCP_PORT;
 	}
 

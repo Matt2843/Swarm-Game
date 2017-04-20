@@ -54,7 +54,7 @@ public class AuthenticationUnit extends ServerUnit {
 		}
 	}
 
-	@Override protected int getPort() {
+	@Override public int getPort() {
 		return ServerUnit.AUTHENTICATION_UNIT_TCP_PORT;
 	}
 

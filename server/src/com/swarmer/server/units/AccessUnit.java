@@ -19,7 +19,7 @@ public class AccessUnit extends ServerUnit {
 		super();
 	}
 
-	@Override protected int getPort() {
+	@Override public int getPort() {
 		return ServerUnit.ACCESS_UNIT_TCP_PORT;
 	}
 

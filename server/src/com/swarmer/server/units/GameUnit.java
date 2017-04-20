@@ -14,7 +14,7 @@ public class GameUnit extends ServerUnit {
 		super();
 	}
 
-	@Override protected int getPort() {
+	@Override public int getPort() {
 		return ServerUnit.GAME_UNIT_TCP_PORT;
 	}
 
