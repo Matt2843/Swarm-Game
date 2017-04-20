@@ -6,14 +6,12 @@ import com.swarmer.server.units.ServerUnit;
 import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
 
-/**
- * Created by Matt on 04/06/2017.
- */
 public class AuthenticationProtocol extends ServerProtocol {
 
 	private Connection caller;
@@ -34,6 +32,10 @@ public class AuthenticationProtocol extends ServerProtocol {
 			case 201:
 				createUser(message);
 				break;
+			case 11111:
+				exPublicKey = (PublicKey) message.getObject();
+				caller.sendMessage(new Message(11111, AuthenticationUnit.KEY.getPublic()));
+				break;
 			case 1111:
 				establishSecureConnection(message, caller);
 				break;
@@ -44,9 +46,7 @@ public class AuthenticationProtocol extends ServerProtocol {
 	}
 
 	private void establishSecureConnection(Message message, Connection caller) throws IOException {
-		SecureTCPConnection secureTCPConnection = new SecureTCPConnection(((TCPConnection)caller).getConnection(), this);
-		secureTCPConnection.setExternalPublicKey((PublicKey) message.getObject());
-		secureTCPConnection.start();
+		exPublicKey = (PublicKey) message.getObject();
 	}
 
 	private void createUser(Message message) {

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.utils.IntMap;
 import com.swarmer.game.SwarmerMain;
+import com.swarmer.gui.widgets.SwarmerScreen;
 
 public final class ScreenManager {
 
@@ -80,5 +81,4 @@ public final class ScreenManager {
 	public com.badlogic.gdx.Screen getScreen() {
 		return currentScreen;
 	}
-
 }

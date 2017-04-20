@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -44,20 +47,27 @@ public abstract class ServerUnit {
     //public static final int GAME_UNIT_UDP_PORT = 43152;
 
     private final String nodeUUID = UUID.randomUUID().toString();
-
+	public static KeyPair KEY = null;
     protected static HashMap<Player, Connection> activeConnections = new HashMap<>();
     protected int usersConnected = 0;
 
-    protected ServerUnit() {
-        startConnectionThreads();
-        notifyMotherShip();
-    }
+	protected ServerUnit() {
+		try {
+			KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+			kpg.initialize(2048);
+			KEY = kpg.generateKeyPair();
+		} catch(NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		startConnectionThreads();
+		notifyMotherShip();
+	}
 
-    protected void startConnectionThreads() {
-        new ServerSocketThread(TCP).start();
-        new ServerSocketThread(STCP).start();
-//        new ServerSocketThread(UDP).start();
-    }
+	protected void startConnectionThreads() {
+		new ServerSocketThread(TCP).start();
+		new ServerSocketThread(STCP).start();
+		//new ServerSocketThread(UDP).start();
+	}
 
     private void notifyMotherShip() {
         try {
@@ -103,20 +113,20 @@ public abstract class ServerUnit {
             this.serverSocketType = serverSocketType;
         }
 
-        private void awaitConnection() throws IOException {
-            while(true) {
-                if (serverSocketType == TCP) {
-                    connection = serverSocket.accept();
-                    new TCPConnection(connection, getProtocol()).start();
-                } else if (serverSocketType == STCP) {
-                    connection = serverSocket.accept();
-                    new SecureTCPConnection(connection, getProtocol()).start();
-                    // TODO: IMPLEMENT THIS VITAL CODE :)
-                } else if (serverSocketType == UDP) {
-                    // TODO: IMPLEMENT THIS VITAL CODE :)
-                }
-            }
-        }
+		private void awaitConnection() throws IOException {
+			while(true) {
+				if(serverSocketType == TCP) {
+					connection = serverSocket.accept();
+					new TCPConnection(connection, getProtocol()).start();
+				} else if(serverSocketType == STCP) {
+					connection = serverSocket.accept();
+					new SecureTCPConnection(connection, getProtocol(), KEY, getProtocol().exPublicKey).start();
+					// TODO: IMPLEMENT THIS VITAL CODE :)
+				} else if(serverSocketType == UDP) {
+					// TODO: IMPLEMENT THIS VITAL CODE :)
+				}
+			}
+		}
 
         @Override public void run() {
             try {

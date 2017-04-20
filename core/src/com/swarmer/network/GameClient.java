@@ -7,6 +7,10 @@ import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 
 public final class GameClient {
 	
@@ -20,13 +24,30 @@ public final class GameClient {
 	//public static UDPConnection udp;
 
 	private static Player currentPlayer;
-	
+
+
+	public static KeyPair KEY = null;
+
 	private static GameClient gc;
 
 	private GameClient() {
 		// DO NOT INSTANTIATE THIS CLASS
+
+		try {
+			KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+			kpg.initialize(2048);
+			KEY = kpg.generateKeyPair();
+		} catch(NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+
 		establishTCPConnection(host, port);
 
+		try {
+			tcp.sendMessage(new Message(1));
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 
 		// TODO: FIX UDP + STCP
 		//udp = new UDPConnection(new DatagramSocket(port), new ClientProtocol());
@@ -42,7 +63,7 @@ public final class GameClient {
 		return gc;
 	}
 
-	public static void establishTCPConnection(String ip, int port) {
+	public static TCPConnection establishTCPConnection(String ip, int port) {
 		try {
 			if(tcp != null) {
 				tcp.stopConnection();
@@ -53,14 +74,15 @@ public final class GameClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return tcp;
 	}
 
-	public static void establishSecureTCPConnection(String ip, int port) {
+	public static void establishSecureTCPConnection(String ip, int port, PublicKey exPublicKey) {
 		try {
 			if(stcp != null) {
 				stcp.stopConnection();
 			}
-			stcp = new SecureTCPConnection(new Socket(ip, port), clientProtocol);
+			stcp = new SecureTCPConnection(new Socket(ip, port + 1), clientProtocol, KEY, exPublicKey);
 			stcp.start();
 		} catch(IOException e) {
 			e.printStackTrace();

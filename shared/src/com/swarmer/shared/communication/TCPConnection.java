@@ -33,7 +33,7 @@ public class TCPConnection extends Connection {
 				react(message);
 			} catch (IOException e) {
 				System.out.println("WHY GOD WHY");
-				break;
+				stop = true;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (OperationInWrongServerNodeException e) {

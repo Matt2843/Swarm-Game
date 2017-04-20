@@ -77,6 +77,9 @@ public class SwamerInputProcessor implements InputProcessor {
 		if(character == 'c') {
 			parent.centerCamera();
 		}
+		if(character == 'p'){
+			Gdx.graphics.setContinuousRendering(!Gdx.graphics.isContinuousRendering());
+		}
 		return false;
 	}
 
