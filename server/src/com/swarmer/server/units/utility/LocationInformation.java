@@ -38,4 +38,13 @@ public class LocationInformation {
 	public void setServerUnitPort(int serverUnitPort) {
 		this.serverUnitPort = serverUnitPort;
 	}
+
+	@Override
+	public String toString() {
+		return "LocationInformation{" +
+				"serverUnitDescription='" + serverUnitDescription + '\'' +
+				", serverUnitIp='" + serverUnitIp + '\'' +
+				", serverUnitPort=" + serverUnitPort +
+				'}';
+	}
 }

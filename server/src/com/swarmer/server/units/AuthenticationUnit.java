@@ -5,6 +5,7 @@ import com.swarmer.server.protocols.AuthenticationProtocol;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.security.HashingTools;
 import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.communication.Player;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -19,10 +20,12 @@ public class AuthenticationUnit extends ServerUnit {
 		super();
 	}
 
-	public static boolean createUser(Message message) throws ExecutionException, InterruptedException, IOException {
+	public static Player createUser(Message message) throws ExecutionException, InterruptedException, IOException {
 		Object[] receivedObject = (Object[]) message.getObject();
+
 		String username = (String) receivedObject[0];
 		char[] password = (char[]) receivedObject[1];
+
 		byte[] salt = new byte[32];
 		try {
 			SecureRandom.getInstanceStrong().nextBytes(salt);
@@ -30,31 +33,43 @@ public class AuthenticationUnit extends ServerUnit {
 			e.printStackTrace();
 		}
 		String hashedPassword = HashingTools.hashPassword(password, salt);
-		DatabaseControllerCallable msc = new DatabaseControllerCallable(new Message(message.getOpcode(), new String[] {username, hashedPassword, HashingTools.bytesToHex(salt)}));
-		return (boolean) msc.getFutureResult().getObject();
-	}
 
-	public static boolean authenticateUser(Message message) throws IOException {
-		String username = (String) ((Object[])message.getObject())[0];
-		char[] password = (char[]) ((Object[])message.getObject())[1];
-		DatabaseControllerCallable msc = new DatabaseControllerCallable(new Message(message.getOpcode(), username));
-		Message foundCredentials = msc.getFutureResult(); // password = [0], password_salt = [1]
-		if(foundCredentials.getObject() == null) {
-			return false;
-		} else {
-			String hashedPasswordInDB = ((String[])foundCredentials.getObject())[0];
-			String saltInHex = ((String[])foundCredentials.getObject())[1];
-			byte[] salt = HashingTools.hexToBytes(saltInHex);
-			String passwordCheck = HashingTools.hashPassword(password, salt);
-			if(passwordCheck.equals(hashedPasswordInDB)) {
-				return true;
-			} else {
-				return false;
-			}
+		DatabaseControllerCallable databaseControllerCallable = new DatabaseControllerCallable(new Message(message.getOpcode(), new String[] {username, hashedPassword, HashingTools.bytesToHex(salt)}));
+		if (databaseControllerCallable.getFutureResult().getObject() == null) {
+			return null;
 		}
+
+		return (Player) databaseControllerCallable.getFutureResult().getObject();
 	}
 
-	@Override protected int getPort() {
+	public static Player authenticateUser(Message message) throws IOException {
+		Object[] receivedObject = (Object[]) message.getObject();
+
+		String username = (String) receivedObject[0];
+		char[] password = (char[]) receivedObject[1];
+
+		DatabaseControllerCallable databaseControllerCallable = new DatabaseControllerCallable(new Message(message.getOpcode(), username));
+		Message returnedMessage = databaseControllerCallable.getFutureResult();
+		if(returnedMessage.getObject() == null) {
+			return null;
+		}
+
+		Player player = (Player) ((Object[])returnedMessage.getObject())[0];
+
+		String hashedPasswordInDB = ((String[])((Object[])returnedMessage.getObject())[1])[0];
+		String saltInHex = ((String[])((Object[])returnedMessage.getObject())[1])[1];
+
+		byte[] salt = HashingTools.hexToBytes(saltInHex);
+		String passwordCheck = HashingTools.hashPassword(password, salt);
+
+		if(!passwordCheck.equals(hashedPasswordInDB)) {
+			return null;
+		}
+
+		return player;
+	}
+
+	@Override public int getPort() {
 		return ServerUnit.AUTHENTICATION_UNIT_TCP_PORT;
 	}
 

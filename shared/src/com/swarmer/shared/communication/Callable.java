@@ -8,7 +8,6 @@ import java.sql.SQLException;
 /**
  * Created by Cap'n Odin on 17-04-2017.
  */
-
 public class Callable {
 	private Message futureResult = null;
 
@@ -22,6 +21,7 @@ public class Callable {
 				}
 			});
 			tcpConnection.start();
+			System.out.println("SENDER");
 			tcpConnection.sendMessage(message);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -36,6 +36,7 @@ public class Callable {
 				e.printStackTrace();
 			}
 		}
+		System.out.println("STOPPER NU");
 		tcpConnection.stopConnection();
 		return futureResult;
 	}

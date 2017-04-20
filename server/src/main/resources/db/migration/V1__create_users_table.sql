@@ -3,6 +3,6 @@ CREATE TABLE users (
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
     password_salt VARCHAR(255) NOT NULL,
-    ranking INT UNSIGNED NOT NULL DEFAULT 0,
+    rating INT UNSIGNED NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`)
 );

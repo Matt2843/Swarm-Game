@@ -1,5 +1,6 @@
 package com.swarmer.server.protocols;
 
+import com.swarmer.server.CoordinationUnitCallable;
 import com.swarmer.server.units.AuthenticationUnit;
 import com.swarmer.server.units.ServerUnit;
 import com.swarmer.shared.communication.*;
@@ -7,6 +8,7 @@ import com.swarmer.shared.communication.*;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -20,7 +22,7 @@ public class AuthenticationProtocol extends ServerProtocol {
 		super(serverUnit);
 	}
 
-	@Override protected void react(Message message, Connection caller) throws IOException {
+	@Override protected void react(Message message, Connection caller) throws IOException, SQLException {
 		this.caller = caller;
 		System.out.println("Authentication Unit: " + message.toString());
 		switch (message.getOpcode()) {
@@ -36,6 +38,7 @@ public class AuthenticationProtocol extends ServerProtocol {
 				establishSecureConnection(message, caller);
 				break;
 			default:
+				super.react(message, caller);
 				break;
 		}
 	}
@@ -48,8 +51,9 @@ public class AuthenticationProtocol extends ServerProtocol {
 
 	private void createUser(Message message) {
 		try {
-			boolean queryState = AuthenticationUnit.createUser(message);
-			caller.sendMessage(new Message(202, queryState));
+			Player createdPlayer = AuthenticationUnit.createUser(message);
+			new CoordinationUnitCallable(new Message(1150, new Object[]{createdPlayer, serverUnit.getDescription(), serverUnit.getPort()}));
+			caller.sendMessage(new Message(202, createdPlayer));
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -60,7 +64,8 @@ public class AuthenticationProtocol extends ServerProtocol {
 	}
 
 	private void authenticateUser(Message message) throws IOException {
-		boolean queryState = AuthenticationUnit.authenticateUser(message);
-		caller.sendMessage(new Message(110, queryState));
+		Player authenticatedPlayer = AuthenticationUnit.authenticateUser(message);
+		new CoordinationUnitCallable(new Message(1150, new Object[]{authenticatedPlayer, serverUnit.getDescription(), serverUnit.getPort()}));
+		caller.sendMessage(new Message(110, authenticatedPlayer));
 	}
 }

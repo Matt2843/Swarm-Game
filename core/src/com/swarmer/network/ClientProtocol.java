@@ -5,6 +5,7 @@ import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.gui.screens.lobby.LobbyScreen;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.Protocol;
 
 import java.io.IOException;
@@ -20,17 +21,21 @@ public class ClientProtocol extends Protocol {
 				System.out.println(message.toString());
 				break;
 			case 110: // Login succeeded
-				if((boolean) message.getObject() == true)
+				if (message.getObject() != null) {
 					ScreenManager.getInstance().show(ScreenLib.PRE_LOBBY_SCREEN);
-				else {
+					GameClient.getInstance().setCurrentPlayer((Player) message.getObject());
+				} else {
 					// TODO: Notify user that login failed.
+					System.out.println("Login failed");
 				}
 				break;
 			case 202: // User creation state
-				if((boolean) message.getObject() == true)
+				if(message.getObject() != null) {
 					ScreenManager.getInstance().show(ScreenLib.PRE_LOBBY_SCREEN);
-				else {
+					GameClient.getInstance().setCurrentPlayer((Player) message.getObject());
+				} else {
 					// TODO: Notify user that user creation failed.
+					System.out.println();
 				}
 				break;
 			case 304: // Received message in lobby chat

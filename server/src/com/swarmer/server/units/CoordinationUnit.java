@@ -7,6 +7,7 @@ import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.communication.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Matt on 04/17/2017.
@@ -22,7 +23,7 @@ public class CoordinationUnit extends ServerUnit {
 		initializeQueue();
 	}
 
-	@Override protected int getPort() {
+	@Override public int getPort() {
 		return ServerUnit.COORDINATE_UNIT_TCP_PORT;
 	}
 
@@ -50,11 +51,17 @@ public class CoordinationUnit extends ServerUnit {
 		if(!allConnectedUsers.containsKey(player)) {
 			allConnectedUsers.put(player, locationInformation);
 		}
+		for (Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
+			System.out.println(entry.getKey().getUsername() + ", " + entry.getValue().toString());
+		}
 	}
 
 	public static void removeConnection(Player player) {
 		if(allConnectedUsers.containsKey(player)) {
 			allConnectedUsers.remove(player);
+		}
+		for (Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
+			System.out.println(entry.getKey().getUsername() + ", " + entry.getValue().toString());
 		}
 	}
 
@@ -73,13 +80,13 @@ public class CoordinationUnit extends ServerUnit {
 	}
 
 	public static void findMatch(ArrayList<Player> players) {
-		int totalRanking = 0;
+		int totalRating = 0;
 
 		for (Player player : players) {
-			totalRanking += player.getRanking();
+			totalRating += player.getRating();
 		}
 
-		int averageRanking = totalRanking / players.size();
+		int averageRanking = totalRating / players.size();
 
 		String skillGroup = "HIGH";
 		if (averageRanking < 3000) {

@@ -19,7 +19,7 @@ public class AccessUnit extends ServerUnit {
 		super();
 	}
 
-	@Override protected int getPort() {
+	@Override public int getPort() {
 		return ServerUnit.ACCESS_UNIT_TCP_PORT;
 	}
 
@@ -28,13 +28,7 @@ public class AccessUnit extends ServerUnit {
 	}
 
 	public static Message getBestQualityAuthenticationNode(Message message) throws IOException, ExecutionException, InterruptedException {
-		/*System.out.println(message.toString());
-		Future<Message> futureResult = executorService.submit(new MotherShipCallable(message));
-		System.out.println(futureResult.get());
-		System.out.println("Hello albertt");
-		return futureResult.get();*/
-		DatabaseControllerCallable msc = new DatabaseControllerCallable(message);
-		return msc.getFutureResult();
+		return new DatabaseControllerCallable(message).getFutureResult();
 	}
 
 	@Override public String getDescription() {

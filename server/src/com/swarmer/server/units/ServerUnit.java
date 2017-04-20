@@ -56,7 +56,7 @@ public abstract class ServerUnit {
     protected void startConnectionThreads() {
         new ServerSocketThread(TCP).start();
         new ServerSocketThread(STCP).start();
-        new ServerSocketThread(UDP).start();
+//        new ServerSocketThread(UDP).start();
     }
 
     private void notifyMotherShip() {
@@ -132,7 +132,7 @@ public abstract class ServerUnit {
 
     }
 
-    protected abstract int getPort();
+    public abstract int getPort();
     protected abstract ServerProtocol getProtocol();
 
     public abstract String getDescription();

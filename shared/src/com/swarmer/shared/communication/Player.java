@@ -9,12 +9,12 @@ public final class Player implements Serializable {
 
 	private String username = null;
 	private String id = null;
-	private int ranking;
+	private int rating;
 
-	public Player(String username, String id, int ranking) {
-		this.username = username;
+	public Player(String id, String username, int rating) {
 		this.id = id;
-		this.ranking = ranking;
+		this.username = username;
+		this.rating = rating;
 	}
 
 	public String getUsername() {
@@ -25,8 +25,8 @@ public final class Player implements Serializable {
 		return id;
 	}
 
-	public int getRanking() {
-		return ranking;
+	public int getRating() {
+		return rating;
 	}
 
 	@Override public boolean equals(Object player) {

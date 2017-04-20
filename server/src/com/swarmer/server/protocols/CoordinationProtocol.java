@@ -3,10 +3,7 @@ package com.swarmer.server.protocols;
 import com.swarmer.server.units.CoordinationUnit;
 import com.swarmer.server.units.ServerUnit;
 import com.swarmer.server.units.utility.LocationInformation;
-import com.swarmer.shared.communication.Connection;
-import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.Player;
-import com.swarmer.shared.communication.Protocol;
+import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -34,10 +31,10 @@ public class CoordinationProtocol extends ServerProtocol {
 		this.caller = caller;
 		System.out.println("Coordination Protocol: " + message.toString());
 		switch(message.getOpcode()) {
-			case 1150: // User connected to a server unit, object: {Player, Unit_Description, Unit_IP, Unit_Port}
+			case 1150: // User connected to a server unit, object: {Player, Unit_Description, Unit_Port}
 				addPlayer(message);
 				break;
-			case 1151: // User changed server unit, object: {Player, Unit_Description, Unit_IP, Unit_Port}
+			case 1151: // User changed server unit, object: {Player, Unit_Description, Unit_Port}
 				changePlayerLocationInformation(message);
 				break;
 			case 1152: // User disconnected completely from the server, object: {Player}
@@ -59,12 +56,15 @@ public class CoordinationProtocol extends ServerProtocol {
 		CoordinationUnit.findMatch(players);
 	}
 
-	private void addPlayer(Message message) {
-		CoordinationUnit.addConnection(connectedPlayer, generateLocationInformation(message));
+	private void addPlayer(Message message) throws IOException {
+		LocationInformation locationInformation = generateLocationInformation(message);
+		CoordinationUnit.addConnection(connectedPlayer, locationInformation);
+		caller.sendMessage(new Message(123342, true));
 	}
 
 	private void changePlayerLocationInformation(Message message) {
-		CoordinationUnit.changeLocationInformation(connectedPlayer, generateLocationInformation(message));
+		LocationInformation locationInformation = generateLocationInformation(message);
+		CoordinationUnit.changeLocationInformation(connectedPlayer, locationInformation);
 	}
 
 	private void removePlayer(Message message) {
@@ -82,12 +82,11 @@ public class CoordinationProtocol extends ServerProtocol {
 		Object[] receivedObjects = (Object[]) message.getObject();
 		Player connectedPlayer = (Player) receivedObjects[0];
 		String connectedPlayerUnitDescription = (String) receivedObjects[1];
-		String connectedPlayerCurrentUnitIp = (String) receivedObjects[2];
-		int connectedPlayerCurrentUnitPort = (int) receivedObjects[3];
+		int connectedPlayerCurrentUnitPort = (int) receivedObjects[2];
 
 		this.connectedPlayer = connectedPlayer;
 		this.connectedPlayerUnitDescription = connectedPlayerUnitDescription;
-		this.connectedPlayerCurrentUnitIp = connectedPlayerCurrentUnitIp;
+		this.connectedPlayerCurrentUnitIp = ((TCPConnection) caller).getConnection().getInetAddress().toString();
 		this.connectedPlayerCurrentUnitPort = connectedPlayerCurrentUnitPort;
 		return new LocationInformation(connectedPlayerUnitDescription, connectedPlayerCurrentUnitIp, connectedPlayerCurrentUnitPort);
 	}

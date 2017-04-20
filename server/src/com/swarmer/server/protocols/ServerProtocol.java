@@ -1,5 +1,6 @@
 package com.swarmer.server.protocols;
 
+import com.swarmer.server.CoordinationUnitCallable;
 import com.swarmer.server.units.ServerUnit;
 import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.communication.Connection;
@@ -15,20 +16,33 @@ import java.sql.SQLException;
  */
 public abstract class ServerProtocol extends Protocol {
 
-	private ServerUnit serverUnit;
+	protected ServerUnit serverUnit;
 
 	protected ServerProtocol(ServerUnit serverUnit) {
 		this.serverUnit = serverUnit;
 	}
 
-	@Override protected abstract void react(Message message, Connection caller) throws IOException, SQLException;
+	@Override protected void react(Message message, Connection caller) throws IOException, SQLException {
+		switch (message.getOpcode()) {
+			case 0:
+				removeConnectionFromActiveConnections((Player) message.getObject());
+				break;
+			case 1:
+				addConnectionToActiveConnections((Player) message.getObject(), caller);
+				break;
+			default:
+				break;
+		}
+	};
 
-	public void addConnectionToActiveConnections(Player player, Connection connection) {
+	private boolean addConnectionToActiveConnections(Player player, Connection connection) throws IOException {
 		serverUnit.addActiveConnection(player, connection);
+		return (boolean) new CoordinationUnitCallable(new Message(1150, new Object[]{player, serverUnit.getDescription(), serverUnit.getPort()})).getFutureResult().getObject();
 	}
 
-	public void removeConnectionFromActiveConnections(Player player) {
+	private boolean removeConnectionFromActiveConnections(Player player) throws IOException {
 		serverUnit.removeActiveConnection(player);
+		return (boolean) new CoordinationUnitCallable(new Message(1152, player)).getFutureResult().getObject();
 	}
 
 }

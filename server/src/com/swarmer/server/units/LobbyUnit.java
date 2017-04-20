@@ -18,7 +18,7 @@ public class LobbyUnit extends ServerUnit {
         super();
     }
 
-    @Override protected int getPort() {
+    @Override public int getPort() {
         return ServerUnit.LOBBY_UNIT_TCP_PORT;
     }
 

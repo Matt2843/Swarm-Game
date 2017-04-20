@@ -88,7 +88,7 @@ public class GameScreen implements Screen {
 		for(int i = 0; i < playerCount; i++) {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
 			int y = ThreadLocalRandom.current().nextInt(1, 99);
-			Player player = new Player("Alias", "" + ++i, 0);
+			Player player = new Player("Alias", "" + i, 0);
 			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
 				hives.add(new Hive(player, graph.nodes[x][y]));
 			}
