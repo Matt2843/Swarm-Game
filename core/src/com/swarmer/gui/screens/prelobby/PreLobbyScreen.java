@@ -15,6 +15,7 @@ import com.swarmer.gui.screens.ScreenLib;
 import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.gui.widgets.SwarmerScreen;
 import com.swarmer.network.GameClient;
+import com.swarmer.shared.communication.IPGetter;
 
 import java.text.Format;
 
@@ -63,10 +64,9 @@ public class PreLobbyScreen extends SwarmerScreen {
 		logout.addCaptureListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
 				ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
-				System.out.println("TEST: " + GameClient.getCurrentPlayer().toString());
 				GameClient.getInstance().tcp.stopConnection(GameClient.getCurrentPlayer());
 				GameClient.getInstance().tcp = null;
-				GameClient.getInstance().establishTCPConnection("127.0.0.1", 43120);
+				GameClient.getInstance().establishTCPConnection(IPGetter.getInstance().getAccessUnitIP(), 43120);
 			}
 		});
 		logout.setPosition(0, Gdx.graphics.getHeight() - logout.getHeight());

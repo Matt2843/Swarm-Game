@@ -6,27 +6,31 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-public final class AccessPoint
+public final class IPGetter
 {
-    private static AccessPoint accessPoint;
+    private static IPGetter ipGetter;
 
-    private AccessPoint() {
+    private IPGetter() {
         // DO NOT INSTANTIATE THIS CLASS
     }
 
-    public static AccessPoint getInstance() {
-        if(accessPoint == null) {
+    public static IPGetter getInstance() {
+        if(ipGetter == null) {
             //throw new GameClientNotInstantiatedException("Please call initializeGameClient()");
-            accessPoint = new AccessPoint();
+            ipGetter = new IPGetter();
         }
-        return accessPoint;
+        return ipGetter;
+    }
+
+    public String getAccessUnitIP() {
+        return getURLContent("http://georgthomassen.dk/swarmer/access");
     }
 
     public String getDatabaseControllerIP() {
-        return getURLcontent("http://georgthomassen.dk/swarmer");
+        return getURLContent("http://georgthomassen.dk/swarmer/db");
     }
 
-    private static String getURLcontent(String endpoint) {
+    private static String getURLContent(String endpoint) {
         String IP = "";
         try {
             URL url = new URL(endpoint);

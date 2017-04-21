@@ -71,7 +71,7 @@ public abstract class ServerUnit {
 
     private void notifyMotherShip() {
         try {
-            String IP = AccessPoint.getInstance().getDatabaseControllerIP();
+            String IP = IPGetter.getInstance().getDatabaseControllerIP();
             TCPConnection databaseControllerConnection = new TCPConnection(new Socket(IP, DATABASE_CONTROLLER_TCP_PORT), null);
             databaseControllerConnection.start();
             String[] object = new String[] {String.valueOf(getPort()), getDescription()};
