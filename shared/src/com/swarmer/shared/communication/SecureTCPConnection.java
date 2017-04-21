@@ -143,6 +143,7 @@ public class SecureTCPConnection extends Connection {
 			for(SealedObject o: lst) {
 				bout.write((byte[]) o.getObject(inCipher));
 			}
+			System.out.println(bout.toByteArray().toString());
 			ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bout.toByteArray()));
 			message = (Message) in.readObject();
 		} catch(IOException e) {
