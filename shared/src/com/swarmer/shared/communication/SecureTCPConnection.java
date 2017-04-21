@@ -162,10 +162,11 @@ public class SecureTCPConnection extends Connection {
 		try {
 			ByteArrayInputStream bis = new ByteArrayInputStream(data);
 			byte[] bytes = new byte[200];
-			//while(bis.read(bytes) > 0) {
-			//	lst.add(new SealedObject(bytes, outCipher));
-			//}
-			lst.add(new SealedObject(data, outCipher));
+			int len = 0;
+			while((len = bis.read(bytes)) != -1) {
+				System.out.println(len);
+				lst.add(new SealedObject(Arrays.copyOfRange(bytes, 0, len), outCipher));
+			}
 		} catch(IOException e) {
 			e.printStackTrace();
 		} catch(IllegalBlockSizeException e) {
