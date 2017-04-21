@@ -100,6 +100,7 @@ public class SecureTCPConnection extends Connection {
 		do {
 			try {
 				message = (Message) recreateMessage((ArrayList<SealedObject>) input.readObject());
+				System.out.println(message.toString());
 				react(message);
 			} catch (IOException e) {
 				System.out.println("WHY GOD WHY");
@@ -165,7 +166,6 @@ public class SecureTCPConnection extends Connection {
 			byte[] bytes = new byte[200];
 			int len = 0;
 			while((len = bis.read(bytes)) != -1) {
-				System.out.println(len);
 				lst.add(new SealedObject(Arrays.copyOfRange(bytes, 0, len), outCipher));
 			}
 		} catch(IOException e) {
