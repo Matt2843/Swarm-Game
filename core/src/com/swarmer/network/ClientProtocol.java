@@ -10,9 +10,13 @@ import com.swarmer.shared.communication.Protocol;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.sql.SQLException;
 
 public class ClientProtocol extends Protocol {
+
+	private String ip;
+	private int port;
 
 	@Override public void react(Message message, Connection caller) {
 		System.out.println(message.toString());
@@ -45,6 +49,9 @@ public class ClientProtocol extends Protocol {
 			case 999:
 				connectToAuthNode(message);
 				break;
+			case 11111:
+				secureConnectToAuthNode(message);
+				break;
 			default:
 				break;
 		}
@@ -52,9 +59,21 @@ public class ClientProtocol extends Protocol {
 
 	private void connectToAuthNode(Message message) {
 		String[] receivedMessageArray = ((String) message.getObject()).split(":");
-		String ip = receivedMessageArray[0].replace("/", "");
-		int port = Integer.parseInt(receivedMessageArray[1]);
-		GameClient.getInstance().establishTCPConnection(ip, port);
-		//GameClient.getInstance().establishSecureTCPConnection(ip, port);
+		ip = receivedMessageArray[0].replace("/", "");
+		port = Integer.parseInt(receivedMessageArray[1]);
+		try {
+			GameClient.getInstance().establishTCPConnection(ip, port).sendMessage(new Message(11111, GameClient.KEY.getPublic()));
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void secureConnectToAuthNode(Message message) {
+		GameClient.getInstance().establishSecureTCPConnection(ip, port, (PublicKey) message.getObject());
+		try {
+			GameClient.stcp.sendMessage(new Message(1111, GameClient.KEY.getPublic()));
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

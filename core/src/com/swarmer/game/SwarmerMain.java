@@ -6,6 +6,11 @@ import com.swarmer.gui.screens.ScreenLib;
 import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.network.GameClient;
 
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
+
 public class SwarmerMain extends Game {
 
 	public void create() {

@@ -9,9 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
-/**
- * Created by Matt on 04/16/2017.
- */
 public abstract class SwarmerScreen extends Stage implements Screen {
 
 	private final SpriteBatch spriteBatch = new SpriteBatch();
@@ -19,12 +16,12 @@ public abstract class SwarmerScreen extends Stage implements Screen {
 
 	protected Table contentPane = new Table();
 
-
 	protected SwarmerScreen(int width, int height) {
 		setViewport(new StretchViewport(width, height));
 		contentPane.setSize(width, height);
 		create();
 		addActor(contentPane);
+		//this.getBatch().setColor(0.1f, 0.1f, 0.1f, 1f);
 	}
 
 	protected abstract void create();
@@ -34,13 +31,17 @@ public abstract class SwarmerScreen extends Stage implements Screen {
 		Gdx.input.setInputProcessor(this);
 	}
 
+
+	float time = 0;
+
 	@Override public void render(float delta) {
 		handleInput();
-		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
+
+		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		draw();
 		act(delta);
+		draw();
 	}
 
 	@Override public void resize(int width, int height) {
@@ -63,5 +64,14 @@ public abstract class SwarmerScreen extends Stage implements Screen {
 		super.dispose();
 		spriteBatch.dispose();
 		backgroundTexture.dispose();
+	}
+	
+	@Override public boolean keyTyped(char character) {
+
+		if(character == 'p'){
+			Gdx.graphics.setContinuousRendering(!Gdx.graphics.isContinuousRendering());
+		}
+
+		return super.keyTyped(character);
 	}
 }
