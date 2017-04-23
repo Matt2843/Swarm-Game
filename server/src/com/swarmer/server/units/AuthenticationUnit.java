@@ -4,17 +4,23 @@ import com.swarmer.server.DatabaseControllerCallable;
 import com.swarmer.server.protocols.AuthenticationProtocol;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.security.HashingTools;
+import com.swarmer.shared.communication.IPGetter;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
+import com.swarmer.shared.communication.SecureTCPConnection;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.util.concurrent.ExecutionException;
 
 public class AuthenticationUnit extends ServerUnit {
 
 	private final AuthenticationProtocol authenticationProtocol = new AuthenticationProtocol(this);
+
+	public static SecureTCPConnection stcp = null;
 
 	protected AuthenticationUnit() {
 		super();
@@ -85,5 +91,17 @@ public class AuthenticationUnit extends ServerUnit {
 
 	public static void main(String[] args) {
 		new AuthenticationUnit();
+	}
+
+	public void establishSecureTCPConnection(PublicKey exPublicKey) {
+		try {
+			if(stcp != null) {
+				stcp.stopConnection();
+			}
+			stcp = new SecureTCPConnection(new Socket(IPGetter.getInstance().getDatabaseControllerIP(), getPort() + 1), authenticationProtocol, KEY, exPublicKey);
+			stcp.start();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
