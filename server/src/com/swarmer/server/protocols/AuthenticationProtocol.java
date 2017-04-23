@@ -46,7 +46,7 @@ public class AuthenticationProtocol extends ServerProtocol {
 	}
 
 	private void establishSecureConnection(Message message, Connection caller) throws IOException {
-		//exPublicKey = (PublicKey) message.getObject();
+		((AuthenticationUnit)serverUnit).establishSecureTCPConnection(exPublicKey);
 	}
 
 	private void createUser(Message message) {
