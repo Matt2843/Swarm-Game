@@ -52,13 +52,7 @@ public abstract class ServerUnit {
     protected int usersConnected = 0;
 
 	protected ServerUnit() {
-		try {
-			KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
-			kpg.initialize(2048);
-			KEY = kpg.generateKeyPair();
-		} catch(NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+		generateKeys();
 		startConnectionThreads();
 		notifyMotherShip();
 	}
@@ -67,6 +61,16 @@ public abstract class ServerUnit {
 		new ServerSocketThread(TCP).start();
 		new ServerSocketThread(STCP).start();
 		//new ServerSocketThread(UDP).start();
+	}
+
+	private void generateKeys() {
+		try {
+			KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+			kpg.initialize(2048);
+			KEY = kpg.generateKeyPair();
+		} catch(NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 	}
 
     private void notifyMotherShip() {
