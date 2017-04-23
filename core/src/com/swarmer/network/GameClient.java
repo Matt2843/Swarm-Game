@@ -1,9 +1,6 @@
 package com.swarmer.network;
 
-import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.Player;
-import com.swarmer.shared.communication.SecureTCPConnection;
-import com.swarmer.shared.communication.TCPConnection;
+import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -13,9 +10,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 
 public final class GameClient {
-	
-	private String host = "127.0.0.1";
-	private int port = 43120;
 
 	private static final ClientProtocol clientProtocol = new ClientProtocol();
 
@@ -24,7 +18,6 @@ public final class GameClient {
 	//public static UDPConnection udp;
 
 	private static Player currentPlayer;
-
 
 	public static KeyPair KEY = null;
 
@@ -41,7 +34,8 @@ public final class GameClient {
 			e.printStackTrace();
 		}
 
-		establishTCPConnection(host, port);
+		String IP = IPGetter.getInstance().getAccessUnitIP();
+		establishTCPConnection(IP, 43120);
 
 		// TODO: FIX UDP + STCP
 		//udp = new UDPConnection(new DatagramSocket(port), new ClientProtocol());

@@ -32,6 +32,7 @@ public class DatabaseController {
 		try {
 			mySQLConnection.sqlExecute("DELETE FROM access_units");
 			mySQLConnection.sqlExecute("DELETE FROM authentication_units");
+			mySQLConnection.sqlExecute("DELETE FROM coordination_units");
 			mySQLConnection.sqlExecute("DELETE FROM lobby_units");
 			mySQLConnection.sqlExecute("DELETE FROM game_units");
 		} catch (SQLException e) {

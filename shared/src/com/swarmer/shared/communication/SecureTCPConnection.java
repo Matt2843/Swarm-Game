@@ -43,6 +43,8 @@ public class SecureTCPConnection extends Connection {
 	private Socket connection = null;
 	private boolean stop = false;
 
+	private Callable NonSecureTCP;
+
 	private ByteArrayOutputStream bos = null;
 	private ObjectOutputStream out = null;
 
@@ -123,7 +125,6 @@ public class SecureTCPConnection extends Connection {
 	@Override public void sendMessage(Message m) throws IOException {
 		if(!stop) {
 			if(exPublicKey != null) {
-				System.out.println(m.toString());
 				output.writeObject(generateList(toByte(m)));
 				output.flush();
 			} else {
@@ -161,9 +162,9 @@ public class SecureTCPConnection extends Connection {
 		try {
 			ByteArrayInputStream bis = new ByteArrayInputStream(data);
 			byte[] bytes = new byte[200];
-
-			while(bis.read(bytes) > 0) {
-				lst.add(new SealedObject(bytes, outCipher));
+			int len = 0;
+			while((len = bis.read(bytes)) != -1) {
+				lst.add(new SealedObject(Arrays.copyOfRange(bytes, 0, len), outCipher));
 			}
 		} catch(IOException e) {
 			e.printStackTrace();
