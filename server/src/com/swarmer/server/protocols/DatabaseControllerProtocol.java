@@ -1,6 +1,7 @@
 package com.swarmer.server.protocols;
 
 import com.swarmer.server.DatabaseController;
+import com.swarmer.server.units.AuthenticationUnit;
 import com.swarmer.server.units.ServerUnit;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
@@ -8,6 +9,7 @@ import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
+import java.security.PublicKey;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -42,6 +44,10 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 				break;
 			case 201: // Create user forwarded message from authentication node.
 				addUserToDatabase(message);
+				break;
+			case 11111:
+				exPublicKey = (PublicKey) message.getObject();
+				caller.sendMessage(new Message(11111, AuthenticationUnit.KEY.getPublic()));
 				break;
 			default:
 				break;

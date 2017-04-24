@@ -45,10 +45,6 @@ public class SecureTCPConnection extends Connection {
 
 	private Callable NonSecureTCP;
 
-	private ByteArrayOutputStream bos = null;
-	private ObjectOutputStream out = null;
-
-
 	public SecureTCPConnection(Socket connection, Protocol protocol, KeyPair KEY, PublicKey exPublicKey) throws IOException {
 		super(protocol);
 		this.KEY = KEY;
@@ -87,9 +83,6 @@ public class SecureTCPConnection extends Connection {
 			output = new ObjectOutputStream(connection.getOutputStream());
 			input = new ObjectInputStream(connection.getInputStream());
 
-			bos = new ByteArrayOutputStream();
-			out = new ObjectOutputStream(bos);
-
 		} catch(InvalidKeyException | IOException e) {
 			e.printStackTrace();
 		}
@@ -125,6 +118,7 @@ public class SecureTCPConnection extends Connection {
 	@Override public void sendMessage(Message m) throws IOException {
 		if(!stop) {
 			if(exPublicKey != null) {
+				System.out.println("Send msg: " + m.toString());
 				output.writeObject(generateList(toByte(m)));
 				output.flush();
 			} else {
@@ -175,8 +169,10 @@ public class SecureTCPConnection extends Connection {
 	}
 
 	private byte[] toByte(Message m) {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		try {
-			bos.flush();
+			ObjectOutputStream out = new ObjectOutputStream(bos);
+
 			out.writeObject(m);
 			out.flush();
 		} catch(IOException e) {
