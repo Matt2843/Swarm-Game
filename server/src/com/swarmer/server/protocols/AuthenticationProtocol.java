@@ -36,17 +36,10 @@ public class AuthenticationProtocol extends ServerProtocol {
 				exPublicKey = (PublicKey) message.getObject();
 				caller.sendMessage(new Message(11111, AuthenticationUnit.KEY.getPublic()));
 				break;
-			case 1111:
-				establishSecureConnection(message, caller);
-				break;
 			default:
 				super.react(message, caller);
 				break;
 		}
-	}
-
-	private void establishSecureConnection(Message message, Connection caller) throws IOException {
-		((AuthenticationUnit)serverUnit).establishSecureTCPConnection(exPublicKey);
 	}
 
 	private void createUser(Message message) {
