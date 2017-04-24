@@ -45,7 +45,9 @@ public class AuthenticationProtocol extends ServerProtocol {
 	private void createUser(Message message) {
 		try {
 			Player createdPlayer = AuthenticationUnit.createUser(message);
-			new CoordinationUnitCallable(new Message(1150, new Object[]{createdPlayer, serverUnit.getDescription(), serverUnit.getPort()})).getFutureResult();
+			if(createdPlayer != null) {
+				new CoordinationUnitCallable(new Message(1150, new Object[]{createdPlayer, serverUnit.getDescription(), serverUnit.getPort()})).getFutureResult();
+			}
 			caller.sendMessage(new Message(202, createdPlayer));
 		} catch (ExecutionException e) {
 			e.printStackTrace();
@@ -58,7 +60,9 @@ public class AuthenticationProtocol extends ServerProtocol {
 
 	private void authenticateUser(Message message) throws IOException {
 		Player authenticatedPlayer = AuthenticationUnit.authenticateUser(message);
-		new CoordinationUnitCallable(new Message(1150, new Object[]{authenticatedPlayer, serverUnit.getDescription(), serverUnit.getPort()}));
+		if(authenticatedPlayer != null) {
+			new CoordinationUnitCallable(new Message(1150, new Object[]{authenticatedPlayer, serverUnit.getDescription(), serverUnit.getPort()}));
+		}
 		caller.sendMessage(new Message(110, authenticatedPlayer));
 	}
 }
