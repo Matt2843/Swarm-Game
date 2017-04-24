@@ -21,7 +21,7 @@ public class Callable {
 				}
 			});
 			tcpConnection.start();
-			System.out.println("SENDER");
+			System.out.println("Callable is sending");
 			tcpConnection.sendMessage(message);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -37,7 +37,7 @@ public class Callable {
 			}
 		}
 		tcpConnection.stopConnection();
-		System.out.println("STOPPER NU");
+		System.out.println("Callable received message and is terminating");
 		return futureResult;
 	}
 }

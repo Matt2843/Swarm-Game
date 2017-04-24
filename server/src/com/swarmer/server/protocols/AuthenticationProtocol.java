@@ -1,6 +1,7 @@
 package com.swarmer.server.protocols;
 
 import com.swarmer.server.CoordinationUnitCallable;
+import com.swarmer.server.DatabaseControllerCallable;
 import com.swarmer.server.units.AuthenticationUnit;
 import com.swarmer.server.units.ServerUnit;
 import com.swarmer.shared.communication.*;
@@ -32,6 +33,9 @@ public class AuthenticationProtocol extends ServerProtocol {
 			case 201:
 				createUser(message);
 				break;
+			case 301:
+				getLobbyUnit(message); // message = {lobby unit ID} or message = {random}
+				break;
 			case 11111:
 				exPublicKey = (PublicKey) message.getObject();
 				caller.sendMessage(new Message(11111, AuthenticationUnit.KEY.getPublic()));
@@ -43,6 +47,11 @@ public class AuthenticationProtocol extends ServerProtocol {
 				super.react(message, caller);
 				break;
 		}
+	}
+
+	private void getLobbyUnit(Message message) throws IOException {
+		Message lobbyUnitConnectionInformation = new DatabaseControllerCallable(message).getFutureResult();
+		caller.sendMessage(lobbyUnitConnectionInformation);
 	}
 
 	private void establishSecureConnection(Message message, Connection caller) throws IOException {
@@ -65,7 +74,7 @@ public class AuthenticationProtocol extends ServerProtocol {
 
 	private void authenticateUser(Message message) throws IOException {
 		Player authenticatedPlayer = AuthenticationUnit.authenticateUser(message);
-		new CoordinationUnitCallable(new Message(1150, new Object[]{authenticatedPlayer, serverUnit.getDescription(), serverUnit.getPort()}));
+		new CoordinationUnitCallable(new Message(1150, new Object[]{authenticatedPlayer, serverUnit.getDescription(), serverUnit.getPort()})).getFutureResult();
 		caller.sendMessage(new Message(110, authenticatedPlayer));
 	}
 }

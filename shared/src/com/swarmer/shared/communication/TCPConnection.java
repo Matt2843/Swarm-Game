@@ -32,7 +32,7 @@ public class TCPConnection extends Connection {
 				message = (Message) input.readObject();
 				react(message);
 			} catch (IOException e) {
-				System.out.println("WHY GOD WHY");
+				System.out.println("input.readObject() threw an IOException, cleaning up connection.");
 				stop = true;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();

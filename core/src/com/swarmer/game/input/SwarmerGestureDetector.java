@@ -3,8 +3,8 @@ package com.swarmer.game.input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.screens.game.GameScreen;
-import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.utility.CoordsTranslator;
 
 public class SwarmerGestureDetector implements GestureDetector.GestureListener {
@@ -15,7 +15,7 @@ public class SwarmerGestureDetector implements GestureDetector.GestureListener {
 
 	public SwarmerGestureDetector(GameScreen parent) {
 		this.parent = parent;
-		camera = ScreenManager.camera;
+		camera = SwarmerMain.getInstance().camera;
 	}
 
 	@Override public boolean touchDown(float x, float y, int pointer, int button) {

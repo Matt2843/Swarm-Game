@@ -3,7 +3,6 @@ package com.swarmer.gui.screens.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
@@ -14,19 +13,20 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.swarmer.game.structures.Hive;
-import com.swarmer.game.units.Ant;
+import com.swarmer.aco.graph.Graph;
+import com.swarmer.game.SwarmerMain;
 import com.swarmer.game.input.SwamerInputProcessor;
 import com.swarmer.game.input.SwarmerGestureDetector;
-import com.swarmer.aco.graph.Graph;
-import com.swarmer.gui.screens.ScreenManager;
+import com.swarmer.game.structures.Hive;
+import com.swarmer.game.units.Ant;
+import com.swarmer.gui.widgets.SwarmerScreen;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.resources.Food;
 
 import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class GameScreen implements Screen {
+public class GameScreen extends SwarmerScreen {
 
 	private final static float SCALE = 1f;
 	private final static float INV_SCALE = 1.f / SCALE;
@@ -41,13 +41,28 @@ public class GameScreen implements Screen {
 	private float mapWidth, mapHeight;
 	private InputMultiplexer IM;
 	private Vector2 vec = new Vector2();
-	private ArrayList<Ant> ants = new ArrayList<>();
-	private ArrayList<Hive> hives = new ArrayList<>();
+	private ArrayList<Ant> ants;
+	private ArrayList<Hive> hives;
 	private int[] backgroundLayers;
 	private int[] foregroundLayers;
 
-	public GameScreen() {
-		camera = ScreenManager.camera;
+	private static GameScreen gameScreenInstance;
+
+	private GameScreen(int width, int height, String description) {
+		super(width, height, description);
+	}
+
+	public static GameScreen getInstance() {
+		if(gameScreenInstance == null) {
+			gameScreenInstance = new GameScreen(1280, 800, "game_screen");
+		}
+		return gameScreenInstance;
+	}
+
+	@Override protected void create() {
+		hives = new ArrayList<>();
+		ants = new ArrayList<>();
+		camera = SwarmerMain.getInstance().camera;
 		map = new TmxMapLoader().load("newmap.tmx");
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
 		mapWidth = layer.getWidth() * layer.getTileWidth();
@@ -163,7 +178,7 @@ public class GameScreen implements Screen {
 		return new Vector2(vecX, vecY);
 	}
 
-	private void handleInput() {
+	@Override protected void handleInput() {
 		vec.set(0, 0);
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 			vec.x += -10 * camera.zoom;

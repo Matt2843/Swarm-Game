@@ -6,19 +6,29 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.StyleSheet;
-import com.swarmer.gui.screens.ScreenLib;
-import com.swarmer.gui.screens.ScreenManager;
+import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
 import com.swarmer.gui.widgets.SwarmerScreen;
 
 public class LobbyScreen extends SwarmerScreen {
-
-    public LobbyScreen(int width, int height) {
-        super(width, height);
-    }
+    private String lobbyId = "";
 
     public static LobbyChat lobbyChat;
     private LobbyUserList2 lobbyUserList2;
+
+    private static LobbyScreen lobbyScreenInstance;
+
+    private LobbyScreen(int width, int height, String description) {
+        super(width, height, description);
+    }
+
+    public static LobbyScreen getInstance() {
+        if(lobbyScreenInstance == null) {
+            lobbyScreenInstance = new LobbyScreen(1280, 800, "lobby_screen");
+        }
+        return lobbyScreenInstance;
+    }
 
     @Override protected void create() {
         addReturnButton();
@@ -33,13 +43,15 @@ public class LobbyScreen extends SwarmerScreen {
 
         contentPane.add(middleSection);
         contentPane.row();
+
+        System.out.println("LOBBY SCREEN CREATED :)");
     }
 
     private void addReturnButton() {
         TextButton returnToPreLobbyScreen = new TextButton("Exit Lobby", StyleSheet.defaultSkin);
         returnToPreLobbyScreen.addCaptureListener(new ChangeListener() {
             @Override public void changed(ChangeEvent event, Actor actor) {
-                ScreenManager.getInstance().show(ScreenLib.PRE_LOBBY_SCREEN);
+                SwarmerMain.getInstance().show(PreLobbyScreen.getInstance());
                 // TODO: Notify Server that the lobby was cancelled by the owner.
             }
         });
@@ -51,5 +63,14 @@ public class LobbyScreen extends SwarmerScreen {
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             lobbyChat.pressSendInput();
         }
+    }
+
+    public String getLobbyId() {
+        return lobbyId;
+    }
+
+    public void setLobbyId(String lobbyId) {
+        this.lobbyId = lobbyId;
+        lobbyChat.updateLobbyStatus();
     }
 }

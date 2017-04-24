@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.swarmer.aco.graph.Node;
-import com.swarmer.gui.screens.ScreenManager;
+import com.swarmer.game.SwarmerMain;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.utility.CoordsTranslator;
 import com.swarmer.utility.Temp;
@@ -34,7 +34,7 @@ public class Hive extends Structure {
 
 		setSprite(sprite);
 
-		this.camera = ScreenManager.getInstance().camera;
+		this.camera = SwarmerMain.getInstance().camera;
 	}
 
 	@Override public void draw(Batch batch) {

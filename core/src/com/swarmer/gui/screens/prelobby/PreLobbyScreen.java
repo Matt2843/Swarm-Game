@@ -1,23 +1,19 @@
 package com.swarmer.gui.screens.prelobby;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.StyleSheet;
-import com.swarmer.gui.screens.ScreenLib;
-import com.swarmer.gui.screens.ScreenManager;
+import com.swarmer.gui.screens.mainmenu.MainMenuScreen;
 import com.swarmer.gui.widgets.SwarmerScreen;
 import com.swarmer.network.GameClient;
 import com.swarmer.shared.communication.IPGetter;
+import com.swarmer.shared.communication.Message;
 
-import java.text.Format;
+import java.io.IOException;
 
 /**
  * Created by Matt on 04/16/2017.
@@ -27,14 +23,47 @@ public class PreLobbyScreen extends SwarmerScreen {
 	private TextButton startLobbyButton, startCompetitiveGameButton, startCasualGameButton;
 	private Label gameModeLabel, playWithFriendsLabel;
 
-	public PreLobbyScreen(int width, int height) {
-		super(width, height);
+	private static PreLobbyScreen lobbyScreenInstance;
+
+	private PreLobbyScreen(int width, int height, String description) {
+		super(width, height, description);
+	}
+
+	public static PreLobbyScreen getInstance() {
+		if(lobbyScreenInstance == null) {
+			lobbyScreenInstance = new PreLobbyScreen(1280, 800, "pre_lobby_screen");
+		}
+		return lobbyScreenInstance;
 	}
 
 	@Override protected void create() {
 		createButtons();
-
+		handleButtonInput();
 		addActor(contentPane);
+	}
+
+	private void handleButtonInput() {
+		startLobbyButton.addCaptureListener(new ChangeListener() {
+			@Override public void changed(ChangeEvent event, Actor actor) {
+				try {
+					GameClient.getInstance().tcp.sendMessage(new Message(301, "random"));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+		startCompetitiveGameButton.addCaptureListener(new ChangeListener() {
+			@Override public void changed(ChangeEvent event, Actor actor) {
+
+			}
+		});
+
+		startCasualGameButton.addCaptureListener(new ChangeListener() {
+			@Override public void changed(ChangeEvent event, Actor actor) {
+
+			}
+		});
 	}
 
 	private void createButtons() {
@@ -63,7 +92,8 @@ public class PreLobbyScreen extends SwarmerScreen {
 		TextButton logout = new TextButton("Logout ", StyleSheet.defaultSkin);
 		logout.addCaptureListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
-				ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
+				SwarmerMain.getInstance().show(MainMenuScreen.getInstance());
+				//ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
 				GameClient.getInstance().tcp.stopConnection(GameClient.getCurrentPlayer());
 				GameClient.getInstance().tcp = null;
 				GameClient.getInstance().establishTCPConnection(IPGetter.getInstance().getAccessUnitIP(), 43120);
@@ -74,33 +104,7 @@ public class PreLobbyScreen extends SwarmerScreen {
 	}
 
 	@Override protected void handleInput() {
-
 		// KEY INTERACTION MANAGEMENT
-
-
-		// BUTTON INTERACTION MANAGEMENT
-
-		startLobbyButton.addCaptureListener(new ChangeListener() {
-			@Override public void changed(ChangeEvent event, Actor actor) {
-
-				// TODO: Send created lobby flag to server.
-
-				ScreenManager.getInstance().show(ScreenLib.LOBBY_SCREEN);
-			}
-		});
-
-		startCompetitiveGameButton.addCaptureListener(new ChangeListener() {
-			@Override public void changed(ChangeEvent event, Actor actor) {
-
-			}
-		});
-
-		startCasualGameButton.addCaptureListener(new ChangeListener() {
-			@Override public void changed(ChangeEvent event, Actor actor) {
-
-			}
-		});
-
 
 	}
 }

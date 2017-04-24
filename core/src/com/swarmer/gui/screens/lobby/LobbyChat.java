@@ -31,7 +31,7 @@ public class LobbyChat extends Table {
 	}
 
 	private void configureWidgets() {
-		lobbyStatus = new Label("Connected to Lobby: Not Connected", StyleSheet.defaultSkin);
+		lobbyStatus = new Label("Connected to Lobby: NULL", StyleSheet.defaultSkin);
 
 		chatWindow = new Label("", StyleSheet.defaultSkin);
 		chatWindow.clear();
@@ -81,5 +81,9 @@ public class LobbyChat extends Table {
 		row();
 		add(userInput).height((float) (getHeight() * 0.08)).width((float) (getWidth() * 0.8));
 		add(sendInput).height((float) (getHeight() * 0.08)).width((float) (getWidth() * 0.2));
+	}
+
+	public void updateLobbyStatus() {
+		this.lobbyStatus.setText("Connected to Lobby: " + LobbyScreen.getInstance().getLobbyId());
 	}
 }

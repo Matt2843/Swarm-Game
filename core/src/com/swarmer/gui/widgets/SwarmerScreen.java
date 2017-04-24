@@ -11,12 +11,15 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public abstract class SwarmerScreen extends Stage implements Screen {
 
+	private final String description;
+
 	private final SpriteBatch spriteBatch = new SpriteBatch();
 	private final Texture backgroundTexture = new Texture(Gdx.files.internal("swarmer-v1.png"));
 
 	protected Table contentPane = new Table();
 
-	protected SwarmerScreen(int width, int height) {
+	protected SwarmerScreen(int width, int height, String description) {
+		this.description = description;
 		setViewport(new StretchViewport(width, height));
 		contentPane.setSize(width, height);
 		create();
@@ -73,5 +76,9 @@ public abstract class SwarmerScreen extends Stage implements Screen {
 		}
 
 		return super.keyTyped(character);
+	}
+
+	public String getDescription() {
+		return description;
 	}
 }

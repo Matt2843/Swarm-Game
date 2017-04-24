@@ -15,7 +15,7 @@ import java.util.Map;
 public class CoordinationUnit extends ServerUnit {
 
 	private final CoordinationProtocol coordinationProtocol = new CoordinationProtocol(this);
-	private static HashMap<Player, LocationInformation> allConnectedUsers = new HashMap<>();
+	private static HashMap<String, LocationInformation> allConnectedUsers = new HashMap<>();
 	private static HashMap<String, ArrayList<GameQueueEntry>> queue = new HashMap<>();
 
 	private CoordinationUnit() {
@@ -32,36 +32,37 @@ public class CoordinationUnit extends ServerUnit {
 	}
 
 	public static LocationInformation findPlayerLocationInformation(String username) {
-		for(Player player : allConnectedUsers.keySet()) {
-			if(player.getUsername().equals(username)) {
-				return allConnectedUsers.get(player);
+		for(String key : allConnectedUsers.keySet()) {
+			if(key.equals(username)) {
+				return allConnectedUsers.get(key);
 			}
 		}
 		return null;
 	}
 
 	public static void changeLocationInformation(Player player, LocationInformation locationInformation) {
-		if(allConnectedUsers.containsKey(player)) {
-			allConnectedUsers.remove(player);
-			allConnectedUsers.put(player, locationInformation);
+		if(allConnectedUsers.containsKey(player.getUsername())) {
+			allConnectedUsers.remove(player.getUsername());
+			allConnectedUsers.put(player.getUsername(), locationInformation);
 		}
 	}
 
 	public static void addConnection(Player player, LocationInformation locationInformation) {
-		if(!allConnectedUsers.containsKey(player)) {
-			allConnectedUsers.put(player, locationInformation);
+		if(!allConnectedUsers.containsKey(player.getUsername())) {
+			allConnectedUsers.put(player.getUsername(), locationInformation);
 		}
-		for (Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
-			System.out.println(entry.getKey().getUsername() + ", " + entry.getValue().toString());
+
+		for (Map.Entry<String, LocationInformation> entry : allConnectedUsers.entrySet()) {
+			System.out.println(entry.getKey() + ", " + entry.getValue().toString());
 		}
 	}
 
 	public static void removeConnection(Player player) {
-		if(allConnectedUsers.containsKey(player)) {
-			allConnectedUsers.remove(player);
+		if(allConnectedUsers.containsKey(player.getUsername())) {
+			allConnectedUsers.remove(player.getUsername());
 		}
-		for (Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
-			System.out.println(entry.getKey().getUsername() + ", " + entry.getValue().toString());
+		for (Map.Entry<String, LocationInformation> entry : allConnectedUsers.entrySet()) {
+			System.out.println(entry.getKey() + ", " + entry.getValue().toString());
 		}
 	}
 
