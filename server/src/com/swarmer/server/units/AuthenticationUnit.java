@@ -37,7 +37,9 @@ public class AuthenticationUnit extends ServerUnit {
 
 	public static Player createUser(Message message) throws ExecutionException, InterruptedException, IOException {
 		Object[] receivedObject = (Object[]) message.getObject();
-
+		if(receivedObject == null) {
+			return null;
+		}
 		String username = (String) receivedObject[0];
 		char[] password = (char[]) receivedObject[1];
 
@@ -60,7 +62,9 @@ public class AuthenticationUnit extends ServerUnit {
 
 	public static Player authenticateUser(Message message) throws IOException {
 		Object[] receivedObject = (Object[]) message.getObject();
-
+		if(receivedObject == null) {
+			return null;
+		}
 		String username = (String) receivedObject[0];
 		char[] password = (char[]) receivedObject[1];
 
