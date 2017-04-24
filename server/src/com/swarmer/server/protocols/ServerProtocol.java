@@ -36,6 +36,7 @@ public abstract class ServerProtocol extends Protocol {
 	};
 
 	private boolean addConnectionToActiveConnections(Player player, Connection connection) throws IOException {
+		connection.setPlayer(player);
 		serverUnit.addActiveConnection(player, connection);
 		return (boolean) new CoordinationUnitCallable(new Message(1150, new Object[]{player, serverUnit.getDescription(), serverUnit.getPort()})).getFutureResult().getObject();
 	}

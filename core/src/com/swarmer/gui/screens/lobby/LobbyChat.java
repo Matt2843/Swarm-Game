@@ -1,6 +1,7 @@
 package com.swarmer.gui.screens.lobby;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
@@ -48,7 +49,7 @@ public class LobbyChat extends Table {
 			@Override public void changed(ChangeEvent event, Actor actor) {
 				if(!userInput.getText().toString().equals("")) {
 					try {
-						GameClient.getInstance().tcp.sendMessage(new Message(301, userInput.getText()));
+						GameClient.getInstance().tcp.sendMessage(new Message(301, new String[] {LobbyScreen.getInstance().getLobbyId(), userInput.getText()}));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

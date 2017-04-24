@@ -31,4 +31,7 @@ public class Lobby {
 		}
 	}
 
+	public ArrayList<Player> getConnectedUsers() {
+		return connectedUsers;
+	}
 }

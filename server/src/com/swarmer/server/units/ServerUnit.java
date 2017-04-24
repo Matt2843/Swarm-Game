@@ -11,6 +11,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -79,6 +80,15 @@ public abstract class ServerUnit {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    protected static void sendToRemotePlayer(Player player, Message message) throws IOException {
+		if(activeConnections.containsKey(player)) {
+			activeConnections.get(player).sendMessage(message);
+			System.out.println("Player was in local and message has been sent.");
+		} else {
+			System.out.println("Player not in local");
+		}
     }
 
     public Connection getActiveConnection(Player player) {

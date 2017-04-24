@@ -27,9 +27,9 @@ public class ClientProtocol extends Protocol {
 			case 202: // User creation state
 				userCreatingState(message);
 				break;
-			case 304: // Received message in lobby chat
+			case 301: // Received message in lobby chat
 				String[] receivedMessageArray = (String[]) message.getObject();
-				LobbyScreen.lobbyChat.appendToChatWindow(receivedMessageArray[1], receivedMessageArray[0]);
+				LobbyScreen.getInstance().lobbyChat.appendToChatWindow(receivedMessageArray[1], receivedMessageArray[0]);
 				break;
 			case 997:
 				connectedToLobby(message);
