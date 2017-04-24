@@ -1,6 +1,7 @@
 package com.swarmer.server.units;
 
 import com.swarmer.server.DatabaseControllerCallable;
+import com.swarmer.server.DatabaseControllerSecureCallable;
 import com.swarmer.server.protocols.AuthenticationProtocol;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.security.HashingTools;
@@ -22,8 +23,16 @@ public class AuthenticationUnit extends ServerUnit {
 
 	public static SecureTCPConnection stcp = null;
 
+	private static PublicKey DBCkey = null;
+
 	protected AuthenticationUnit() {
 		super();
+		try {
+			DatabaseControllerCallable databaseControllerCallable = new DatabaseControllerCallable(new Message(11111, KEY.getPublic()));
+			DBCkey = (PublicKey) databaseControllerCallable.getFutureResult().getObject();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static Player createUser(Message message) throws ExecutionException, InterruptedException, IOException {
@@ -40,9 +49,9 @@ public class AuthenticationUnit extends ServerUnit {
 		}
 		String hashedPassword = HashingTools.hashPassword(password, salt);
 
-		DatabaseControllerCallable databaseControllerCallable = new DatabaseControllerCallable(new Message(message.getOpcode(), new String[] {username, hashedPassword, HashingTools.bytesToHex(salt)}));
-		Message futureResult = databaseControllerCallable.getFutureResult();
-		if (futureResult.getObject() == null) {
+		DatabaseControllerSecureCallable databaseControllerSecureCallable = new DatabaseControllerSecureCallable(new Message(message.getOpcode(), new String[] {username, hashedPassword, HashingTools.bytesToHex(salt)}), KEY, DBCkey);
+		Message futureResult = databaseControllerSecureCallable.getFutureResult();
+		if(futureResult.getObject() == null) {
 			return null;
 		}
 
@@ -55,16 +64,16 @@ public class AuthenticationUnit extends ServerUnit {
 		String username = (String) receivedObject[0];
 		char[] password = (char[]) receivedObject[1];
 
-		DatabaseControllerCallable databaseControllerCallable = new DatabaseControllerCallable(new Message(message.getOpcode(), username));
-		Message returnedMessage = databaseControllerCallable.getFutureResult();
-		if(returnedMessage.getObject() == null) {
+		DatabaseControllerSecureCallable databaseControllerSecureCallable = new DatabaseControllerSecureCallable(new Message(message.getOpcode(), username), KEY, DBCkey);
+		Message futureResult = databaseControllerSecureCallable.getFutureResult();
+		if(futureResult.getObject() == null) {
 			return null;
 		}
 
-		Player player = (Player) ((Object[])returnedMessage.getObject())[0];
+		Player player = (Player) ((Object[])futureResult.getObject())[0];
 
-		String hashedPasswordInDB = ((String[])((Object[])returnedMessage.getObject())[1])[0];
-		String saltInHex = ((String[])((Object[])returnedMessage.getObject())[1])[1];
+		String hashedPasswordInDB = ((String[])((Object[])futureResult.getObject())[1])[0];
+		String saltInHex = ((String[])((Object[])futureResult.getObject())[1])[1];
 
 		byte[] salt = HashingTools.hexToBytes(saltInHex);
 		String passwordCheck = HashingTools.hashPassword(password, salt);
@@ -91,17 +100,5 @@ public class AuthenticationUnit extends ServerUnit {
 
 	public static void main(String[] args) {
 		new AuthenticationUnit();
-	}
-
-	public void establishSecureTCPConnection(PublicKey exPublicKey) {
-		try {
-			if(stcp != null) {
-				stcp.stopConnection();
-			}
-			stcp = new SecureTCPConnection(new Socket(IPGetter.getInstance().getDatabaseControllerIP(), getPort() + 1), authenticationProtocol, KEY, exPublicKey);
-			stcp.start();
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
 	}
 }
