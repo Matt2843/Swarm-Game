@@ -1,14 +1,12 @@
 package com.swarmer.gui.screens.lobby;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.swarmer.gui.StyleSheet;
 import com.swarmer.network.GameClient;
 import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.exceptions.GameClientNotInstantiatedException;
 
 import java.io.IOException;
 import java.sql.Timestamp;

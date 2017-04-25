@@ -13,8 +13,6 @@ import com.swarmer.network.GameClient;
 
 public class SwarmerMain extends Game {
 
-	private SwarmerScreen currentScreen;
-
 	private static SwarmerMain swarmerMain;
 	public static OrthographicCamera camera;
 
@@ -45,8 +43,6 @@ public class SwarmerMain extends Game {
 		}
 		return swarmerMain;
 	}
-
-
 
 	public void show(final SwarmerScreen screen) {
 		Gdx.app.postRunnable(new Runnable() {

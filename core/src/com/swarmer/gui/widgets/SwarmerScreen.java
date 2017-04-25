@@ -24,7 +24,7 @@ public abstract class SwarmerScreen extends Stage implements Screen {
 		contentPane.setSize(width, height);
 		create();
 		addActor(contentPane);
-		//this.getBatch().setColor(0.1f, 0.1f, 0.1f, 1f);
+		addActor(new FriendList(width, height));
 	}
 
 	protected abstract void create();

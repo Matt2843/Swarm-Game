@@ -79,7 +79,6 @@ project(":ios") {
 project(":core") {
     apply plugin: "java"
 
-
     dependencies {
         compile project(":shared")
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
