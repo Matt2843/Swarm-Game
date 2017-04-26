@@ -1,31 +1,34 @@
 package com.swarmer.server;
 
 import com.swarmer.server.protocols.DatabaseControllerProtocol;
+import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.units.ServerUnit;
 import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
-public class DatabaseController {
+public class DatabaseController extends Unit {
 
 	public static MySQLConnection mySQLConnection = new MySQLConnection("localhost", 3306);
 	private final DatabaseControllerProtocol mothershipProtocol = new DatabaseControllerProtocol();
 
-	private ServerSocket serverSocket;
-	private Socket connection;
-	private final int port;
-
-	public DatabaseController(int port) {
-		this.port = port;
+	public DatabaseController() {
+		super();
 		clearDatabase();
-		try {
-			awaitConnection();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	}
+
+	@Override public int getPort() {
+		return DATABASE_CONTROLLER_TCP_PORT;
+	}
+
+	@Override protected ServerProtocol getProtocol() {
+		return mothershipProtocol;
 	}
 
 	private void clearDatabase() {
@@ -40,16 +43,7 @@ public class DatabaseController {
 		}
 	}
 
-	private void awaitConnection() throws IOException {
-		serverSocket = new ServerSocket(port);
-		while(true) {
-			connection = serverSocket.accept();
-			TCPConnection tcpConnection = new TCPConnection(connection, mothershipProtocol);
-			tcpConnection.start();
-		}
-	}
-
 	public static void main(String[] args) {
-		DatabaseController databaseController = new DatabaseController(ServerUnit.DATABASE_CONTROLLER_TCP_PORT);
+		DatabaseController databaseController = new DatabaseController();
 	}
 }

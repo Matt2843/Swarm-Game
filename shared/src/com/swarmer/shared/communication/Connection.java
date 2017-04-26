@@ -27,10 +27,16 @@ public abstract class Connection extends Thread {
 
 	abstract protected void setupStreams() throws IOException;
 
+	abstract protected void stopConnection(Object... o);
+
 	abstract protected void cleanUp();
-	
+
 	public String getCorrespondentsIp() {
 		return correspondentsIp;
+	}
+
+	public void setProtocol(Protocol protocol) {
+		this.protocol = protocol;
 	}
 
 	public void setPlayer(Player player) {

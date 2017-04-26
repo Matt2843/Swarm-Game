@@ -84,8 +84,10 @@ public class ClientProtocol extends Protocol {
 		String[] receivedMessageArray = ((String) message.getObject()).split(":");
 		ip = receivedMessageArray[0].replace("/", "");
 		port = Integer.parseInt(receivedMessageArray[1]);
+
 		try {
-			GameClient.getInstance().establishTCPConnection(ip, port).sendMessage(new Message(11111, GameClient.KEY.getPublic()));
+			GameClient.getInstance().establishTCPConnection(ip, port);
+			GameClient.tcp.sendMessage(new Message(11111, GameClient.KEY.getPublic()));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

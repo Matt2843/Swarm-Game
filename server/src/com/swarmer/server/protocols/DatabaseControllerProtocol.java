@@ -1,6 +1,7 @@
 package com.swarmer.server.protocols;
 
 import com.swarmer.server.DatabaseController;
+import com.swarmer.server.units.AuthenticationUnit;
 import com.swarmer.server.units.ServerUnit;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
@@ -8,6 +9,7 @@ import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
+import java.security.PublicKey;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -45,6 +47,10 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 				break;
 			case 301: // Ambigious, either get best quality lobby unit randomly or get specific lobby unit. i.e. either "random" or "unit_id" in message.getObject()
 				getLobbyUnit(message);
+			case 11111:
+				exPublicKey = (PublicKey) message.getObject();
+				caller.sendMessage(new Message(11111, AuthenticationUnit.KEY.getPublic()));
+				break;
 			default:
 				break;
 		}
@@ -113,8 +119,7 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 	}
 
 	private boolean userExistsInDatabase(String username) throws SQLException, IOException {
-		boolean userConnected = DatabaseController.mySQLConnection.sqlExecuteQuery("SELECT 1 FROM users WHERE username = ?", username).last();
-		return userConnected;
+		return DatabaseController.mySQLConnection.sqlExecuteQuery("SELECT 1 FROM users WHERE username = ?", username).last();
 	}
 
 }

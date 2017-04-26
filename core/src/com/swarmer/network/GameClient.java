@@ -51,8 +51,7 @@ public final class GameClient {
 		return gc;
 	}
 
-	public static TCPConnection establishTCPConnection(String ip, int port) {
-		//ip = "10.0.2.2";
+	public static void establishTCPConnection(String ip, int port) {
 		try {
 			if(tcp != null) {
 				tcp.stopConnection(currentPlayer);
@@ -63,11 +62,9 @@ public final class GameClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return tcp;
 	}
 
 	public static void establishSecureTCPConnection(String ip, int port, PublicKey exPublicKey) {
-		//ip = "10.0.2.2";
 		try {
 			if(stcp != null) {
 				stcp.stopConnection();

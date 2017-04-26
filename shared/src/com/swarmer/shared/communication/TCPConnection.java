@@ -47,7 +47,18 @@ public class TCPConnection extends Connection {
 		cleanUp();
 	}
 
-	public void stopConnection(Object... o) {
+	@Override public void sendMessage(Message m) throws IOException {
+		output.writeObject(m);
+		output.flush();
+	}
+
+	@Override protected void setupStreams() throws IOException {
+		output = new ObjectOutputStream(connection.getOutputStream());
+		output.flush();
+		input = new ObjectInputStream(connection.getInputStream());
+	}
+
+	@Override public void stopConnection(Object... o) {
 		try {
 			if(o.length > 0) {
 				sendMessage(new Message(0, o[0]));
@@ -59,17 +70,6 @@ public class TCPConnection extends Connection {
 		}
 		stop = true;
 		cleanUp();
-	}
-
-	@Override public void sendMessage(Message m) throws IOException {
-		output.writeObject(m);
-		output.flush();
-	}
-
-	@Override protected void setupStreams() throws IOException {
-		output = new ObjectOutputStream(connection.getOutputStream());
-		output.flush();
-		input = new ObjectInputStream(connection.getInputStream());
 	}
 
 	@Override public void cleanUp() {

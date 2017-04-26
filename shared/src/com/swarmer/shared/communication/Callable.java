@@ -5,24 +5,25 @@ import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
-/**
- * Created by Cap'n Odin on 17-04-2017.
- */
 public class Callable {
 	private Message futureResult = null;
 
-	private TCPConnection tcpConnection;
+	private Connection connection;
 
-	public Callable(Socket connection, Message message) {
+	public Callable(Connection connection, Message message) {
+		this.connection = connection;
 		try {
-			tcpConnection = new TCPConnection(connection, new Protocol() {
+
+			connection.setProtocol(new Protocol() {
 				@Override protected void react(Message message, Connection caller) throws IOException, SQLException, NoSuchAlgorithmException {
 					futureResult = message;
 				}
 			});
-			tcpConnection.start();
+
+			connection.start();
 			System.out.println("Callable is sending");
-			tcpConnection.sendMessage(message);
+			connection.sendMessage(message);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -36,7 +37,8 @@ public class Callable {
 				e.printStackTrace();
 			}
 		}
-		tcpConnection.stopConnection();
+
+		connection.stopConnection();
 		System.out.println("Callable received message and is terminating");
 		return futureResult;
 	}
