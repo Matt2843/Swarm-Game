@@ -1,8 +1,10 @@
 package com.swarmer.network;
 
+import com.badlogic.gdx.Gdx;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.screens.lobby.LobbyScreen;
 import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
+import com.swarmer.gui.widgets.SwarmerNotification;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
@@ -44,7 +46,7 @@ public class ClientProtocol extends Protocol {
 				secureConnectToAuthNode(message);
 				break;
 			case 34789: // Received friend request.
-
+				// TODO: Display friend request notification.
 				break;
 			default:
 				break;

@@ -9,12 +9,14 @@ import com.swarmer.gui.screens.lobby.LobbyScreen;
 import com.swarmer.gui.screens.mainmenu.MainMenuScreen;
 import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
 import com.swarmer.gui.widgets.FriendList;
+import com.swarmer.gui.widgets.SwarmerNotification;
 import com.swarmer.gui.widgets.SwarmerScreen;
 import com.swarmer.network.GameClient;
 
 public class SwarmerMain extends Game {
 
 	private static SwarmerMain swarmerMain;
+	private static SwarmerScreen currentScreen;
 	public static OrthographicCamera camera;
 
 	private SwarmerMain() {
@@ -48,6 +50,7 @@ public class SwarmerMain extends Game {
 	public void show(final SwarmerScreen screen) {
 		Gdx.app.postRunnable(new Runnable() {
 			@Override public void run() {
+				currentScreen = screen;
 				setScreen(screen);
 				screen.addActor(FriendList.getInstance());
 				FriendList.getInstance().openFriendTabs();
@@ -55,11 +58,19 @@ public class SwarmerMain extends Game {
 		});
 	}
 
+	public static SwarmerScreen getCurrentScreen() {
+		return currentScreen;
+	}
+
 	private void establishNetworkConnection() {
 		GameClient.getInstance();
 	}
 
 	public void dispose() {
-		GameClient.getInstance().tcp.stopConnection();
+		GameClient.tcp.stopConnection();
+	}
+
+	public void showNotification(SwarmerNotification notification) {
+		currentScreen.addActor(notification);
 	}
 }
