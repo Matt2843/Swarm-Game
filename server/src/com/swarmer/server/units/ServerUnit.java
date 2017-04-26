@@ -56,7 +56,7 @@ public abstract class ServerUnit extends Unit {
     }
 
     public boolean addActiveConnection(Player player, Connection connection) {
-        if(!activeConnections.containsKey(player)) {
+	    if(!activeConnections.containsKey(player)) {
             activeConnections.put(player, connection);
             return true;
         } else {
@@ -71,7 +71,22 @@ public abstract class ServerUnit extends Unit {
         } else return false;
     }
 
-    protected class ServerSocketThread extends Thread {
+	public void addFriendShip(String user1, String user2) {
+		
+	}
+
+	public void sendFriendRequest(String from, String to) throws IOException {
+		System.out.println("well we are here " + activeConnections.size());
+		for(Player player : activeConnections.keySet()) { // Check if the suspect is in local activeConnections.
+			if(player.getUsername().equals(to)) {
+				activeConnections.get(player).sendMessage(new Message(34789, from));
+				return;
+			}
+		}
+		// TODO: Suspect was not in local activeConnections, get his locationinformation from coordination unit :)
+	}
+
+	protected class ServerSocketThread extends Thread {
 
 		private int serverSocketType;
 

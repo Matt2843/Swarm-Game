@@ -2,7 +2,6 @@ package com.swarmer.server.protocols;
 
 import com.swarmer.server.CoordinationUnitCallable;
 import com.swarmer.server.units.ServerUnit;
-import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
@@ -11,9 +10,6 @@ import com.swarmer.shared.communication.Protocol;
 import java.io.IOException;
 import java.sql.SQLException;
 
-/**
- * Created by Matt on 19-04-2017.
- */
 public abstract class ServerProtocol extends Protocol {
 
 	protected ServerUnit serverUnit;
@@ -30,10 +26,24 @@ public abstract class ServerProtocol extends Protocol {
 			case 1:
 				addConnectionToActiveConnections((Player) message.getObject(), caller);
 				break;
+			case 34789: // Friend Request, String[] {String From, String To}
+				sendFriendRequest(message);
+				break;
+			case 34788: // Friend Request accepted
+				addFriendShip(message);
+				break;
 			default:
 				break;
 		}
-	};
+	}
+
+	private void addFriendShip(Message message) {
+		serverUnit.addFriendShip(((String[])message.getObject())[0], ((String[])message.getObject())[1]);
+	}
+
+	private void sendFriendRequest(Message message) throws IOException {
+		serverUnit.sendFriendRequest(((String[])message.getObject())[0], ((String[])message.getObject())[1]);
+	}
 
 	private boolean addConnectionToActiveConnections(Player player, Connection connection) throws IOException {
 		connection.setPlayer(player);

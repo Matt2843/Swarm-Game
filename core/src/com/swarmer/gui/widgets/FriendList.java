@@ -7,7 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.swarmer.gui.StyleSheet;
+import com.swarmer.network.GameClient;
+import com.swarmer.shared.communication.Message;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -43,14 +46,29 @@ public class FriendList extends ChatWidget {
 	public FriendList(String title, int widgetNo) {
 		super(title, widgetNo);
 		scrollableObject.add(theList).expand().fill();
-		addFriendToFriendList("Matt", FriendListEntry.ONLINE);
+
+		configureAddFriendButton();
+		/*addFriendToFriendList("Matt", FriendListEntry.ONLINE);
 		addFriendToFriendList("Albert", FriendListEntry.OFFLINE);
 		addFriendToFriendList("Georg", FriendListEntry.INGAME);
 		addFriendToFriendList("Aa", FriendListEntry.OFFLINE);
 		addFriendToFriendList("Bb", FriendListEntry.ONLINE);
 		addFriendToFriendList("Cc", FriendListEntry.INGAME);
 		addFriendToFriendList("Hans", FriendListEntry.OFFLINE);
-		addFriendToFriendList("Aa", FriendListEntry.ONLINE);
+		addFriendToFriendList("Aa", FriendListEntry.ONLINE);*/
+	}
+
+	private void configureAddFriendButton() {
+		interaction.setText("ADD");
+		interaction.addListener(new ClickListener() {
+			@Override public void clicked(InputEvent event, float x, float y) {
+				try {
+					GameClient.tcp.sendMessage(new Message(34789, new String[] {GameClient.getCurrentPlayer().getUsername(), input.getText()}));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public void addFriendToFriendList(String name, int onlineStatus) {

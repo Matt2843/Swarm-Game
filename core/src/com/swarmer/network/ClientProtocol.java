@@ -29,7 +29,7 @@ public class ClientProtocol extends Protocol {
 				break;
 			case 301: // Received message in lobby chat
 				String[] receivedMessageArray = (String[]) message.getObject();
-				LobbyScreen.getInstance().lobbyChat.appendToChatWindow(receivedMessageArray[1], receivedMessageArray[0]);
+				LobbyScreen.lobbyChat.appendToChatWindow(receivedMessageArray[1], receivedMessageArray[0]);
 				break;
 			case 997:
 				connectedToLobby(message);
@@ -42,6 +42,9 @@ public class ClientProtocol extends Protocol {
 				break;
 			case 11111:
 				secureConnectToAuthNode(message);
+				break;
+			case 34789: // Received friend request.
+
 				break;
 			default:
 				break;

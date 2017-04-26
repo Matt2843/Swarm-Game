@@ -19,9 +19,9 @@ public class ChatWidget extends Table {
 	protected float parentWidth, width, height;
 	private float animationSpeed = 0.2f;
 
-	private Label interaction;
+	protected Label interaction;
 	private TextButton description;
-	private TextField input;
+	protected TextField input;
 
 	private ScrollPane scrollList;
 	protected Table scrollableObject;
@@ -45,7 +45,7 @@ public class ChatWidget extends Table {
 
 		description = new TextButton(title, StyleSheet.defaultSkin);
 		input = new TextField("", StyleSheet.defaultSkin);
-		interaction = new Label("x", StyleSheet.defaultSkin);
+		interaction = new Label("", StyleSheet.defaultSkin);
 		scrollableObject = new Table();
 
 		scrollList = new ScrollPane(scrollableObject, StyleSheet.defaultSkin);
@@ -54,8 +54,8 @@ public class ChatWidget extends Table {
 
 		description.setSize(width, height / 12);
 		scrollableObject.setSize(width, height * 10 / 12);
-		input.setSize((float) (width * 0.915), height / 12);
-		interaction.setSize((float) (width * 0.085), height / 12);
+		input.setSize((float) (width * 0.8), height / 12);
+		interaction.setSize((float) (width * 0.2), height / 12);
 		interaction.setAlignment(Align.center);
 
 		scrollableObject.setBackground(new Image(new Texture(labelColor)).getDrawable());

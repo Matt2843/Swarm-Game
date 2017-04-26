@@ -22,7 +22,7 @@ public class SwarmerMain extends Game {
 	}
 
 	public void create() {
-		//establishNetworkConnection();
+		establishNetworkConnection();
 		initializeScreens();
 
 		AnimationLibrary.getInstance().initializeAntAnimations();

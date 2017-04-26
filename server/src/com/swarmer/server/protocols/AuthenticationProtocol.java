@@ -70,6 +70,7 @@ public class AuthenticationProtocol extends ServerProtocol {
 		if (authenticatedPlayer != null) {
 			new CoordinationUnitCallable(new Message(1150, new Object[]{authenticatedPlayer, serverUnit.getDescription(), serverUnit.getPort()})).getFutureResult();
 			caller.sendMessage(new Message(110, authenticatedPlayer));
+			serverUnit.addActiveConnection(authenticatedPlayer, caller);
 		}
 	}
 }
