@@ -1,53 +1,48 @@
 package com.swarmer.gui.widgets;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.swarmer.gui.StyleSheet;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * Created by Matt on 04/25/2017.
+ * Created by Matt on 04/26/2017.
  */
-public class FriendList extends Table {
+public class FriendList extends ChatWidget {
 
-	private float parentWidth, parentHeight, width, height;
-	private float animationSpeed = 0.5f;
+	private Map<String, FriendListEntry> onlineFriends = new TreeMap<>();
+	private Map<String, FriendListEntry> ingameFriends = new TreeMap<>();
+	private Map<String, FriendListEntry> offlineFriends = new TreeMap<>();
 
-	private TextButton description;
-	private TextField searchList;
+	private Map<String, PrivateChat> privateChatArrayList = new TreeMap<>();
 
-	private ScrollPane scrollList;
-	private Table theList;
+	private Table theList = new Table();
 
-	public Map<String, FriendListEntry> onlineFriends = new TreeMap<>();
-	public Map<String, FriendListEntry> ingameFriends = new TreeMap<>();
-	public Map<String, FriendListEntry> offlineFriends = new TreeMap<>();
+	private static FriendList friendList;
 
-	private boolean collapsed = true;
-	
-	public FriendList(float width, float height) {
-		this.parentWidth = width; this.parentHeight = height;
-		this.width = width / 4; this.height = (float) (height * 0.4);
-		setSize(this.width, this.height);
-		configureWidget();
-		addWidgets();
+	public static FriendList getInstance() {
+		if(friendList == null) {
+			friendList = new FriendList("Friends", ChatWidget.chatWidgetCount);
+		}
+		return friendList;
+	}
 
+	public void openFriendTabs() {
+		for(PrivateChat privateChat : privateChatArrayList.values()) {
+			getParent().addActor(privateChat);
+		}
+	}
+
+	public FriendList(String title, int widgetNo) {
+		super(title, widgetNo);
+		scrollableObject.add(theList).expand().fill();
 		addFriendToFriendList("Matt", FriendListEntry.ONLINE);
 		addFriendToFriendList("Albert", FriendListEntry.OFFLINE);
 		addFriendToFriendList("Georg", FriendListEntry.INGAME);
@@ -96,48 +91,6 @@ public class FriendList extends Table {
 
 	}
 
-	private void configureWidget() {
-		Pixmap labelColor = new Pixmap((int)width, (int)height * 10/12, Format.RGB888);
-		labelColor.setColor(0.12f, 0.12f, 0.12f, 1);
-		labelColor.fill();
-
-		description = new TextButton("Friends", StyleSheet.defaultSkin);
-		searchList = new TextField("", StyleSheet.defaultSkin);
-		theList = new Table();
-
-		scrollList = new ScrollPane(theList, StyleSheet.defaultSkin);
-		scrollList.setScrollingDisabled(true, false);
-		scrollList.setFadeScrollBars(false);
-
-		description.setSize(width, height / 12);
-		theList.setSize(width, height * 10/12);
-		searchList.setSize(width, height / 12);
-
-		theList.setBackground(new Image(new Texture(labelColor)).getDrawable());
-
-		final MoveToAction collapse = new MoveToAction();
-		collapse.setPosition(parentWidth - width, -(height - description.getHeight()));
-		collapse.setDuration(animationSpeed);
-
-		final MoveToAction expand = new MoveToAction();
-		expand.setPosition(parentWidth - width, 0);
-		expand.setDuration(animationSpeed);
-
-		description.addCaptureListener(new ChangeListener() {
-			@Override public void changed(ChangeEvent event, Actor actor) {
-				if(collapsed) {
-					addAction(expand);
-					collapse.reset();
-				} else {
-					addAction(collapse);
-					expand.reset();
-				}
-				collapsed = !collapsed;
-			}
-		});
-		setPosition(parentWidth - width, -(height - description.getHeight()));
-	}
-
 	private class FriendListEntry extends Table {
 
 		public static final int OFFLINE = 0;
@@ -147,7 +100,7 @@ public class FriendList extends Table {
 		private Label friendNameLabel;
 		private Label onlineStatusLabel;
 
-		private FriendListEntry(int width, int height, String friendName, int onlineStatus) {
+		private FriendListEntry(final int width, final int height, String friendName, int onlineStatus) {
 			friendNameLabel = new Label(friendName, StyleSheet.defaultSkin);
 			onlineStatusLabel = new Label("", StyleSheet.defaultSkin);
 			onlineStatusLabel.setAlignment(Align.center);
@@ -157,7 +110,10 @@ public class FriendList extends Table {
 
 			friendNameLabel.addListener(new ClickListener() {
 				@Override public void clicked(InputEvent event, float x, float y) {
-					System.out.println(friendNameLabel.getText() + " clicked.");
+					if(!privateChatArrayList.containsKey(friendNameLabel.getText().toString())) {
+						privateChatArrayList.put(friendNameLabel.getText().toString(), new PrivateChat(friendNameLabel.getText().toString(), ++ChatWidget.chatWidgetCount));
+						openFriendTabs();
+					}
 				}
 			});
 		}
@@ -181,14 +137,4 @@ public class FriendList extends Table {
 			}
 		}
 	}
-
-	private void addWidgets() {
-		defaults().width(theList.getWidth());
-		add(description);
-		row();
-		add(scrollList);
-		row();
-		add(searchList);
-	}
-
 }

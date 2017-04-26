@@ -8,6 +8,7 @@ import com.swarmer.gui.screens.game.GameScreen;
 import com.swarmer.gui.screens.lobby.LobbyScreen;
 import com.swarmer.gui.screens.mainmenu.MainMenuScreen;
 import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
+import com.swarmer.gui.widgets.FriendList;
 import com.swarmer.gui.widgets.SwarmerScreen;
 import com.swarmer.network.GameClient;
 
@@ -21,7 +22,7 @@ public class SwarmerMain extends Game {
 	}
 
 	public void create() {
-		establishNetworkConnection();
+		//establishNetworkConnection();
 		initializeScreens();
 
 		AnimationLibrary.getInstance().initializeAntAnimations();
@@ -48,6 +49,8 @@ public class SwarmerMain extends Game {
 		Gdx.app.postRunnable(new Runnable() {
 			@Override public void run() {
 				setScreen(screen);
+				screen.addActor(FriendList.getInstance());
+				FriendList.getInstance().openFriendTabs();
 			}
 		});
 	}

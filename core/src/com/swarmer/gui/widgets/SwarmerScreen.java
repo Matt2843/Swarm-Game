@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.swarmer.game.SwarmerMain;
 
 public abstract class SwarmerScreen extends Stage implements Screen {
 
@@ -23,8 +24,8 @@ public abstract class SwarmerScreen extends Stage implements Screen {
 		setViewport(new StretchViewport(width, height));
 		contentPane.setSize(width, height);
 		create();
+
 		addActor(contentPane);
-		addActor(new FriendList(width, height));
 	}
 
 	protected abstract void create();
