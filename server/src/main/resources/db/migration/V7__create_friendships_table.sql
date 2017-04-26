@@ -1,0 +1,8 @@
+CREATE TABLE friendships (
+	id VARCHAR(255) NOT NULL,
+	user_id_1 VARCHAR(255) NOT NULL,
+	user_id_2 VARCHAR(255) NOT NULL,
+	PRIMARY KEY(id),
+	CONSTRAINT FK_user_1 FOREIGN KEY (user_id_1) REFERENCES users(id),
+	CONSTRAINT FK_user_2 FOREIGN KEY (user_id_2) REFERENCES users(id)
+);
