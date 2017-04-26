@@ -5,6 +5,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.swarmer.gui.StyleSheet;
 import com.swarmer.network.GameClient;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.exceptions.GameClientNotInstantiatedException;
@@ -36,26 +37,25 @@ public class MainMenuLoginBox extends Table {
 	}
 
 	private void createFields() {
-		defaultSkin = new Skin(uiskin);
 
-		userName = new TextField("", defaultSkin);
-		userNameLabel = new Label("Account Name: ", defaultSkin);
+		userName = new TextField("", StyleSheet.defaultSkin);
+		userNameLabel = new Label("Account Name: ", StyleSheet.defaultSkin);
 
-		password = new TextField("", defaultSkin);
-		passwordLabel = new Label("Password: ", defaultSkin);
+		password = new TextField("",  StyleSheet.defaultSkin);
+		passwordLabel = new Label("Password: ", StyleSheet.defaultSkin);
 		password.setPasswordCharacter('*');
 		password.setPasswordMode(true);
 
-		verifyPassword = new TextField("", defaultSkin);
-		verifyPasswordLabel = new Label("Verify Password: ", defaultSkin);
+		verifyPassword = new TextField("",  StyleSheet.defaultSkin);
+		verifyPasswordLabel = new Label("Verify Password: ", StyleSheet.defaultSkin);
 		verifyPassword.setPasswordCharacter('*');
 		verifyPassword.setPasswordMode(true);
 
 		verifyPassword.setVisible(false);
 		verifyPasswordLabel.setVisible(false);
 
-		login = new TextButton("Login", defaultSkin);
-		createUser = new TextButton("Create User", defaultSkin);
+		login = new TextButton("Login", StyleSheet.defaultSkin);
+		createUser = new TextButton("Create User", StyleSheet.defaultSkin);
 
 		login.addCaptureListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
@@ -63,23 +63,24 @@ public class MainMenuLoginBox extends Table {
 				try {
 					if(userName.getText().matches("^[a-zA-Z0-9][a-zA-Z0-9_\\-']{1,28}[a-zA-Z0-9]$")) {
 						textFieldData = new Object[]{userName.getText(), password.getText().toCharArray()};
-						if(login.getText().toString().equals("Create")) {
-							if(password.getText().equals(verifyPassword.getText())) {
-								GameClient.getInstance().stcp.sendMessage(new Message(201, textFieldData));
-							}
-						} else {
-							GameClient.getInstance().stcp.sendMessage(new Message(109, textFieldData));
-						}
 					} else {
 						// TODO: Inform user that he's slightly retarded
+						System.out.println("Username is in wrong format!");
 					}
-				} catch(IOException e) {
+					if(login.getText().toString().equals("Create")) {
+						if(password.getText().equals(verifyPassword.getText())) {
+							GameClient.getInstance().stcp.sendMessage(new Message(201, textFieldData));
+						}
+					} else {
+						GameClient.getInstance().stcp.sendMessage(new Message(109, textFieldData));
+					}
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 				loginState();
 				clearFields();
 			}
-		});
+		});;
 
 		createUser.addCaptureListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
@@ -127,6 +128,4 @@ public class MainMenuLoginBox extends Table {
 		verifyPassword.setText("");
 		password.setText("");
 	}
-
-
 }

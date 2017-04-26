@@ -33,24 +33,34 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 		this.caller = caller;
 		System.out.println("Message in mothership protocol: " + message.toString());
 		switch (message.getOpcode()) {
-			case 1: // Get best quality authentication node from db.
-				getNodeFromDb(message);
+			case 1: // Get best quality authentication unit from db.
+				getUnitFromDb(message);
 				break;
-			case 2: // New node added to architecture, add it to db.
+			case 2: // New unit added to architecture, add it to db.
 				addNodeToDb(message);
 				break;
 			case 109: // Authenticate user from forwarded message
 				authenticateUserInDatabase(message);
 				break;
-			case 201: // Create user forwarded message from authentication node.
+			case 201: // Create user forwarded message from authentication unit.
 				addUserToDatabase(message);
 				break;
+			case 301: // Ambigious, either get best quality lobby unit randomly or get specific lobby unit. i.e. either "random" or "unit_id" in message.getObject()
+				getLobbyUnit(message);
 			case 11111:
 				exPublicKey = (PublicKey) message.getObject();
 				caller.sendMessage(new Message(11111, AuthenticationUnit.KEY.getPublic()));
 				break;
 			default:
 				break;
+		}
+	}
+
+	private void getLobbyUnit(Message message) throws IOException, SQLException {
+		if(message.getObject().equals("random")) {
+			getRandomLobbyUnitFromDb("lobby_units");
+		} else {
+			getLobbyUnitFromDb("lobby_units", (String) message.getObject());
 		}
 	}
 
@@ -78,7 +88,23 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 		}
 	}
 
-	private void getNodeFromDb(Message message) throws IOException, SQLException {
+	private void getRandomLobbyUnitFromDb(String unitType) throws SQLException, IOException {
+		String sqlQuery = "SELECT ip_address,port FROM " + unitType + " ORDER BY user_count ASC LIMIT 1";
+		ResultSet resultSet = DatabaseController.mySQLConnection.sqlExecuteQuery(sqlQuery);
+		resultSet.next();
+		String queryResult = resultSet.getString("ip_address") + ":" + resultSet.getString("port");
+		caller.sendMessage(new Message(998, queryResult));
+	}
+
+	private void getLobbyUnitFromDb(String unitType, String unitID) throws SQLException, IOException {
+		String sqlQuery = "SELECT ip_address,port FROM " + unitType + " WHERE id = ?";
+		ResultSet resultSet = DatabaseController.mySQLConnection.sqlExecuteQuery(sqlQuery, unitID);
+		resultSet.next();
+		String queryResult = resultSet.getString("ip_address") + ":" + resultSet.getString("port");
+		caller.sendMessage(new Message(998, queryResult));
+	}
+
+	private void getUnitFromDb(Message message) throws IOException, SQLException {
 		String sqlQuery = "SELECT ip_address,port FROM " + message.getObject() + " ORDER BY user_count ASC LIMIT 1";
 		ResultSet resultSet = DatabaseController.mySQLConnection.sqlExecuteQuery(sqlQuery);
 		resultSet.next();
@@ -93,8 +119,7 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 	}
 
 	private boolean userExistsInDatabase(String username) throws SQLException, IOException {
-		boolean userConnected = DatabaseController.mySQLConnection.sqlExecuteQuery("SELECT 1 FROM users WHERE username = ?", username).last();
-		return userConnected;
+		return DatabaseController.mySQLConnection.sqlExecuteQuery("SELECT 1 FROM users WHERE username = ?", username).last();
 	}
 
 }

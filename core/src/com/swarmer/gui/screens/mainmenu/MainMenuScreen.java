@@ -2,14 +2,23 @@ package com.swarmer.gui.screens.mainmenu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.swarmer.gui.screens.ScreenLib;
-import com.swarmer.gui.screens.ScreenManager;
+import com.swarmer.game.SwarmerMain;
+import com.swarmer.gui.screens.game.GameScreen;
 import com.swarmer.gui.widgets.SwarmerScreen;
 
 public class MainMenuScreen extends SwarmerScreen {
 
-	public MainMenuScreen(int width, int height) {
-		super(width, height);
+	private static MainMenuScreen mainMenuScreenInstance;
+
+	private MainMenuScreen(int width, int height, String description) {
+		super(width, height, description);
+	}
+
+	public static MainMenuScreen getInstance() {
+		if(mainMenuScreenInstance == null) {
+			mainMenuScreenInstance = new MainMenuScreen(1280, 800, "main_menu_screen");
+		}
+		return mainMenuScreenInstance;
 	}
 
 	@Override protected void create() {
@@ -18,7 +27,8 @@ public class MainMenuScreen extends SwarmerScreen {
 
 	@Override protected void handleInput() {
 		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-			ScreenManager.getInstance().show(ScreenLib.GAME_SCREEN);
+			SwarmerMain.getInstance().show(GameScreen.getInstance());
+			//ScreenManager.getInstance().show(ScreenLib.GAME_SCREEN);
 		}
 	}
 }

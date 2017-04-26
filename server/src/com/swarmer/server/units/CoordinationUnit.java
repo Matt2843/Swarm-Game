@@ -51,6 +51,7 @@ public class CoordinationUnit extends ServerUnit {
 		if(!allConnectedUsers.containsKey(player)) {
 			allConnectedUsers.put(player, locationInformation);
 		}
+
 		for (Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
 			System.out.println(entry.getKey().getUsername() + ", " + entry.getValue().toString());
 		}

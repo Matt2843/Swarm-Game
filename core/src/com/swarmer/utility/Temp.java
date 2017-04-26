@@ -2,21 +2,21 @@ package com.swarmer.utility;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
-import com.swarmer.gui.screens.game.GameScreen;
-import com.swarmer.gui.screens.ScreenManager;
 import com.swarmer.game.units.Ant;
+import com.swarmer.gui.screens.game.GameScreen;
 import com.swarmer.shared.communication.Player;
 
 public class Temp {
 
 	public static Boolean spawn(Player owner, int x, int y) {
-		if(between(x, 0, gameScreen().graph.nodes.length) && between(y, 0, gameScreen().graph.nodes[x].length)) {
-			if(gameScreen().graph.nodes[x][y] != null && gameScreen().graph.nodes[x][y].getConnectedEdges().size > 0) {
-				gameScreen().getAnts().add(
+
+		if(between(x, 0, GameScreen.getInstance().graph.nodes.length) && between(y, 0, GameScreen.getInstance().graph.nodes[x].length)) {
+			if(GameScreen.getInstance().graph.nodes[x][y] != null && GameScreen.getInstance().graph.nodes[x][y].getConnectedEdges().size > 0) {
+				GameScreen.getInstance().getAnts().add(
 						new Ant(
 								owner,
-								(TiledMapTileLayer) gameScreen().getMap().getLayers().get(1),
-								gameScreen().graph.nodes[x][y]
+								(TiledMapTileLayer) GameScreen.getInstance().getMap().getLayers().get(1),
+								GameScreen.getInstance().graph.nodes[x][y]
 						)
 				);
 				return true;
@@ -27,10 +27,6 @@ public class Temp {
 
 	public static Boolean spawn(Player owner, Vector2 vec) {
 		return spawn(owner, (int) vec.x, (int) vec.y);
-	}
-
-	private static GameScreen gameScreen() {
-		return (GameScreen) ScreenManager.getInstance().getScreen(com.swarmer.gui.screens.ScreenLib.GAME_SCREEN);
 	}
 
 	public static Boolean between(int val, int min, int max) {

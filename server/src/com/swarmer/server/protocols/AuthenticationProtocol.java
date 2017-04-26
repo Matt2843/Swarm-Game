@@ -1,13 +1,12 @@
 package com.swarmer.server.protocols;
 
 import com.swarmer.server.CoordinationUnitCallable;
+import com.swarmer.server.DatabaseControllerCallable;
 import com.swarmer.server.units.AuthenticationUnit;
 import com.swarmer.server.units.ServerUnit;
 import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
-import java.net.Socket;
-import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
@@ -32,6 +31,9 @@ public class AuthenticationProtocol extends ServerProtocol {
 			case 201:
 				createUser(message);
 				break;
+			case 301:
+				getLobbyUnit(message); // message = {lobby unit ID} or message = {random}
+				break;
 			case 11111:
 				exPublicKey = (PublicKey) message.getObject();
 				caller.sendMessage(new Message(11111, AuthenticationUnit.KEY.getPublic()));
@@ -40,6 +42,11 @@ public class AuthenticationProtocol extends ServerProtocol {
 				super.react(message, caller);
 				break;
 		}
+	}
+
+	private void getLobbyUnit(Message message) throws IOException {
+		Message lobbyUnitConnectionInformation = new DatabaseControllerCallable(message).getFutureResult();
+		caller.sendMessage(lobbyUnitConnectionInformation);
 	}
 
 	private void createUser(Message message) {
@@ -60,9 +67,9 @@ public class AuthenticationProtocol extends ServerProtocol {
 
 	private void authenticateUser(Message message) throws IOException {
 		Player authenticatedPlayer = AuthenticationUnit.authenticateUser(message);
-		if(authenticatedPlayer != null) {
-			new CoordinationUnitCallable(new Message(1150, new Object[]{authenticatedPlayer, serverUnit.getDescription(), serverUnit.getPort()}));
+		if (authenticatedPlayer != null) {
+			new CoordinationUnitCallable(new Message(1150, new Object[]{authenticatedPlayer, serverUnit.getDescription(), serverUnit.getPort()})).getFutureResult();
+			caller.sendMessage(new Message(110, authenticatedPlayer));
 		}
-		caller.sendMessage(new Message(110, authenticatedPlayer));
 	}
 }

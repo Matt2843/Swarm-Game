@@ -69,6 +69,19 @@ public class UDPConnection extends Connection {
 		input = new ObjectInputStream(iaos);
 	}
 
+	@Override public void stopConnection(Object... o) {
+		try {
+			if(o.length > 0) {
+				sendMessage(new Message(0, o[0]));
+			} else {
+				sendMessage(new Message(0));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		cleanUp();
+	}
+
 	@Override public void cleanUp() {
 		try {
 			output.close();

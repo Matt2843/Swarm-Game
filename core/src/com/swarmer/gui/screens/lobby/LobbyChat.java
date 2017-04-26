@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.Align;
 import com.swarmer.gui.StyleSheet;
 import com.swarmer.network.GameClient;
 import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.exceptions.GameClientNotInstantiatedException;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -31,7 +30,7 @@ public class LobbyChat extends Table {
 	}
 
 	private void configureWidgets() {
-		lobbyStatus = new Label("Connected to Lobby: Not Connected", StyleSheet.defaultSkin);
+		lobbyStatus = new Label("Connected to Lobby: NULL", StyleSheet.defaultSkin);
 
 		chatWindow = new Label("", StyleSheet.defaultSkin);
 		chatWindow.clear();
@@ -48,7 +47,7 @@ public class LobbyChat extends Table {
 			@Override public void changed(ChangeEvent event, Actor actor) {
 				if(!userInput.getText().toString().equals("")) {
 					try {
-						GameClient.getInstance().tcp.sendMessage(new Message(301, userInput.getText()));
+						GameClient.getInstance().tcp.sendMessage(new Message(301, new String[] {LobbyScreen.getInstance().getLobbyId(), userInput.getText()}));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -81,5 +80,9 @@ public class LobbyChat extends Table {
 		row();
 		add(userInput).height((float) (getHeight() * 0.08)).width((float) (getWidth() * 0.8));
 		add(sendInput).height((float) (getHeight() * 0.08)).width((float) (getWidth() * 0.2));
+	}
+
+	public void updateLobbyStatus() {
+		this.lobbyStatus.setText("Connected to Lobby: " + LobbyScreen.getInstance().getLobbyId());
 	}
 }

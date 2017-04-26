@@ -54,11 +54,11 @@ public final class GameClient {
 	public static void establishTCPConnection(String ip, int port) {
 		try {
 			if(tcp != null) {
-				tcp.stopConnection();
+				tcp.stopConnection(currentPlayer);
 			}
 			tcp = new TCPConnection(new Socket(ip, port), clientProtocol);
 			tcp.start();
-			tcp.sendMessage(new Message(1));
+			tcp.sendMessage(new Message(1, currentPlayer));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

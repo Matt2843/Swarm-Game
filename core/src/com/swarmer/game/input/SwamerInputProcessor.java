@@ -5,9 +5,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
+import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.screens.game.GameScreen;
-import com.swarmer.gui.screens.ScreenLib;
-import com.swarmer.gui.screens.ScreenManager;
+import com.swarmer.gui.screens.mainmenu.MainMenuScreen;
 import com.swarmer.utility.CoordsTranslator;
 
 public class SwamerInputProcessor implements InputProcessor {
@@ -20,7 +20,7 @@ public class SwamerInputProcessor implements InputProcessor {
 
 	public SwamerInputProcessor(GameScreen parent) {
 		this.parent = parent;
-		camera = ScreenManager.camera;
+		camera = SwarmerMain.getInstance().camera;
 	}
 
 
@@ -64,7 +64,8 @@ public class SwamerInputProcessor implements InputProcessor {
 
 	@Override public boolean keyDown(int keycode) {
 		if(keycode == Input.Keys.ESCAPE) {
-			ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
+			SwarmerMain.getInstance().show(MainMenuScreen.getInstance());
+			//ScreenManager.getInstance().show(MainMenuScreen.getInstance());
 		}
 		return false;
 	}

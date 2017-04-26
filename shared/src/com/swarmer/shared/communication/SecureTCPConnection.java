@@ -101,17 +101,6 @@ public class SecureTCPConnection extends Connection {
 				e.printStackTrace();
 			}
 		} while(message.getOpcode() != 0 && !stop); // TODO: CHANGE STOP CONDITION.
-		stop = true;
-		cleanUp();
-	}
-
-	public void stopConnection() {
-		try {
-			sendMessage(new Message(0));
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		stop = true;
 		cleanUp();
 	}
 
@@ -181,6 +170,19 @@ public class SecureTCPConnection extends Connection {
 		return bos.toByteArray();
 	}
 
+	@Override public void stopConnection(Object... o) {
+		try {
+			if(o.length > 0) {
+				sendMessage(new Message(0, o[0]));
+			} else {
+				sendMessage(new Message(0));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		stop = true;
+		cleanUp();
+	}
 
 	@Override public void cleanUp() {
 		try {

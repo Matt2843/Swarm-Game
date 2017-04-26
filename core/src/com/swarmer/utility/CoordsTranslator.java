@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.screens.game.GameScreen;
-import com.swarmer.gui.screens.ScreenManager;
 
 public class CoordsTranslator {
 
@@ -24,7 +24,7 @@ public class CoordsTranslator {
 
 	public static CoordsTranslator getInstance() {
 		if(instance == null) {
-			instance = new CoordsTranslator((TiledMapTileLayer) GameScreen.map.getLayers().get(0), ScreenManager.camera);
+			instance = new CoordsTranslator((TiledMapTileLayer) GameScreen.map.getLayers().get(0), SwarmerMain.getInstance().camera);
 		}
 		return instance;
 	}

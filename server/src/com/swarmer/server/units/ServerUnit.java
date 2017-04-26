@@ -12,6 +12,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public abstract class ServerUnit extends Unit {
@@ -25,41 +26,71 @@ public abstract class ServerUnit extends Unit {
 		notifyMotherShip();
 	}
 
-	private void notifyMotherShip() {
-		try {
-			String IP = IPGetter.getInstance().getDatabaseControllerIP();
-			TCPConnection databaseControllerConnection = new TCPConnection(new Socket(IP, DATABASE_CONTROLLER_TCP_PORT), null);
-			databaseControllerConnection.start();
-			String[] object = new String[]{String.valueOf(getPort()), getDescription()};
-			databaseControllerConnection.sendMessage(new Message(2, object));
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-	}
+    private void notifyMotherShip() {
+        try {
+            String IP = IPGetter.getInstance().getDatabaseControllerIP();
+            TCPConnection databaseControllerConnection = new TCPConnection(new Socket(IP, DATABASE_CONTROLLER_TCP_PORT), null);
+            databaseControllerConnection.start();
+            String[] object = new String[] {String.valueOf(getPort()), getDescription()};
+            databaseControllerConnection.sendMessage(new Message(2, object));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public Connection getActiveConnection(Player player) {
+    protected static void sendToRemotePlayer(Player player, Message message) throws IOException {
 		if(activeConnections.containsKey(player)) {
-			return activeConnections.get(player);
+			activeConnections.get(player).sendMessage(message);
+			System.out.println("Player was in local and message has been sent.");
 		} else {
-			return null;
+			System.out.println("Player not in local");
 		}
-	}
+    }
 
-	public boolean addActiveConnection(Player player, Connection connection) {
-		if(!activeConnections.containsKey(player)) {
-			activeConnections.put(player, connection);
-			return true;
+    public Connection getActiveConnection(Player player) {
+        if(activeConnections.containsKey(player)) {
+            return activeConnections.get(player);
 		} else {
-			return false;
+        	return null;
 		}
-	}
+    }
 
-	public boolean removeActiveConnection(Player player) {
-		if(activeConnections.containsKey(player)) {
-			activeConnections.remove(player);
-			return true;
-		} else {
-			return false;
+    public boolean addActiveConnection(Player player, Connection connection) {
+        if(!activeConnections.containsKey(player)) {
+            activeConnections.put(player, connection);
+            return true;
+        } else {
+        	return false;
+		}
+    }
+
+    public boolean removeActiveConnection(Player player) {
+        if(activeConnections.containsKey(player)) {
+            activeConnections.remove(player);
+            return true;
+        } else return false;
+    }
+
+    protected class ServerSocketThread extends Thread {
+
+		private int serverSocketType;
+
+		private ServerSocket serverSocket;
+		private DatagramSocket datagramSocket;
+
+		private Socket connection;
+
+		public ServerSocketThread(int serverSocketType) {
+			this.serverSocketType = serverSocketType;
+		}
+
+		public boolean removeActiveConnection(Player player) {
+			if (activeConnections.containsKey(player)) {
+				activeConnections.remove(player);
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 

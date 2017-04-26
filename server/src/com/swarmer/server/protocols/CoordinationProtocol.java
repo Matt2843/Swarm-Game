@@ -67,9 +67,10 @@ public class CoordinationProtocol extends ServerProtocol {
 		CoordinationUnit.changeLocationInformation(connectedPlayer, locationInformation);
 	}
 
-	private void removePlayer(Message message) {
+	private void removePlayer(Message message) throws IOException {
 		Player player = (Player) message.getObject();
 		CoordinationUnit.removeConnection(player);
+		caller.sendMessage(new Message(1236324876, true));
 	}
 
 	private void findPlayer(Message message) throws IOException {

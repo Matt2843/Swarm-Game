@@ -9,6 +9,6 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = 1280;
 		config.height = 800;
-		new LwjglApplication(new SwarmerMain(), config);
+		new LwjglApplication(SwarmerMain.getInstance(), config);
 	}
 }

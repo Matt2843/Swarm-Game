@@ -13,13 +13,17 @@ public class Callable {
 	public Callable(Connection connection, Message message) {
 		this.connection = connection;
 		try {
+
 			connection.setProtocol(new Protocol() {
 				@Override protected void react(Message message, Connection caller) throws IOException, SQLException, NoSuchAlgorithmException {
 					futureResult = message;
 				}
 			});
+
 			connection.start();
+			System.out.println("Callable is sending");
 			connection.sendMessage(message);
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -33,7 +37,9 @@ public class Callable {
 				e.printStackTrace();
 			}
 		}
-		connection.cleanUp();
+
+		connection.stopConnection();
+		System.out.println("Callable received message and is terminating");
 		return futureResult;
 	}
 }
