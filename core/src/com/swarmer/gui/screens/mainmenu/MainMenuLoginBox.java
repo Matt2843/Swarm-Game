@@ -5,7 +5,9 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.StyleSheet;
+import com.swarmer.gui.widgets.SwarmerNotification;
 import com.swarmer.network.GameClient;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.exceptions.GameClientNotInstantiatedException;
@@ -69,10 +71,10 @@ public class MainMenuLoginBox extends Table {
 					}
 					if(login.getText().toString().equals("Create")) {
 						if(password.getText().equals(verifyPassword.getText())) {
-							GameClient.getInstance().stcp.sendMessage(new Message(201, textFieldData));
+							GameClient.stcp.sendMessage(new Message(201, textFieldData));
 						}
 					} else {
-						GameClient.getInstance().stcp.sendMessage(new Message(109, textFieldData));
+						GameClient.stcp.sendMessage(new Message(109, textFieldData));
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -80,15 +82,15 @@ public class MainMenuLoginBox extends Table {
 				loginState();
 				clearFields();
 			}
-		});;
+		});
 
 		createUser.addCaptureListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
-			if(createUser.getText().toString().equals("Create User")) {
-				createUserState();
-			} else {
-				loginState();
-			}
+				if(createUser.getText().toString().equals("Create User")) {
+					createUserState();
+				} else {
+					loginState();
+				}
 			}
 		});
 

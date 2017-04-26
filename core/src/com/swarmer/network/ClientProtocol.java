@@ -2,6 +2,7 @@ package com.swarmer.network;
 
 import com.badlogic.gdx.Gdx;
 import com.swarmer.game.SwarmerMain;
+import com.swarmer.gui.StyleSheet;
 import com.swarmer.gui.screens.lobby.LobbyScreen;
 import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
 import com.swarmer.gui.widgets.SwarmerNotification;
@@ -18,7 +19,7 @@ public class ClientProtocol extends Protocol {
 	private String ip;
 	private int port;
 
-	@Override public void react(Message message, Connection caller) throws IOException {
+	@Override public void react(final Message message, Connection caller) throws IOException {
 		System.out.println(message.toString());
 		switch (message.getOpcode()) {
 			case 1: // TEST
@@ -47,6 +48,19 @@ public class ClientProtocol extends Protocol {
 				break;
 			case 34789: // Received friend request.
 				// TODO: Display friend request notification.
+				Gdx.app.postRunnable(new Runnable() {
+					@Override public void run() {
+						SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Friend Request", (String) message.getObject() + " wants to add you as a friend.") {
+							@Override public void accept() {
+
+							}
+
+							@Override public void reject() {
+
+							}
+						});
+					}
+				});
 				break;
 			default:
 				break;

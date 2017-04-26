@@ -76,7 +76,6 @@ public abstract class ServerUnit extends Unit {
 	}
 
 	public void sendFriendRequest(String from, String to) throws IOException {
-		System.out.println("well we are here " + activeConnections.size());
 		for(Player player : activeConnections.keySet()) { // Check if the suspect is in local activeConnections.
 			if(player.getUsername().equals(to)) {
 				activeConnections.get(player).sendMessage(new Message(34789, from));

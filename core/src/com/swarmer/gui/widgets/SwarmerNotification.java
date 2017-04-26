@@ -1,51 +1,47 @@
 package com.swarmer.gui.widgets;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.Method;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.swarmer.gui.StyleSheet;
 
-public class SwarmerNotification extends Table {
+public abstract class SwarmerNotification extends Dialog {
 
-	private Label header, text;
-	private TextButton close;
 
-	public SwarmerNotification(String headerText, String textText) {
-		setSkin(StyleSheet.defaultSkin);
-		int width = Gdx.graphics.getWidth() / 10;
-		int height = Gdx.graphics.getHeight() / 10;
+	public SwarmerNotification(String title, String description) {
+		super(title, StyleSheet.defaultSkin);
+		TextButton accept = new TextButton("Accept", StyleSheet.defaultSkin);
+		TextButton reject = new TextButton("Reject", StyleSheet.defaultSkin);
 
-		Pixmap backgroundColor = new Pixmap(width, height, Pixmap.Format.RGB888);
-		backgroundColor.setColor(0.12f,0.12f,0.12f,1);
-		backgroundColor.fill();
+		Label descriptionLabel = new Label(description, StyleSheet.defaultSkin);
+		descriptionLabel.setWrap(true);
 
-		setSize(width, height);
-		setBackground(new Image(new Texture(backgroundColor)).getDrawable());
+		getContentTable().add(descriptionLabel).prefWidth(getWidth());
+		button(accept);
+		button(reject);
 
-		this.header = new Label(headerText, StyleSheet.defaultSkin);
-		this.text = new Label(textText, StyleSheet.defaultSkin);
-		close = new TextButton("x", StyleSheet.defaultSkin);
+		accept.addCaptureListener(new ChangeListener() {
+			@Override public void changed(ChangeEvent event, Actor actor) {
+				accept();
+			}
+		});
 
-		add(header).width(width * 5 / 6).height(height / 6);
-		add(close).width(width / 6).height(height / 6);
-		row();
-		add(text).width(width).height(height * 5 / 6).colspan(2);
+		reject.addCaptureListener(new ChangeListener() {
+			@Override public void changed(ChangeEvent event, Actor actor) {
+				reject();
+			}
+		});
 
-		setPosition(Gdx.graphics.getWidth() - width, Gdx.graphics.getHeight() - height);
-		autoClose();
+		setPosition(Gdx.graphics.getWidth() - getWidth(), Gdx.graphics.getHeight() - getHeight());
 	}
 
-	private void autoClose() {
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		addAction(Actions.fadeOut(0.15f));
-	}
+	public abstract void accept();
+	public abstract void reject();
 }
