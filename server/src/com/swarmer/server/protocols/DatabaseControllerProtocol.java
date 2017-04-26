@@ -47,9 +47,12 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 				break;
 			case 301: // Ambigious, either get best quality lobby unit randomly or get specific lobby unit. i.e. either "random" or "unit_id" in message.getObject()
 				getLobbyUnit(message);
+				break;
 			case 11111:
-				exPublicKey = (PublicKey) message.getObject();
-				caller.sendMessage(new Message(11111, AuthenticationUnit.KEY.getPublic()));
+				if(exPublicKey != (PublicKey) message.getObject()) {
+					exPublicKey = (PublicKey) message.getObject();
+					caller.sendMessage(new Message(11111, AuthenticationUnit.KEY.getPublic()));
+				}
 				break;
 			default:
 				break;
