@@ -29,7 +29,7 @@ public abstract class ServerProtocol extends Protocol {
 			case 34789: // Friend Request, String[] {String From, String To}
 				sendFriendRequest(message);
 				break;
-			case 34788: // Friend Request accepted
+			case 34788: // Friend Request accepted String[] {String user1, String user2}
 				addFriendShip(message);
 				break;
 			default:
