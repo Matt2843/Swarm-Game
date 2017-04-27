@@ -30,6 +30,7 @@ public class AuthenticationUnit extends ServerUnit {
 		try {
 			DatabaseControllerCallable databaseControllerCallable = new DatabaseControllerCallable(new Message(11111, KEY.getPublic()));
 			DBCkey = (PublicKey) databaseControllerCallable.getFutureResult().getObject();
+			System.out.println("DBCKEY VALUE: " + DBCkey);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

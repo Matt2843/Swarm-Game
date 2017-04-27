@@ -14,9 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-/**
- * Created by Matt on 04/06/2017.
- */
 public class DatabaseControllerProtocol extends ServerProtocol {
 
 	private Connection caller;
@@ -47,11 +44,9 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 				break;
 			case 301: // Ambigious, either get best quality lobby unit randomly or get specific lobby unit. i.e. either "random" or "unit_id" in message.getObject()
 				getLobbyUnit(message);
-			case 11111:
-				exPublicKey = (PublicKey) message.getObject();
-				caller.sendMessage(new Message(11111, AuthenticationUnit.KEY.getPublic()));
 				break;
 			default:
+				super.react(message, caller);
 				break;
 		}
 	}

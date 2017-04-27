@@ -14,6 +14,9 @@ import com.swarmer.shared.communication.Protocol;
 import java.io.IOException;
 import java.security.PublicKey;
 
+import static com.swarmer.network.GameClient.getCurrentPlayer;
+import static com.swarmer.network.GameClient.getInstance;
+
 public class ClientProtocol extends Protocol {
 
 	private String ip;
@@ -71,7 +74,7 @@ public class ClientProtocol extends Protocol {
 		if(message.getObject() != null) {
 			SwarmerMain.getInstance().show(PreLobbyScreen.getInstance());
 			//ScreenManager.getInstance().show(ScreenLib.PRE_LOBBY_SCREEN);
-			GameClient.getInstance().setCurrentPlayer((Player) message.getObject());
+			getInstance().setCurrentPlayer((Player) message.getObject());
 		} else {
 			// TODO: Notify user that user creation failed.
 			System.out.println();
@@ -82,7 +85,7 @@ public class ClientProtocol extends Protocol {
 		if (message.getObject() != null) {
 			SwarmerMain.getInstance().show(PreLobbyScreen.getInstance());
 			//ScreenManager.getInstance().show(ScreenLib.PRE_LOBBY_SCREEN);
-			GameClient.getInstance().setCurrentPlayer((Player) message.getObject());
+			getInstance().setCurrentPlayer((Player) message.getObject());
 		} else {
 			// TODO: Notify user that login failed.
 			System.out.println("Login failed");
@@ -96,16 +99,21 @@ public class ClientProtocol extends Protocol {
 
 	private void connectToLobbyUnitAndStartLobby(Message message) throws IOException {
 		connectServerUnit(message);
-		GameClient.getInstance().tcp.sendMessage(new Message(302));
+		GameClient.tcp.sendMessage(new Message(302));
 	}
 
 	private void connectServerUnit(Message message) {
 		String[] receivedMessageArray = ((String) message.getObject()).split(":");
 		ip = receivedMessageArray[0].replace("/", "");
 		port = Integer.parseInt(receivedMessageArray[1]);
-
+		if(GameClient.stcp != null) {
+			GameClient.stcp.stopConnection(getCurrentPlayer());
+		}
+		//if(GameClient.udp != null) {
+		//	GameClient.udp.stopConnection(getCurrentPlayer());
+		//}
 		try {
-			GameClient.getInstance().establishTCPConnection(ip, port);
+			GameClient.establishTCPConnection(ip, port);
 			GameClient.tcp.sendMessage(new Message(11111, GameClient.KEY.getPublic()));
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -113,6 +121,6 @@ public class ClientProtocol extends Protocol {
 	}
 
 	private void secureConnectToAuthNode(Message message) {
-		GameClient.getInstance().establishSecureTCPConnection(ip, port, (PublicKey) message.getObject());
+		getInstance().establishSecureTCPConnection(ip, port, (PublicKey) message.getObject());
 	}
 }
