@@ -9,16 +9,17 @@ public class Message implements Serializable {
 	private final Object object;
 	
 	public Message(int opcode) {
-		this.opcode = opcode;
-		this.object = null;
+		this(opcode, null);
 	}
 	
 	public Message(Object object) {
-		this.opcode = 0;
-		this.object = object;
+		this(0, object);
 	}
 	
 	public Message(int opcode, Object object) {
+		if(object != null && !(object instanceof Serializable)){
+			System.out.println(object.getClass().getSimpleName() + ": is not Serializable.");
+		}
 		this.opcode = opcode;
 		this.object = object;
 	}
