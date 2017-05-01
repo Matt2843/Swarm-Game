@@ -33,6 +33,8 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 		this.caller = caller;
 		System.out.println("Message in mothership protocol: " + message.toString());
 		switch (message.getOpcode()) {
+			case 0: // Ignore Closing Connections.
+				break;
 			case 1: // Get best quality authentication unit from db.
 				getUnitFromDb(message);
 				break;
@@ -51,13 +53,8 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 			case 34788:
 				addFriendShipToDatabase(message);
 				break;
-			case 11111:
-				if(exPublicKey != (PublicKey) message.getObject()) {
-					exPublicKey = (PublicKey) message.getObject();
-					caller.sendMessage(new Message(11111, AuthenticationUnit.KEY.getPublic()));
-				}
-				break;
 			default:
+				super.react(message, caller);
 				break;
 		}
 	}

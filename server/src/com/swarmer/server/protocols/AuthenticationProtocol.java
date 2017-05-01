@@ -34,12 +34,6 @@ public class AuthenticationProtocol extends ServerProtocol {
 			case 301:
 				getLobbyUnit(message); // message = {lobby unit ID} or message = {random}
 				break;
-			case 11111:
-				if(exPublicKey != (PublicKey) message.getObject()) {
-					exPublicKey = (PublicKey) message.getObject();
-					caller.sendMessage(new Message(11111, AuthenticationUnit.KEY.getPublic()));
-				}
-				break;
 			default:
 				super.react(message, caller);
 				break;
@@ -69,7 +63,7 @@ public class AuthenticationProtocol extends ServerProtocol {
 
 	private void authenticateUser(Message message) throws IOException {
 		Player authenticatedPlayer = AuthenticationUnit.authenticateUser(message);
-		if (authenticatedPlayer != null) {
+		if(authenticatedPlayer != null) {
 			new CoordinationUnitCallable(new Message(1150, new Object[]{authenticatedPlayer, serverUnit.getDescription(), serverUnit.getPort()})).getFutureResult();
 			caller.sendMessage(new Message(110, authenticatedPlayer));
 			serverUnit.addActiveConnection(authenticatedPlayer, caller);

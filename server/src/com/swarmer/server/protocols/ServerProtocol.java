@@ -1,6 +1,7 @@
 package com.swarmer.server.protocols;
 
 import com.swarmer.server.CoordinationUnitCallable;
+import com.swarmer.server.units.AuthenticationUnit;
 import com.swarmer.server.units.ServerUnit;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
@@ -8,6 +9,7 @@ import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.Protocol;
 
 import java.io.IOException;
+import java.security.PublicKey;
 import java.sql.SQLException;
 
 public abstract class ServerProtocol extends Protocol {
@@ -26,6 +28,9 @@ public abstract class ServerProtocol extends Protocol {
 			case 1:
 				addConnectionToActiveConnections((Player) message.getObject(), caller);
 				break;
+			case 11111:
+				sharePublicKey(message, caller);
+				break;
 			case 34789: // Friend Request, String[] {String From, String To}
 				sendFriendRequest(message);
 				break;
@@ -34,6 +39,13 @@ public abstract class ServerProtocol extends Protocol {
 				break;
 			default:
 				break;
+		}
+	}
+
+	private void sharePublicKey(Message message, Connection caller) throws IOException {
+		if(exPublicKey != (PublicKey) message.getObject()) {
+			exPublicKey = (PublicKey) message.getObject();
+			caller.sendMessage(new Message(11111, AuthenticationUnit.KEY.getPublic()));
 		}
 	}
 
