@@ -63,7 +63,7 @@ public class FriendList extends ChatWidget {
 		interaction.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				try {
-					GameClient.tcp.sendMessage(new Message(34789, new String[] {GameClient.getCurrentPlayer().getUsername(), input.getText()}));
+					GameClient.getInstance().tcp.sendMessage(new Message(34789, new String[] {GameClient.getInstance().getCurrentPlayer().getUsername(), input.getText()}));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

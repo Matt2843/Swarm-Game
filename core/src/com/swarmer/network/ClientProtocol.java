@@ -2,7 +2,6 @@ package com.swarmer.network;
 
 import com.badlogic.gdx.Gdx;
 import com.swarmer.game.SwarmerMain;
-import com.swarmer.gui.StyleSheet;
 import com.swarmer.gui.screens.lobby.LobbyScreen;
 import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
 import com.swarmer.gui.widgets.SwarmerNotification;
@@ -13,9 +12,6 @@ import com.swarmer.shared.communication.Protocol;
 
 import java.io.IOException;
 import java.security.PublicKey;
-
-import static com.swarmer.network.GameClient.getCurrentPlayer;
-import static com.swarmer.network.GameClient.getInstance;
 
 public class ClientProtocol extends Protocol {
 
@@ -63,7 +59,7 @@ public class ClientProtocol extends Protocol {
 			@Override public void run() {
 				SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Friend Request", (String) message.getObject() + " wants to add you as a friend.") {
 					@Override public void accept() throws IOException {
-						GameClient.tcp.sendMessage(new Message(34788, new String[] {GameClient.getCurrentPlayer().getUsername(), (String) message.getObject()}));
+						GameClient.getInstance().tcp.sendMessage(new Message(34788, new String[] {GameClient.getInstance().getCurrentPlayer().getUsername(), (String) message.getObject()}));
 					}
 
 					@Override public void reject() {
@@ -89,7 +85,7 @@ public class ClientProtocol extends Protocol {
 		if (message.getObject() != null) {
 			SwarmerMain.getInstance().show(PreLobbyScreen.getInstance());
 			//ScreenManager.getInstance().show(ScreenLib.PRE_LOBBY_SCREEN);
-			getInstance().setCurrentPlayer((Player) message.getObject());
+			GameClient.getInstance().setCurrentPlayer((Player) message.getObject());
 		} else {
 			// TODO: Notify user that login failed.
 			System.out.println("Login failed");
@@ -103,28 +99,28 @@ public class ClientProtocol extends Protocol {
 
 	private void connectToLobbyUnitAndStartLobby(Message message) throws IOException {
 		connectServerUnit(message);
-		GameClient.tcp.sendMessage(new Message(302));
+		GameClient.getInstance().tcp.sendMessage(new Message(302));
 	}
 
 	private void connectServerUnit(Message message) {
 		String[] receivedMessageArray = ((String) message.getObject()).split(":");
 		ip = receivedMessageArray[0].replace("/", "");
 		port = Integer.parseInt(receivedMessageArray[1]);
-		if(GameClient.stcp != null) {
-			GameClient.stcp.stopConnection(getCurrentPlayer());
+		if(GameClient.getInstance().stcp != null) {
+			GameClient.getInstance().stcp.stopConnection(GameClient.getInstance().getCurrentPlayer());
 		}
 		//if(GameClient.udp != null) {
 		//	GameClient.udp.stopConnection(getCurrentPlayer());
 		//}
 		try {
-			GameClient.establishTCPConnection(ip, port);
-			GameClient.tcp.sendMessage(new Message(11111, GameClient.KEY.getPublic()));
+			GameClient.getInstance().establishTCPConnection(ip, port);
+			GameClient.getInstance().tcp.sendMessage(new Message(11111, GameClient.KEY.getPublic()));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	private void secureConnectToAuthNode(Message message) {
-		getInstance().establishSecureTCPConnection(ip, port, (PublicKey) message.getObject());
+		GameClient.getInstance().establishSecureTCPConnection(ip, port, (PublicKey) message.getObject());
 	}
 }

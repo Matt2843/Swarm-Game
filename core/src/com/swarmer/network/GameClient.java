@@ -13,8 +13,8 @@ public final class GameClient {
 
 	private static final ClientProtocol clientProtocol = new ClientProtocol();
 
-	public static TCPConnection tcp = null;
-	public static SecureTCPConnection stcp = null;
+	public TCPConnection tcp = null;
+	public SecureTCPConnection stcp = null;
 	//public static UDPConnection udp;
 
 	private static Player currentPlayer;
@@ -51,7 +51,7 @@ public final class GameClient {
 		return gc;
 	}
 
-	public static void establishTCPConnection(String ip, int port) {
+	public void establishTCPConnection(String ip, int port) {
 		try {
 			if(tcp != null) {
 				tcp.stopConnection(currentPlayer);
@@ -64,7 +64,7 @@ public final class GameClient {
 		}
 	}
 
-	public static void establishSecureTCPConnection(String ip, int port, PublicKey exPublicKey) {
+	public void establishSecureTCPConnection(String ip, int port, PublicKey exPublicKey) {
 		try {
 			if(stcp != null) {
 				stcp.stopConnection();
@@ -76,7 +76,7 @@ public final class GameClient {
 		}
 	}
 
-	public static Player getCurrentPlayer() {
+	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
 
@@ -84,7 +84,7 @@ public final class GameClient {
 		currentPlayer = player;
 	}
 
-	public static void cleanUp() {
+	public void cleanUp() {
 		tcp.cleanUp();
 		stcp.cleanUp();
 		//udp.cleanUp();
