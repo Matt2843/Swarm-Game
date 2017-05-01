@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Matt on 04/17/2017.
- */
 public class CoordinationUnit extends ServerUnit {
 
 	private final CoordinationProtocol coordinationProtocol = new CoordinationProtocol(this);
@@ -48,21 +45,24 @@ public class CoordinationUnit extends ServerUnit {
 	}
 
 	public static void addConnection(Player player, LocationInformation locationInformation) {
-		if(!allConnectedUsers.containsKey(player)) {
-			allConnectedUsers.put(player, locationInformation);
-		}
-
-		for (Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
-			System.out.println(entry.getKey().getUsername() + ", " + entry.getValue().toString());
+		if(player != null) {
+			if(!allConnectedUsers.containsKey(player)) {
+				allConnectedUsers.put(player, locationInformation);
+			}
+			for(Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
+				System.out.println(entry.getKey().getUsername() + ", " + entry.getValue().toString());
+			}
 		}
 	}
 
 	public static void removeConnection(Player player) {
-		if(allConnectedUsers.containsKey(player)) {
-			allConnectedUsers.remove(player);
-		}
-		for (Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
-			System.out.println(entry.getKey().getUsername() + ", " + entry.getValue().toString());
+		if(player != null) {
+			if(allConnectedUsers.containsKey(player) && !allConnectedUsers.get(player).getServerUnitDescription().equals("lobby_units")) { // TODO: Find out why new entries are deleted after being added
+				allConnectedUsers.remove(player);
+			}
+			for(Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
+				System.out.println(entry.getKey().getUsername() + ", " + entry.getValue().toString());
+			}
 		}
 	}
 
