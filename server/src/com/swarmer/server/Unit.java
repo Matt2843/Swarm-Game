@@ -42,7 +42,7 @@ public abstract class Unit {
 	//public static final int GAME_UNIT_STCP_PORT = 43151;
 	//public static final int GAME_UNIT_UDP_PORT = 43152;
 
-	public static KeyPair KEY = null;
+	public static KeyPair KEY;
 
 	protected Unit() {
 		generateKeys();
@@ -55,7 +55,7 @@ public abstract class Unit {
 		//new ServerSocketThread(UDP).start();
 	}
 
-	private void generateKeys() {
+	private KeyPair generateKeys() {
 		try {
 			KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
 			kpg.initialize(2048);
@@ -63,6 +63,7 @@ public abstract class Unit {
 		} catch(NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	public abstract int getPort();
