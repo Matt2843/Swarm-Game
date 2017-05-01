@@ -31,7 +31,11 @@ public abstract class SwarmerNotification extends Dialog {
 
 		accept.addCaptureListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
-				accept();
+				try {
+					accept();
+				} catch(IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 
