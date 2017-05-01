@@ -48,6 +48,9 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 			case 301: // Ambigious, either get best quality lobby unit randomly or get specific lobby unit. i.e. either "random" or "unit_id" in message.getObject()
 				getLobbyUnit(message);
 				break;
+			case 34788:
+				addFriendShipToDatabase(message);
+				break;
 			case 11111:
 				if(exPublicKey != (PublicKey) message.getObject()) {
 					exPublicKey = (PublicKey) message.getObject();
@@ -57,6 +60,11 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 			default:
 				break;
 		}
+	}
+
+	private void addFriendShipToDatabase(Message message) {
+		// TODO: Add friendship to database message contains String[] {User1, User2}
+		//DatabaseController.mySQLConnection.sqlExecute("INSERT INTO friendships ()");
 	}
 
 	private void getLobbyUnit(Message message) throws IOException, SQLException {

@@ -48,29 +48,32 @@ public class ClientProtocol extends Protocol {
 				break;
 			case 34789: // Received friend request.
 				// TODO: Display friend request notification.
-				Gdx.app.postRunnable(new Runnable() {
-					@Override public void run() {
-						SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Friend Request", (String) message.getObject() + " wants to add you as a friend.") {
-							@Override public void accept() {
-
-							}
-
-							@Override public void reject() {
-
-							}
-						});
-					}
-				});
+				handleFriendRequest(message);
 				break;
 			default:
 				break;
 		}
 	}
 
+	private void handleFriendRequest(final Message message) {
+		Gdx.app.postRunnable(new Runnable() {
+			@Override public void run() {
+				SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Friend Request", (String) message.getObject() + " wants to add you as a friend.") {
+					@Override public void accept() throws IOException {
+						GameClient.tcp.sendMessage(new Message(34788, new String[] {GameClient.getCurrentPlayer().getUsername(), (String) message.getObject()}));
+					}
+
+					@Override public void reject() {
+						// Nothing happens
+					}
+				});
+			}
+		});
+	}
+
 	private void userCreatingState(Message message) {
 		if(message.getObject() != null) {
 			SwarmerMain.getInstance().show(PreLobbyScreen.getInstance());
-			//ScreenManager.getInstance().show(ScreenLib.PRE_LOBBY_SCREEN);
 			GameClient.getInstance().setCurrentPlayer((Player) message.getObject());
 		} else {
 			// TODO: Notify user that user creation failed.

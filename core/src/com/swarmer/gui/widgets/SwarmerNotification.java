@@ -12,6 +12,8 @@ import com.badlogic.gdx.utils.reflect.Method;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import com.swarmer.gui.StyleSheet;
 
+import java.io.IOException;
+
 public abstract class SwarmerNotification extends Dialog {
 
 
@@ -42,6 +44,6 @@ public abstract class SwarmerNotification extends Dialog {
 		setPosition(Gdx.graphics.getWidth() - getWidth(), Gdx.graphics.getHeight() - getHeight());
 	}
 
-	public abstract void accept();
+	public abstract void accept() throws IOException;
 	public abstract void reject();
 }

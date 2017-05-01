@@ -1,5 +1,6 @@
 package com.swarmer.server.units;
 
+import com.swarmer.server.CoordinationUnitCallable;
 import com.swarmer.server.Unit;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.shared.communication.*;
@@ -82,6 +83,8 @@ public abstract class ServerUnit extends Unit {
 				return;
 			}
 		}
+		Message coordinationUnitResponse = new CoordinationUnitCallable(new Message(1153, to)).getFutureResult();
+		System.out.println(coordinationUnitResponse.toString());
 		// TODO: Suspect was not in local activeConnections, get his locationinformation from coordination unit :)
 	}
 
