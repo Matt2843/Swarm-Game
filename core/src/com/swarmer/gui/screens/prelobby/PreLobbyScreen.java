@@ -132,7 +132,7 @@ public class PreLobbyScreen extends SwarmerScreen {
 			@Override public void changed(ChangeEvent event, Actor actor) {
 				SwarmerMain.getInstance().show(MainMenuScreen.getInstance());
 				//ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
-				GameClient.getInstance().tcp.stopConnection(GameClient.getCurrentPlayer());
+				GameClient.getInstance().tcp.stopConnection(GameClient.getInstance().getCurrentPlayer());
 				GameClient.getInstance().tcp = null;
 				GameClient.getInstance().establishTCPConnection(IPGetter.getInstance().getAccessUnitIP(), 43120);
 			}
