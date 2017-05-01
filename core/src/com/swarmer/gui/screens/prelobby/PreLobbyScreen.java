@@ -20,7 +20,7 @@ import java.io.IOException;
  */
 public class PreLobbyScreen extends SwarmerScreen {
 
-	private TextButton startLobbyButton, startCompetitiveGameButton, startCasualGameButton;
+	private TextButton startLobbyButton, startCompetitiveGameButton, startCasualGameButton, cancelSearchButton;
 	private Label gameModeLabel, playWithFriendsLabel;
 
 	private static PreLobbyScreen lobbyScreenInstance;
@@ -53,17 +53,53 @@ public class PreLobbyScreen extends SwarmerScreen {
 			}
 		});
 
+
 		startCompetitiveGameButton.addCaptureListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
-
+				findGame("competitive");
 			}
 		});
 
 		startCasualGameButton.addCaptureListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
-
+				findGame("casual");
 			}
 		});
+
+		cancelSearchButton.addCaptureListener(new ChangeListener() {
+			@Override public void changed(ChangeEvent event, Actor actor) {
+				cancelSearch();
+			}
+		});
+	}
+
+	private void findGame(String mode) {
+		gameModeLabel.setText("Looking for " + mode.toLowerCase() + " game...");
+
+		int size = contentPane.getCells().size;
+
+		contentPane.removeActor(startCompetitiveGameButton);
+		contentPane.removeActor(startCasualGameButton);
+
+		contentPane.getCells().removeIndex(size-1);
+		contentPane.getCells().removeIndex(size-2);
+
+		contentPane.row();
+		contentPane.add(cancelSearchButton).colspan(2).width(350);
+	}
+
+	private void cancelSearch() {
+		gameModeLabel.setText("Select Game Mode: ");
+
+		int size = contentPane.getCells().size;
+
+		contentPane.removeActor(cancelSearchButton);
+
+		contentPane.getCells().removeIndex(size-1);
+
+		contentPane.row();
+		contentPane.add(startCompetitiveGameButton);
+		contentPane.add(startCasualGameButton);
 	}
 
 	private void createButtons() {
@@ -72,6 +108,8 @@ public class PreLobbyScreen extends SwarmerScreen {
 		startLobbyButton = new TextButton("Start Lobby", StyleSheet.defaultSkin);
 		startCompetitiveGameButton = new TextButton("Competitive", StyleSheet.defaultSkin);
 		startCasualGameButton = new TextButton("Casual", StyleSheet.defaultSkin);
+
+		cancelSearchButton = new TextButton("Cancel", StyleSheet.defaultSkin);
 
 		gameModeLabel = new Label("Select Game Mode: ", StyleSheet.defaultSkin);
 		playWithFriendsLabel = new Label("Play With Friends?", StyleSheet.defaultSkin);
