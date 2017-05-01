@@ -60,7 +60,7 @@ public class ClientProtocol extends Protocol {
 			@Override public void run() {
 				SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Friend Request", (String) message.getObject() + " wants to add you as a friend.") {
 					@Override public void accept() throws IOException {
-						GameClient.tcp.sendMessage(new Message(34788, new String[] {GameClient.getCurrentPlayer().getUsername(), (String) message.getObject()}));
+						GameClient.getInstance().tcp.sendMessage(new Message(34788, new String[] {GameClient.getInstance().getCurrentPlayer().getUsername(), (String) message.getObject()}));
 					}
 
 					@Override public void reject() {
@@ -109,7 +109,7 @@ public class ClientProtocol extends Protocol {
 
 		try {
 			GameClient.getInstance().establishTCPConnection(ip, port);
-			GameClient.tcp.sendMessage(new Message(11111, GameClient.KEY.getPublic()));
+			GameClient.getInstance().tcp.sendMessage(new Message(11111, GameClient.KEY.getPublic()));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
