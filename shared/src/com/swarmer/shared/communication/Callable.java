@@ -20,7 +20,7 @@ public class Callable {
 				}
 			});
 
-			connection.start();
+			//connection.start();
 			System.out.println("Callable is sending");
 			connection.sendMessage(message);
 
@@ -30,13 +30,7 @@ public class Callable {
 	}
 
 	public Message getFutureResult() {
-		while(futureResult == null) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+		futureResult = connection.getNextMsg();
 
 		connection.stopConnection();
 		System.out.println("Callable received message and is terminating");
