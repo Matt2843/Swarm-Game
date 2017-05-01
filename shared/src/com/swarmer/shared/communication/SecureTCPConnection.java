@@ -100,7 +100,7 @@ public class SecureTCPConnection extends Connection {
 			} catch (ClassNotFoundException | OperationInWrongServerNodeException | NoSuchAlgorithmException | SQLException e) {
 				e.printStackTrace();
 			}
-		} while(message.getOpcode() != 0 && !stop); // TODO: CHANGE STOP CONDITION.
+		} while(!stop && message.getOpcode() != 0); // TODO: CHANGE STOP CONDITION.
 		cleanUp();
 	}
 
@@ -116,6 +116,15 @@ public class SecureTCPConnection extends Connection {
 		} else {
 			System.out.println("Connection Closed");
 		}
+	}
+
+	@Override public Message getNextMsg() {
+		try {
+			return (Message) recreateMessage((ArrayList<SealedObject>) input.readObject());
+		} catch(IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private Message recreateMessage(ArrayList<SealedObject> lst) {
@@ -171,17 +180,19 @@ public class SecureTCPConnection extends Connection {
 	}
 
 	@Override public void stopConnection(Object... o) {
-		try {
-			if(o.length > 0) {
-				sendMessage(new Message(0, o[0]));
-			} else {
-				sendMessage(new Message(0));
+		if(!stop) {
+			try {
+				if(o.length > 0) {
+					sendMessage(new Message(0, o[0]));
+				} else {
+					sendMessage(new Message(0));
+				}
+			} catch(IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			stop = true;
+			cleanUp();
 		}
-		stop = true;
-		cleanUp();
 	}
 
 	@Override public void cleanUp() {
