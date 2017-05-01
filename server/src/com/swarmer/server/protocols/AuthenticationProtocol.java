@@ -34,6 +34,12 @@ public class AuthenticationProtocol extends ServerProtocol {
 			case 301:
 				getLobbyUnit(message); // message = {lobby unit ID} or message = {random}
 				break;
+			case 11111:
+				if(exPublicKey != (PublicKey) message.getObject()) {
+					exPublicKey = (PublicKey) message.getObject();
+					caller.sendMessage(new Message(11111, AuthenticationUnit.KEY.getPublic()));
+				}
+				break;
 			default:
 				super.react(message, caller);
 				break;
