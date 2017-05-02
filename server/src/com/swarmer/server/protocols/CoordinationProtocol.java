@@ -41,10 +41,11 @@ public class CoordinationProtocol extends ServerProtocol {
 				removePlayer(message);
 				break;
 			case 1153: // Retrieve user location information with the given username, object: {username}
-				findPlayer(message);
+				findPlayer(message, caller);
 				break;
 			case 1161:
 				findMatch(message);
+				break;
 			default:
 				break;
 		}
@@ -73,7 +74,7 @@ public class CoordinationProtocol extends ServerProtocol {
 		caller.sendMessage(new Message(1236324876, true));
 	}
 
-	private void findPlayer(Message message) throws IOException {
+	private void findPlayer(Message message, Connection caller) throws IOException {
 		String searchString = (String) message.getObject();
 		LocationInformation locationInformation = CoordinationUnit.findPlayerLocationInformation(searchString);
 		caller.sendMessage(new Message(1248732, locationInformation)); // TODO: IMPLEMENT THIS IN THE GAME CLIENT.

@@ -36,8 +36,14 @@ public final class Player implements Serializable {
 		return this.id.equals(that.getId()) && this.username.equals(that.getUsername());
 	}
 
-	@Override
-	public String toString() {
+	@Override public int hashCode() {
+		if(id != null) {
+			return id.hashCode();
+		}
+		return -1;
+	}
+
+	@Override public String toString() {
 		return "Player{" +
 				"username='" + username + '\'' +
 				", id='" + id + '\'' +

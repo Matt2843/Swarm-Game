@@ -60,6 +60,10 @@ public class UDPConnection extends Connection {
 		connection.send(outbound);
 	}
 
+	@Override public Message getNextMsg() {
+		return null;
+	}
+
 	@Override protected void setupStreams() throws IOException {
 		baos = new ByteArrayOutputStream();
 		output = new ObjectOutputStream(baos);

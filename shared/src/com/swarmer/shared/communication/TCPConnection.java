@@ -43,13 +43,24 @@ public class TCPConnection extends Connection {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		} while(message.getOpcode() != 0 && !stop); // TODO: CHANGE STOP CONDITION.
+		} while(!stop && message.getOpcode() != 0); // TODO: CHANGE STOP CONDITION.
 		cleanUp();
 	}
 
 	@Override public void sendMessage(Message m) throws IOException {
-		output.writeObject(m);
-		output.flush();
+		if(!stop) {
+			output.writeObject(m);
+			output.flush();
+		}
+	}
+
+	@Override public Message getNextMsg() {
+		try {
+			return (Message) input.readObject();
+		} catch(IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override protected void setupStreams() throws IOException {
@@ -59,17 +70,19 @@ public class TCPConnection extends Connection {
 	}
 
 	@Override public void stopConnection(Object... o) {
-		try {
-			if(o.length > 0) {
-				sendMessage(new Message(0, o[0]));
-			} else {
-				sendMessage(new Message(0));
+		if(!stop) {
+			try {
+				if(o.length > 0) {
+					sendMessage(new Message(0, o[0]));
+				} else {
+					sendMessage(new Message(0));
+				}
+			} catch(IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			stop = true;
+			cleanUp();
 		}
-		stop = true;
-		cleanUp();
 	}
 
 	@Override public void cleanUp() {

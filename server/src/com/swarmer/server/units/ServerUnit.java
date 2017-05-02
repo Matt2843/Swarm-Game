@@ -3,6 +3,7 @@ package com.swarmer.server.units;
 import com.swarmer.server.CoordinationUnitCallable;
 import com.swarmer.server.Unit;
 import com.swarmer.server.protocols.ServerProtocol;
+import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
@@ -57,6 +58,7 @@ public abstract class ServerUnit extends Unit {
     }
 
     public boolean addActiveConnection(Player player, Connection connection) {
+		System.out.println("Add: " + player.getUsername());
 	    if(!activeConnections.containsKey(player)) {
             activeConnections.put(player, connection);
             return true;
@@ -66,7 +68,8 @@ public abstract class ServerUnit extends Unit {
     }
 
     public boolean removeActiveConnection(Player player) {
-        if(activeConnections.containsKey(player)) {
+		System.out.println("Remove: " + player.getUsername());
+		if(activeConnections.containsKey(player)) {
             activeConnections.remove(player);
             return true;
         } else return false;
@@ -84,8 +87,19 @@ public abstract class ServerUnit extends Unit {
 			}
 		}
 		Message coordinationUnitResponse = new CoordinationUnitCallable(new Message(1153, to)).getFutureResult();
+		sendTo((LocationInformation) coordinationUnitResponse.getObject(), null, new Message(34789, new String[] {from, to}));
 		System.out.println(coordinationUnitResponse.toString());
 		// TODO: Suspect was not in local activeConnections, get his locationinformation from coordination unit :)
+	}
+
+	public void sendTo(LocationInformation local, Protocol prt, Message msg) {
+		try {
+			TCPConnection con = new TCPConnection(new Socket(local.getServerUnitIp(), local.getServerUnitPort()), prt);
+			con.start();
+			con.sendMessage(msg);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected class ServerSocketThread extends Thread {

@@ -52,6 +52,7 @@ public final class GameClient {
 	}
 
 	public void establishTCPConnection(String ip, int port) {
+		closeConnection();
 		try {
 			if(tcp != null) {
 				tcp.stopConnection(currentPlayer);
@@ -74,6 +75,20 @@ public final class GameClient {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void closeConnection() {
+		if(tcp != null) {
+			tcp.stopConnection(currentPlayer);
+		}
+
+		if(stcp != null) {
+			stcp.stopConnection(currentPlayer);
+		}
+
+		//if(udp != null) {
+		//	udp.stopConnection(currentPlayer);
+		//}
 	}
 
 	public Player getCurrentPlayer() {

@@ -25,6 +25,8 @@ public abstract class Connection extends Thread {
 
 	abstract public void sendMessage(Message m) throws IOException;
 
+	abstract public Message getNextMsg();
+
 	abstract protected void setupStreams() throws IOException;
 
 	abstract protected void stopConnection(Object... o);
