@@ -1,18 +1,17 @@
 package com.swarmer.server.units.utility;
 
-/**
- * Created by Matt on 04/17/2017.
- */
-public class LocationInformation {
+import java.io.Serializable;
+
+public class LocationInformation implements Serializable {
 
 	private String serverUnitDescription;
 	private String serverUnitIp;
 	private int serverUnitPort;
 
 	public LocationInformation(String serverUnitDescription, String serverUnitIp, int serverUnitPort) {
-		this.serverUnitDescription = serverUnitDescription;
-		this.serverUnitIp = serverUnitIp;
-		this.serverUnitPort = serverUnitPort;
+		setServerUnitDescription(serverUnitDescription);
+		setServerUnitIp(serverUnitIp);
+		setServerUnitPort(serverUnitPort);
 	}
 
 	public String getServerUnitDescription() {
@@ -28,7 +27,7 @@ public class LocationInformation {
 	}
 
 	public void setServerUnitIp(String serverUnitIp) {
-		this.serverUnitIp = serverUnitIp;
+		this.serverUnitIp = serverUnitIp.replace("/", "");
 	}
 
 	public int getServerUnitPort() {

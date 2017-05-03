@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Created by Matt on 04/26/2017.
- */
 public class FriendList extends ChatWidget {
 
 	private Map<String, FriendListEntry> onlineFriends = new TreeMap<>();
@@ -92,21 +89,20 @@ public class FriendList extends ChatWidget {
 		theList.top();
 		theList.left();
 
-		for(FriendListEntry onlineFriends : onlineFriends.values()) {
-			theList.add(onlineFriends);
+		for(FriendListEntry onlineFriend : onlineFriends.values()) {
+			theList.add(onlineFriend);
 			theList.row();
 		}
 
-		for(FriendListEntry ingameFriends : ingameFriends.values()) {
-			theList.add(ingameFriends);
+		for(FriendListEntry ingameFriend : ingameFriends.values()) {
+			theList.add(ingameFriend);
 			theList.row();
 		}
 
-		for(FriendListEntry offlineFriends : offlineFriends.values()) {
-			theList.add(offlineFriends);
+		for(FriendListEntry offlineFriend : offlineFriends.values()) {
+			theList.add(offlineFriend);
 			theList.row();
 		}
-
 	}
 
 	private class FriendListEntry extends Table {
