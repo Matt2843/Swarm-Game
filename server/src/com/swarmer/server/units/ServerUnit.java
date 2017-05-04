@@ -40,6 +40,10 @@ public abstract class ServerUnit extends Unit {
         }
     }
 
+	public boolean hasConnection(Player player) {
+		return activeConnections.containsKey(player);
+	}
+
     protected static void sendToRemotePlayer(Player player, Message message) throws IOException {
 		if(activeConnections.containsKey(player)) {
 			activeConnections.get(player).sendMessage(message);
