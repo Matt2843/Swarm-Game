@@ -68,7 +68,7 @@ public final class GameClient {
 	public void establishSecureTCPConnection(String ip, int port, PublicKey exPublicKey) {
 		try {
 			if(stcp != null) {
-				stcp.stopConnection();
+				stcp.stopConnection(currentPlayer);
 			}
 			stcp = new SecureTCPConnection(new Socket(ip, port + 1), clientProtocol, KEY, exPublicKey);
 			stcp.start();
