@@ -2,9 +2,6 @@ package com.swarmer.shared.communication;
 
 import java.io.Serializable;
 
-/**
- * Created by Matt on 03/16/2017.
- */
 public final class Player implements Serializable {
 
 	private static final long serialVersionUID = 1L;
