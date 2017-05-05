@@ -58,7 +58,7 @@ public class CoordinationUnit extends ServerUnit {
 
 	public static void removeConnection(Player player) {
 		if(player != null) {
-			if(allConnectedUsers.containsKey(player) && !allConnectedUsers.get(player).getServerUnitDescription().equals("lobby_units")) { // TODO: Find out why new entries are deleted after being added
+			if(allConnectedUsers.containsKey(player)) {
 				allConnectedUsers.remove(player);
 			}
 			for(Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {

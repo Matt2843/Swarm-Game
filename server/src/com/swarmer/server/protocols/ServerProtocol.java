@@ -72,8 +72,11 @@ public abstract class ServerProtocol extends Protocol {
 	}
 
 	private boolean removeConnectionFromActiveConnections(Player player) throws IOException {
-		serverUnit.removeActiveConnection(player);
-		return (boolean) new CoordinationUnitCallable(new Message(1152, player)).getFutureResult().getObject();
+		if(serverUnit.hasConnection(player)) {
+			serverUnit.removeActiveConnection(player);
+			return (boolean) new CoordinationUnitCallable(new Message(1152, player)).getFutureResult().getObject();
+		}
+		return false;
 	}
 
 }
