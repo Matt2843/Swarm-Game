@@ -42,6 +42,8 @@ public class ClientProtocol extends Protocol {
 			case 999:
 				connectServerUnit(message);
 				break;
+			case 13372:
+				handleFoundGame(message);
 			case 11111:
 				secureConnectToAuthNode(message);
 				break;
@@ -52,6 +54,22 @@ public class ClientProtocol extends Protocol {
 			default:
 				break;
 		}
+	}
+
+	private void handleFoundGame(final Message message) {
+		Gdx.app.postRunnable(new Runnable() {
+			@Override public void run() {
+				SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Game found", "A game was found!") {
+					@Override public void accept() throws IOException {
+						GameClient.getInstance().tcp.sendMessage(new Message(76767));
+					}
+
+					@Override public void reject() throws IOException {
+						GameClient.getInstance().tcp.sendMessage(new Message(78787));
+					}
+				});
+			}
+		});
 	}
 
 	private void handleFriendRequest(final Message message) {

@@ -43,17 +43,16 @@ public class CoordinationProtocol extends ServerProtocol {
 			case 1153: // Retrieve user location information with the given username, object: {username}
 				findPlayer(message, caller);
 				break;
-			case 1161:
+			case 13371:
 				findMatch(message);
-				break;
 			default:
 				break;
 		}
 	}
 
-	private void findMatch(Message message) {
+	private void findMatch(Message message) throws IOException {
+		caller.sendMessage(new Message(13371, true));
 		ArrayList<Player> players = (ArrayList<Player>) message.getObject();
-
 		CoordinationUnit.findMatch(players);
 	}
 

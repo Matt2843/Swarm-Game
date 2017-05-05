@@ -92,11 +92,12 @@ public abstract class ServerUnit extends Unit {
 		// TODO: Suspect was not in local activeConnections, get his locationinformation from coordination unit :)
 	}
 
-	public void sendTo(LocationInformation local, Protocol prt, Message msg) {
+	public static void sendTo(LocationInformation local, Protocol prt, Message msg) {
 		try {
 			TCPConnection con = new TCPConnection(new Socket(local.getServerUnitIp(), local.getServerUnitPort()), prt);
 			con.start();
 			con.sendMessage(msg);
+			con.stopConnection();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

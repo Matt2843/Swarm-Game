@@ -4,6 +4,7 @@ import com.swarmer.server.protocols.CoordinationProtocol;
 import com.swarmer.server.units.utility.GameQueueEntry;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.units.utility.LocationInformation;
+import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,6 +86,7 @@ public class CoordinationUnit extends ServerUnit {
 
 		for (Player player : players) {
 			totalRating += player.getRating();
+			System.out.println(player.getUsername() + " is looking for a game");
 		}
 
 		int averageRanking = totalRating / players.size();
@@ -97,17 +99,42 @@ public class CoordinationUnit extends ServerUnit {
 			skillGroup = "LOW";
 		}
 
-		boolean foundMatch = false;
-		for (GameQueueEntry queueEntry : queue.get(skillGroup)) {
-			if (queueEntry.hasFreeSpots(players.size())) {
-				queueEntry.addPlayers(players);
-				foundMatch = true;
+		GameQueueEntry gameQueueEntry = new GameQueueEntry(players);
+		queue.get(skillGroup).add(gameQueueEntry);
+
+		boolean foundGame = false;
+
+		do {
+			for (GameQueueEntry queueEntry : queue.get(skillGroup)) {
+				if (queueEntry.equals(gameQueueEntry)) {
+					continue;
+				}
+
+				if (queueEntry.hasFreeSpots( players.size() )) {
+					queueEntry.addPlayers(players);
+
+					queue.get(skillGroup).remove(gameQueueEntry);
+
+					gameQueueEntry = queueEntry;
+
+					if (gameQueueEntry.isFull()) {
+						System.out.println("Found a game");
+						foundGame = true;
+						for (Player player : gameQueueEntry.getPlayers()) {
+							LocationInformation locationInformation = findPlayerLocationInformation(player.getUsername());
+
+							System.out.println("Sending request to " + player.getUsername());
+							sendTo(locationInformation, null, new Message(13372));
+						}
+					}
+				}
 			}
-		}
 
-		if (!foundMatch) {
-			new GameQueueEntry(players);
-		}
-
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} while (!foundGame);
 	}
 }

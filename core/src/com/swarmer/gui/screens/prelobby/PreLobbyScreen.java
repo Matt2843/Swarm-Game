@@ -1,5 +1,6 @@
 package com.swarmer.gui.screens.prelobby;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -12,8 +13,10 @@ import com.swarmer.gui.widgets.SwarmerScreen;
 import com.swarmer.network.GameClient;
 import com.swarmer.shared.communication.IPGetter;
 import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.communication.Player;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Matt on 04/16/2017.
@@ -86,6 +89,14 @@ public class PreLobbyScreen extends SwarmerScreen {
 
 		contentPane.row();
 		contentPane.add(cancelSearchButton).colspan(2).width(350);
+
+		try {
+			ArrayList<Player> players = new ArrayList<>();
+			players.add(GameClient.getInstance().getCurrentPlayer());
+			GameClient.getInstance().tcp.sendMessage(new Message(13371, players));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void cancelSearch() {
@@ -100,6 +111,12 @@ public class PreLobbyScreen extends SwarmerScreen {
 		contentPane.row();
 		contentPane.add(startCompetitiveGameButton);
 		contentPane.add(startCasualGameButton);
+
+		try {
+			GameClient.getInstance().tcp.sendMessage(new Message(13370, GameClient.getInstance().getCurrentPlayer()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void createButtons() {
