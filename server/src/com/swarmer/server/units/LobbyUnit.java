@@ -10,23 +10,20 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
-/**
- * Created by Matt on 22-03-2017.
- */
 public class LobbyUnit extends ServerUnit {
 
     private final LobbyProtocol lobbyProtocol = new LobbyProtocol(this);
     private static HashMap<String, Lobby> hostedLobbies = new HashMap<>();
 
-    protected LobbyUnit() {
+    private LobbyUnit() {
         super();
     }
 
-    public static void broadcastMessageToLobby(Message message) throws IOException {
+    public void broadcastMessageToLobby(Message message) throws IOException {
         String lobbyId = ((String[])message.getObject())[0];
         if(hostedLobbies.containsKey(lobbyId)) {
             for(Player player : hostedLobbies.get(lobbyId).getConnectedUsers()) {
-                sendToRemotePlayer(player, new Message(301, new String[] {((String[])message.getObject())[1], player.getUsername()}));
+                sendToPlayer(player.getUsername(), new Message(301, new String[] {((String[])message.getObject())[1], player.getUsername()}));
             }
         }
     }
@@ -40,7 +37,7 @@ public class LobbyUnit extends ServerUnit {
         return lobbyID;
     }
 
-    public static void joinLobby(String lobbyId, Player player) {
+    private static void joinLobby(String lobbyId, Player player) {
         if(hostedLobbies.containsKey(lobbyId)) {
             hostedLobbies.get(lobbyId).connectUser(player);
         }

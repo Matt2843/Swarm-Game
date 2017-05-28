@@ -5,6 +5,7 @@ import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.StyleSheet;
 import com.swarmer.gui.screens.lobby.LobbyScreen;
 import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
+import com.swarmer.gui.widgets.FriendList;
 import com.swarmer.gui.widgets.SwarmerNotification;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
@@ -50,17 +51,24 @@ public class ClientProtocol extends Protocol {
 				// TODO: Display friend request notification.
 				handleFriendRequest(message);
 				break;
+			case 34790: // Friend added, object = string with friends name.
+				friendAdded(message);
+				break;
 			default:
 				break;
 		}
 	}
 
+	private void friendAdded(Message message) {
+		FriendList.getInstance().addFriendToFriendList((String) message.getObject(), FriendList.FriendListEntry.ONLINE);
+	}
+
 	private void handleFriendRequest(final Message message) {
 		Gdx.app.postRunnable(new Runnable() {
 			@Override public void run() {
-				SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Friend Request", (String) message.getObject() + " wants to add you as a friend.") {
+				SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Friend Request", ((Player)message.getObject()).getUsername() + " wants to add you as a friend.") {
 					@Override public void accept() throws IOException {
-						GameClient.getInstance().tcp.sendMessage(new Message(34788, new String[] {GameClient.getInstance().getCurrentPlayer().getUsername(), (String) message.getObject()}));
+						GameClient.getInstance().tcp.sendMessage(new Message(34788, new Player[] {GameClient.getInstance().getCurrentPlayer(), (Player) message.getObject()}));
 					}
 
 					@Override public void reject() {

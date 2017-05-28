@@ -25,7 +25,7 @@ public class LobbyProtocol extends ServerProtocol {
 		System.out.println("Lobby unit: " + message.toString());
 		switch (message.getOpcode()) {
 			case 301:
-				LobbyUnit.broadcastMessageToLobby(message);
+				((LobbyUnit)serverUnit).broadcastMessageToLobby(message);
 				break;
 			case 302: // User wants to create a lobby.
 				System.out.println(caller.getPlayer());

@@ -28,6 +28,9 @@ public abstract class ServerProtocol extends Protocol {
 			case 1:
 				addConnectionToActiveConnections((Player) message.getObject(), caller);
 				break;
+			case 888:
+				forwardMessage(message);
+				break;
 			case 11111:
 				sharePublicKey(message, caller);
 				break;
@@ -42,6 +45,10 @@ public abstract class ServerProtocol extends Protocol {
 		}
 	}
 
+	private void forwardMessage(Message message) throws IOException {
+		serverUnit.forwardMessage(message);
+	}
+
 	private void sharePublicKey(Message message, Connection caller) throws IOException {
 		if(exPublicKey != (PublicKey) message.getObject()) {
 			exPublicKey = (PublicKey) message.getObject();
@@ -49,12 +56,13 @@ public abstract class ServerProtocol extends Protocol {
 		}
 	}
 
-	private void addFriendShip(Message message) {
-		serverUnit.addFriendShip(((String[])message.getObject())[0], ((String[])message.getObject())[1]);
+	private void addFriendShip(Message message) throws IOException {
+		serverUnit.addFriendShip(message);
 	}
 
 	private void sendFriendRequest(Message message) throws IOException {
-		serverUnit.sendFriendRequest(((String[])message.getObject())[0], ((String[])message.getObject())[1]);
+		// Convert message.getObject[0] i.e. from username, message.getObject[1] i.e. to username to Players.
+		serverUnit.sendFriendRequest(message);
 	}
 
 	private boolean addConnectionToActiveConnections(Player player, Connection connection) throws IOException {

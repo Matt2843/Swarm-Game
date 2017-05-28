@@ -4,7 +4,11 @@ import com.swarmer.server.protocols.CoordinationProtocol;
 import com.swarmer.server.units.utility.GameQueueEntry;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.units.utility.LocationInformation;
+import com.swarmer.shared.communication.Connection;
+import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -78,6 +82,16 @@ public class CoordinationUnit extends ServerUnit {
 		queue.put("LOW", new ArrayList<GameQueueEntry>());
 		queue.put("MID", new ArrayList<GameQueueEntry>());
 		queue.put("HIGH", new ArrayList<GameQueueEntry>());
+	}
+
+	public static Player findPlayerReturnPlayer(Message message) throws IOException {
+		for(Player player : allConnectedUsers.keySet()) {
+			if(player.getUsername().equals(message.getObject())) {
+				return player;
+			}
+		}
+		// I.e. player not found ..
+		return null;
 	}
 
 	public static void findMatch(ArrayList<Player> players) {
