@@ -73,8 +73,12 @@ public abstract class ServerUnit extends Unit {
 		if((boolean) response.getObject()) {
 			String user1 = ((Player[])message.getObject())[0].getUsername();
 			String user2 = ((Player[])message.getObject())[1].getUsername();
+
 			sendToPlayer(user1, new Message(34790, user2));
+			System.out.println(user1 + ": added " + user2);
+
 			sendToPlayer(user2, new Message(34790, user1));
+			System.out.println(user2 + ": added " + user1);
 		}
 	}
 
@@ -86,18 +90,25 @@ public abstract class ServerUnit extends Unit {
 			}
 		}
 		Message coordinationUnitResponse = new CoordinationUnitCallable(new Message(1153, username)).getFutureResult();
-		sendTo((LocationInformation) coordinationUnitResponse.getObject(), null, message);
+		sendTo(username, (LocationInformation) coordinationUnitResponse.getObject(), null, message);
 	}
 
-	private static void sendTo(LocationInformation local, Protocol prt, Message msg) {
+	private static void sendTo(String username, LocationInformation local, Protocol prt, Message msg) {
 		try {
 			TCPConnection con = new TCPConnection(new Socket(local.getServerUnitIp(), local.getServerUnitPort()), prt);
 			con.start();
-			con.sendMessage(msg);
+			con.sendMessage(new Message(888, new Object[] {msg, username}));
 			//con.stopConnection();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void forwardMessage(Message message) throws IOException {
+		Message messageToBeForwarded = (Message) ((Object[])message.getObject())[0];
+		String to = (String) ((Object[])message.getObject())[1];
+
+		sendToPlayer(to, messageToBeForwarded);
 	}
 
 	private Player getPlayerFromUsername(String username) throws IOException {
@@ -116,14 +127,7 @@ public abstract class ServerUnit extends Unit {
 		String from = ((String[])message.getObject())[0];
 		String to = ((String[])message.getObject())[1];
 
-		sendToPlayer(to, new Message(888, new Object[] {new Message(34789, getPlayerFromUsername(from)), getPlayerFromUsername(to)}));
-	}
-
-	public void forwardMessage(Message message) throws IOException {
-		Message messageToBeForwarded = (Message) ((Object[])message.getObject())[0];
-		Player to = (Player) ((Object[])message.getObject())[1];
-
-		sendToPlayer(to.getUsername(), messageToBeForwarded);
+		sendToPlayer(to, new Message(34789, getPlayerFromUsername(from)));
 	}
 
 	protected class ServerSocketThread extends Thread {
