@@ -9,6 +9,7 @@ import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,6 @@ public class CoordinationUnit extends ServerUnit {
 	}
 
 	public static LocationInformation findPlayerLocationInformation(String username) {
-		printlocations();
 		for(Player player : allConnectedUsers.keySet()) {
 			if(player.getUsername().equals(username)) {
 				return allConnectedUsers.get(player);
@@ -50,8 +50,8 @@ public class CoordinationUnit extends ServerUnit {
 	}
 
 	public static void addConnection(Player player, LocationInformation locationInformation) {
-		System.out.println("\nAdd:" + player.getUsername());
 		if(player != null) {
+			System.out.println("Add:" + player.getUsername());
 			if(!allConnectedUsers.containsKey(player)) {
 				allConnectedUsers.put(player, locationInformation);
 			} else {
@@ -61,10 +61,10 @@ public class CoordinationUnit extends ServerUnit {
 		}
 	}
 
-	public static void removeConnection(Player player, int port) {
-		System.out.println("\nRemove:" + player.getUsername());
+	public static void removeConnection(Player player, String serverId) {
 		if(player != null) {
-			if(allConnectedUsers.containsKey(player) && allConnectedUsers.get(player).getServerUnitPort() == port) {
+			System.out.println("Remove:" + player.getUsername());
+			if(allConnectedUsers.containsKey(player) && !allConnectedUsers.get(player).getInetAddress().equals(serverId)) {
 				allConnectedUsers.remove(player);
 			}
 			printlocations();
@@ -72,11 +72,11 @@ public class CoordinationUnit extends ServerUnit {
 	}
 
 	public static void printlocations() {
-		String str = "\n";
+		String str = "";
 		for(Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
 			str += entry.getKey().getUsername() + ", " + entry.getValue().toString() + "\n";
 		}
-		System.out.println(str);
+		System.out.print(str);
 	}
 
 	@Override public String getDescription() {
