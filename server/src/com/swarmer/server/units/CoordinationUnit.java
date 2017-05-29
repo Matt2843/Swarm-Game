@@ -33,6 +33,7 @@ public class CoordinationUnit extends ServerUnit {
 	}
 
 	public static LocationInformation findPlayerLocationInformation(String username) {
+		printlocations();
 		for(Player player : allConnectedUsers.keySet()) {
 			if(player.getUsername().equals(username)) {
 				return allConnectedUsers.get(player);
@@ -49,25 +50,31 @@ public class CoordinationUnit extends ServerUnit {
 	}
 
 	public static void addConnection(Player player, LocationInformation locationInformation) {
+		System.out.println("\nAdd:" + player.getUsername());
 		if(player != null) {
 			if(!allConnectedUsers.containsKey(player)) {
 				allConnectedUsers.put(player, locationInformation);
 			}
-			for(Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
-				System.out.println(entry.getKey().getUsername() + ", " + entry.getValue().toString());
-			}
+			printlocations();
 		}
 	}
 
 	public static void removeConnection(Player player) {
+		System.out.println("\nRemove:" + player.getUsername());
 		if(player != null) {
 			if(allConnectedUsers.containsKey(player)) {
 				allConnectedUsers.remove(player);
 			}
-			for(Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
-				System.out.println(entry.getKey().getUsername() + ", " + entry.getValue().toString());
-			}
+			printlocations();
 		}
+	}
+
+	public static void printlocations() {
+		String str = "\n";
+		for(Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
+			str += entry.getKey().getUsername() + ", " + entry.getValue().toString() + "\n";
+		}
+		System.out.println(str);
 	}
 
 	@Override public String getDescription() {

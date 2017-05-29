@@ -23,10 +23,10 @@ public abstract class ServerProtocol extends Protocol {
 	@Override protected void react(Message message, Connection caller) throws IOException, SQLException {
 		switch (message.getOpcode()) {
 			case 0:
-				removeConnectionFromActiveConnections((Player) message.getObject());
+				removeConnectionFromActiveConnections(message);
 				break;
 			case 1:
-				addConnectionToActiveConnections((Player) message.getObject(), caller);
+				addConnectionToActiveConnections(message, caller);
 				break;
 			case 888:
 				forwardMessage(message);
@@ -73,18 +73,15 @@ public abstract class ServerProtocol extends Protocol {
 		serverUnit.sendFriendRequest(message);
 	}
 
-	private boolean addConnectionToActiveConnections(Player player, Connection connection) throws IOException {
+	private boolean addConnectionToActiveConnections(Message message, Connection connection) throws IOException {
+		Player player = (Player) message.getObject();
 		connection.setPlayer(player);
-		serverUnit.addActiveConnection(player, connection);
-		return (boolean) new CoordinationUnitCallable(new Message(1150, new Object[]{player, serverUnit.getDescription(), serverUnit.getPort()})).getFutureResult().getObject();
+		return serverUnit.addActiveConnection(player, connection);
 	}
 
-	private boolean removeConnectionFromActiveConnections(Player player) throws IOException {
-		if(serverUnit.hasConnection(player)) {
-			serverUnit.removeActiveConnection(player);
-			return (boolean) new CoordinationUnitCallable(new Message(1152, player)).getFutureResult().getObject();
-		}
-		return false;
+	private boolean removeConnectionFromActiveConnections(Message message) throws IOException {
+		Player player = (Player) message.getObject();
+		return serverUnit.removeActiveConnection(player);
 	}
 
 }

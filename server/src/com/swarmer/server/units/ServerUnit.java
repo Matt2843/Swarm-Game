@@ -13,6 +13,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public abstract class ServerUnit extends Unit {
@@ -38,6 +39,14 @@ public abstract class ServerUnit extends Unit {
         }
     }
 
+	public void print() {
+		String str = "\n";
+		for(Map.Entry<Player, Connection> entry : activeConnections.entrySet()) {
+			str += entry.getKey().getUsername() + ", " + entry.getValue().toString() + "\n";
+		}
+		System.out.println(str);
+	}
+
 	public boolean hasConnection(Player player) {
 		return activeConnections.containsKey(player);
 	}
@@ -50,22 +59,28 @@ public abstract class ServerUnit extends Unit {
 		}
     }
 
-    public boolean addActiveConnection(Player player, Connection connection) {
-		System.out.println("Add: " + player.getUsername());
+    public boolean addActiveConnection(Player player, Connection connection) throws IOException {
 	    if(!activeConnections.containsKey(player)) {
+			System.out.println("Add: " + player.getUsername());
             activeConnections.put(player, connection);
+			new CoordinationUnitCallable(new Message(1150, new Object[]{player, getDescription(), getPort()})).getFutureResult().getObject();
+			print();
             return true;
         } else {
         	return false;
 		}
     }
 
-    public boolean removeActiveConnection(Player player) {
-		System.out.println("Remove: " + player.getUsername());
+    public boolean removeActiveConnection(Player player) throws IOException {
 		if(activeConnections.containsKey(player)) {
+			System.out.println("Remove: " + player.getUsername());
             activeConnections.remove(player);
+			new CoordinationUnitCallable(new Message(1152, player)).getFutureResult().getObject();
+			print();
             return true;
-        } else return false;
+        } else {
+			return false;
+		}
     }
 
 	public void addFriendShip(Message message) throws IOException {
@@ -81,6 +96,7 @@ public abstract class ServerUnit extends Unit {
 	}
 
 	public void sendToPlayer(String username, Message message) throws IOException {
+		print();
 		for(Player player : activeConnections.keySet()) { // Check if the suspect is in local activeConnections.
 			if(player.getUsername().equals(username)) {
 				activeConnections.get(player).sendMessage(message);

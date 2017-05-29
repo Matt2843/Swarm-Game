@@ -82,17 +82,17 @@ public class ClientProtocol extends Protocol {
 
 		Gdx.app.postRunnable(new Runnable() {
 			@Override public void run() {
-				SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Lobby Request", requestFrom.getUsername() + " invited you to a lobby.") {
-					@Override public void accept() throws IOException {
-						GameClient.getInstance().establishTCPConnection(connectionDetails.getAddress().toString().replaceAll("/", ""), connectionDetails.getPort());
-						GameClient.getInstance().tcp.sendMessage(new Message(303, new Object[] {lobbyID, GameClient.getInstance().getCurrentPlayer()}));
-						LobbyScreen.getInstance().setLobbyId(lobbyID);
-					}
+			SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Lobby Request", requestFrom.getUsername() + " invited you to a lobby.") {
+				@Override public void accept() throws IOException {
+					GameClient.getInstance().establishTCPConnection(connectionDetails.getAddress().toString().replaceAll("/", ""), connectionDetails.getPort());
+					GameClient.getInstance().tcp.sendMessage(new Message(303, new Object[] {lobbyID, GameClient.getInstance().getCurrentPlayer()}));
+					LobbyScreen.getInstance().setLobbyId(lobbyID);
+				}
 
-					@Override public void reject() {
-						// Do nothing :)
-					}
-				});
+				@Override public void reject() {
+					// Do nothing :)
+				}
+			});
 			}
 		});
 	}
