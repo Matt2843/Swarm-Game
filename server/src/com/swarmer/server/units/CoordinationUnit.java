@@ -54,15 +54,17 @@ public class CoordinationUnit extends ServerUnit {
 		if(player != null) {
 			if(!allConnectedUsers.containsKey(player)) {
 				allConnectedUsers.put(player, locationInformation);
+			} else {
+				changeLocationInformation(player, locationInformation);
 			}
 			printlocations();
 		}
 	}
 
-	public static void removeConnection(Player player) {
+	public static void removeConnection(Player player, int port) {
 		System.out.println("\nRemove:" + player.getUsername());
 		if(player != null) {
-			if(allConnectedUsers.containsKey(player)) {
+			if(allConnectedUsers.containsKey(player) && allConnectedUsers.get(player).getServerUnitPort() == port) {
 				allConnectedUsers.remove(player);
 			}
 			printlocations();

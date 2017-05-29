@@ -78,7 +78,8 @@ public class CoordinationProtocol extends ServerProtocol {
 
 	private void removePlayer(Message message) throws IOException {
 		Player player = (Player) message.getObject();
-		CoordinationUnit.removeConnection(player);
+
+		CoordinationUnit.removeConnection(player, ((TCPConnection) caller).getConnection().getPort());
 		caller.sendMessage(new Message(1236324876, true));
 	}
 
