@@ -75,10 +75,7 @@ public abstract class ServerUnit extends Unit {
 			String user2 = ((Player[])message.getObject())[1].getUsername();
 
 			sendToPlayer(user1, new Message(34790, user2));
-			System.out.println(user1 + ": added " + user2);
-
 			sendToPlayer(user2, new Message(34790, user1));
-			System.out.println(user2 + ": added " + user1);
 		}
 	}
 
@@ -128,29 +125,6 @@ public abstract class ServerUnit extends Unit {
 		String to = ((String[])message.getObject())[1];
 
 		sendToPlayer(to, new Message(34789, getPlayerFromUsername(from)));
-	}
-
-	protected class ServerSocketThread extends Thread {
-
-		private int serverSocketType;
-
-		private ServerSocket serverSocket;
-		private DatagramSocket datagramSocket;
-
-		private Socket connection;
-
-		public ServerSocketThread(int serverSocketType) {
-			this.serverSocketType = serverSocketType;
-		}
-
-		public boolean removeActiveConnection(Player player) {
-			if (activeConnections.containsKey(player)) {
-				activeConnections.remove(player);
-				return true;
-			} else {
-				return false;
-			}
-		}
 	}
 
 	public abstract int getPort();
