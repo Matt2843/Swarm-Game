@@ -1,14 +1,20 @@
 package com.swarmer.server.game;
 
 import com.swarmer.server.game.logic.Game;
+import com.swarmer.shared.communication.Player;
 
-public class Swarmer {
-    public static void main(String[] args) {
+import java.util.HashMap;
 
-        Game g = new Game(500, 500);
+public class Swarmer implements Runnable {
 
-        while(true) {
-            g.render(1);
-        }
+    private Game game;
+
+    public Swarmer(HashMap<Player, String> players) {
+        game = new Game(players, 500, 500);
+    }
+
+    @Override
+    public void run() {
+        game.render(1);
     }
 }

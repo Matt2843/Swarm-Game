@@ -8,6 +8,8 @@ import com.swarmer.server.game.logic.units.Ant;
 import com.swarmer.shared.communication.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Game {
@@ -17,14 +19,16 @@ public class Game {
     private Vector2 vec = new Vector2();
     private ArrayList<Ant> ants;
     private ArrayList<Hive> hives;
+    private HashMap<Player, String> players;
 
-    public Game(int width, int height) {
+    public Game(HashMap<Player, String> players, int width, int height) {
+        this.players = players;
         mapWidth  = width;
         mapHeight = height;
-        Init();
+        init();
     }
 
-    private void Init() {
+    private void init() {
         hives = new ArrayList<>();
         ants = new ArrayList<>();
 
@@ -39,18 +43,14 @@ public class Game {
             }
         }
 
-        int playerCount = 3;
-        for(int i = 0; i < playerCount; i++) {
+        for (Map.Entry<Player, String> player : players.entrySet()) {
             int x = ThreadLocalRandom.current().nextInt(1, 99);
             int y = ThreadLocalRandom.current().nextInt(1, 99);
-            Player player = new Player("Alias", "" + i, 0);
+
             if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size() > 0) {
-                hives.add(new Hive(player, graph.nodes[x][y]));
+                hives.add(new Hive(player.getKey(), graph.nodes[x][y]));
             }
         }
-
-
-        ants.add(new Ant(new Player("Alias", "" + 0, 0), graph.nodes[50][50]));
     }
 
     public void render(float delta) {

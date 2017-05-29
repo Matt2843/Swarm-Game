@@ -1,12 +1,12 @@
 package com.swarmer.server.units;
 
+import com.swarmer.server.game.Swarmer;
 import com.swarmer.server.protocols.GameProtocol;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.shared.communication.Player;
 
-/**
- * Created by Matt on 03/16/2017.
- */
+import java.util.HashMap;
+
 public class GameUnit extends ServerUnit {
 
 	private final GameProtocol gameProtocol = new GameProtocol(this);
@@ -32,7 +32,8 @@ public class GameUnit extends ServerUnit {
 		new GameUnit();
 	}
 
-	public void startNewGame(Player[] players) {
-
+	public void startNewGame(HashMap<Player, String> players) {
+		Swarmer game = new Swarmer(players);
+		game.run();
 	}
 }
