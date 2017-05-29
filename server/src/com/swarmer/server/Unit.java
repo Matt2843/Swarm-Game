@@ -44,6 +44,10 @@ public abstract class Unit {
 	//public static final int GAME_UNIT_UDP_PORT = 43152;
 
 	public static KeyPair KEY = null;
+	public static String IP = "";
+
+	private ServerSocketThread TCPsocket;
+	private ServerSocketThread STCPsocket;
 
 	protected Unit() {
 		generateKeys();
@@ -51,8 +55,8 @@ public abstract class Unit {
 	}
 
 	protected void startConnectionThreads() {
-		new ServerSocketThread(TCP).start();
-		new ServerSocketThread(STCP).start();
+		TCPsocket = new ServerSocketThread(TCP); TCPsocket.start();
+		STCPsocket = new ServerSocketThread(STCP); STCPsocket.start();
 		//new ServerSocketThread(UDP).start();
 	}
 
@@ -67,6 +71,10 @@ public abstract class Unit {
 	}
 
 	public abstract int getPort();
+
+	public String getId() {
+		return IP + ":" + getPort();
+	}
 
 	protected abstract ServerProtocol getProtocol();
 
@@ -90,6 +98,7 @@ public abstract class Unit {
 					new TCPConnection(connection, getProtocol()).start();
 				} else if(serverSocketType == STCP) {
 					connection = serverSocket.accept();
+					System.out.println(connection.getInetAddress());
 					new SecureTCPConnection(connection, getProtocol(), KEY, getProtocol().exPublicKey).start();
 				} else if(serverSocketType == UDP) {
 					//datagramSocket.receive();

@@ -14,6 +14,10 @@ public class LocationInformation implements Serializable {
 		setServerUnitPort(serverUnitPort);
 	}
 
+	public String getInetAddress() {
+		return "/" + serverUnitIp + ":" + serverUnitPort;
+	}
+
 	public String getServerUnitDescription() {
 		return serverUnitDescription;
 	}

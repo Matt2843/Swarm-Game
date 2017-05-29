@@ -128,6 +128,11 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 		String[] queryDetails = (String[]) message.getObject();
 		String sqlQuery = "INSERT INTO " + queryDetails[1] + " (id, ip_address, port, user_count) VALUES (?, ?, ?, ?)";
 		DatabaseController.mySQLConnection.sqlExecute(sqlQuery, UUID.randomUUID().toString(), ((TCPConnection) caller).getConnection().getInetAddress().toString(), queryDetails[0], "0");
+		try {
+			caller.sendMessage(new Message(((TCPConnection) caller).getConnection().getInetAddress().toString()));
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private boolean userExistsInDatabase(String username) throws SQLException, IOException {

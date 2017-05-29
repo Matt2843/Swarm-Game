@@ -28,15 +28,12 @@ public abstract class ServerUnit extends Unit {
 	}
 
     private void notifyMotherShip() {
-        try {
-            String IP = IPGetter.getInstance().getDatabaseControllerIP();
-            TCPConnection databaseControllerConnection = new TCPConnection(new Socket(IP, DATABASE_CONTROLLER_TCP_PORT), null);
-            databaseControllerConnection.start();
-            String[] object = new String[] {String.valueOf(getPort()), getDescription()};
-            databaseControllerConnection.sendMessage(new Message(2, object));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		try {
+			Message msg = new DatabaseControllerCallable(new Message(2, new String[] {String.valueOf(getPort()), getDescription()})).getFutureResult();
+			IP = (String) msg.getObject();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
     }
 
 	public void print() {
@@ -64,7 +61,7 @@ public abstract class ServerUnit extends Unit {
 			System.out.println("Add: " + player.getUsername());
             activeConnections.put(player, connection);
 			new CoordinationUnitCallable(new Message(1150, new Object[]{player, getDescription(), getPort()})).getFutureResult().getObject();
-			print();
+			//print();
             return true;
         } else {
         	return false;
@@ -75,8 +72,8 @@ public abstract class ServerUnit extends Unit {
 		if(activeConnections.containsKey(player)) {
 			System.out.println("Remove: " + player.getUsername());
             activeConnections.remove(player);
-			new CoordinationUnitCallable(new Message(1152, player)).getFutureResult().getObject();
-			print();
+			new CoordinationUnitCallable(new Message(1152, new Object[] {player, getId()})).getFutureResult().getObject();
+			//print();
             return true;
         } else {
 			return false;
@@ -96,7 +93,7 @@ public abstract class ServerUnit extends Unit {
 	}
 
 	public void sendToPlayer(String username, Message message) throws IOException {
-		print();
+		//print();
 		for(Player player : activeConnections.keySet()) { // Check if the suspect is in local activeConnections.
 			if(player.getUsername().equals(username)) {
 				activeConnections.get(player).sendMessage(message);
