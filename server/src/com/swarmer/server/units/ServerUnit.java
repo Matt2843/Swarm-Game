@@ -9,6 +9,7 @@ import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -125,6 +126,14 @@ public abstract class ServerUnit extends Unit {
 		String to = ((String[])message.getObject())[1];
 
 		sendToPlayer(to, new Message(34789, getPlayerFromUsername(from)));
+	}
+
+	public void addFriendToLobby(Message message) throws IOException {
+		Player from = (Player) ((Object[])message.getObject())[0];
+		String to = (String) ((Object[])message.getObject())[1];
+		String lobbyID = (String) ((Object[])message.getObject())[2];
+		InetSocketAddress nodeLocation = (InetSocketAddress) ((Object[])message.getObject())[3];
+		sendToPlayer(to, new Message(890, new Object[] {from, lobbyID, nodeLocation}));
 	}
 
 	public abstract int getPort();

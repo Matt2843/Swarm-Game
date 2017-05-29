@@ -19,7 +19,10 @@ public class LobbyUserList2 extends Table {
 	private Label tooltip;
 	private ArrayList<Label> userLabels;
 
-	public LobbyUserList2(float width, float height) {
+	private static LobbyUserList2 instance;
+
+	private LobbyUserList2(float width, float height) {
+		// DONT INSTANTIATE
 		setSize(width, height);
 		userLabels = new ArrayList<>();
 
@@ -43,6 +46,12 @@ public class LobbyUserList2 extends Table {
 			userLabels.add(newUser);
 		}
 		updateGui();
+	}
+
+	public static LobbyUserList2 getInstance() {
+		if(instance == null)
+			instance = new LobbyUserList2((float) (1280 * 0.8 * 0.3), 800 / 2);
+		return instance;
 	}
 
 	public void removeUserFromList(String user) {

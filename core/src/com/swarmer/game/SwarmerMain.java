@@ -30,6 +30,7 @@ public class SwarmerMain extends Game {
 		AnimationLibrary.getInstance().initializeAntAnimations();
 
 		show(MainMenuScreen.getInstance());
+		//show(LobbyScreen.getInstance());
 	}
 
 	private void initializeScreens() {

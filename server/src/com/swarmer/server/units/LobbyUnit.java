@@ -19,16 +19,16 @@ public class LobbyUnit extends ServerUnit {
         super();
     }
 
-    public void broadcastMessageToLobby(Message message) throws IOException {
+    public void broadcastMessageToLobby(Message message, Player sender) throws IOException {
         String lobbyId = ((String[])message.getObject())[0];
         if(hostedLobbies.containsKey(lobbyId)) {
             for(Player player : hostedLobbies.get(lobbyId).getConnectedUsers()) {
-                sendToPlayer(player.getUsername(), new Message(301, new String[] {((String[])message.getObject())[1], player.getUsername()}));
+                sendToPlayer(player.getUsername(), new Message(301, new String[] {((String[])message.getObject())[1], sender.getUsername()}));
             }
         }
     }
 
-    public static String createLobby(Player lobbyOwner) {
+    public String createLobby(Player lobbyOwner) throws IOException {
         String lobbyID = UUID.randomUUID().toString();
         Lobby lobby = new Lobby(lobbyID, lobbyOwner);
         if(!addLobby(lobbyID, lobby))
@@ -37,13 +37,20 @@ public class LobbyUnit extends ServerUnit {
         return lobbyID;
     }
 
-    private static void joinLobby(String lobbyId, Player player) {
+    public void joinLobby(String lobbyId, Player player) throws IOException {
         if(hostedLobbies.containsKey(lobbyId)) {
             hostedLobbies.get(lobbyId).connectUser(player);
+            for(Player p : hostedLobbies.get(lobbyId).getConnectedUsers()) {
+                if(!p.equals(player))
+                    sendToPlayer(p.getUsername(), new Message(302, player));
+            }
+            for(Player p : hostedLobbies.get(lobbyId).getConnectedUsers()) {
+                sendToPlayer(player.getUsername(), new Message(302, p));
+            }
         }
     }
 
-    private static boolean addLobby(String lobbyID, Lobby lobby) {
+    private boolean addLobby(String lobbyID, Lobby lobby) {
         if(!hostedLobbies.containsKey(lobbyID)) {
             hostedLobbies.put(lobbyID, lobby);
             return true;
@@ -51,7 +58,7 @@ public class LobbyUnit extends ServerUnit {
         return false;
     }
 
-    public static boolean removeLobby(String lobbyID) {
+    public boolean removeLobby(String lobbyID) {
         if(hostedLobbies.containsKey(lobbyID)) {
             hostedLobbies.remove(lobbyID);
             return true;
