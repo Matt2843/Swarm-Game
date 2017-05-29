@@ -92,8 +92,7 @@ public abstract class Unit {
 					connection = serverSocket.accept();
 					new SecureTCPConnection(connection, getProtocol(), KEY, getProtocol().exPublicKey).start();
 				} else if(serverSocketType == UDP) {
-
-					datagramSocket.receive();
+					//datagramSocket.receive();
 					new UDPConnection(datagramSocket, getProtocol()).start();
 				}
 			}
