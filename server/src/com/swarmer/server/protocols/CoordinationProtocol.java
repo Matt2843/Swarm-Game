@@ -6,9 +6,11 @@ import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by Matt on 04/17/2017.
@@ -77,9 +79,10 @@ public class CoordinationProtocol extends ServerProtocol {
 	}
 
 	private void removePlayer(Message message) throws IOException {
-		Player player = (Player) message.getObject();
+		Player player = (Player) ((Object[])message.getObject())[0];
+		String serverId = (String) ((Object[])message.getObject())[1];
 
-		CoordinationUnit.removeConnection(player, ((TCPConnection) caller).getConnection().getPort());
+		CoordinationUnit.removeConnection(player, serverId);
 		caller.sendMessage(new Message(1236324876, true));
 	}
 
