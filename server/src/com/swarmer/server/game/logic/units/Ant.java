@@ -23,7 +23,7 @@ public class Ant {
         desiredPosition = startNode.getPosition();
     }
 
-    public void update(float delta) {
+    public void update() {
         if (food <= 0) {
             return;
         }

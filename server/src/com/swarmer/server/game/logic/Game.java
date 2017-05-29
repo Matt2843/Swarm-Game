@@ -53,9 +53,9 @@ public class Game {
         }
     }
 
-    public void render(float delta) {
+    public void render() {
         for(Ant ant : ants) {
-            ant.update(delta);
+            ant.update();
         }
     }
 }
