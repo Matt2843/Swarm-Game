@@ -1,9 +1,12 @@
 package com.swarmer.network;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.screens.lobby.LobbyScreen;
+import com.swarmer.gui.screens.lobby.LobbyUserList2;
 import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
+import com.swarmer.gui.widgets.FriendList;
 import com.swarmer.gui.widgets.SwarmerNotification;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
@@ -11,6 +14,7 @@ import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.Protocol;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.security.PublicKey;
 
 public class ClientProtocol extends Protocol {
@@ -33,6 +37,12 @@ public class ClientProtocol extends Protocol {
 				String[] receivedMessageArray = (String[]) message.getObject();
 				LobbyScreen.lobbyChat.appendToChatWindow(receivedMessageArray[1], receivedMessageArray[0]);
 				break;
+			case 302: // User joined lobby.
+				userJoinedLobby(message);
+				break;
+			case 890:
+				handleLobbyRequest(message);
+				break;
 			case 997:
 				connectedToLobby(message);
 				break;
@@ -49,17 +59,53 @@ public class ClientProtocol extends Protocol {
 				// TODO: Display friend request notification.
 				handleFriendRequest(message);
 				break;
+			case 34790: // Friend added, object = string with friends name.
+				friendAdded(message);
+				break;
 			default:
 				break;
 		}
 	}
 
+	private void userJoinedLobby(Message message) {
+		Player joinedPlayer = (Player) message.getObject();
+		LobbyUserList2.getInstance().addUserToList(joinedPlayer.getUsername());
+		SwarmerMain.getInstance().show(LobbyScreen.getInstance());
+	}
+
+	private void handleLobbyRequest(final Message message) {
+		Object[] receivedObjects = (Object[]) message.getObject();
+		final Player requestFrom = (Player) receivedObjects[0];
+		final String lobbyID = (String) receivedObjects[1];
+		final InetSocketAddress connectionDetails = (InetSocketAddress) receivedObjects[2];
+
+		Gdx.app.postRunnable(new Runnable() {
+			@Override public void run() {
+			SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Lobby Request", requestFrom.getUsername() + " invited you to a lobby.") {
+				@Override public void accept() throws IOException {
+					GameClient.getInstance().establishTCPConnection(connectionDetails.getAddress().toString().replaceAll("/", ""), connectionDetails.getPort());
+					GameClient.getInstance().tcp.sendMessage(new Message(303, new Object[] {lobbyID, GameClient.getInstance().getCurrentPlayer()}));
+					LobbyScreen.getInstance().setLobbyId(lobbyID);
+				}
+
+				@Override public void reject() {
+					// Do nothing :)
+				}
+			});
+			}
+		});
+	}
+
+	private void friendAdded(Message message) {
+		FriendList.getInstance().addFriendToFriendList((String) message.getObject(), FriendList.FriendListEntry.ONLINE);
+	}
+
 	private void handleFriendRequest(final Message message) {
 		Gdx.app.postRunnable(new Runnable() {
 			@Override public void run() {
-				SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Friend Request", (String) message.getObject() + " wants to add you as a friend.") {
+				SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Friend Request", ((Player)message.getObject()).getUsername() + " wants to add you as a friend.") {
 					@Override public void accept() throws IOException {
-						GameClient.getInstance().tcp.sendMessage(new Message(34788, new String[] {GameClient.getInstance().getCurrentPlayer().getUsername(), (String) message.getObject()}));
+						GameClient.getInstance().tcp.sendMessage(new Message(34788, new Player[] {GameClient.getInstance().getCurrentPlayer(), (Player) message.getObject()}));
 					}
 
 					@Override public void reject() {

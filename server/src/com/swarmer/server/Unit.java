@@ -3,6 +3,7 @@ package com.swarmer.server;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.shared.communication.SecureTCPConnection;
 import com.swarmer.shared.communication.TCPConnection;
+import com.swarmer.shared.communication.UDPConnection;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
@@ -92,7 +93,8 @@ public abstract class Unit {
 					connection = serverSocket.accept();
 					new SecureTCPConnection(connection, getProtocol(), KEY, getProtocol().exPublicKey).start();
 				} else if(serverSocketType == UDP) {
-					// TODO: IMPLEMENT THIS VITAL CODE :)
+					//datagramSocket.receive();
+					new UDPConnection(datagramSocket, getProtocol()).start();
 				}
 			}
 		}

@@ -56,9 +56,13 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 		}
 	}
 
-	private void addFriendShipToDatabase(Message message) {
+	private void addFriendShipToDatabase(Message message) throws SQLException, IOException {
 		// TODO: Add friendship to database message contains String[] {User1, User2}
 		//DatabaseController.mySQLConnection.sqlExecute("INSERT INTO friendships ()");
+		Player player1 = ((Player[]) message.getObject())[0];
+		Player player2 = ((Player[]) message.getObject())[1];
+		DatabaseController.mySQLConnection.sqlExecute("INSERT INTO friendships (id, user_id_1, user_id_2) VALUES (?, ?, ?)",  UUID.randomUUID().toString(), player1.getId(), player2.getId());
+		caller.sendMessage(new Message(true));
 	}
 
 	private void getLobbyUnit(Message message) throws IOException, SQLException {

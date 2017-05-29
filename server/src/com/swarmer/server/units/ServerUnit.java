@@ -1,6 +1,7 @@
 package com.swarmer.server.units;
 
 import com.swarmer.server.CoordinationUnitCallable;
+import com.swarmer.server.DatabaseControllerCallable;
 import com.swarmer.server.Unit;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.units.utility.LocationInformation;
@@ -8,11 +9,9 @@ import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -40,18 +39,17 @@ public abstract class ServerUnit extends Unit {
         }
     }
 
+	public void print() {
+		String str = "\n";
+		for(Map.Entry<Player, Connection> entry : activeConnections.entrySet()) {
+			str += entry.getKey().getUsername() + ", " + entry.getValue().toString() + "\n";
+		}
+		System.out.println(str);
+	}
+
 	public boolean hasConnection(Player player) {
 		return activeConnections.containsKey(player);
 	}
-
-    protected static void sendToRemotePlayer(Player player, Message message) throws IOException {
-		if(activeConnections.containsKey(player)) {
-			activeConnections.get(player).sendMessage(message);
-			System.out.println("Player was in local and message has been sent.");
-		} else {
-			System.out.println("Player not in local");
-		}
-    }
 
     public Connection getActiveConnection(Player player) {
         if(activeConnections.containsKey(player)) {
@@ -61,72 +59,97 @@ public abstract class ServerUnit extends Unit {
 		}
     }
 
-    public boolean addActiveConnection(Player player, Connection connection) {
-		System.out.println("Add: " + player.getUsername());
+    public boolean addActiveConnection(Player player, Connection connection) throws IOException {
 	    if(!activeConnections.containsKey(player)) {
+			System.out.println("Add: " + player.getUsername());
             activeConnections.put(player, connection);
+			new CoordinationUnitCallable(new Message(1150, new Object[]{player, getDescription(), getPort()})).getFutureResult().getObject();
+			print();
             return true;
         } else {
         	return false;
 		}
     }
 
-    public boolean removeActiveConnection(Player player) {
-		System.out.println("Remove: " + player.getUsername());
+    public boolean removeActiveConnection(Player player) throws IOException {
 		if(activeConnections.containsKey(player)) {
+			System.out.println("Remove: " + player.getUsername());
             activeConnections.remove(player);
+			new CoordinationUnitCallable(new Message(1152, player)).getFutureResult().getObject();
+			print();
             return true;
-        } else return false;
+        } else {
+			return false;
+		}
     }
 
-	public void addFriendShip(String user1, String user2) {
-		
+	public void addFriendShip(Message message) throws IOException {
+		Message response = new DatabaseControllerCallable(message).getFutureResult();
+		// Friend Succesfully Added, send message to both.
+		if((boolean) response.getObject()) {
+			String user1 = ((Player[])message.getObject())[0].getUsername();
+			String user2 = ((Player[])message.getObject())[1].getUsername();
+
+			sendToPlayer(user1, new Message(34790, user2));
+			sendToPlayer(user2, new Message(34790, user1));
+		}
 	}
 
-	public void sendFriendRequest(String from, String to) throws IOException {
+	public void sendToPlayer(String username, Message message) throws IOException {
+		print();
 		for(Player player : activeConnections.keySet()) { // Check if the suspect is in local activeConnections.
-			if(player.getUsername().equals(to)) {
-				activeConnections.get(player).sendMessage(new Message(34789, from));
+			if(player.getUsername().equals(username)) {
+				activeConnections.get(player).sendMessage(message);
 				return;
 			}
 		}
-		Message coordinationUnitResponse = new CoordinationUnitCallable(new Message(1153, to)).getFutureResult();
-		sendTo((LocationInformation) coordinationUnitResponse.getObject(), null, new Message(34789, new String[] {from, to}));
-		System.out.println(coordinationUnitResponse.toString());
-		// TODO: Suspect was not in local activeConnections, get his locationinformation from coordination unit :)
+		Message coordinationUnitResponse = new CoordinationUnitCallable(new Message(1153, username)).getFutureResult();
+		sendTo(username, (LocationInformation) coordinationUnitResponse.getObject(), null, message);
 	}
 
-	public void sendTo(LocationInformation local, Protocol prt, Message msg) {
+	private static void sendTo(String username, LocationInformation local, Protocol prt, Message msg) {
 		try {
 			TCPConnection con = new TCPConnection(new Socket(local.getServerUnitIp(), local.getServerUnitPort()), prt);
 			con.start();
-			con.sendMessage(msg);
+			con.sendMessage(new Message(888, new Object[] {msg, username}));
+			//con.stopConnection();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	protected class ServerSocketThread extends Thread {
+	public void forwardMessage(Message message) throws IOException {
+		Message messageToBeForwarded = (Message) ((Object[])message.getObject())[0];
+		String to = (String) ((Object[])message.getObject())[1];
 
-		private int serverSocketType;
+		sendToPlayer(to, messageToBeForwarded);
+	}
 
-		private ServerSocket serverSocket;
-		private DatagramSocket datagramSocket;
-
-		private Socket connection;
-
-		public ServerSocketThread(int serverSocketType) {
-			this.serverSocketType = serverSocketType;
-		}
-
-		public boolean removeActiveConnection(Player player) {
-			if (activeConnections.containsKey(player)) {
-				activeConnections.remove(player);
-				return true;
-			} else {
-				return false;
+	private Player getPlayerFromUsername(String username) throws IOException {
+		for(Player player : activeConnections.keySet()) {
+			if(player.getUsername().equals(username)) {
+				return player;
 			}
 		}
+		// Was not in local, looking up player...
+		Message coordinationUnitResponse = new CoordinationUnitCallable(new Message(1154, username)).getFutureResult();
+		return (Player) coordinationUnitResponse.getObject();
+	}
+
+	// Object[0] == from, Object[1] == to;
+	public void sendFriendRequest(Message message) throws IOException {
+		String from = ((String[])message.getObject())[0];
+		String to = ((String[])message.getObject())[1];
+
+		sendToPlayer(to, new Message(34789, getPlayerFromUsername(from)));
+	}
+
+	public void addFriendToLobby(Message message) throws IOException {
+		Player from = (Player) ((Object[])message.getObject())[0];
+		String to = (String) ((Object[])message.getObject())[1];
+		String lobbyID = (String) ((Object[])message.getObject())[2];
+		InetSocketAddress nodeLocation = (InetSocketAddress) ((Object[])message.getObject())[3];
+		sendToPlayer(to, new Message(890, new Object[] {from, lobbyID, nodeLocation}));
 	}
 
 	public abstract int getPort();

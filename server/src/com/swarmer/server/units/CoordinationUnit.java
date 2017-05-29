@@ -4,7 +4,11 @@ import com.swarmer.server.protocols.CoordinationProtocol;
 import com.swarmer.server.units.utility.GameQueueEntry;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.units.utility.LocationInformation;
+import com.swarmer.shared.communication.Connection;
+import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +33,7 @@ public class CoordinationUnit extends ServerUnit {
 	}
 
 	public static LocationInformation findPlayerLocationInformation(String username) {
+		printlocations();
 		for(Player player : allConnectedUsers.keySet()) {
 			if(player.getUsername().equals(username)) {
 				return allConnectedUsers.get(player);
@@ -45,25 +50,33 @@ public class CoordinationUnit extends ServerUnit {
 	}
 
 	public static void addConnection(Player player, LocationInformation locationInformation) {
+		System.out.println("\nAdd:" + player.getUsername());
 		if(player != null) {
 			if(!allConnectedUsers.containsKey(player)) {
 				allConnectedUsers.put(player, locationInformation);
+			} else {
+				changeLocationInformation(player, locationInformation);
 			}
-			for(Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
-				System.out.println(entry.getKey().getUsername() + ", " + entry.getValue().toString());
-			}
+			printlocations();
 		}
 	}
 
-	public static void removeConnection(Player player) {
+	public static void removeConnection(Player player, int port) {
+		System.out.println("\nRemove:" + player.getUsername());
 		if(player != null) {
-			if(allConnectedUsers.containsKey(player)) {
+			if(allConnectedUsers.containsKey(player) && allConnectedUsers.get(player).getServerUnitPort() == port) {
 				allConnectedUsers.remove(player);
 			}
-			for(Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
-				System.out.println(entry.getKey().getUsername() + ", " + entry.getValue().toString());
-			}
+			printlocations();
 		}
+	}
+
+	public static void printlocations() {
+		String str = "\n";
+		for(Map.Entry<Player, LocationInformation> entry : allConnectedUsers.entrySet()) {
+			str += entry.getKey().getUsername() + ", " + entry.getValue().toString() + "\n";
+		}
+		System.out.println(str);
 	}
 
 	@Override public String getDescription() {
@@ -78,6 +91,16 @@ public class CoordinationUnit extends ServerUnit {
 		queue.put("LOW", new ArrayList<GameQueueEntry>());
 		queue.put("MID", new ArrayList<GameQueueEntry>());
 		queue.put("HIGH", new ArrayList<GameQueueEntry>());
+	}
+
+	public static Player findPlayerReturnPlayer(Message message) throws IOException {
+		for(Player player : allConnectedUsers.keySet()) {
+			if(player.getUsername().equals(message.getObject())) {
+				return player;
+			}
+		}
+		// I.e. player not found ..
+		return null;
 	}
 
 	public static void findMatch(ArrayList<Player> players) {

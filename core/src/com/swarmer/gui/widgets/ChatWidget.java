@@ -20,7 +20,7 @@ public class ChatWidget extends Table {
 	private float animationSpeed = 0.2f;
 
 	protected Label interaction;
-	private TextButton description;
+	protected TextButton description;
 	protected TextField input;
 
 	private ScrollPane scrollList;
