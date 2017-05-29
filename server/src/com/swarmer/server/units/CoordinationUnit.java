@@ -99,7 +99,7 @@ public class CoordinationUnit extends ServerUnit {
 				return player;
 			}
 		}
-		// I.e. player not found ..
+
 		return null;
 	}
 
