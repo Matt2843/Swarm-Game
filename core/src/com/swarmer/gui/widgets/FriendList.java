@@ -47,7 +47,7 @@ public class FriendList extends ChatWidget {
 		scrollableObject.add(theList).expand().fill();
 
 		configureAddFriendButton();
-		addFriendToFriendList("Matt", FriendListEntry.ONLINE);
+		//addFriendToFriendList("Matt", FriendListEntry.ONLINE);
 		/*addFriendToFriendList("Albert", FriendListEntry.OFFLINE);
 		addFriendToFriendList("Georg", FriendListEntry.INGAME);
 		addFriendToFriendList("Aa", FriendListEntry.OFFLINE);
@@ -145,7 +145,7 @@ public class FriendList extends ChatWidget {
 							// Invite to lobby.
 
 							if(!LobbyScreen.getInstance().getLobbyId().equals(null)) {
-								Object[] objects = {GameClient.getInstance().getCurrentPlayer(), friendNameLabel.getText().toString(), LobbyScreen.getInstance().getLobbyId()};
+								Object[] objects = {GameClient.getInstance().getCurrentPlayer(), friendNameLabel.getText().toString(), LobbyScreen.getInstance().getLobbyId(), GameClient.getInstance().tcp.getConnection().getRemoteSocketAddress()};
 								try {
 									GameClient.getInstance().tcp.sendMessage(new Message(890, objects));
 								} catch (IOException e) {

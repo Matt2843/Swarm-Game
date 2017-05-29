@@ -25,11 +25,13 @@ public class LobbyProtocol extends ServerProtocol {
 		System.out.println("Lobby unit: " + message.toString());
 		switch (message.getOpcode()) {
 			case 301:
-				((LobbyUnit)serverUnit).broadcastMessageToLobby(message);
+				((LobbyUnit)serverUnit).broadcastMessageToLobby(message, caller.getPlayer());
 				break;
 			case 302: // User wants to create a lobby.
-				System.out.println(caller.getPlayer());
 				createLobby(caller.getPlayer());
+				break;
+			case 303:
+				userWantsToJoinLobby(message);
 				break;
 			default:
 				super.react(message, caller);
@@ -37,8 +39,14 @@ public class LobbyProtocol extends ServerProtocol {
 		}
 	}
 
+	private void userWantsToJoinLobby(Message message) throws IOException {
+		String lobbyId = (String) ((Object[])message.getObject())[0];
+		Player target = (Player) ((Object[])message.getObject())[1];
+		((LobbyUnit)serverUnit).joinLobby(lobbyId, target);
+	}
+
 	private void createLobby(Player player) throws IOException {
-		String createdLobbyId = LobbyUnit.createLobby(player);
+		String createdLobbyId = ((LobbyUnit)serverUnit).createLobby(player);
 		caller.sendMessage(new Message(997, createdLobbyId));
 	}
 }

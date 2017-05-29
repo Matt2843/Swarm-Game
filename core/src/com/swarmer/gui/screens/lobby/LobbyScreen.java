@@ -15,7 +15,6 @@ public class LobbyScreen extends SwarmerScreen {
     private String lobbyId = "";
 
     public static LobbyChat lobbyChat;
-    private LobbyUserList2 lobbyUserList2;
 
     private static LobbyScreen lobbyScreenInstance;
 
@@ -34,21 +33,20 @@ public class LobbyScreen extends SwarmerScreen {
         
         final Table middleSection = new Table();
 
-        lobbyUserList2 = new LobbyUserList2((float) (getWidth() * 0.8 * 0.3), getHeight() / 2);
         lobbyChat = new LobbyChat((float) (getWidth() * 0.8 * 0.7), getHeight() / 2);
 
-        middleSection.add(lobbyUserList2);
+        middleSection.add(LobbyUserList2.getInstance());
         middleSection.add(lobbyChat);
         middleSection.row();
 
         final Table buttonContainer = new Table();
 
         TextButton findGame = new TextButton("Find Game", StyleSheet.defaultSkin);
-        buttonContainer.add(findGame).width(lobbyUserList2.getWidth() / 2).height(lobbyUserList2.getHeight() / 4);
+        buttonContainer.add(findGame).width(LobbyUserList2.getInstance().getWidth() / 2).height(LobbyUserList2.getInstance().getHeight() / 4);
 
 
         TextButton returnToPreLobbyScreen = new TextButton("Exit Lobby", StyleSheet.defaultSkin);
-        buttonContainer.add(returnToPreLobbyScreen).width(lobbyUserList2.getWidth() / 2).height(lobbyUserList2.getHeight() / 4);
+        buttonContainer.add(returnToPreLobbyScreen).width(LobbyUserList2.getInstance().getWidth() / 2).height(LobbyUserList2.getInstance().getHeight() / 4);
         returnToPreLobbyScreen.addCaptureListener(new ChangeListener() {
             @Override public void changed(ChangeEvent event, Actor actor) {
                 SwarmerMain.getInstance().show(PreLobbyScreen.getInstance());
