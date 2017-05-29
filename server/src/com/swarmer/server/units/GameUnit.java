@@ -23,8 +23,7 @@ public class GameUnit extends ServerUnit {
 		return gameProtocol;
 	}
 
-	@Override
-	public String getDescription() {
+	@Override public String getDescription() {
 		return "game_units";
 	}
 
