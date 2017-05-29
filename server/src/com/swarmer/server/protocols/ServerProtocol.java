@@ -31,6 +31,9 @@ public abstract class ServerProtocol extends Protocol {
 			case 888:
 				forwardMessage(message);
 				break;
+			case 890: // Invite user to lobby.
+				inviteFriendToLobby(message);
+				break;
 			case 11111:
 				sharePublicKey(message, caller);
 				break;
@@ -44,6 +47,11 @@ public abstract class ServerProtocol extends Protocol {
 				break;
 		}
 	}
+
+	private void inviteFriendToLobby(Message message) throws IOException {
+		serverUnit.addFriendToLobby(message);
+	}
+
 
 	private void forwardMessage(Message message) throws IOException {
 		serverUnit.forwardMessage(message);

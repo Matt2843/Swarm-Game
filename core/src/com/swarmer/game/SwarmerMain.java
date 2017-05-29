@@ -24,12 +24,13 @@ public class SwarmerMain extends Game {
 	}
 
 	public void create() {
-		establishNetworkConnection();
+		//establishNetworkConnection();
 		initializeScreens();
 
 		AnimationLibrary.getInstance().initializeAntAnimations();
 
-		show(MainMenuScreen.getInstance());
+		//show(MainMenuScreen.getInstance());
+		show(LobbyScreen.getInstance());
 	}
 
 	private void initializeScreens() {

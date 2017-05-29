@@ -31,7 +31,6 @@ public class LobbyScreen extends SwarmerScreen {
     }
 
     @Override protected void create() {
-        addReturnButton();
         
         final Table middleSection = new Table();
 
@@ -40,23 +39,27 @@ public class LobbyScreen extends SwarmerScreen {
 
         middleSection.add(lobbyUserList2);
         middleSection.add(lobbyChat);
+        middleSection.row();
 
-        contentPane.add(middleSection);
-        contentPane.row();
+        final Table buttonContainer = new Table();
 
-        System.out.println("LOBBY SCREEN CREATED :)");
-    }
+        TextButton findGame = new TextButton("Find Game", StyleSheet.defaultSkin);
+        buttonContainer.add(findGame).width(lobbyUserList2.getWidth() / 2).height(lobbyUserList2.getHeight() / 4);
 
-    private void addReturnButton() {
+
         TextButton returnToPreLobbyScreen = new TextButton("Exit Lobby", StyleSheet.defaultSkin);
+        buttonContainer.add(returnToPreLobbyScreen).width(lobbyUserList2.getWidth() / 2).height(lobbyUserList2.getHeight() / 4);
         returnToPreLobbyScreen.addCaptureListener(new ChangeListener() {
             @Override public void changed(ChangeEvent event, Actor actor) {
                 SwarmerMain.getInstance().show(PreLobbyScreen.getInstance());
                 // TODO: Notify Server that the lobby was cancelled by the owner.
             }
         });
-        returnToPreLobbyScreen.setPosition(0, Gdx.graphics.getHeight() - returnToPreLobbyScreen.getHeight());
-        addActor(returnToPreLobbyScreen);
+
+
+        middleSection.add(buttonContainer).colspan(2).pad(20,0,0,0);
+        contentPane.add(middleSection);
+        contentPane.row();
     }
 
     @Override protected void handleInput() {

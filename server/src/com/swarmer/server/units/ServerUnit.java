@@ -94,7 +94,6 @@ public abstract class ServerUnit extends Unit {
 			TCPConnection con = new TCPConnection(new Socket(local.getServerUnitIp(), local.getServerUnitPort()), prt);
 			con.start();
 			con.sendMessage(msg);
-			//con.stopConnection();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -124,6 +123,14 @@ public abstract class ServerUnit extends Unit {
 		Player to = (Player) ((Object[])message.getObject())[1];
 
 		sendToPlayer(to.getUsername(), messageToBeForwarded);
+	}
+
+	public void addFriendToLobby(Message message) throws IOException {
+		String from = ((String[])message.getObject())[0];
+		String to = ((String[])message.getObject())[1];
+		String lobbyID = ((String[])message.getObject())[2];
+		String nodeLocation = ((String[])message.getObject())[3];
+		sendToPlayer(to, new Message(888, new Object[] {new Message(890, new Object[] {getPlayerFromUsername(from), lobbyID, nodeLocation}), getPlayerFromUsername(to)}));
 	}
 
 	protected class ServerSocketThread extends Thread {
