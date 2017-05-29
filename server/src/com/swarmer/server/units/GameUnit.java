@@ -2,6 +2,7 @@ package com.swarmer.server.units;
 
 import com.swarmer.server.protocols.GameProtocol;
 import com.swarmer.server.protocols.ServerProtocol;
+import com.swarmer.shared.communication.Player;
 
 /**
  * Created by Matt on 03/16/2017.
@@ -29,5 +30,9 @@ public class GameUnit extends ServerUnit {
 
 	public static void main(String[] args) {
 		new GameUnit();
+	}
+
+	public void startNewGame(Player[] players) {
+
 	}
 }
