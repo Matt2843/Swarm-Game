@@ -43,12 +43,20 @@ public class CoordinationProtocol extends ServerProtocol {
 			case 1153: // Retrieve user location information with the given username, object: {username}
 				findPlayer(message, caller);
 				break;
+			case 1154: // Retrieve player profile from a username.
+				findPlayerReturnPlayer(message);
+				break;
 			case 1161:
 				findMatch(message);
 				break;
 			default:
 				break;
 		}
+	}
+
+	private void findPlayerReturnPlayer(Message message) throws IOException {
+		Player target = CoordinationUnit.findPlayerReturnPlayer(message);
+		caller.sendMessage(new Message(target));
 	}
 
 	private void findMatch(Message message) {
@@ -70,7 +78,8 @@ public class CoordinationProtocol extends ServerProtocol {
 
 	private void removePlayer(Message message) throws IOException {
 		Player player = (Player) message.getObject();
-		CoordinationUnit.removeConnection(player);
+
+		CoordinationUnit.removeConnection(player, ((TCPConnection) caller).getConnection().getPort());
 		caller.sendMessage(new Message(1236324876, true));
 	}
 

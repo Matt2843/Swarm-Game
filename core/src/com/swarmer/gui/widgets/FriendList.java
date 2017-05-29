@@ -1,17 +1,19 @@
 package com.swarmer.gui.widgets;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.swarmer.gui.StyleSheet;
+import com.swarmer.gui.screens.lobby.LobbyScreen;
 import com.swarmer.network.GameClient;
 import com.swarmer.shared.communication.Message;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -45,8 +47,8 @@ public class FriendList extends ChatWidget {
 		scrollableObject.add(theList).expand().fill();
 
 		configureAddFriendButton();
-		/*addFriendToFriendList("Matt", FriendListEntry.ONLINE);
-		addFriendToFriendList("Albert", FriendListEntry.OFFLINE);
+		//addFriendToFriendList("Matt", FriendListEntry.ONLINE);
+		/*addFriendToFriendList("Albert", FriendListEntry.OFFLINE);
 		addFriendToFriendList("Georg", FriendListEntry.INGAME);
 		addFriendToFriendList("Aa", FriendListEntry.OFFLINE);
 		addFriendToFriendList("Bb", FriendListEntry.ONLINE);
@@ -105,7 +107,7 @@ public class FriendList extends ChatWidget {
 		}
 	}
 
-	private class FriendListEntry extends Table {
+	public class FriendListEntry extends Table {
 
 		public static final int OFFLINE = 0;
 		public static final int ONLINE = 1;
@@ -128,6 +130,37 @@ public class FriendList extends ChatWidget {
 						privateChatArrayList.put(friendNameLabel.getText().toString(), new PrivateChat(friendNameLabel.getText().toString(), ++ChatWidget.chatWidgetCount));
 						openFriendTabs();
 					}
+				}
+			});
+
+			friendNameLabel.addListener(new ClickListener(Input.Buttons.RIGHT) {
+				@Override public void clicked(InputEvent event, float x, float y) {
+
+					final Table menuTable = new Table();
+
+
+					final TextButton inviteToLobby = new TextButton("Invite To Lobby", StyleSheet.defaultSkin);
+					inviteToLobby.addListener(new ClickListener() {
+						@Override public void clicked(InputEvent event, float x, float y) {
+							// Invite to lobby.
+
+							if(!LobbyScreen.getInstance().getLobbyId().equals(null)) {
+								Object[] objects = {GameClient.getInstance().getCurrentPlayer(), friendNameLabel.getText().toString(), LobbyScreen.getInstance().getLobbyId(), GameClient.getInstance().tcp.getConnection().getRemoteSocketAddress()};
+								try {
+									GameClient.getInstance().tcp.sendMessage(new Message(890, objects));
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							}
+
+
+							menuTable.remove();
+						}
+					});
+
+					menuTable.add(inviteToLobby);
+					menuTable.setPosition(x, y-menuTable.getHeight());
+					addActor(menuTable);
 				}
 			});
 		}

@@ -18,7 +18,7 @@ public class UDPConnection extends Connection {
 	protected DatagramPacket inbound;
 	protected DatagramPacket outbound;
 
-	protected byte[] buffer = new byte[64];
+	protected byte[] buffer = new byte[512];
 
 	protected DatagramSocket connection = null;
 
@@ -27,7 +27,7 @@ public class UDPConnection extends Connection {
 		this.connection = connection;
 		correspondentsIp = connection.getRemoteSocketAddress().toString();
 		inbound = new DatagramPacket(buffer, buffer.length);
-		outbound = new DatagramPacket(new byte[64], 64);
+		outbound = new DatagramPacket(new byte[512], 512);
 		setupStreams();
 	}
 
@@ -57,6 +57,7 @@ public class UDPConnection extends Connection {
 		output.writeObject(m);
 		output.flush();
 		outbound.setData(baos.toByteArray());
+		System.out.println(outbound.getLength());
 		connection.send(outbound);
 	}
 
