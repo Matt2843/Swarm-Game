@@ -55,8 +55,9 @@ public class Game {
 	}
 
 	public void render() {
-		for(Ant ant : ants) {
-			ant.update();
+		for(int i = 0; i < ants.size(); i++) {
+			ants[i].update();
+
 		}
 	}
 }

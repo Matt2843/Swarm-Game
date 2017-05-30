@@ -57,6 +57,7 @@ public class UDPConnection extends Connection {
 			try {
 				connection.receive(inbound);
 				message = (Message) new ObjectInputStream(new ByteArrayInputStream(inbound.getData())).readObject();
+				System.out.println(message.toString());
 				react(message);
 			} catch (IOException e) {
 				e.printStackTrace();
