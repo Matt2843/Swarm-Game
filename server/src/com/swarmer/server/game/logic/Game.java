@@ -14,48 +14,49 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Game {
 
-    public static Graph graph;
-    private int mapWidth, mapHeight;
-    private Vector2 vec = new Vector2();
-    private ArrayList<Ant> ants;
-    private ArrayList<Hive> hives;
-    private HashMap<Player, String> players;
+	public static Graph graph;
+	private int mapWidth, mapHeight;
+	private Vector2 vec = new Vector2();
+	private ArrayList<Ant> ants;
+	private ArrayList<Hive> hives;
+	private HashMap<Player, String> players;
 
-    public Game(HashMap<Player, String> players, int width, int height) {
-        this.players = players;
-        mapWidth  = width;
-        mapHeight = height;
-        init();
-    }
+	public Game(HashMap<Player, String> players, int width, int height) {
+		this.players = players;
+		mapWidth = width;
+		mapHeight = height;
+		init();
+	}
 
-    private void init() {
-        hives = new ArrayList<>();
-        ants = new ArrayList<>();
+	private void init() {
+		hives = new ArrayList<>();
+		ants = new ArrayList<>();
 
-        graph = new Graph(mapWidth, mapHeight);
+		graph = new Graph(mapWidth, mapHeight);
 
-        for(int i = 0; i < 200; i++) {
-            int x = ThreadLocalRandom.current().nextInt(1, 99);
-            int y = ThreadLocalRandom.current().nextInt(1, 99);
+		for(int i = 0; i < 200; i++) {
+			int x = ThreadLocalRandom.current().nextInt(1, 99);
+			int y = ThreadLocalRandom.current().nextInt(1, 99);
 
-            if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size() > 0) {
-                graph.nodes[x][y].setResource(new Food(100));
-            }
-        }
+			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size() > 0) {
+				graph.nodes[x][y].setResource(new Food(100));
+			}
+		}
 
-        for (Map.Entry<Player, String> player : players.entrySet()) {
-            int x = ThreadLocalRandom.current().nextInt(1, 99);
-            int y = ThreadLocalRandom.current().nextInt(1, 99);
+		for(Map.Entry<Player, String> player : players.entrySet()) {
+			int x = ThreadLocalRandom.current().nextInt(1, 99);
+			int y = ThreadLocalRandom.current().nextInt(1, 99);
 
-            if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size() > 0) {
-                hives.add(new Hive(player.getKey(), graph.nodes[x][y]));
-            }
-        }
-    }
+			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size() > 0) {
+				hives.add(new Hive(player.getKey(), graph.nodes[x][y]));
+				ants.add(new Ant(player.getKey(), graph.nodes[x][y]));
+			}
+		}
+	}
 
-    public void render() {
-        for(Ant ant : ants) {
-            ant.update();
-        }
-    }
+	public void render() {
+		for(Ant ant : ants) {
+			ant.update();
+		}
+	}
 }

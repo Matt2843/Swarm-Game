@@ -14,13 +14,15 @@ public class Swarmer implements Runnable {
 	}
 
 	@Override public void run() {
-		long time = System.currentTimeMillis();
-		game.render();
-		long sleep = 1000 - (System.currentTimeMillis() - time);
-		try {
-			Thread.sleep(sleep);
-		} catch(InterruptedException e) {
-			e.printStackTrace();
+		while(true) {
+			long time = System.currentTimeMillis();
+			game.render();
+			long sleep = 1000 - (System.currentTimeMillis() - time);
+			try {
+				Thread.currentThread().sleep(sleep);
+			} catch(InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
