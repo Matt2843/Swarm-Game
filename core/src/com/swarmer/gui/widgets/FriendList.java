@@ -14,6 +14,8 @@ import com.swarmer.network.GameClient;
 import com.swarmer.shared.communication.Message;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -61,6 +63,13 @@ public class FriendList extends ChatWidget {
 		interaction.setText("ADD");
 		interaction.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
+				/*try {
+					GameClient.getInstance().udp.addBroadcastAddress(new InetSocketAddress("127.0.0.1", 43132));
+					GameClient.getInstance().udp.sendMessage(new Message(128342982, "Hello World"));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}*/
+
 				try {
 					GameClient.getInstance().tcp.sendMessage(new Message(34789, new String[] {GameClient.getInstance().getCurrentPlayer().getUsername(), input.getText()}));
 				} catch (IOException e) {

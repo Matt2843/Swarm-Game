@@ -30,7 +30,7 @@ public class UDPConnection extends Connection {
 	public UDPConnection(DatagramSocket connection, Protocol protocol) throws IOException {
 		super(protocol);
 		this.connection = connection;
-		correspondentsIp = connection.getRemoteSocketAddress().toString();
+		//correspondentsIp = connection.getRemoteSocketAddress().toString();
 		inbound = new DatagramPacket(buffer, buffer.length);
 		outbound = new DatagramPacket(new byte[512], 512);
 		setupStreams();
@@ -45,7 +45,7 @@ public class UDPConnection extends Connection {
 		do {
 			try {
 				connection.receive(inbound);
-				message = (Message) input.readObject();
+				message = (Message) new ObjectInputStream(new ByteArrayInputStream(inbound.getData())).readObject();
 				react(message);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -83,7 +83,6 @@ public class UDPConnection extends Connection {
 		output.flush();
 
 		iaos = new ByteArrayInputStream(buffer);
-		input = new ObjectInputStream(iaos);
 	}
 
 	@Override public void stopConnection(Object... o) {

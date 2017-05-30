@@ -58,7 +58,7 @@ public abstract class Unit {
 	protected void startConnectionThreads() {
 		TCPsocket = new ServerSocketThread(TCP); TCPsocket.start();
 		STCPsocket = new ServerSocketThread(STCP); STCPsocket.start();
-		//new ServerSocketThread(UDP).start();
+		new ServerSocketThread(UDP).start();
 	}
 
 	private KeyPair generateKeys() {
