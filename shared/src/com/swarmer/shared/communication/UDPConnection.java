@@ -22,6 +22,8 @@ public class UDPConnection extends Connection {
 
 	protected DatagramSocket connection = null;
 
+	private boolean stop = false;
+
 	ArrayList<SocketAddress> broadcastAddress = new ArrayList<SocketAddress>();
 
 	public UDPConnection(DatagramSocket connection, Protocol protocol) throws IOException {
@@ -61,6 +63,7 @@ public class UDPConnection extends Connection {
 				react(message);
 			} catch (IOException e) {
 				e.printStackTrace();
+				stop = true;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (OperationInWrongServerNodeException e) {
@@ -70,7 +73,7 @@ public class UDPConnection extends Connection {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		} while(message.getOpcode() != 0); // TODO: CHANGE STOP CONDITION.
+		} while(!stop && message.getOpcode() != 0); // TODO: CHANGE STOP CONDITION.
 		cleanUp();
 	}
 
@@ -86,12 +89,14 @@ public class UDPConnection extends Connection {
 	}
 
 	public void sendMessage(Message m, SocketAddress inet) throws IOException {
-		output.writeObject(m);
-		output.flush();
-		outbound.setData(baos.toByteArray());
-		System.out.println(outbound.getLength());
-		outbound.setSocketAddress(inet);
-		connection.send(outbound);
+		if(!stop) {
+			output.writeObject(m);
+			output.flush();
+			outbound.setData(baos.toByteArray());
+			System.out.println(outbound.getLength());
+			outbound.setSocketAddress(inet);
+			connection.send(outbound);
+		}
 	}
 
 	@Override public Message getNextMsg() {
@@ -107,20 +112,24 @@ public class UDPConnection extends Connection {
 	}
 
 	@Override public void stopConnection(Object... o) {
-		try {
-			if(o.length > 0) {
-				sendMessage(new Message(0, o[0]));
-			} else {
-				sendMessage(new Message(0));
+		if(!stop) {
+			try {
+				if(o.length > 0) {
+					sendMessage(new Message(0, o[0]));
+				} else {
+					sendMessage(new Message(0));
+				}
+			} catch(IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			stop = true;
+			cleanUp();
 		}
-		cleanUp();
 	}
 
 	@Override public void cleanUp() {
 		try {
+			connection.close();
 			output.close();
 		} catch (IOException e) {
 			e.printStackTrace();
