@@ -44,6 +44,11 @@ public class UDPConnection extends Connection {
 
 	public void addBroadcastAddress(SocketAddress ip) {
 		broadcastAddress.add(ip);
+		try {
+			sendMessage(new Message(666));
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override public void run() {
