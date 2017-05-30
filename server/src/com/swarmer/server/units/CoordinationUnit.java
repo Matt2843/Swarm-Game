@@ -1,13 +1,17 @@
 package com.swarmer.server.units;
 
+import com.swarmer.server.DatabaseControllerCallable;
 import com.swarmer.server.protocols.CoordinationProtocol;
 import com.swarmer.server.protocols.ServerProtocol;
+import com.swarmer.server.units.utility.GameQueueEntry;
 import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.server.units.utility.Queue;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
+import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -100,7 +104,36 @@ public class CoordinationUnit extends ServerUnit {
 		return null;
 	}
 
-	public static void findMatch(ArrayList<Player> players) {
+	public static void findMatch(ArrayList<Player> players) throws IOException {
 		queue.findMatch(players);
+
+		createGames();
+	}
+
+	private static void createGames() throws IOException {
+		DatabaseControllerCallable databaseControllerCallable = new DatabaseControllerCallable(new Message(1, "game_units"));
+		String ipString = (String) databaseControllerCallable.getFutureResult().getObject();
+		String ip = ipString.split(":")[0];
+		Integer port = Integer.parseInt(ipString.split(":")[1]);
+
+		if (!(queue.getFullGames().size() > 0)) {
+			System.out.println("No full lobbies");
+			return;
+		}
+
+		for (GameQueueEntry gameQueueEntry : queue.getFullGames()) {
+			HashMap<LocationInformation, Player> players = new HashMap<>();
+
+			for (Player player : gameQueueEntry.getPlayers()) {
+				LocationInformation locationInformation = allConnectedUsers.get(player);
+				players.put(locationInformation, player);
+			}
+
+			TCPConnection connection = new TCPConnection(new Socket(ip, port), null);
+			connection.sendMessage(new Message(101, players));
+			connection.stopConnection();
+
+			queue.removeFulLGame(gameQueueEntry);
+		}
 	}
 }

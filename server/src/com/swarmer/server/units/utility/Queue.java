@@ -1,6 +1,5 @@
 package com.swarmer.server.units.utility;
 
-import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 
 import java.util.ArrayList;
@@ -9,35 +8,36 @@ import java.util.Map;
 
 public class Queue implements Runnable {
 
-    private static HashMap<String, ArrayList<GameQueueEntry>> queueEntriesMap = new HashMap<>();
+    private HashMap<String, ArrayList<GameQueueEntry>> queueEntriesMap = new HashMap<>();
+
+    private ArrayList<GameQueueEntry> fullGames = new ArrayList<>();
 
     public Queue() {
         queueEntriesMap.put("LOW", new ArrayList<GameQueueEntry>());
         queueEntriesMap.put("MID", new ArrayList<GameQueueEntry>());
         queueEntriesMap.put("HIGH", new ArrayList<GameQueueEntry>());
-
-
     }
 
     @Override
     public void run() {
-        while (true) {
-            System.out.println("Leder efter et spil");
 
-            for (Map.Entry<String, ArrayList<GameQueueEntry>> queueEntryMap : queueEntriesMap.entrySet()) {
-                for (GameQueueEntry queueEntry : queueEntryMap.getValue()) {
-                    if (queueEntry.isFull()) {
-                        System.out.println("Fundet et spil! :)");
-                    }
-                }
-            }
+        // TODO: matche forskellige GameQueueEntries med hinanden
 
-            try {
-                Thread.sleep(5000);
-            } catch(InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+//        while (true) {
+//            for (Map.Entry<String, ArrayList<GameQueueEntry>> queueEntryMap : queueEntriesMap.entrySet()) {
+//                for (GameQueueEntry queueEntry : queueEntryMap.getValue()) {
+//                    if (queueEntry.isFull()) {
+//                        fullGames.add(queueEntry);
+//                    }
+//                }
+//            }
+//
+//            try {
+//                Thread.sleep(5000);
+//            } catch(InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     public void findMatch(ArrayList<Player> players) {
@@ -58,13 +58,31 @@ public class Queue implements Runnable {
             if (queueEntry.hasFreeSpots(players.size())) {
                 queueEntry.addPlayers(players);
                 foundMatch = true;
+
+                if (queueEntry.isFull()) {
+                    fullGames.add(queueEntry);
+                    queueEntriesMap.get(skillGroup).remove(queueEntry);
+                }
             }
         }
 
         if (!foundMatch) {
             GameQueueEntry queueEntry = new GameQueueEntry(players);
             queueEntriesMap.get(skillGroup).add(queueEntry);
+
+            if (queueEntry.isFull()) {
+                fullGames.add(queueEntry);
+                queueEntriesMap.get(skillGroup).remove(queueEntry);
+            }
         }
+    }
+
+    public void removeFulLGame(GameQueueEntry gameQueueEntry) {
+        fullGames.remove(gameQueueEntry);
+    }
+
+    public ArrayList<GameQueueEntry> getFullGames() {
+        return this.fullGames;
     }
 
     private int getRanking(ArrayList<Player> players) {

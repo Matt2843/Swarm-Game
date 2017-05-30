@@ -3,6 +3,7 @@ package com.swarmer.server.units;
 import com.swarmer.server.game.Swarmer;
 import com.swarmer.server.protocols.GameProtocol;
 import com.swarmer.server.protocols.ServerProtocol;
+import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.communication.Player;
 
 import java.util.HashMap;
@@ -13,8 +14,8 @@ public class GameUnit extends ServerUnit {
 
 	protected GameUnit() {
 		super();
-		HashMap<Player, String> players = new HashMap<Player, String>();
-		players.put(new Player("1", "Matt", -5), "IP");
+		HashMap<Player, LocationInformation> players = new HashMap<Player, LocationInformation>();
+		players.put(new Player("1", "Matt", -5), null);
 		startNewGame(players);
 	}
 
@@ -34,7 +35,7 @@ public class GameUnit extends ServerUnit {
 		new GameUnit();
 	}
 
-	public void startNewGame(HashMap<Player, String> players) {
+	public static void startNewGame(HashMap<Player, LocationInformation> players) {
 		Swarmer game = new Swarmer(players);
 		game.run();
 	}

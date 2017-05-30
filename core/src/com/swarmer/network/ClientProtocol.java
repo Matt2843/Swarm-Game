@@ -57,7 +57,6 @@ public class ClientProtocol extends Protocol {
 				secureConnectToAuthNode(message);
 				break;
 			case 34789: // Received friend request.
-				// TODO: Display friend request notification.
 				handleFriendRequest(message);
 				break;
 			case 34790: // Friend added, object = string with friends name.

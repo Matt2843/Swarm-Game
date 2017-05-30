@@ -5,6 +5,7 @@ import com.swarmer.server.game.aco.graph.Vector2;
 import com.swarmer.server.game.logic.resources.Food;
 import com.swarmer.server.game.logic.structures.Hive;
 import com.swarmer.server.game.logic.units.Ant;
+import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.communication.Player;
 
 import java.util.ArrayList;
@@ -19,9 +20,9 @@ public class Game {
 	private Vector2 vec = new Vector2();
 	private ArrayList<Ant> ants;
 	private ArrayList<Hive> hives;
-	private HashMap<Player, String> players;
+	private HashMap<Player, LocationInformation> players;
 
-	public Game(HashMap<Player, String> players, int width, int height) {
+	public Game(HashMap<Player, LocationInformation> players, int width, int height) {
 		this.players = players;
 		mapWidth = width;
 		mapHeight = height;
@@ -43,7 +44,7 @@ public class Game {
 			}
 		}
 
-		for(Map.Entry<Player, String> player : players.entrySet()) {
+		for(Map.Entry<Player, LocationInformation> player : players.entrySet()) {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
 			int y = ThreadLocalRandom.current().nextInt(1, 99);
 
