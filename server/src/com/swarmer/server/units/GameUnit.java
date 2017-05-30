@@ -13,6 +13,9 @@ public class GameUnit extends ServerUnit {
 
 	protected GameUnit() {
 		super();
+		HashMap<Player, String> players = new HashMap<Player, String>();
+		players.put(new Player("1", "Matt", -5), "IP");
+		startNewGame(players);
 	}
 
 	@Override public int getPort() {
@@ -23,8 +26,7 @@ public class GameUnit extends ServerUnit {
 		return gameProtocol;
 	}
 
-	@Override
-	public String getDescription() {
+	@Override public String getDescription() {
 		return "game_units";
 	}
 
