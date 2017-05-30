@@ -3,10 +3,7 @@ package com.swarmer.shared.communication;
 import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
 
 import java.io.*;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
+import java.net.*;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,6 +31,15 @@ public class UDPConnection extends Connection {
 		inbound = new DatagramPacket(buffer, buffer.length);
 		outbound = new DatagramPacket(new byte[512], 512);
 		setupStreams();
+	}
+
+	public void changeAddress(int port) {
+		connection.close();
+		try {
+			connection = new DatagramSocket(port);
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void addBroadcastAddress(SocketAddress ip) {

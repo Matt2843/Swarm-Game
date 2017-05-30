@@ -39,6 +39,9 @@ public class ClientProtocol extends Protocol {
 			case 302: // User joined lobby.
 				userJoinedLobby(message);
 				break;
+			case 666: // Update udp socket address info
+				updateUdpSocketAddressInfo(message);
+				break;
 			case 890:
 				handleLobbyRequest(message);
 				break;
@@ -66,6 +69,10 @@ public class ClientProtocol extends Protocol {
 			default:
 				break;
 		}
+	}
+
+	private void updateUdpSocketAddressInfo(Message message) {
+		GameClient.getInstance().udp.changeAddress((int) message.getObject());
 	}
 
 	private void userJoinedLobby(Message message) {
