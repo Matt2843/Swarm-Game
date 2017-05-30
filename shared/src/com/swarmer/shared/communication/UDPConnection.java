@@ -45,7 +45,7 @@ public class UDPConnection extends Connection {
 	public void addBroadcastAddress(SocketAddress ip) {
 		broadcastAddress.add(ip);
 		try {
-			sendMessage(new Message(666, connection.getPort()));
+			sendMessage(new Message(666, connection.getPort()), ip);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -82,6 +82,15 @@ public class UDPConnection extends Connection {
 			outbound.setSocketAddress(inet);
 			connection.send(outbound);
 		}
+	}
+
+	public void sendMessage(Message m, SocketAddress inet) throws IOException {
+		output.writeObject(m);
+		output.flush();
+		outbound.setData(baos.toByteArray());
+		System.out.println(outbound.getLength());
+		outbound.setSocketAddress(inet);
+		connection.send(outbound);
 	}
 
 	@Override public Message getNextMsg() {
