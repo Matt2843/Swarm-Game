@@ -13,7 +13,7 @@ public class Ant {
 
     private AntBrain brain;
 
-    private Vector2 desiredPosition;
+    public Vector2 desiredPosition;
 
     public Ant(Player owner, Node startNode) {
 

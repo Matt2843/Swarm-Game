@@ -75,7 +75,7 @@ public class Game {
 				sAnts = new SerialisedAnts();
 				j = 0;
 			}
-			sAnts.addAnt(i, ants.get(i).x, ants.get(i).y);
+			sAnts.addAnt(i, ants.get(i).desiredPosition.x, ants.get(i).desiredPosition.y);
 			j++;
 		}
 		try {

@@ -12,6 +12,7 @@ import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.Protocol;
 import com.swarmer.shared.communication.SerialisedAnts;
+import com.swarmer.shared.communication.SerialisedAnt;
 import com.swarmer.shared.communication.UDPConnection;
 
 import java.io.IOException;
@@ -80,20 +81,14 @@ public class ClientProtocol extends Protocol {
 	private void printAnts(Message message) {
 		String res = "";
 		SerialisedAnts ants = (SerialisedAnts) message.getObject();
-		for(SerialisedAnts.SerialisedAnt ant : ants.ants) {
+		for(SerialisedAnt ant : ants.ants) {
 			res += ant.toString() + "\n";
 		}
 		System.out.println(res);
 	}
 
 	private void updateUdpSocketAddressInfo(Message message) {
-		GameClient.getInstance().udp.stopConnection();
-		try {
-			GameClient.getInstance().udp = new UDPConnection(new DatagramSocket((int) message.getObject()), new ClientProtocol());
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		//GameClient.getInstance().udp.changeAddress((int) message.getObject());
+		GameClient.getInstance().udp.addBroadcastAddress((InetSocketAddress) message.getObject());
 	}
 
 	private void userJoinedLobby(Message message) {

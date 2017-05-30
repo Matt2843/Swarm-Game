@@ -64,8 +64,8 @@ public class FriendList extends ChatWidget {
 		interaction.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
 				try {
-					GameClient.getInstance().udp.addBroadcastAddress(new InetSocketAddress("127.0.0.1", 43152));
-					GameClient.getInstance().udp.sendMessage(new Message(128342982, "Hello World"));
+					System.out.println(new InetSocketAddress("127.0.0.1", 43152).toString());
+					GameClient.getInstance().udp.sendMessage(new Message(128342982, "Hello World"), new InetSocketAddress("127.0.0.1", 43152));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

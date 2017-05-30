@@ -18,7 +18,8 @@ public class UDPConnection extends Connection {
 	protected DatagramPacket inbound;
 	protected DatagramPacket outbound;
 
-	protected byte[] buffer = new byte[512];
+	protected byte[] inbuffer = new byte[512];
+	protected byte[] outbuffer = new byte[512];
 
 	protected DatagramSocket connection = null;
 
@@ -30,8 +31,8 @@ public class UDPConnection extends Connection {
 		super(protocol);
 		this.connection = connection;
 		//correspondentsIp = connection.getRemoteSocketAddress().toString();
-		inbound = new DatagramPacket(buffer, buffer.length);
-		outbound = new DatagramPacket(new byte[512], 512);
+		inbound = new DatagramPacket(inbuffer, inbuffer.length);
+		outbound = new DatagramPacket(outbuffer, outbuffer.length);
 		setupStreams();
 	}
 
@@ -47,7 +48,7 @@ public class UDPConnection extends Connection {
 	public void addBroadcastAddress(SocketAddress ip) {
 		broadcastAddress.add(ip);
 		try {
-			sendMessage(new Message(666, connection.getPort()), ip);
+			sendMessage(new Message(666, connection.getLocalSocketAddress()), ip);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
