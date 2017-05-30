@@ -5,8 +5,11 @@ import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class UDPConnection extends Connection {
 	protected ObjectOutputStream output;
@@ -22,6 +25,8 @@ public class UDPConnection extends Connection {
 
 	protected DatagramSocket connection = null;
 
+	ArrayList<SocketAddress> broadcastAddress = new ArrayList<SocketAddress>();
+
 	public UDPConnection(DatagramSocket connection, Protocol protocol) throws IOException {
 		super(protocol);
 		this.connection = connection;
@@ -29,6 +34,10 @@ public class UDPConnection extends Connection {
 		inbound = new DatagramPacket(buffer, buffer.length);
 		outbound = new DatagramPacket(new byte[512], 512);
 		setupStreams();
+	}
+
+	public void addBroadcastAddress(SocketAddress ip) {
+		broadcastAddress.add(ip);
 	}
 
 	@Override public void run() {
@@ -58,7 +67,10 @@ public class UDPConnection extends Connection {
 		output.flush();
 		outbound.setData(baos.toByteArray());
 		System.out.println(outbound.getLength());
-		connection.send(outbound);
+		for(SocketAddress inet : broadcastAddress) {
+			outbound.setSocketAddress(inet);
+			connection.send(outbound);
+		}
 	}
 
 	@Override public Message getNextMsg() {

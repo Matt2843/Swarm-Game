@@ -6,6 +6,7 @@ import com.swarmer.shared.communication.TCPConnection;
 import com.swarmer.shared.communication.UDPConnection;
 
 import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -88,8 +89,18 @@ public abstract class Unit {
 
 		private Socket connection;
 
+		private UDPConnection udpConnection;
+
 		public ServerSocketThread(int serverSocketType) {
 			this.serverSocketType = serverSocketType;
+			if(serverSocketType == UDP) {
+				try {
+					udpConnection = new UDPConnection(new DatagramSocket(getPort() + serverSocketType + 5), getProtocol());
+				} catch(IOException e) {
+					e.printStackTrace();
+				}
+				udpConnection.start();
+			}
 		}
 
 		private void awaitConnection() throws IOException {
@@ -102,8 +113,9 @@ public abstract class Unit {
 					System.out.println(connection.getInetAddress());
 					new SecureTCPConnection(connection, getProtocol(), KEY, getProtocol().exPublicKey).start();
 				} else if(serverSocketType == UDP) {
-					//datagramSocket.receive();
-					new UDPConnection(datagramSocket, getProtocol()).start();
+					DatagramPacket dgram = new DatagramPacket(new byte[512], 512);
+					datagramSocket.receive(dgram);
+					udpConnection.addBroadcastAddress(dgram.getSocketAddress());
 				}
 			}
 		}
