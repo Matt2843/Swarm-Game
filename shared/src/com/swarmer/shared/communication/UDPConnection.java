@@ -34,7 +34,7 @@ public class UDPConnection extends Connection {
 	}
 
 	public void changeAddress(int port) {
-		connection.close();
+		//connection.close();
 		try {
 			connection = new DatagramSocket(port);
 		} catch (SocketException e) {
@@ -45,7 +45,7 @@ public class UDPConnection extends Connection {
 	public void addBroadcastAddress(SocketAddress ip) {
 		broadcastAddress.add(ip);
 		try {
-			sendMessage(new Message(666, connection.getPort()));
+			sendMessage(new Message(666, connection.getLocalPort()));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
