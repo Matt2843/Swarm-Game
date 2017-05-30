@@ -3,6 +3,7 @@ package com.swarmer.network;
 import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.Socket;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -15,7 +16,7 @@ public final class GameClient {
 
 	public TCPConnection tcp = null;
 	public SecureTCPConnection stcp = null;
-	//public static UDPConnection udp;
+	public UDPConnection udp;
 
 	private static Player currentPlayer;
 
@@ -38,8 +39,12 @@ public final class GameClient {
 		establishTCPConnection(IP, 43120);
 
 		// TODO: FIX UDP
-		//udp = new UDPConnection(new DatagramSocket(port), new ClientProtocol());
-		//udp.start(); stcp.start();
+		try {
+			udp = new UDPConnection(new DatagramSocket(4445), new ClientProtocol());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		udp.start();
 	}
 
 	public static GameClient getInstance() {
@@ -85,9 +90,9 @@ public final class GameClient {
 			stcp.stopConnection(currentPlayer);
 		}
 
-		//if(udp != null) {
-		//	udp.stopConnection(currentPlayer);
-		//}
+		if(udp != null) {
+			udp.stopConnection(currentPlayer);
+		}
 	}
 
 	public Player getCurrentPlayer() {
@@ -101,6 +106,6 @@ public final class GameClient {
 	public void cleanUp() {
 		tcp.cleanUp();
 		stcp.cleanUp();
-		//udp.cleanUp();
+		udp.cleanUp();
 	}
 }

@@ -11,8 +11,10 @@ import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.Protocol;
+import com.swarmer.shared.communication.UDPConnection;
 
 import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.security.PublicKey;
 
@@ -38,6 +40,9 @@ public class ClientProtocol extends Protocol {
 				break;
 			case 302: // User joined lobby.
 				userJoinedLobby(message);
+				break;
+			case 666: // Update udp socket address info
+				updateUdpSocketAddressInfo(message);
 				break;
 			case 890:
 				handleLobbyRequest(message);
@@ -65,6 +70,16 @@ public class ClientProtocol extends Protocol {
 			default:
 				break;
 		}
+	}
+
+	private void updateUdpSocketAddressInfo(Message message) {
+		GameClient.getInstance().udp.stopConnection();
+		try {
+			GameClient.getInstance().udp = new UDPConnection(new DatagramSocket((int) message.getObject()), new ClientProtocol());
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		//GameClient.getInstance().udp.changeAddress((int) message.getObject());
 	}
 
 	private void userJoinedLobby(Message message) {

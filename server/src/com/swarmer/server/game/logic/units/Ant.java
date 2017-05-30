@@ -7,9 +7,9 @@ import com.swarmer.shared.communication.Player;
 
 public class Ant {
 
-    private float x;
-    private float y;
-    private float food;
+    private int x;
+    private int y;
+    private int food;
 
     private AntBrain brain;
 
