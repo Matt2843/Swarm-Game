@@ -30,6 +30,7 @@ public class GameProtocol extends ServerProtocol {
 	}
 
 	private void startGame(Message message) {
+		System.out.println("Starting new game");
 		HashMap<Player, LocationInformation> players = (HashMap<Player, LocationInformation>) message.getObject();
 		GameUnit.startNewGame(players);
 	}
