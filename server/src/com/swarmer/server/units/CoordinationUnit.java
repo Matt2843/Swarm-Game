@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class CoordinationUnit extends ServerUnit {
@@ -113,7 +114,7 @@ public class CoordinationUnit extends ServerUnit {
 	private static void createGames() throws IOException {
 		DatabaseControllerCallable databaseControllerCallable = new DatabaseControllerCallable(new Message(1, "game_units"));
 		String ipString = (String) databaseControllerCallable.getFutureResult().getObject();
-		String ip = ipString.split(":")[0];
+		String ip = ipString.split(":")[0].replace("/", "");
 		Integer port = Integer.parseInt(ipString.split(":")[1]);
 
 		if (!(queue.getFullGames().size() > 0)) {
@@ -121,19 +122,29 @@ public class CoordinationUnit extends ServerUnit {
 			return;
 		}
 
-		for (GameQueueEntry gameQueueEntry : queue.getFullGames()) {
-			HashMap<LocationInformation, Player> players = new HashMap<>();
+		ArrayList<GameQueueEntry> queueEntries = queue.getFullGames();
+		Iterator it = queueEntries.iterator();
 
-			for (Player player : gameQueueEntry.getPlayers()) {
+		while (it.hasNext()) {
+
+			HashMap<Player, LocationInformation> players = new HashMap<>();
+
+			GameQueueEntry queueEntry = (GameQueueEntry) it.next();
+
+			for (Player player : queueEntry.getPlayers()) {
 				LocationInformation locationInformation = allConnectedUsers.get(player);
-				players.put(locationInformation, player);
+				players.put(player, locationInformation);
 			}
 
+			System.out.println(ip);
+			System.out.println(port);
+
 			TCPConnection connection = new TCPConnection(new Socket(ip, port), null);
+			connection.start();
 			connection.sendMessage(new Message(101, players));
 			connection.stopConnection();
 
-			queue.removeFulLGame(gameQueueEntry);
+			it.remove();
 		}
 	}
 }

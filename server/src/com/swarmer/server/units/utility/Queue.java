@@ -4,6 +4,7 @@ import com.swarmer.shared.communication.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class Queue implements Runnable {
@@ -54,14 +55,19 @@ public class Queue implements Runnable {
 
         boolean foundMatch = false;
 
-        for (GameQueueEntry queueEntry : queueEntriesMap.get(skillGroup)) {
+        ArrayList<GameQueueEntry> queueEntries = queueEntriesMap.get(skillGroup);
+        Iterator it = queueEntries.iterator();
+
+        while (it.hasNext()) {
+            GameQueueEntry queueEntry = (GameQueueEntry) it.next();
+
             if (queueEntry.hasFreeSpots(players.size())) {
                 queueEntry.addPlayers(players);
                 foundMatch = true;
 
                 if (queueEntry.isFull()) {
                     fullGames.add(queueEntry);
-                    queueEntriesMap.get(skillGroup).remove(queueEntry);
+                    it.remove();
                 }
             }
         }
