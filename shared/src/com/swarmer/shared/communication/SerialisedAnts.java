@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class SerialisedAnts implements Serializable {
 
-	ArrayList<SerialisedAnt> ants;
+	public ArrayList<SerialisedAnt> ants;
 
 	public SerialisedAnts() {
 		ants = new ArrayList<SerialisedAnt>();
@@ -15,15 +15,7 @@ public class SerialisedAnts implements Serializable {
 		ants.add(new SerialisedAnt(id, x, y));
 	}
 
-	private class SerialisedAnt implements Serializable {
-		public int id;
-		public int x;
-		public int y;
-
-		public SerialisedAnt(int id, int x, int y) {
-			this.id = id;
-			this.x = x;
-			this.y = y;
-		}
+	public void clear() {
+		ants.clear();
 	}
 }

@@ -78,18 +78,23 @@ public class UDPConnection extends Connection {
 	}
 
 	@Override public void sendMessage(Message m) throws IOException {
-		output.writeObject(m);
-		output.flush();
-		outbound.setData(baos.toByteArray());
-		System.out.println(outbound.getLength());
-		for(SocketAddress inet : broadcastAddress) {
-			outbound.setSocketAddress(inet);
-			connection.send(outbound);
+		if(!stop) {
+			setupStreams();
+			output.writeObject(m);
+			output.flush();
+			outbound.setData(baos.toByteArray());
+			System.out.println(outbound.getLength());
+			System.out.println(baos.toByteArray().length);
+			for(SocketAddress inet : broadcastAddress) {
+				outbound.setSocketAddress(inet);
+				connection.send(outbound);
+			}
 		}
 	}
 
 	public void sendMessage(Message m, SocketAddress inet) throws IOException {
 		if(!stop) {
+			setupStreams();
 			output.writeObject(m);
 			output.flush();
 			outbound.setData(baos.toByteArray());
@@ -107,8 +112,6 @@ public class UDPConnection extends Connection {
 		baos = new ByteArrayOutputStream();
 		output = new ObjectOutputStream(baos);
 		output.flush();
-
-		iaos = new ByteArrayInputStream(buffer);
 	}
 
 	@Override public void stopConnection(Object... o) {

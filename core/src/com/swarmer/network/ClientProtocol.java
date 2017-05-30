@@ -11,6 +11,7 @@ import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.Protocol;
+import com.swarmer.shared.communication.SerialisedAnts;
 import com.swarmer.shared.communication.UDPConnection;
 
 import java.io.IOException;
@@ -61,6 +62,9 @@ public class ClientProtocol extends Protocol {
 			case 11111:
 				secureConnectToAuthNode(message);
 				break;
+			case 23323:
+				printAnts(message);
+				break;
 			case 34789: // Received friend request.
 				// TODO: Display friend request notification.
 				handleFriendRequest(message);
@@ -71,6 +75,15 @@ public class ClientProtocol extends Protocol {
 			default:
 				break;
 		}
+	}
+
+	private void printAnts(Message message) {
+		String res = "";
+		SerialisedAnts ants = (SerialisedAnts) message.getObject();
+		for(SerialisedAnts.SerialisedAnt ant : ants.ants) {
+			res += ant.toString() + "\n";
+		}
+		System.out.println(res);
 	}
 
 	private void updateUdpSocketAddressInfo(Message message) {

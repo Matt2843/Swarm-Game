@@ -5,8 +5,12 @@ import com.swarmer.server.game.aco.graph.Vector2;
 import com.swarmer.server.game.logic.resources.Food;
 import com.swarmer.server.game.logic.structures.Hive;
 import com.swarmer.server.game.logic.units.Ant;
+import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
+import com.swarmer.shared.communication.SerialisedAnts;
+import com.swarmer.shared.communication.UDPConnection;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,10 +25,13 @@ public class Game {
 	private ArrayList<Hive> hives;
 	private HashMap<Player, String> players;
 
-	public Game(HashMap<Player, String> players, int width, int height) {
+	private UDPConnection connection;
+
+	public Game(HashMap<Player, String> players, int width, int height, UDPConnection connection) {
 		this.players = players;
 		mapWidth = width;
 		mapHeight = height;
+		this.connection = connection;
 		init();
 	}
 
@@ -55,9 +62,26 @@ public class Game {
 	}
 
 	public void render() {
+		SerialisedAnts sAnts = new SerialisedAnts();
+		int j = 0;
 		for(int i = 0; i < ants.size(); i++) {
-			//ants[i].update();
-
+			ants.get(i).update();
+			if(j > 15){
+				try {
+					connection.sendMessage(new Message(23323, sAnts));
+				} catch(IOException e) {
+					e.printStackTrace();
+				}
+				sAnts = new SerialisedAnts();
+				j = 0;
+			}
+			sAnts.addAnt(i, ants.get(i).x, ants.get(i).y);
+			j++;
+		}
+		try {
+			connection.sendMessage(new Message(23323, sAnts));
+		} catch(IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

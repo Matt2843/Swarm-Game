@@ -35,7 +35,7 @@ public class GameUnit extends ServerUnit {
 	}
 
 	public void startNewGame(HashMap<Player, String> players) {
-		Swarmer game = new Swarmer(players);
+		Swarmer game = new Swarmer(players, UDPsocket.udpConnection);
 		game.run();
 	}
 }
