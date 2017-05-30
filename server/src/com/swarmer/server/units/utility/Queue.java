@@ -22,8 +22,16 @@ public class Queue implements Runnable {
     public void run() {
         for (Map.Entry<String, ArrayList<GameQueueEntry>> queueEntryMap : queueEntriesMap.entrySet()) {
             for (GameQueueEntry queueEntry : queueEntryMap.getValue()) {
-                
+                if (queueEntry.isFull()) {
+
+                }
             }
+        }
+
+        try {
+            Thread.sleep(1000);
+        } catch(InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
