@@ -49,8 +49,8 @@ public class CoordinationProtocol extends ServerProtocol {
 				findPlayerReturnPlayer(message);
 				break;
 			case 1161:
+			case 13371:
 				findMatch(message);
-				break;
 			default:
 				break;
 		}
@@ -61,9 +61,9 @@ public class CoordinationProtocol extends ServerProtocol {
 		caller.sendMessage(new Message(target));
 	}
 
-	private void findMatch(Message message) {
+	private void findMatch(Message message) throws IOException {
+		caller.sendMessage(new Message(13371, true));
 		ArrayList<Player> players = (ArrayList<Player>) message.getObject();
-
 		CoordinationUnit.findMatch(players);
 	}
 

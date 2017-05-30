@@ -34,9 +34,20 @@ public class AuthenticationProtocol extends ServerProtocol {
 			case 301:
 				getLobbyUnit(message); // message = {lobby unit ID} or message = {random}
 				break;
+			case 13371:
+				findGame(message); // message = ArrayList<Player>
 			default:
 				super.react(message, caller);
 				break;
+		}
+	}
+
+	private void findGame(Message message) {
+		try {
+			Message response = new CoordinationUnitCallable(message).getFutureResult();
+			System.out.println(response);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

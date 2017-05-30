@@ -1,5 +1,6 @@
 package com.swarmer.server.units.utility;
 
+import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 
 import java.util.ArrayList;
@@ -20,9 +21,21 @@ public class Queue implements Runnable {
 
     @Override
     public void run() {
-        for (Map.Entry<String, ArrayList<GameQueueEntry>> queueEntryMap : queueEntriesMap.entrySet()) {
-            for (GameQueueEntry queueEntry : queueEntryMap.getValue()) {
-                
+        while (true) {
+            System.out.println("Leder efter et spil");
+
+            for (Map.Entry<String, ArrayList<GameQueueEntry>> queueEntryMap : queueEntriesMap.entrySet()) {
+                for (GameQueueEntry queueEntry : queueEntryMap.getValue()) {
+                    if (queueEntry.isFull()) {
+                        System.out.println("Fundet et spil! :)");
+                    }
+                }
+            }
+
+            try {
+                Thread.sleep(5000);
+            } catch(InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -49,7 +62,8 @@ public class Queue implements Runnable {
         }
 
         if (!foundMatch) {
-            new GameQueueEntry(players);
+            GameQueueEntry queueEntry = new GameQueueEntry(players);
+            queueEntriesMap.get(skillGroup).add(queueEntry);
         }
     }
 
@@ -62,4 +76,9 @@ public class Queue implements Runnable {
 
         return totalRating / players.size();
     }
+
+//    LocationInformation locationInformation = findPlayerLocationInformation(player.getUsername());
+//
+//							System.out.println("Sending request to " + player.getUsername());
+//    sendTo(locationInformation, null, new Message(13372));
 }
