@@ -1,6 +1,5 @@
 package com.swarmer.network;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.screens.lobby.LobbyScreen;
@@ -52,6 +51,8 @@ public class ClientProtocol extends Protocol {
 			case 999:
 				connectServerUnit(message);
 				break;
+			case 13372:
+				handleFoundGame(message);
 			case 11111:
 				secureConnectToAuthNode(message);
 				break;
@@ -81,17 +82,36 @@ public class ClientProtocol extends Protocol {
 
 		Gdx.app.postRunnable(new Runnable() {
 			@Override public void run() {
-			SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Lobby Request", requestFrom.getUsername() + " invited you to a lobby.") {
-				@Override public void accept() throws IOException {
-					GameClient.getInstance().establishTCPConnection(connectionDetails.getAddress().toString().replaceAll("/", ""), connectionDetails.getPort());
-					GameClient.getInstance().tcp.sendMessage(new Message(303, new Object[] {lobbyID, GameClient.getInstance().getCurrentPlayer()}));
-					LobbyScreen.getInstance().setLobbyId(lobbyID);
-				}
+				SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Lobby Request", requestFrom.getUsername() + " invited you to a lobby.") {
+					@Override public void accept() throws IOException {
+						GameClient.getInstance().establishTCPConnection(connectionDetails.getAddress().toString().replaceAll("/", ""), connectionDetails.getPort());
+						GameClient.getInstance().tcp.sendMessage(new Message(303, new Object[] {lobbyID, GameClient.getInstance().getCurrentPlayer()}));
+						LobbyScreen.getInstance().setLobbyId(lobbyID);
+					}
 
-				@Override public void reject() {
-					// Do nothing :)
-				}
-			});
+					@Override public void reject() {
+						// Do nothing :)
+					}
+				});
+			}
+		});
+	}
+
+	private void handleFoundGame(final Message message) {
+		Gdx.app.postRunnable(new Runnable() {
+			@Override
+			public void run() {
+				SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Game found", "A game was found!") {
+					@Override
+					public void accept() throws IOException {
+						GameClient.getInstance().tcp.sendMessage(new Message(76767));
+					}
+
+					@Override
+					public void reject() throws IOException {
+						GameClient.getInstance().tcp.sendMessage(new Message(78787));
+					}
+				});
 			}
 		});
 	}

@@ -20,7 +20,7 @@ public abstract class SwarmerNotification extends Dialog {
 	public SwarmerNotification(String title, String description) {
 		super(title, StyleSheet.defaultSkin);
 		TextButton accept = new TextButton("Accept", StyleSheet.defaultSkin);
-		TextButton reject = new TextButton("Reject", StyleSheet.defaultSkin);
+		final TextButton reject = new TextButton("Reject", StyleSheet.defaultSkin);
 
 		Label descriptionLabel = new Label(description, StyleSheet.defaultSkin);
 		descriptionLabel.setWrap(true);
@@ -41,7 +41,11 @@ public abstract class SwarmerNotification extends Dialog {
 
 		reject.addCaptureListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
-				reject();
+				try {
+					reject();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 
@@ -49,5 +53,5 @@ public abstract class SwarmerNotification extends Dialog {
 	}
 
 	public abstract void accept() throws IOException;
-	public abstract void reject();
+	public abstract void reject() throws IOException;
 }

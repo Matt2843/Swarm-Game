@@ -1,16 +1,13 @@
 package com.swarmer.server.units;
 
 import com.swarmer.server.protocols.CoordinationProtocol;
-import com.swarmer.server.units.utility.GameQueueEntry;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.server.units.utility.Queue;
-import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

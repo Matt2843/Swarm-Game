@@ -1,5 +1,6 @@
 package com.swarmer.server.units.utility;
 
+import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 
 import java.util.ArrayList;
@@ -75,4 +76,9 @@ public class Queue implements Runnable {
 
         return totalRating / players.size();
     }
+
+//    LocationInformation locationInformation = findPlayerLocationInformation(player.getUsername());
+//
+//							System.out.println("Sending request to " + player.getUsername());
+//    sendTo(locationInformation, null, new Message(13372));
 }
