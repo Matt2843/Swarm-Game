@@ -45,7 +45,7 @@ public class UDPConnection extends Connection {
 	public void addBroadcastAddress(SocketAddress ip) {
 		broadcastAddress.add(ip);
 		try {
-			sendMessage(new Message(666));
+			sendMessage(new Message(666, connection.getPort()));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
