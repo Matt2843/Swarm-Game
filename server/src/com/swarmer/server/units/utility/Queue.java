@@ -20,18 +20,22 @@ public class Queue implements Runnable {
 
     @Override
     public void run() {
-        for (Map.Entry<String, ArrayList<GameQueueEntry>> queueEntryMap : queueEntriesMap.entrySet()) {
-            for (GameQueueEntry queueEntry : queueEntryMap.getValue()) {
-                if (queueEntry.isFull()) {
+        while (true) {
+            System.out.println("Leder efter et spil");
 
+            for (Map.Entry<String, ArrayList<GameQueueEntry>> queueEntryMap : queueEntriesMap.entrySet()) {
+                for (GameQueueEntry queueEntry : queueEntryMap.getValue()) {
+                    if (queueEntry.isFull()) {
+                        System.out.println("Fundet et spil! :)");
+                    }
                 }
             }
-        }
 
-        try {
-            Thread.sleep(1000);
-        } catch(InterruptedException e) {
-            e.printStackTrace();
+            try {
+                Thread.sleep(5000);
+            } catch(InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -57,7 +61,8 @@ public class Queue implements Runnable {
         }
 
         if (!foundMatch) {
-            new GameQueueEntry(players);
+            GameQueueEntry queueEntry = new GameQueueEntry(players);
+            queueEntriesMap.get(skillGroup).add(queueEntry);
         }
     }
 
