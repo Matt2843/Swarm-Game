@@ -73,6 +73,8 @@ public class UDPConnection extends Connection {
 				e.printStackTrace();
 			} catch (SQLException e) {
 				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		} while(!stop && message.getOpcode() != 0); // TODO: CHANGE STOP CONDITION.
 		cleanUp();

@@ -34,13 +34,7 @@ public class TCPConnection extends Connection {
 			} catch (IOException e) {
 				System.out.println("input.readObject() threw an IOException, cleaning up connection.");
 				stop = true;
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (OperationInWrongServerNodeException e) {
-				e.printStackTrace();
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			} catch (SQLException e) {
+			} catch (ClassNotFoundException | InterruptedException | SQLException | NoSuchAlgorithmException | OperationInWrongServerNodeException e) {
 				e.printStackTrace();
 			}
 		} while(!stop && message.getOpcode() != 0); // TODO: CHANGE STOP CONDITION.

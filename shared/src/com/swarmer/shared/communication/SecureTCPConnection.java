@@ -97,7 +97,7 @@ public class SecureTCPConnection extends Connection {
 			} catch (IOException e) {
 				System.out.println("WHY GOD WHY");
 				stop = true;
-			} catch (ClassNotFoundException | OperationInWrongServerNodeException | NoSuchAlgorithmException | SQLException e) {
+			} catch (ClassNotFoundException | OperationInWrongServerNodeException | NoSuchAlgorithmException | SQLException | InterruptedException e) {
 				e.printStackTrace();
 			}
 		} while(!stop && message.getOpcode() != 0); // TODO: CHANGE STOP CONDITION.

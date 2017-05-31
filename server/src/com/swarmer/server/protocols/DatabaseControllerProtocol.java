@@ -26,7 +26,7 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 		super(null);
 	}
 
-	@Override protected void react(Message message, Connection caller) throws IOException, SQLException {
+	@Override protected void react(Message message, Connection caller) throws IOException, SQLException, InterruptedException {
 		this.caller = caller;
 		System.out.println("Message in mothership protocol: " + message.toString());
 		switch (message.getOpcode()) {

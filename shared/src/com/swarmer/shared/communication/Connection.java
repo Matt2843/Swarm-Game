@@ -19,7 +19,7 @@ public abstract class Connection extends Thread {
 
 	abstract public void run();
 
-	protected void react(Message message) throws IOException, OperationInWrongServerNodeException, SQLException, NoSuchAlgorithmException {
+	protected void react(Message message) throws IOException, OperationInWrongServerNodeException, SQLException, NoSuchAlgorithmException, InterruptedException {
 		protocol.react(message, this);
 	}
 
