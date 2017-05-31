@@ -19,9 +19,6 @@ public class GameUnit extends ServerUnit {
 
 	protected GameUnit() {
 		super();
-		HashMap<Player, LocationInformation> players = new HashMap<Player, LocationInformation>();
-		players.put(new Player("1", "Matt", -5), null);
-//		startNewGame(players);
 	}
 
 	@Override public int getPort() {
@@ -54,6 +51,7 @@ public class GameUnit extends ServerUnit {
 			sendTo(player.getKey().getUsername(), player.getValue(), null, new Message(13371, new Object[]{ID, port, map}));
 		}
 
-		game.run();
+		new Thread(game).start();
+		System.out.println("Started new game");
 	}
 }
