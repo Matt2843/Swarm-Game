@@ -3,9 +3,10 @@ package com.swarmer.server.game.aco.graph;
 
 import com.swarmer.shared.communication.Player;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Edge {
+public class Edge implements Serializable {
 
     private HashMap<Player, Pheromone> pheromones;
     private String PATH_ID;

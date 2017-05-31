@@ -1,6 +1,8 @@
 package com.swarmer.server.game.aco.graph;
 
-public class Graph {
+import java.io.Serializable;
+
+public class Graph implements Serializable {
     public Node[][] nodes;
 
     private final int width;
