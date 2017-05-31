@@ -35,8 +35,7 @@ public class ClientProtocol extends Protocol {
 				userCreatingState(message);
 				break;
 			case 301: // Received message in lobby chat
-				String[] receivedMessageArray = (String[]) message.getObject();
-				LobbyScreen.lobbyChat.appendToChatWindow(receivedMessageArray[1], receivedMessageArray[0]);
+                receivedMessageInLobby(message);
 				break;
 			case 302: // User joined lobby.
 				userJoinedLobby(message);
@@ -75,7 +74,12 @@ public class ClientProtocol extends Protocol {
 		}
 	}
 
-	private void printAnts(Message message) {
+    private void receivedMessageInLobby(Message message) {
+        String[] receivedMessageArray = (String[]) message.getObject();
+        LobbyScreen.getInstance().lobbyChat.appendToChatWindow(receivedMessageArray[1], receivedMessageArray[0]);
+    }
+
+    private void printAnts(Message message) {
 		String res = "";
 		SerialisedAnts ants = (SerialisedAnts) message.getObject();
 		for(SerialisedAnt ant : ants.ants) {
@@ -90,6 +94,8 @@ public class ClientProtocol extends Protocol {
 
 	private void userJoinedLobby(Message message) {
 		Player joinedPlayer = (Player) message.getObject();
+		LobbyScreen.getInstance().getFindGame().remove();
+        LobbyUserList.getInstance().addPlayer(joinedPlayer);
 		LobbyUserList.getInstance().addUserToList(joinedPlayer.getUsername());
 		SwarmerMain.getInstance().show(LobbyScreen.getInstance());
 	}

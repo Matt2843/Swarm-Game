@@ -12,6 +12,12 @@ import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.StyleSheet;
 import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
 import com.swarmer.gui.widgets.SwarmerScreen;
+import com.swarmer.network.GameClient;
+import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.communication.Player;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class LobbyScreen extends SwarmerScreen {
     private String lobbyId = "";
@@ -48,7 +54,12 @@ public class LobbyScreen extends SwarmerScreen {
         findGame.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
+                ArrayList<Player> players = LobbyUserList.getInstance().getPlayersInLobby();
+                try {
+                    GameClient.getInstance().tcp.sendMessage(new Message(13371, players));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         buttonContainer.add(findGame).width(LobbyUserList.getInstance().getWidth() / 2).height(LobbyUserList.getInstance().getHeight() / 4);
@@ -73,6 +84,10 @@ public class LobbyScreen extends SwarmerScreen {
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             lobbyChat.pressSendInput();
         }
+    }
+
+    public TextButton getFindGame() {
+        return findGame;
     }
 
     public String getLobbyId() {

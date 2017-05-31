@@ -76,7 +76,7 @@ public class PreLobbyScreen extends SwarmerScreen {
 		});
 	}
 
-	private void findGame(String mode) {
+	public void findGame(String mode) {
 		gameModeLabel.setText("Looking for " + mode.toLowerCase() + " game...");
 
 		int size = contentPane.getCells().size;
