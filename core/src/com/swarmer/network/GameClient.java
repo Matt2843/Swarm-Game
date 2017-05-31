@@ -36,7 +36,7 @@ public final class GameClient {
 		}
 
 		String IP = IPGetter.getInstance().getAccessUnitIP();
-		//establishTCPConnection(IP, 43120);
+		establishTCPConnection(IP, 43120);
 
 		// TODO: FIX UDP
 		try {

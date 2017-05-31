@@ -3,7 +3,7 @@ package com.swarmer.network;
 import com.badlogic.gdx.Gdx;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.screens.lobby.LobbyScreen;
-import com.swarmer.gui.screens.lobby.LobbyUserList2;
+import com.swarmer.gui.screens.lobby.LobbyUserList;
 import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
 import com.swarmer.gui.widgets.FriendList;
 import com.swarmer.gui.widgets.SwarmerNotification;
@@ -13,10 +13,8 @@ import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.Protocol;
 import com.swarmer.shared.communication.SerialisedAnts;
 import com.swarmer.shared.communication.SerialisedAnt;
-import com.swarmer.shared.communication.UDPConnection;
 
 import java.io.IOException;
-import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.security.PublicKey;
 
@@ -92,7 +90,7 @@ public class ClientProtocol extends Protocol {
 
 	private void userJoinedLobby(Message message) {
 		Player joinedPlayer = (Player) message.getObject();
-		LobbyUserList2.getInstance().addUserToList(joinedPlayer.getUsername());
+		LobbyUserList.getInstance().addUserToList(joinedPlayer.getUsername());
 		SwarmerMain.getInstance().show(LobbyScreen.getInstance());
 	}
 

@@ -3,9 +3,11 @@ package com.swarmer.gui.screens.lobby;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.StyleSheet;
 import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
@@ -14,7 +16,8 @@ import com.swarmer.gui.widgets.SwarmerScreen;
 public class LobbyScreen extends SwarmerScreen {
     private String lobbyId = "";
 
-    public static LobbyChat lobbyChat;
+    public LobbyChat lobbyChat;
+    public TextButton findGame;
 
     private static LobbyScreen lobbyScreenInstance;
 
@@ -35,18 +38,24 @@ public class LobbyScreen extends SwarmerScreen {
 
         lobbyChat = new LobbyChat((float) (getWidth() * 0.8 * 0.7), getHeight() / 2);
 
-        middleSection.add(LobbyUserList2.getInstance());
+        middleSection.add(LobbyUserList.getInstance());
         middleSection.add(lobbyChat);
         middleSection.row();
 
         final Table buttonContainer = new Table();
 
-        TextButton findGame = new TextButton("Find Game", StyleSheet.defaultSkin);
-        buttonContainer.add(findGame).width(LobbyUserList2.getInstance().getWidth() / 2).height(LobbyUserList2.getInstance().getHeight() / 4);
+        findGame = new TextButton("Find Game", StyleSheet.defaultSkin);
+        findGame.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+
+            }
+        });
+        buttonContainer.add(findGame).width(LobbyUserList.getInstance().getWidth() / 2).height(LobbyUserList.getInstance().getHeight() / 4);
 
 
         TextButton returnToPreLobbyScreen = new TextButton("Exit Lobby", StyleSheet.defaultSkin);
-        buttonContainer.add(returnToPreLobbyScreen).width(LobbyUserList2.getInstance().getWidth() / 2).height(LobbyUserList2.getInstance().getHeight() / 4);
+        buttonContainer.add(returnToPreLobbyScreen).width(LobbyUserList.getInstance().getWidth() / 2).height(LobbyUserList.getInstance().getHeight() / 4);
         returnToPreLobbyScreen.addCaptureListener(new ChangeListener() {
             @Override public void changed(ChangeEvent event, Actor actor) {
                 SwarmerMain.getInstance().show(PreLobbyScreen.getInstance());

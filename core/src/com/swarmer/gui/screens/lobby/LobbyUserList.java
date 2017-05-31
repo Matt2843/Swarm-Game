@@ -1,27 +1,28 @@
 package com.swarmer.gui.screens.lobby;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.swarmer.gui.StyleSheet;
+import com.swarmer.shared.communication.Player;
 
 import java.util.ArrayList;
 
 /**
  * Created by Matt on 03/30/2017.
  */
-public class LobbyUserList2 extends Table {
+public class LobbyUserList extends Table {
 	private final int listSize = 4;
 
 	private Label tooltip;
 	private ArrayList<Label> userLabels;
+	private ArrayList<Player> playersInLobby = new ArrayList<>();
 
-	private static LobbyUserList2 instance;
+	private static LobbyUserList instance;
 
-	private LobbyUserList2(float width, float height) {
+	private LobbyUserList(float width, float height) {
 		// DONT INSTANTIATE
 		setSize(width, height);
 		userLabels = new ArrayList<>();
@@ -48,9 +49,19 @@ public class LobbyUserList2 extends Table {
 		updateGui();
 	}
 
-	public static LobbyUserList2 getInstance() {
+	public void addPlayer(Player player) {
+		if (!playersInLobby.contains(player)) {
+			playersInLobby.add(player);
+		}
+	}
+
+	public ArrayList<Player> getPlayersInLobby() {
+		return playersInLobby;
+	}
+
+	public static LobbyUserList getInstance() {
 		if(instance == null)
-			instance = new LobbyUserList2((float) (1280 * 0.8 * 0.3), 800 / 2);
+			instance = new LobbyUserList((float) (1280 * 0.8 * 0.3), 800 / 2);
 		return instance;
 	}
 
