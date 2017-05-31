@@ -56,7 +56,9 @@ public class Game {
 
 			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size() > 0) {
 				hives.add(new Hive(player.getKey(), graph.nodes[x][y]));
-				ants.add(new Ant(player.getKey(), graph.nodes[x][y]));
+				for (int i = 0; i<5; i++) {
+					ants.add(new Ant(player.getKey(), graph.nodes[x][y]));
+				}
 			}
 		}
 	}

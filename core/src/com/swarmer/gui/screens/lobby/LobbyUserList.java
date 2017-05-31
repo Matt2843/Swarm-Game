@@ -18,7 +18,6 @@ public class LobbyUserList extends Table {
 
 	private Label tooltip;
 	private ArrayList<Label> userLabels;
-	private ArrayList<Player> playersInLobby = new ArrayList<>();
 
 	private static LobbyUserList instance;
 
@@ -47,16 +46,6 @@ public class LobbyUserList extends Table {
 			userLabels.add(newUser);
 		}
 		updateGui();
-	}
-
-	public void addPlayer(Player player) {
-		if (!playersInLobby.contains(player)) {
-			playersInLobby.add(player);
-		}
-	}
-
-	public ArrayList<Player> getPlayersInLobby() {
-		return playersInLobby;
 	}
 
 	public static LobbyUserList getInstance() {

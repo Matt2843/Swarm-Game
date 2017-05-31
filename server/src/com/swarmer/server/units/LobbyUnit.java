@@ -1,5 +1,6 @@
 package com.swarmer.server.units;
 
+import com.swarmer.server.CoordinationUnitCallable;
 import com.swarmer.server.protocols.LobbyProtocol;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.units.utility.Lobby;
@@ -7,6 +8,7 @@ import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -35,6 +37,14 @@ public class LobbyUnit extends ServerUnit {
             return null;
         joinLobby(lobbyID, lobbyOwner);
         return lobbyID;
+    }
+
+    public void startGame(String id) throws IOException {
+        if(hostedLobbies.containsKey(id)) {
+            ArrayList<Player> players = hostedLobbies.get(id).getConnectedUsers();
+
+            Message response = new CoordinationUnitCallable(new Message(13371, players)).getFutureResult();
+        }
     }
 
     public void joinLobby(String lobbyId, Player player) throws IOException {

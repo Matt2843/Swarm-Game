@@ -54,9 +54,8 @@ public class LobbyScreen extends SwarmerScreen {
         findGame.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ArrayList<Player> players = LobbyUserList.getInstance().getPlayersInLobby();
                 try {
-                    GameClient.getInstance().tcp.sendMessage(new Message(13371, players));
+                    GameClient.getInstance().tcp.sendMessage(new Message(13371, LobbyScreen.getInstance().getLobbyId()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

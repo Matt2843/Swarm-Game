@@ -45,7 +45,6 @@ public class AuthenticationProtocol extends ServerProtocol {
 	private void findGame(Message message) {
 		try {
 			Message response = new CoordinationUnitCallable(message).getFutureResult();
-			System.out.println(response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -33,10 +33,16 @@ public class LobbyProtocol extends ServerProtocol {
 			case 303:
 				userWantsToJoinLobby(message);
 				break;
+			case 13371:
+				startGame(message);
 			default:
 				super.react(message, caller);
 				break;
 		}
+	}
+
+	private void startGame(Message message) throws IOException {
+		((LobbyUnit)serverUnit).startGame((String) message.getObject());
 	}
 
 	private void userWantsToJoinLobby(Message message) throws IOException {
