@@ -5,15 +5,17 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.swarmer.aco.graph.Graph;
+import com.swarmer.shared.aco.graph.Graph;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.game.input.SwamerInputProcessor;
 import com.swarmer.game.input.SwarmerGestureDetector;
@@ -68,10 +70,19 @@ public class GameScreen extends SwarmerScreen {
 		mapWidth = layer.getWidth() * layer.getTileWidth();
 		mapHeight = layer.getHeight() * layer.getTileHeight();
 
+		/*TiledMap m = new TiledMap();
+		m.getLayers().add(new TiledMapTileLayer(w, h, tw, th));
+
+		TiledMapTileLayer lay = m.getLayers().getByType(TiledMapTileLayer.class).get(0);
+
+		TiledMapTile tile = new StaticTiledMapTile(new TextureRegion().);*/
+
+
+
 		backgroundLayers = new int[]{0, 1, 2};
 		foregroundLayers = new int[]{3};
 
-		graph = new Graph(map);
+		graph = new Graph(4, 5);
 
 		viewport = new ExtendViewport(VP_WIDTH, VP_HEIGHT, camera);
 
@@ -90,7 +101,7 @@ public class GameScreen extends SwarmerScreen {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
 			int y = ThreadLocalRandom.current().nextInt(1, 99);
 
-			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
+			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size() > 0) {
 				lay0.setCell(x, y, new TiledMapTileLayer.Cell());
 				lay0.getCell(x,y).setTile(tile);
 				graph.nodes[x][y].setResource(new Food(100));
@@ -104,7 +115,7 @@ public class GameScreen extends SwarmerScreen {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
 			int y = ThreadLocalRandom.current().nextInt(1, 99);
 			Player player = new Player("Alias", "" + i, 0);
-			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size > 0) {
+			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size() > 0) {
 				hives.add(new Hive(player, graph.nodes[x][y]));
 			}
 		}

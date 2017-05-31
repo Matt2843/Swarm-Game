@@ -1,7 +1,7 @@
-package com.swarmer.server.game.aco.graph;
+package com.swarmer.shared.aco.graph;
 
-import com.swarmer.server.game.logic.resources.Resource;
 import com.swarmer.shared.communication.Player;
+import com.swarmer.shared.resources.Resource;
 
 import java.io.Serializable;
 import java.util.ArrayList;

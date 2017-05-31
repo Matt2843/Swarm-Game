@@ -2,10 +2,6 @@ package com.swarmer.shared.resources;
 
 public class Food extends Resource {
 
-	public Food() {
-
-	}
-
 	public Food(int quantity) {
 		super(quantity);
 	}

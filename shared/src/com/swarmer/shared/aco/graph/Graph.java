@@ -1,4 +1,4 @@
-package com.swarmer.server.game.aco.graph;
+package com.swarmer.shared.aco.graph;
 
 import java.io.Serializable;
 
@@ -9,7 +9,6 @@ public class Graph implements Serializable {
     private final int height;
 
     public Graph(int width, int height) {
-        //collisionLayer = (TiledMapTileLayer) map.getLayers().get(1);
         this.width = width;
         this.height = height;
         nodes = new Node[width][height];
@@ -19,7 +18,6 @@ public class Graph implements Serializable {
     private void generateGraph() {
         for(int j = 0; j < height; j++) {
             for(int i = 0; i < width; i++) {
-                //if(collisionLayer.getCell(i, j) == null) {
                 nodes[i][j] = new Node(new Vector2(i, j));
                 if(i > 0 && j > 0 && i < width - 1) {
                     new Edge(nodes[i][j], nodes[i - 1][j], true);

@@ -1,8 +1,8 @@
 package com.swarmer.server.game.logic.units;
 
-import com.swarmer.server.game.aco.ai.AntBrain;
-import com.swarmer.server.game.aco.graph.Node;
-import com.swarmer.server.game.aco.graph.Vector2;
+import com.swarmer.shared.aco.ai.AntBrain;
+import com.swarmer.shared.aco.graph.Node;
+import com.swarmer.shared.aco.graph.Vector2;
 import com.swarmer.shared.communication.Player;
 
 public class Ant {

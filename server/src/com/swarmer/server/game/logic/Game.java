@@ -1,8 +1,8 @@
 package com.swarmer.server.game.logic;
 
-import com.swarmer.server.game.aco.graph.Graph;
-import com.swarmer.server.game.aco.graph.Vector2;
-import com.swarmer.server.game.logic.resources.Food;
+import com.swarmer.shared.aco.graph.Graph;
+import com.swarmer.shared.aco.graph.Vector2;
+import com.swarmer.shared.resources.Food;
 import com.swarmer.server.game.logic.structures.Hive;
 import com.swarmer.server.game.logic.units.Ant;
 import com.swarmer.server.units.utility.LocationInformation;

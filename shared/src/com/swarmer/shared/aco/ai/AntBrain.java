@@ -1,8 +1,8 @@
-package com.swarmer.server.game.aco.ai;
+package com.swarmer.shared.aco.ai;
 
-
-import com.swarmer.server.game.aco.graph.Edge;
-import com.swarmer.server.game.aco.graph.Node;
+import com.swarmer.shared.aco.graph.Edge;
+import com.swarmer.shared.aco.graph.Node;
+import com.swarmer.shared.aco.graph.Vector2;
 import com.swarmer.shared.communication.Player;
 
 import java.util.ArrayList;

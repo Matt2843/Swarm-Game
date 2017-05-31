@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.swarmer.aco.graph.Node;
+import com.swarmer.shared.aco.graph.Node;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.network.GameClient;
 import com.swarmer.shared.communication.Message;

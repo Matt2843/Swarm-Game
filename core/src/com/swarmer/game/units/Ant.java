@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
-import com.swarmer.aco.ai.AntBrain;
+import com.swarmer.shared.aco.ai.AntBrain;
 import com.swarmer.gui.animations.AnimationLibrary;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.utility.CoordsTranslator;
-import com.swarmer.aco.graph.Node;
+import com.swarmer.shared.aco.graph.Node;
 
 public class Ant {
 

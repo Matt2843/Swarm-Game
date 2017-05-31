@@ -1,6 +1,8 @@
-package com.swarmer.server.game.aco.graph;
+package com.swarmer.shared.aco.graph;
 
-public class Pheromone {
+import java.io.Serializable;
+
+public class Pheromone implements Serializable {
     private int quantity = 0;
 
     public Pheromone(int i) {

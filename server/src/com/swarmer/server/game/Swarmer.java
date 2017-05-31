@@ -1,6 +1,6 @@
 package com.swarmer.server.game;
 
-import com.swarmer.server.game.aco.graph.Graph;
+import com.swarmer.shared.aco.graph.Graph;
 import com.swarmer.server.game.logic.Game;
 import com.swarmer.server.protocols.GameProtocol;
 import com.swarmer.server.units.GameUnit;
@@ -8,7 +8,9 @@ import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.UDPConnection;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.HashMap;
