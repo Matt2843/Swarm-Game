@@ -19,7 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Game {
 
-	public static Graph graph;
+	private Graph graph;
 	private int mapWidth, mapHeight;
 	private Vector2 vec = new Vector2();
 	private ArrayList<Ant> ants;
@@ -27,11 +27,10 @@ public class Game {
 	private HashMap<Player, LocationInformation> players;
 	private UDPConnection udpConnection;
 
-	public Game(HashMap<Player, LocationInformation> players, int width, int height, UDPConnection udpConnection) {
+	public Game(HashMap<Player, LocationInformation> players, int width, int height) {
 		this.players = players;
 		mapWidth = width;
 		mapHeight = height;
-		this.udpConnection = udpConnection;
 		init();
 	}
 
@@ -92,5 +91,13 @@ public class Game {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public Graph getGraph() {
+		return graph;
+	}
+
+	public void setUdpConnection(UDPConnection udpConnection) {
+		this.udpConnection = udpConnection;
 	}
 }

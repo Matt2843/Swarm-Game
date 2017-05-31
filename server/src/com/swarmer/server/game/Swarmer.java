@@ -1,5 +1,6 @@
 package com.swarmer.server.game;
 
+import com.swarmer.server.game.aco.graph.Graph;
 import com.swarmer.server.game.logic.Game;
 import com.swarmer.server.protocols.GameProtocol;
 import com.swarmer.server.units.GameUnit;
@@ -16,21 +17,26 @@ import java.util.UUID;
 public class Swarmer implements Runnable {
 
 	private Game game;
+	private HashMap<Player, LocationInformation> players;
 	private GameUnit gameUnit;
-	private int offset;
+	private int port;
 	private String gameUUID;
 
-	public Swarmer(HashMap<Player, LocationInformation> players, GameUnit gameUnit, int offset) throws InterruptedException, IOException {
+	public Swarmer(HashMap<Player, LocationInformation> players, GameUnit gameUnit, int port) throws InterruptedException, IOException {
+		this.players = players;
 		this.gameUnit = gameUnit;
-		this.offset = offset;
+		this.port = port;
 		this.gameUUID = UUID.randomUUID().toString();
 
-		UDPConnection udpConnection = connectToPlayers(players.size());
-
-		game = new Game(players, 500, 500, udpConnection);
+		game = new Game(players, 500, 500);
     }
 
 	@Override public void run() {
+		try {
+			UDPConnection udpConnection = connectToPlayers(players.size());
+			game.setUdpConnection(udpConnection);
+		} catch (IOException ignored) {}
+
 		while(true) {
 			long time = System.currentTimeMillis();
 			game.render();
@@ -54,7 +60,7 @@ public class Swarmer implements Runnable {
 		UDPConnection udpConnection;
 		int iterations = 0;
 
-		datagramSocket = new DatagramSocket(gameUnit.getPort() + offset + 4);
+		datagramSocket = new DatagramSocket(port);
 
 		udpConnection = new UDPConnection(datagramSocket, new GameProtocol(gameUnit));
 
@@ -66,5 +72,9 @@ public class Swarmer implements Runnable {
 		}
 
 		return udpConnection;
+	}
+
+	public Graph getMap() {
+		return game.getGraph();
 	}
 }

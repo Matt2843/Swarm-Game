@@ -104,7 +104,7 @@ public abstract class ServerUnit extends Unit {
 		sendTo(username, (LocationInformation) coordinationUnitResponse.getObject(), null, message);
 	}
 
-	private static void sendTo(String username, LocationInformation local, Protocol prt, Message msg) {
+	public static void sendTo(String username, LocationInformation local, Protocol prt, Message msg) {
 		try {
 			TCPConnection con = new TCPConnection(new Socket(local.getServerUnitIp(), local.getServerUnitPort()), prt);
 			con.start();

@@ -1,13 +1,16 @@
 package com.swarmer.server.units;
 
 import com.swarmer.server.game.Swarmer;
+import com.swarmer.server.game.aco.graph.Graph;
 import com.swarmer.server.protocols.GameProtocol;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.units.utility.LocationInformation;
+import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class GameUnit extends ServerUnit {
 
@@ -38,8 +41,19 @@ public class GameUnit extends ServerUnit {
 	}
 
 	public void startNewGame(HashMap<Player, LocationInformation> players) throws IOException, InterruptedException {
-		Swarmer game = new Swarmer(players, this, currentRunningGames.size());
-		currentRunningGames.put(game.getGameUUID(), game);
+		int port = getPort() + currentRunningGames.size() + 4;
+
+		Swarmer game = new Swarmer(players, this, port);
+
+		Graph map = game.getMap();
+		String ID = game.getGameUUID();
+
+		currentRunningGames.put(ID, game);
+
+		for (Map.Entry<Player, LocationInformation> player : players.entrySet()) {
+			sendTo(player.getKey().getUsername(), player.getValue(), null, new Message(13371, new Object[]{ID, port, map}));
+		}
+
 		game.run();
 	}
 }
