@@ -2,6 +2,8 @@ package com.swarmer.network;
 
 import com.badlogic.gdx.Gdx;
 import com.swarmer.game.SwarmerMain;
+import com.swarmer.game.units.Ant;
+import com.swarmer.gui.screens.game.GameScreen;
 import com.swarmer.gui.screens.lobby.LobbyScreen;
 import com.swarmer.gui.screens.lobby.LobbyUserList;
 import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
@@ -61,8 +63,11 @@ public class ClientProtocol extends Protocol {
 				secureConnectToAuthNode(message);
 				break;
 			case 23323:
-				printAnts(message);
+			    updateAntPositions(message);
 				break;
+            case 23324:
+                addNewAntToGraph(message);
+                break;
 			case 34789: // Received friend request.
 				handleFriendRequest(message);
 				break;
@@ -73,6 +78,23 @@ public class ClientProtocol extends Protocol {
 				break;
 		}
 	}
+
+    private void addNewAntToGraph(Message message) {
+        SerialisedAnt ant = (SerialisedAnt) ((Object[])message.getObject())[0];
+        Player antOwner = (Player) ((Object[])message.getObject())[1];
+
+        GameScreen.getInstance().getAnts().add(ant.id, new Ant(antOwner, GameScreen.getInstance().graph.nodes[ant.x][ant.y]));
+    }
+
+    private void updateAntPositions(Message message) {
+        SerialisedAnts ants = (SerialisedAnts) message.getObject();
+
+        for(SerialisedAnt ant : ants.ants)  {
+            if(GameScreen.getInstance().getAnts().contains(ant.id)) {
+                GameScreen.getInstance().getAnts().get(ant.id).setDesiredPosition(ant.x, ant.y);
+            }
+        }
+    }
 
     private void receivedMessageInLobby(Message message) {
         String[] receivedMessageArray = (String[]) message.getObject();
@@ -107,7 +129,7 @@ public class ClientProtocol extends Protocol {
 
 		Gdx.app.postRunnable(new Runnable() {
 			@Override public void run() {
-				SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Lobby Request", requestFrom.getUsername() + " invited you to a lobby.") {
+				SwarmerMain.getInstance().getCurrentScreen().addActor(new SwarmerNotification("Lobby Request", requestFrom.getUsername() + " invited you to a lobby.") {
 					@Override public void accept() throws IOException {
 						GameClient.getInstance().establishTCPConnection(connectionDetails.getAddress().toString().replaceAll("/", ""), connectionDetails.getPort());
 						GameClient.getInstance().tcp.sendMessage(new Message(303, new Object[] {lobbyID, GameClient.getInstance().getCurrentPlayer()}));
@@ -126,7 +148,7 @@ public class ClientProtocol extends Protocol {
 		Gdx.app.postRunnable(new Runnable() {
 			@Override
 			public void run() {
-				SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Game found", "A game was found!") {
+				SwarmerMain.getInstance().getCurrentScreen().addActor(new SwarmerNotification("Game found", "A game was found!") {
 					@Override
 					public void accept() throws IOException {
 						GameClient.getInstance().tcp.sendMessage(new Message(76767));
@@ -148,7 +170,7 @@ public class ClientProtocol extends Protocol {
 	private void handleFriendRequest(final Message message) {
 		Gdx.app.postRunnable(new Runnable() {
 			@Override public void run() {
-				SwarmerMain.getCurrentScreen().addActor(new SwarmerNotification("Friend Request", ((Player)message.getObject()).getUsername() + " wants to add you as a friend.") {
+				SwarmerMain.getInstance().getCurrentScreen().addActor(new SwarmerNotification("Friend Request", ((Player)message.getObject()).getUsername() + " wants to add you as a friend.") {
 					@Override public void accept() throws IOException {
 						GameClient.getInstance().tcp.sendMessage(new Message(34788, new Player[] {GameClient.getInstance().getCurrentPlayer(), (Player) message.getObject()}));
 					}

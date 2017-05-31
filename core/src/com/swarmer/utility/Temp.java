@@ -12,13 +12,7 @@ public class Temp {
 
 		if(between(x, 0, GameScreen.getInstance().graph.nodes.length) && between(y, 0, GameScreen.getInstance().graph.nodes[x].length)) {
 			if(GameScreen.getInstance().graph.nodes[x][y] != null && GameScreen.getInstance().graph.nodes[x][y].getConnectedEdges().size > 0) {
-				GameScreen.getInstance().getAnts().add(
-						new Ant(
-								owner,
-								(TiledMapTileLayer) GameScreen.getInstance().getMap().getLayers().get(1),
-								GameScreen.getInstance().graph.nodes[x][y]
-						)
-				);
+				GameScreen.getInstance().getAnts().add(new Ant(owner, GameScreen.getInstance().graph.nodes[x][y]));
 				return true;
 			}
 		}

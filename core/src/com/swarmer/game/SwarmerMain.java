@@ -15,13 +15,22 @@ import com.swarmer.network.GameClient;
 
 public class SwarmerMain extends Game {
 
-	private static SwarmerMain swarmerMain;
-	private static SwarmerScreen currentScreen;
-	public static OrthographicCamera camera;
+	private SwarmerScreen currentScreen;
+	public OrthographicCamera camera;
+
+    private static SwarmerMain instance;
 
 	private SwarmerMain() {
 		// DO NOT INSTANTIATE
+        camera = new OrthographicCamera();
 	}
+
+    public static SwarmerMain getInstance() {
+        if (instance == null) {
+            instance = new SwarmerMain();
+        }
+        return instance;
+    }
 
 	public void create() {
 		establishNetworkConnection();
@@ -40,14 +49,6 @@ public class SwarmerMain extends Game {
 		LobbyScreen.getInstance();
 	}
 
-	public static SwarmerMain getInstance() {
-		if (swarmerMain == null) {
-			swarmerMain = new SwarmerMain();
-			camera = new OrthographicCamera();
-		}
-		return swarmerMain;
-	}
-
 	public void show(final SwarmerScreen screen) {
 		Gdx.app.postRunnable(new Runnable() {
 			@Override public void run() {
@@ -59,7 +60,7 @@ public class SwarmerMain extends Game {
 		});
 	}
 
-	public static SwarmerScreen getCurrentScreen() {
+	public SwarmerScreen getCurrentScreen() {
 		return currentScreen;
 	}
 

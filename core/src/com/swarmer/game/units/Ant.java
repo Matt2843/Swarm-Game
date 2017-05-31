@@ -27,7 +27,11 @@ public class Ant {
 
 	private Vector2 desiredPosition;
 
-	public Ant(Player owner, TiledMapTileLayer layer, Node startNode) {
+	public void setDesiredPosition(int x, int y) {
+	    desiredPosition.set(CoordsTranslator.getInstance().getScreenCoordinates((float) x, (float) y));
+    }
+
+	public Ant(Player owner, Node startNode) {
 
 		brain = new AntBrain(owner, startNode);
 
@@ -76,10 +80,10 @@ public class Ant {
 		setX(getX() + velocity.x * delta);
 		setY(getY() + velocity.y * delta);
 
-		if(Math.abs(Math.round(getX() - desiredPosition.x)) < 10 && Math.abs(Math.round(getY() - desiredPosition.y)) < 10) {
-			desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(brain.determineNextPath().getNode().getPosition());
+		/*if(Math.abs(Math.round(getX() - desiredPosition.x)) < 10 && Math.abs(Math.round(getY() - desiredPosition.y)) < 10) {
+			//desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(brain.determineNextPath().getNode().getPosition());
 			food -= 1;
-		}
+		}*/
 	}
 
 	private void setX(float x) {
