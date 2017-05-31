@@ -17,7 +17,6 @@ public class SwarmerMain extends Game {
 
 	private SwarmerScreen currentScreen;
 	public OrthographicCamera camera;
-
     private static SwarmerMain instance;
 
 	private SwarmerMain() {
@@ -33,7 +32,7 @@ public class SwarmerMain extends Game {
     }
 
 	public void create() {
-		establishNetworkConnection();
+		//establishNetworkConnection();
 		initializeScreens();
 
 		AnimationLibrary.getInstance().initializeAntAnimations();

@@ -32,7 +32,7 @@ public class GameScreen extends SwarmerScreen {
 	private final static float INV_SCALE = 1.f / SCALE;
 	private final static float VP_WIDTH = 1280 * INV_SCALE;
 	private final static float VP_HEIGHT = 720 * INV_SCALE;
-	public TiledMap map;
+	public static TiledMap map;
 	public Graph graph;
 	public boolean dragging;
 	private IsometricTiledMapRenderer renderer;

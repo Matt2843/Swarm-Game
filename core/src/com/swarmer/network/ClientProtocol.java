@@ -57,8 +57,6 @@ public class ClientProtocol extends Protocol {
 			case 999:
 				connectServerUnit(message);
 				break;
-			case 13371:
-				startGame(message);
 			case 13372:
 				handleFoundGame(message);
 			case 11111:
@@ -81,11 +79,7 @@ public class ClientProtocol extends Protocol {
 		}
 	}
 
-	private void startGame(Message message) {
-		System.out.println("EEEYEYEYEYEYE");
-	}
-
-	private void addNewAntToGraph(Message message) {
+    private void addNewAntToGraph(Message message) {
         SerialisedAnt ant = (SerialisedAnt) ((Object[])message.getObject())[0];
         Player antOwner = (Player) ((Object[])message.getObject())[1];
 
