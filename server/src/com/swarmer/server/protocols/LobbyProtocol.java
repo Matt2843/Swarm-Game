@@ -9,9 +9,6 @@ import com.swarmer.shared.communication.Player;
 import java.io.IOException;
 import java.sql.SQLException;
 
-/**
- * Created by Matt on 04/06/2017.
- */
 public class LobbyProtocol extends ServerProtocol {
 
 	private Connection caller;

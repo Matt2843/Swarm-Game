@@ -38,7 +38,6 @@ public class GameProtocol extends ServerProtocol {
     }
 
     private void startGame(Message message) throws IOException, InterruptedException {
-		System.out.println("Starting new game");
 		HashMap<Player, LocationInformation> players = (HashMap<Player, LocationInformation>) message.getObject();
 
 		((GameUnit) serverUnit).startNewGame(players);

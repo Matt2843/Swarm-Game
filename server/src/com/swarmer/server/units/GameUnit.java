@@ -1,7 +1,7 @@
 package com.swarmer.server.units;
 
 import com.swarmer.server.game.Swarmer;
-import com.swarmer.shared.aco.graph.Graph;
+import com.swarmer.server.game.aco.graph.Graph;
 import com.swarmer.server.protocols.GameProtocol;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.units.utility.LocationInformation;
@@ -19,15 +19,6 @@ public class GameUnit extends ServerUnit {
 
 	protected GameUnit() {
 		super();
-		HashMap<Player, LocationInformation> players = new HashMap<Player, LocationInformation>();
-		players.put(new Player("1", "Matt", -5), null);
-		try {
-			startNewGame(players);
-		} catch(IOException e) {
-			e.printStackTrace();
-		} catch(InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override public int getPort() {
@@ -57,9 +48,10 @@ public class GameUnit extends ServerUnit {
 		currentRunningGames.put(ID, game);
 
 		for (Map.Entry<Player, LocationInformation> player : players.entrySet()) {
-			sendTo(player.getKey().getUsername(), player.getValue(), null, new Message(13371, new Object[]{ID, port, map.nodes[0]}));
+			sendTo(player.getKey().getUsername(), player.getValue(), null, new Message(13371, new Object[]{ID, port, map}));
 		}
 
-		new Thread(game).run();
+		new Thread(game).start();
+		System.out.println("Started new game");
 	}
 }
