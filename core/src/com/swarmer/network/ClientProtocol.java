@@ -94,7 +94,7 @@ public class ClientProtocol extends Protocol {
 
 	private void userJoinedLobby(Message message) {
 		Player joinedPlayer = (Player) message.getObject();
-		LobbyScreen.getInstance().getFindGame().remove();
+//		LobbyScreen.getInstance().getFindGame().remove();
         LobbyUserList.getInstance().addPlayer(joinedPlayer);
 		LobbyUserList.getInstance().addUserToList(joinedPlayer.getUsername());
 		SwarmerMain.getInstance().show(LobbyScreen.getInstance());
