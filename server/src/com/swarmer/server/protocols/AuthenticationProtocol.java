@@ -19,7 +19,7 @@ public class AuthenticationProtocol extends ServerProtocol {
 		super(serverUnit);
 	}
 
-	@Override protected void react(Message message, Connection caller) throws IOException, SQLException {
+	@Override protected void react(Message message, Connection caller) throws IOException, SQLException, InterruptedException {
 		this.caller = caller;
 		System.out.println("Authentication Unit: " + message.toString());
 		switch (message.getOpcode()) {

@@ -20,7 +20,7 @@ public class LobbyProtocol extends ServerProtocol {
 		super(serverUnit);
 	}
 
-	@Override protected void react(Message message, Connection caller) throws IOException, SQLException {
+	@Override protected void react(Message message, Connection caller) throws IOException, SQLException, InterruptedException {
 		this.caller = caller;
 		System.out.println("Lobby unit: " + message.toString());
 		switch (message.getOpcode()) {
