@@ -6,14 +6,17 @@ import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.UDPConnection;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class Swarmer implements Runnable {
 
 	private Game game;
+	private String gameUUID;
 
 	public Swarmer(HashMap<Player, LocationInformation> players, UDPConnection connection) {
 		game = new Game(players, 500, 500, connection);
-	}
+		gameUUID = UUID.randomUUID().toString();
+    }
 
 	@Override public void run() {
 		while(true) {
@@ -27,4 +30,8 @@ public class Swarmer implements Runnable {
 			}
 		}
 	}
+
+    public String getGameUUID() {
+        return gameUUID;
+    }
 }

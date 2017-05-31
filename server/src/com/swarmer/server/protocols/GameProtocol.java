@@ -23,13 +23,21 @@ public class GameProtocol extends ServerProtocol {
 			case 101:
 				startGame(message);
 				break;
+            case 23324:
+                spawnAnt(caller);
+                break;
 			default:
 				super.react(message, caller);
 				break;
 		}
 	}
 
-	private void startGame(Message message) {
+    private void spawnAnt(Connection caller) {
+        Player antOwner = caller.getPlayer();
+        
+    }
+
+    private void startGame(Message message) {
 		System.out.println("Starting new game");
 		HashMap<Player, LocationInformation> players = (HashMap<Player, LocationInformation>) message.getObject();
 

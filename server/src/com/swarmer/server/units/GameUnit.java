@@ -11,6 +11,7 @@ import java.util.HashMap;
 public class GameUnit extends ServerUnit {
 
 	private final GameProtocol gameProtocol = new GameProtocol(this);
+	private HashMap<String, Swarmer> currentRunningGames = new HashMap<>();
 
 	protected GameUnit() {
 		super();
@@ -37,6 +38,7 @@ public class GameUnit extends ServerUnit {
 
 	public void startNewGame(HashMap<Player, LocationInformation> players) {
 		Swarmer game = new Swarmer(players, UDPsocket.udpConnection);
+		currentRunningGames.put(game.getGameUUID(), game);
 		game.run();
 	}
 }

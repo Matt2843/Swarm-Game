@@ -24,7 +24,7 @@ public class CoordsTranslator {
 
 	public static CoordsTranslator getInstance() {
 		if(instance == null) {
-			instance = new CoordsTranslator((TiledMapTileLayer) GameScreen.map.getLayers().get(0), SwarmerMain.getInstance().camera);
+			instance = new CoordsTranslator((TiledMapTileLayer) GameScreen.getInstance().map.getLayers().get(0), SwarmerMain.getInstance().camera);
 		}
 		return instance;
 	}
