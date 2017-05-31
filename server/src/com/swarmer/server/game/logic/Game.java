@@ -25,13 +25,13 @@ public class Game {
 	private ArrayList<Ant> ants;
 	private ArrayList<Hive> hives;
 	private HashMap<Player, LocationInformation> players;
-	private UDPConnection connection;
+	private UDPConnection udpConnection;
 
-	public Game(HashMap<Player, LocationInformation> players, int width, int height, UDPConnection connection) {
+	public Game(HashMap<Player, LocationInformation> players, int width, int height, UDPConnection udpConnection) {
 		this.players = players;
 		mapWidth = width;
 		mapHeight = height;
-		this.connection = connection;
+		this.udpConnection = udpConnection;
 		init();
 	}
 
@@ -42,24 +42,29 @@ public class Game {
 		graph = new Graph(mapWidth, mapHeight);
 
 		for(int i = 0; i < 200; i++) {
-			int x = ThreadLocalRandom.current().nextInt(1, 99);
-			int y = ThreadLocalRandom.current().nextInt(1, 99);
+			int x = ThreadLocalRandom.current().nextInt(1, mapWidth);
+			int y = ThreadLocalRandom.current().nextInt(1, mapHeight);
 
 			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size() > 0) {
 				graph.nodes[x][y].setResource(new Food(100));
 			}
 		}
 
+		int i = 0;
 		for(Map.Entry<Player, LocationInformation> player : players.entrySet()) {
-			int x = ThreadLocalRandom.current().nextInt(1, 99);
-			int y = ThreadLocalRandom.current().nextInt(1, 99);
-
-			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size() > 0) {
-				hives.add(new Hive(player.getKey(), graph.nodes[x][y]));
-				for (int i = 0; i<100; i++) {
-					ants.add(new Ant(player.getKey(), graph.nodes[x][y]));
-				}
+			if (i == 0) {
+				hives.add(new Hive(player.getKey(), graph.nodes[0][0]));
 			}
+			if (i == 1) {
+				hives.add(new Hive(player.getKey(), graph.nodes[mapWidth][mapHeight]));
+			}
+			if (i == 2) {
+				hives.add(new Hive(player.getKey(), graph.nodes[mapWidth][0]));
+			}
+			if (i == 3) {
+				hives.add(new Hive(player.getKey(), graph.nodes[0][mapHeight]));
+			}
+			i++;
 		}
 	}
 
@@ -70,7 +75,7 @@ public class Game {
 			ants.get(i).update();
 			if(j >= 10){
 				try {
-					connection.sendMessage(new Message(23323, serialisedAnts));
+					udpConnection.sendMessage(new Message(23323, serialisedAnts));
 				} catch(IOException e) {
 					e.printStackTrace();
 				}
@@ -82,7 +87,7 @@ public class Game {
 		}
 		if (ants.size() % 10 != 0) {
 			try {
-				connection.sendMessage(new Message(23323, serialisedAnts));
+				udpConnection.sendMessage(new Message(23323, serialisedAnts));
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
