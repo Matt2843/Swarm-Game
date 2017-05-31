@@ -56,7 +56,7 @@ public class Game {
 
 			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size() > 0) {
 				hives.add(new Hive(player.getKey(), graph.nodes[x][y]));
-				for (int i = 0; i<5; i++) {
+				for (int i = 0; i<100; i++) {
 					ants.add(new Ant(player.getKey(), graph.nodes[x][y]));
 				}
 			}
@@ -64,26 +64,28 @@ public class Game {
 	}
 
 	public void render() {
-		SerialisedAnts sAnts = new SerialisedAnts();
-		int j = 0;
+		SerialisedAnts serialisedAnts = new SerialisedAnts();
+		int j = 1;
 		for(int i = 0; i < ants.size(); i++) {
 			ants.get(i).update();
-			if(j > 15){
+			if(j >= 10){
 				try {
-					connection.sendMessage(new Message(23323, sAnts));
+					connection.sendMessage(new Message(23323, serialisedAnts));
 				} catch(IOException e) {
 					e.printStackTrace();
 				}
-				sAnts = new SerialisedAnts();
+				serialisedAnts = new SerialisedAnts();
 				j = 0;
 			}
-			sAnts.addAnt(i, ants.get(i).desiredPosition.x, ants.get(i).desiredPosition.y);
+			serialisedAnts.addAnt(i, ants.get(i).desiredPosition.x, ants.get(i).desiredPosition.y);
 			j++;
 		}
-		try {
-			connection.sendMessage(new Message(23323, sAnts));
-		} catch(IOException e) {
-			e.printStackTrace();
+		if (ants.size() % 10 != 0) {
+			try {
+				connection.sendMessage(new Message(23323, serialisedAnts));
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
