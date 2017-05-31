@@ -59,7 +59,7 @@ public abstract class Unit {
 	protected void startConnectionThreads() {
 		TCPsocket = new ServerSocketThread(TCP); TCPsocket.start();
 		STCPsocket = new ServerSocketThread(STCP); STCPsocket.start();
-		UDPsocket = new ServerSocketThread(UDP); UDPsocket.start();
+//		UDPsocket = new ServerSocketThread(UDP); UDPsocket.start();
 	}
 
 	private KeyPair generateKeys() {

@@ -1,6 +1,5 @@
 package com.swarmer.server.protocols;
 
-import com.swarmer.server.CoordinationUnitCallable;
 import com.swarmer.server.units.AuthenticationUnit;
 import com.swarmer.server.units.ServerUnit;
 import com.swarmer.shared.communication.Connection;
@@ -21,7 +20,7 @@ public abstract class ServerProtocol extends Protocol {
 		this.serverUnit = serverUnit;
 	}
 
-	@Override protected void react(Message message, Connection caller) throws IOException, SQLException {
+	@Override protected void react(Message message, Connection caller) throws IOException, SQLException, InterruptedException {
 		this.caller = caller;
 		switch (message.getOpcode()) {
 			case 0:

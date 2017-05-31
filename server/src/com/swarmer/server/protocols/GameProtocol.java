@@ -17,7 +17,7 @@ public class GameProtocol extends ServerProtocol {
 		super(serverUnit);
 	}
 
-	@Override protected void react(Message message, Connection caller) throws IOException, SQLException {
+	@Override protected void react(Message message, Connection caller) throws IOException, SQLException, InterruptedException {
 		System.out.println("Lobby unit: " + message.toString());
 		switch (message.getOpcode()) {
 			case 101:
@@ -37,7 +37,7 @@ public class GameProtocol extends ServerProtocol {
         
     }
 
-    private void startGame(Message message) {
+    private void startGame(Message message) throws IOException, InterruptedException {
 		System.out.println("Starting new game");
 		HashMap<Player, LocationInformation> players = (HashMap<Player, LocationInformation>) message.getObject();
 

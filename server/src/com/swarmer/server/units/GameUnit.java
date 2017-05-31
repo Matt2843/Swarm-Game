@@ -6,6 +6,7 @@ import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.communication.Player;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class GameUnit extends ServerUnit {
@@ -36,8 +37,8 @@ public class GameUnit extends ServerUnit {
 		new GameUnit();
 	}
 
-	public void startNewGame(HashMap<Player, LocationInformation> players) {
-		Swarmer game = new Swarmer(players, UDPsocket.udpConnection);
+	public void startNewGame(HashMap<Player, LocationInformation> players) throws IOException, InterruptedException {
+		Swarmer game = new Swarmer(players, this, currentRunningGames.size());
 		currentRunningGames.put(game.getGameUUID(), game);
 		game.run();
 	}
