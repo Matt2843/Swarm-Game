@@ -30,10 +30,6 @@ public class MainMenuLoginBox extends Table {
 	private TextButton login;
 	private TextButton createUser;
 
-	private Skin defaultSkin;
-
-	private FileHandle uiskin = Gdx.files.internal("default/skin/uiskin.json");
-
 	public MainMenuLoginBox() {
 		createFields();
 	}

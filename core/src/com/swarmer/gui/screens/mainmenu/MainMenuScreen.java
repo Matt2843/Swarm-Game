@@ -26,9 +26,9 @@ public class MainMenuScreen extends SwarmerScreen {
 	}
 
 	@Override protected void handleInput() {
-		if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+		/*if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
 			SwarmerMain.getInstance().show(GameScreen.getInstance());
 			//ScreenManager.getInstance().show(ScreenLib.GAME_SCREEN);
-		}
+		}*/
 	}
 }
