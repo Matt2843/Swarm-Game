@@ -78,19 +78,19 @@ public class GameScreen extends SwarmerScreen {
 
 		graph = new Graph(4, 5);*/
 
-		viewport = new ExtendViewport(VP_WIDTH, VP_HEIGHT, camera);
+//		viewport = new ExtendViewport(VP_WIDTH, VP_HEIGHT, camera);
+//
+//		viewport.apply(false);
+//
+//		IM = new InputMultiplexer();
+//		IM.addProcessor(new SwamerInputProcessor(this));
+//		IM.addProcessor(new GestureDetector(new SwarmerGestureDetector(this)));
 
-		viewport.apply(false);
+//		centerCamera();
 
-		IM = new InputMultiplexer();
-		IM.addProcessor(new SwamerInputProcessor(this));
-		IM.addProcessor(new GestureDetector(new SwarmerGestureDetector(this)));
-
-		centerCamera();
-
-		TiledMapTileLayer lay0 = map.getLayers().getByType(TiledMapTileLayer.class).get(2);
-
-		TiledMapTile tile = map.getLayers().getByType(TiledMapTileLayer.class).get(3).getCell(0, 0).getTile();
+//		TiledMapTileLayer lay0 = map.getLayers().getByType(TiledMapTileLayer.class).get(2);
+//
+//		TiledMapTile tile = map.getLayers().getByType(TiledMapTileLayer.class).get(3).getCell(0, 0).getTile();
 
 		/*for(int i = 0; i < 200; i++) {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
@@ -128,13 +128,24 @@ public class GameScreen extends SwarmerScreen {
 		for(int i = 0; i < graph.nodes.length; i++) {
 			for(int j = 0; j < graph.nodes[0].length; j++) {
 				lay.setCell(i, j, new TiledMapTileLayer.Cell());
-				System.out.println(i + ", " + j);
-				System.out.println(lay.getCell(i, j));
 				lay.getCell(i, j).setTile(tile);
 			}
 		}
 
+		mapWidth = lay.getWidth() * lay.getTileWidth();
+		mapHeight = lay.getHeight() * lay.getTileHeight();
+
 		renderer = new IsometricTiledMapRenderer(map);
+
+		viewport = new ExtendViewport(VP_WIDTH, VP_HEIGHT, camera);
+
+		viewport.apply(false);
+
+		IM = new InputMultiplexer();
+		IM.addProcessor(new SwamerInputProcessor(this));
+		IM.addProcessor(new GestureDetector(new SwarmerGestureDetector(this)));
+
+		centerCamera();
 	}
 
 	@Override public void show() {

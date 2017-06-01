@@ -30,7 +30,7 @@ public class Swarmer implements Runnable {
 		this.port = port;
 		this.gameUUID = UUID.randomUUID().toString();
 
-		game = new Game(players, 500, 500);
+		game = new Game(players, 100, 100);
     }
 
 	@Override public void run() {
