@@ -29,6 +29,14 @@ public class CoordsTranslator {
 		return instance;
 	}
 
+	public Vector2 getTileCoordinates(com.swarmer.shared.aco.graph.Vector2 pos) {
+		return getTileCoordinates(pos.x, pos.y);
+	}
+
+	public Vector2 getScreenCoordinates(com.swarmer.shared.aco.graph.Vector2 pos) {
+		return getScreenCoordinates(pos.x, pos.y);
+	}
+
 	public Vector2 getTileCoordinates(Vector2 pos) {
 		return getTileCoordinates(pos.x, pos.y);
 	}
@@ -58,4 +66,5 @@ public class CoordsTranslator {
 	public TiledMapTileLayer.Cell getCell(TiledMapTileLayer layer, Vector2 coords) {
 		return layer.getCell((int) coords.x, (int) coords.y);
 	}
+
 }

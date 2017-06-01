@@ -10,6 +10,7 @@ import com.swarmer.shared.communication.Player;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class GameProtocol extends ServerProtocol {
 
@@ -40,6 +41,11 @@ public class GameProtocol extends ServerProtocol {
     private void startGame(Message message) throws IOException, InterruptedException {
 		HashMap<Player, LocationInformation> players = (HashMap<Player, LocationInformation>) message.getObject();
 
+		for(Map.Entry<Player, LocationInformation> player : players.entrySet()) {
+			if(!player.getValue().getInetAddress().equals(serverUnit.getId())) {
+				ServerUnit.sendTo(player.getKey().getUsername(), player.getValue(), null, new Message(999, serverUnit.getId()));
+			}
+		}
 		((GameUnit) serverUnit).startNewGame(players);
 	}
 }

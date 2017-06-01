@@ -77,12 +77,10 @@ public class GameScreen extends SwarmerScreen {
 
 		TiledMapTile tile = new StaticTiledMapTile(new TextureRegion().);*/
 
-
-
-		backgroundLayers = new int[]{0, 1, 2};
+		/*backgroundLayers = new int[]{0, 1, 2};
 		foregroundLayers = new int[]{3};
 
-		graph = new Graph(4, 5);
+		graph = new Graph(4, 5);*/
 
 		viewport = new ExtendViewport(VP_WIDTH, VP_HEIGHT, camera);
 
@@ -97,7 +95,8 @@ public class GameScreen extends SwarmerScreen {
 		TiledMapTileLayer lay0 = map.getLayers().getByType(TiledMapTileLayer.class).get(2);
 
 		TiledMapTile tile = map.getLayers().getByType(TiledMapTileLayer.class).get(3).getCell(0, 0).getTile();
-		for(int i = 0; i < 200; i++) {
+
+		/*for(int i = 0; i < 200; i++) {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
 			int y = ThreadLocalRandom.current().nextInt(1, 99);
 
@@ -117,6 +116,25 @@ public class GameScreen extends SwarmerScreen {
 			Player player = new Player("Alias", "" + i, 0);
 			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size() > 0) {
 				hives.add(new Hive(player, graph.nodes[x][y]));
+			}
+		}*/
+	}
+
+	public void init(Graph graph) {
+		this.graph = graph;
+		TiledMap tempmap = new TmxMapLoader().load("newmap.tmx");
+		TiledMapTileLayer lay0 = tempmap.getLayers().getByType(TiledMapTileLayer.class).get(3);
+		TiledMapTile tile = tempmap.getLayers().getByType(TiledMapTileLayer.class).get(3).getCell(1, 1).getTile();
+
+		map = new TiledMap();
+		map.getLayers().add(new TiledMapTileLayer((int) (graph.nodes.length * lay0.getTileWidth()), (int) (graph.nodes[0].length * lay0.getTileWidth()), (int) lay0.getTileWidth(), (int) lay0.getTileWidth()));
+
+		TiledMapTileLayer lay = map.getLayers().getByType(TiledMapTileLayer.class).get(0);
+
+		for(int i = 0; i < graph.nodes.length; i++) {
+			for(int j = 0; i < graph.nodes[0].length; j++) {
+				lay.setCell(i, j, new TiledMapTileLayer.Cell());
+				lay0.getCell(i,j).setTile(tile);
 			}
 		}
 	}

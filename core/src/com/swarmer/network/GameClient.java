@@ -24,6 +24,8 @@ public final class GameClient {
 
 	private static GameClient gc;
 
+	public static String currentGame;
+
 	private GameClient() {
 		// DO NOT INSTANTIATE THIS CLASS
 
@@ -88,10 +90,6 @@ public final class GameClient {
 
 		if(stcp != null) {
 			stcp.stopConnection(currentPlayer);
-		}
-
-		if(udp != null) {
-			udp.stopConnection(currentPlayer);
 		}
 	}
 

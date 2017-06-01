@@ -9,6 +9,7 @@ import com.swarmer.gui.screens.lobby.LobbyUserList;
 import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
 import com.swarmer.gui.widgets.FriendList;
 import com.swarmer.gui.widgets.SwarmerNotification;
+import com.swarmer.shared.aco.graph.Graph;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
@@ -57,8 +58,12 @@ public class ClientProtocol extends Protocol {
 			case 999:
 				connectServerUnit(message);
 				break;
+			case 13371:
+				handleGame(message);
+				break;
 			case 13372:
 				handleFoundGame(message);
+				break;
 			case 11111:
 				secureConnectToAuthNode(message);
 				break;
@@ -144,18 +149,30 @@ public class ClientProtocol extends Protocol {
 		});
 	}
 
+
+	private void handleGame(Message message) {
+		GameClient.currentGame = (String) ((Object[]) message.getObject())[0];
+		int gamePort = (int) ((Object[]) message.getObject())[1];
+		Graph graph = (Graph) ((Object[]) message.getObject())[2];
+		GameScreen.getInstance().init(graph);
+		try {
+			GameClient.getInstance().udp.sendMessage(new Message(666), new InetSocketAddress("localhost", gamePort));
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		SwarmerMain.getInstance().show(GameScreen.getInstance());
+	}
+
 	private void handleFoundGame(final Message message) {
 		Gdx.app.postRunnable(new Runnable() {
 			@Override
 			public void run() {
 				SwarmerMain.getInstance().getCurrentScreen().addActor(new SwarmerNotification("Game found", "A game was found!") {
-					@Override
-					public void accept() throws IOException {
+					@Override public void accept() throws IOException {
 						GameClient.getInstance().tcp.sendMessage(new Message(76767));
 					}
 
-					@Override
-					public void reject() throws IOException {
+					@Override public void reject() throws IOException {
 						GameClient.getInstance().tcp.sendMessage(new Message(78787));
 					}
 				});

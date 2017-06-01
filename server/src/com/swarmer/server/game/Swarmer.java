@@ -72,6 +72,7 @@ public class Swarmer implements Runnable {
 			udpConnection.addBroadcastAddress(datagramPacket.getSocketAddress());
 			iterations++;
 		}
+		System.out.println("UDP Setup Completed");
 
 		return udpConnection;
 	}

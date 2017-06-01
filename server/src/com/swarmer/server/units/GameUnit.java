@@ -1,10 +1,10 @@
 package com.swarmer.server.units;
 
 import com.swarmer.server.game.Swarmer;
-import com.swarmer.server.game.aco.graph.Graph;
 import com.swarmer.server.protocols.GameProtocol;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.units.utility.LocationInformation;
+import com.swarmer.shared.aco.graph.Graph;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 
@@ -48,7 +48,7 @@ public class GameUnit extends ServerUnit {
 		currentRunningGames.put(ID, game);
 
 		for (Map.Entry<Player, LocationInformation> player : players.entrySet()) {
-			sendTo(player.getKey().getUsername(), player.getValue(), null, new Message(13371, new Object[]{ID, port, map}));
+			sendToPlayer(player.getKey().getUsername(), new Message(13371, new Object[]{ID, port, map}));
 		}
 
 		new Thread(game).start();

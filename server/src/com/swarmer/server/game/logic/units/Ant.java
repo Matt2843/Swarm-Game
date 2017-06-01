@@ -1,6 +1,7 @@
 package com.swarmer.server.game.logic.units;
 
-import com.swarmer.shared.aco.ai.AntBrain;
+import com.swarmer.server.game.logic.units.ai.AntBrain;
+import com.swarmer.shared.aco.graph.Graph;
 import com.swarmer.shared.aco.graph.Node;
 import com.swarmer.shared.aco.graph.Vector2;
 import com.swarmer.shared.communication.Player;
@@ -15,9 +16,9 @@ public class Ant {
 
     public Vector2 desiredPosition;
 
-    public Ant(Player owner, Node startNode) {
+    public Ant(Player owner, Node startNode, Graph graph) {
 
-        brain = new AntBrain(owner, startNode);
+        brain = new AntBrain(owner, startNode, graph);
 
         food = 200;
         desiredPosition = startNode.getPosition();
@@ -28,7 +29,7 @@ public class Ant {
             return;
         }
 
-        desiredPosition = brain.determineNextPath().getNode().getPosition();
+        desiredPosition = brain.determineNextPath().getNode();
         food -= 1;
 
         System.out.println(desiredPosition);

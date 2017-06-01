@@ -1,6 +1,7 @@
-package com.swarmer.shared.aco.ai;
+package com.swarmer.server.game.logic.units.ai;
 
 import com.swarmer.shared.aco.graph.Edge;
+import com.swarmer.shared.aco.graph.Graph;
 import com.swarmer.shared.aco.graph.Node;
 import com.swarmer.shared.aco.graph.Vector2;
 import com.swarmer.shared.communication.Player;
@@ -22,13 +23,15 @@ public class AntBrain {
     private Edge previousEdge;
     private Edge nextEdge;
     private Node currentNode;
-    private Node previousNode;
+	private Graph graph;
+	private Node previousNode;
     private final Player owner;
 
-    public AntBrain(Player owner, Node startingNode) {
+    public AntBrain(Player owner, Node startingNode, Graph graph) {
         this.owner = owner;
         currentNode = startingNode;
-        previousNode = currentNode;
+		this.graph = graph;
+		previousNode = currentNode;
         c1 = C1;
     }
 
@@ -51,7 +54,8 @@ public class AntBrain {
         nextEdge = currentNode.getConnectedEdges().get(decision);
 
         previousNode = currentNode;
-        currentNode = nextEdge.getNode();
+        Vector2 index = nextEdge.getNode();
+        currentNode = graph.nodes[index.x][index.y];
 
         if(currentNode.hasResource() && currentNode.getResource().getQuantity() > 0) {
             c1 = 1f;

@@ -2,9 +2,7 @@ package com.swarmer.game.units;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
-import com.swarmer.shared.aco.ai.AntBrain;
 import com.swarmer.gui.animations.AnimationLibrary;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.utility.CoordsTranslator;
@@ -23,8 +21,6 @@ public class Ant {
 	private float zero  = speed / 5;
 	private String animation;
 
-	private AntBrain brain;
-
 	private Vector2 desiredPosition;
 
 	public void setDesiredPosition(int x, int y) {
@@ -32,8 +28,6 @@ public class Ant {
     }
 
 	public Ant(Player owner, Node startNode) {
-
-		brain = new AntBrain(owner, startNode);
 
 		food = 200;
 		desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(startNode.getPosition());
@@ -64,10 +58,6 @@ public class Ant {
 	}
 
 	private void update(float delta) {
-		if(brain.getPreviousNode().getResource() != null) { // Ophiocordyceps unilateralis
-		//	return;
-		}
-
 		if (food <= 0) {
 			return;
 		}
