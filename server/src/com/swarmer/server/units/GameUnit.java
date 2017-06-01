@@ -5,10 +5,12 @@ import com.swarmer.server.protocols.GameProtocol;
 import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.aco.graph.Graph;
+import com.swarmer.shared.aco.graph.SerialisedGraph;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +45,7 @@ public class GameUnit extends ServerUnit {
 		Swarmer game = new Swarmer(players, this, port);
 		new Thread(game).start();
 
-		Graph map = new Graph(5, 5); //game.getMap();
+		SerialisedGraph map = new SerialisedGraph(game.getMap());
 		String ID = game.getGameUUID();
 
 		currentRunningGames.put(ID, game);
