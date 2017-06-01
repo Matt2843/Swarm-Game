@@ -124,7 +124,7 @@ public class GameScreen extends SwarmerScreen {
 		mapHeight = graph.nodes[0].length * lay0.getTileHeight();
 
 		map = new TiledMap();
-		map.getLayers().add(new TiledMapTileLayer((int) mapWidth, (int) mapHeight, (int) lay0.getTileWidth(), (int) lay0.getTileWidth()));
+		map.getLayers().add(new TiledMapTileLayer((int) mapWidth, (int) mapHeight, (int) lay0.getTileWidth(), (int) lay0.getTileHeight()));
 
 		TiledMapTileLayer lay = map.getLayers().getByType(TiledMapTileLayer.class).get(0);
 
