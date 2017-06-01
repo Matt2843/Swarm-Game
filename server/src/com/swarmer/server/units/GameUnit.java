@@ -48,10 +48,16 @@ public class GameUnit extends ServerUnit {
 
 		currentRunningGames.put(ID, game);
 
+		System.out.println("her 1");
+
 		for (Map.Entry<Player, LocationInformation> player : players.entrySet()) {
 			sendToPlayer(player.getKey().getUsername(), new Message(13371, new Object[]{ID, port, map}));
 		}
 
+		System.out.println("her 2");
+
 		new Thread(game).start();
+
+		System.out.println("her 3");
 	}
 }
