@@ -120,8 +120,11 @@ public class GameScreen extends SwarmerScreen {
 		TiledMapTileLayer lay0 = tempmap.getLayers().getByType(TiledMapTileLayer.class).get(3);
 		TiledMapTile tile = tempmap.getLayers().getByType(TiledMapTileLayer.class).get(0).getCell(1, 1).getTile();
 
+		mapWidth = graph.nodes.length * lay0.getTileWidth();
+		mapHeight = graph.nodes[0].length * lay0.getTileHeight();
+
 		map = new TiledMap();
-		map.getLayers().add(new TiledMapTileLayer((int) (graph.nodes.length * lay0.getTileWidth()), (int) (graph.nodes[0].length * lay0.getTileWidth()), (int) lay0.getTileWidth(), (int) lay0.getTileWidth()));
+		map.getLayers().add(new TiledMapTileLayer((int) mapWidth, (int) mapHeight, (int) lay0.getTileWidth(), (int) lay0.getTileWidth()));
 
 		TiledMapTileLayer lay = map.getLayers().getByType(TiledMapTileLayer.class).get(0);
 
@@ -132,8 +135,8 @@ public class GameScreen extends SwarmerScreen {
 			}
 		}
 
-		mapWidth = lay.getWidth() * lay.getTileWidth();
-		mapHeight = lay.getHeight() * lay.getTileHeight();
+		backgroundLayers = new int[]{0};
+		foregroundLayers = new int[]{};
 
 		renderer = new IsometricTiledMapRenderer(map);
 
@@ -159,7 +162,7 @@ public class GameScreen extends SwarmerScreen {
 
 		camera.update();
 		renderer.setView(camera);
-//		renderer.render(backgroundLayers);
+		renderer.render(backgroundLayers);
 
 		renderer.getBatch().begin();
 		for(Ant ant : ants) {
@@ -171,7 +174,7 @@ public class GameScreen extends SwarmerScreen {
 		}
 		renderer.getBatch().end();
 
-//		renderer.render(foregroundLayers);
+		renderer.render(foregroundLayers);
 	}
 
 	@Override public void resize(int width, int height) {
