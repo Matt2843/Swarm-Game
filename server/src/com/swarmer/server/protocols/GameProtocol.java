@@ -43,7 +43,7 @@ public class GameProtocol extends ServerProtocol {
 
 		for(Map.Entry<Player, LocationInformation> player : players.entrySet()) {
 			if(!player.getValue().getInetAddress().equals(serverUnit.getId())) {
-				ServerUnit.sendTo(player.getKey().getUsername(), player.getValue(), null, new Message(999, serverUnit.getId()));
+				ServerUnit.sendTo(player.getKey().getUsername(), player.getValue(), null, new Message(1000, serverUnit.getId()));
 			}
 		}
 		((GameUnit) serverUnit).startNewGame(players);

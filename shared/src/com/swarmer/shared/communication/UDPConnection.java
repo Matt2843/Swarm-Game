@@ -30,6 +30,7 @@ public class UDPConnection extends Connection {
 	public UDPConnection(DatagramSocket connection, Protocol protocol) throws IOException {
 		super(protocol);
 		this.connection = connection;
+		connection.setBroadcast(false);
 		//correspondentsIp = connection.getRemoteSocketAddress().toString();
 		inbound = new DatagramPacket(inbuffer, inbuffer.length);
 		outbound = new DatagramPacket(outbuffer, outbuffer.length);
@@ -48,7 +49,8 @@ public class UDPConnection extends Connection {
 	public void addBroadcastAddress(SocketAddress ip) {
 		broadcastAddress.add(ip);
 		try {
-			sendMessage(new Message(666, connection.getLocalSocketAddress()), ip);
+			System.out.println(connection.getBroadcast());
+			sendMessage(new Message(666, new InetSocketAddress("127.0.0.1", connection.getLocalPort())), ip);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -60,7 +62,6 @@ public class UDPConnection extends Connection {
 			try {
 				connection.receive(inbound);
 				message = (Message) new ObjectInputStream(new ByteArrayInputStream(inbound.getData())).readObject();
-				System.out.println(message.toString());
 				react(message);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -86,7 +87,6 @@ public class UDPConnection extends Connection {
 			output.writeObject(m);
 			output.flush();
 			outbound.setData(baos.toByteArray());
-			System.out.println(outbound.getLength());
 			System.out.println(baos.toByteArray().length);
 			for(SocketAddress inet : broadcastAddress) {
 				outbound.setSocketAddress(inet);

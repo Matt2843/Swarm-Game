@@ -60,9 +60,6 @@ public final class GameClient {
 	public void establishTCPConnection(String ip, int port) {
 		closeConnection();
 		try {
-			if(tcp != null) {
-				tcp.stopConnection(currentPlayer);
-			}
 			tcp = new TCPConnection(new Socket(ip, port), clientProtocol);
 			tcp.start();
 			tcp.sendMessage(new Message(1, currentPlayer));

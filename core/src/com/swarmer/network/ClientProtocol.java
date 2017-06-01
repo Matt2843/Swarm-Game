@@ -56,6 +56,9 @@ public class ClientProtocol extends Protocol {
 				connectToLobbyUnitAndStartLobby(message);
 				break;
 			case 999:
+				connectServerUnitSecure(message);
+				break;
+			case 1000:
 				connectServerUnit(message);
 				break;
 			case 13371:
@@ -161,8 +164,12 @@ public class ClientProtocol extends Protocol {
 			}
 		});
 
+		System.out.println(gamePort);
+		System.out.println(GameClient.getInstance().tcp.getConnection().getInetAddress());
+		System.out.println(GameClient.getInstance().tcp.getConnection().getRemoteSocketAddress());
+
 		try {
-			GameClient.getInstance().udp.sendMessage(new Message(666), new InetSocketAddress("localhost", gamePort));
+			GameClient.getInstance().udp.sendMessage(new Message(666), new InetSocketAddress(GameClient.getInstance().tcp.getConnection().getInetAddress(), gamePort));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -238,22 +245,24 @@ public class ClientProtocol extends Protocol {
 		GameClient.getInstance().tcp.sendMessage(new Message(302));
 	}
 
-	private void connectServerUnit(Message message) {
+	private void connectServerUnitSecure(Message message) {
 		String[] receivedMessageArray = ((String) message.getObject()).split(":");
 		ip = receivedMessageArray[0].replace("/", "");
 		port = Integer.parseInt(receivedMessageArray[1]);
-		if(GameClient.getInstance().stcp != null) {
-			GameClient.getInstance().stcp.stopConnection(GameClient.getInstance().getCurrentPlayer());
-		}
-		//if(GameClient.udp != null) {
-		//	GameClient.udp.stopConnection(getCurrentPlayer());
-		//}
+
 		try {
 			GameClient.getInstance().establishTCPConnection(ip, port);
 			GameClient.getInstance().tcp.sendMessage(new Message(11111, GameClient.KEY.getPublic()));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void connectServerUnit(Message message) {
+		String[] receivedMessageArray = ((String) message.getObject()).split(":");
+		ip = receivedMessageArray[0].replace("/", "");
+		port = Integer.parseInt(receivedMessageArray[1]);
+		GameClient.getInstance().establishTCPConnection(ip, port);
 	}
 
 	private void secureConnectToAuthNode(Message message) {

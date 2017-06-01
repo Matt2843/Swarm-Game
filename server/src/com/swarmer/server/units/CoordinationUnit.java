@@ -37,6 +37,8 @@ public class CoordinationUnit extends ServerUnit {
 	}
 
 	public static LocationInformation findPlayerLocationInformation(String username) {
+		System.out.println(username);
+		printlocations();
 		for(Player player : allConnectedUsers.keySet()) {
 			if(player.getUsername().equals(username)) {
 				return allConnectedUsers.get(player);

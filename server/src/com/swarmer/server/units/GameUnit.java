@@ -43,7 +43,7 @@ public class GameUnit extends ServerUnit {
 		Swarmer game = new Swarmer(players, this, port);
 		new Thread(game).start();
 
-		Graph map = game.getMap();
+		Graph map = new Graph(5, 5); //game.getMap();
 		String ID = game.getGameUUID();
 
 		currentRunningGames.put(ID, game);

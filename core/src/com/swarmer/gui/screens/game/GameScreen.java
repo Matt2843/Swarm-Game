@@ -119,7 +119,7 @@ public class GameScreen extends SwarmerScreen {
 		this.graph = graph;
 		TiledMap tempmap = new TmxMapLoader().load("newmap.tmx");
 		TiledMapTileLayer lay0 = tempmap.getLayers().getByType(TiledMapTileLayer.class).get(3);
-		TiledMapTile tile = tempmap.getLayers().getByType(TiledMapTileLayer.class).get(3).getCell(1, 1).getTile();
+		TiledMapTile tile = tempmap.getLayers().getByType(TiledMapTileLayer.class).get(0).getCell(1, 1).getTile();
 
 		map = new TiledMap();
 		map.getLayers().add(new TiledMapTileLayer((int) (graph.nodes.length * lay0.getTileWidth()), (int) (graph.nodes[0].length * lay0.getTileWidth()), (int) lay0.getTileWidth(), (int) lay0.getTileWidth()));
