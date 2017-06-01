@@ -102,8 +102,6 @@ public class GameScreen extends SwarmerScreen {
 			}
 		}
 
-		renderer = new IsometricTiledMapRenderer(map);
-
 		int playerCount = 3;
 		for(int i = 0; i < playerCount; i++) {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
@@ -127,11 +125,15 @@ public class GameScreen extends SwarmerScreen {
 		TiledMapTileLayer lay = map.getLayers().getByType(TiledMapTileLayer.class).get(0);
 
 		for(int i = 0; i < graph.nodes.length; i++) {
-			for(int j = 0; i < graph.nodes[0].length; j++) {
+			for(int j = 0; j < graph.nodes[0].length; j++) {
 				lay.setCell(i, j, new TiledMapTileLayer.Cell());
-				lay0.getCell(i,j).setTile(tile);
+				System.out.println(i + ", " + j);
+				System.out.println(lay.getCell(i, j));
+				lay.getCell(i, j).setTile(tile);
 			}
 		}
+
+		renderer = new IsometricTiledMapRenderer(map);
 	}
 
 	@Override public void show() {
@@ -145,7 +147,7 @@ public class GameScreen extends SwarmerScreen {
 
 		camera.update();
 		renderer.setView(camera);
-		renderer.render(backgroundLayers);
+//		renderer.render(backgroundLayers);
 
 		renderer.getBatch().begin();
 		for(Ant ant : ants) {
@@ -157,7 +159,7 @@ public class GameScreen extends SwarmerScreen {
 		}
 		renderer.getBatch().end();
 
-		renderer.render(foregroundLayers);
+//		renderer.render(foregroundLayers);
 	}
 
 	@Override public void resize(int width, int height) {
