@@ -64,7 +64,7 @@ public class SwamerInputProcessor implements InputProcessor {
 
 	@Override public boolean keyDown(int keycode) {
 		if(keycode == Input.Keys.ESCAPE) {
-			SwarmerMain.getInstance().show(MainMenuScreen.getInstance());
+			//SwarmerMain.getInstance().show(MainMenuScreen.getInstance());
 			//ScreenManager.getInstance().show(MainMenuScreen.getInstance());
 		}
 		return false;
