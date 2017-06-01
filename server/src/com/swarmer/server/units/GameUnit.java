@@ -41,6 +41,7 @@ public class GameUnit extends ServerUnit {
 		int port = getPort() + currentRunningGames.size() + 4;
 
 		Swarmer game = new Swarmer(players, this, port);
+		new Thread(game).start();
 
 		Graph map = game.getMap();
 		String ID = game.getGameUUID();
@@ -52,6 +53,5 @@ public class GameUnit extends ServerUnit {
 		}
 
 		new Thread(game).start();
-		System.out.println("Started new game");
 	}
 }
