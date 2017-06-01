@@ -153,8 +153,14 @@ public class ClientProtocol extends Protocol {
 	private void handleGame(Message message) {
 		GameClient.currentGame = (String) ((Object[]) message.getObject())[0];
 		int gamePort = (int) ((Object[]) message.getObject())[1];
-		Graph graph = (Graph) ((Object[]) message.getObject())[2];
-		GameScreen.getInstance().init(graph);
+		final Graph graph = (Graph) ((Object[]) message.getObject())[2];
+
+		Gdx.app.postRunnable(new Runnable() {
+			@Override public void run() {
+				GameScreen.getInstance().init(graph);
+			}
+		});
+
 		try {
 			GameClient.getInstance().udp.sendMessage(new Message(666), new InetSocketAddress("localhost", gamePort));
 		} catch(IOException e) {
