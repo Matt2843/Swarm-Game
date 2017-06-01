@@ -78,19 +78,19 @@ public class GameScreen extends SwarmerScreen {
 
 		graph = new Graph(4, 5);*/
 
-		viewport = new ExtendViewport(VP_WIDTH, VP_HEIGHT, camera);
+//		viewport = new ExtendViewport(VP_WIDTH, VP_HEIGHT, camera);
+//
+//		viewport.apply(false);
+//
+//		IM = new InputMultiplexer();
+//		IM.addProcessor(new SwamerInputProcessor(this));
+//		IM.addProcessor(new GestureDetector(new SwarmerGestureDetector(this)));
 
-		viewport.apply(false);
+//		centerCamera();
 
-		IM = new InputMultiplexer();
-		IM.addProcessor(new SwamerInputProcessor(this));
-		IM.addProcessor(new GestureDetector(new SwarmerGestureDetector(this)));
-
-		centerCamera();
-
-		TiledMapTileLayer lay0 = map.getLayers().getByType(TiledMapTileLayer.class).get(2);
-
-		TiledMapTile tile = map.getLayers().getByType(TiledMapTileLayer.class).get(3).getCell(0, 0).getTile();
+//		TiledMapTileLayer lay0 = map.getLayers().getByType(TiledMapTileLayer.class).get(2);
+//
+//		TiledMapTile tile = map.getLayers().getByType(TiledMapTileLayer.class).get(3).getCell(0, 0).getTile();
 
 		/*for(int i = 0; i < 200; i++) {
 			int x = ThreadLocalRandom.current().nextInt(1, 99);
@@ -102,8 +102,6 @@ public class GameScreen extends SwarmerScreen {
 				graph.nodes[x][y].setResource(new Food(100));
 			}
 		}
-
-		renderer = new IsometricTiledMapRenderer(map);
 
 		int playerCount = 3;
 		for(int i = 0; i < playerCount; i++) {
@@ -128,11 +126,26 @@ public class GameScreen extends SwarmerScreen {
 		TiledMapTileLayer lay = map.getLayers().getByType(TiledMapTileLayer.class).get(0);
 
 		for(int i = 0; i < graph.nodes.length; i++) {
-			for(int j = 0; i < graph.nodes[0].length; j++) {
+			for(int j = 0; j < graph.nodes[0].length; j++) {
 				lay.setCell(i, j, new TiledMapTileLayer.Cell());
-				lay0.getCell(i,j).setTile(tile);
+				lay.getCell(i, j).setTile(tile);
 			}
 		}
+
+		mapWidth = lay.getWidth() * lay.getTileWidth();
+		mapHeight = lay.getHeight() * lay.getTileHeight();
+
+		renderer = new IsometricTiledMapRenderer(map);
+
+		viewport = new ExtendViewport(VP_WIDTH, VP_HEIGHT, camera);
+
+		viewport.apply(false);
+
+		IM = new InputMultiplexer();
+		IM.addProcessor(new SwamerInputProcessor(this));
+		IM.addProcessor(new GestureDetector(new SwarmerGestureDetector(this)));
+
+		centerCamera();
 	}
 
 	@Override public void show() {
@@ -146,7 +159,7 @@ public class GameScreen extends SwarmerScreen {
 
 		camera.update();
 		renderer.setView(camera);
-		renderer.render(backgroundLayers);
+//		renderer.render(backgroundLayers);
 
 		renderer.getBatch().begin();
 		for(Ant ant : ants) {
@@ -158,7 +171,7 @@ public class GameScreen extends SwarmerScreen {
 		}
 		renderer.getBatch().end();
 
-		renderer.render(foregroundLayers);
+//		renderer.render(foregroundLayers);
 	}
 
 	@Override public void resize(int width, int height) {
