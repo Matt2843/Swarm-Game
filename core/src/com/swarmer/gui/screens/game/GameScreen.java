@@ -20,6 +20,7 @@ import com.swarmer.game.input.SwarmerGestureDetector;
 import com.swarmer.game.structures.Hive;
 import com.swarmer.game.units.Ant;
 import com.swarmer.gui.widgets.SwarmerScreen;
+import com.swarmer.shared.aco.graph.SerialisedGraph;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,7 @@ public class GameScreen extends SwarmerScreen {
 	private final static float VP_WIDTH = 1280 * INV_SCALE;
 	private final static float VP_HEIGHT = 720 * INV_SCALE;
 	public static TiledMap map;
-	public Graph graph;
+	public SerialisedGraph graph;
 	public boolean dragging;
 	private IsometricTiledMapRenderer renderer;
 	private OrthographicCamera camera;
@@ -113,7 +114,7 @@ public class GameScreen extends SwarmerScreen {
 		}*/
 	}
 
-	public void init(Graph graph) {
+	public void init(SerialisedGraph graph) {
 		this.graph = graph;
 		TiledMap tempmap = new TmxMapLoader().load("newmap.tmx");
 		TiledMapTileLayer lay0 = tempmap.getLayers().getByType(TiledMapTileLayer.class).get(3);

@@ -27,10 +27,10 @@ public class Ant {
 	    desiredPosition.set(CoordsTranslator.getInstance().getScreenCoordinates((float) x, (float) y));
     }
 
-	public Ant(Player owner, Node startNode) {
+	public Ant(Player owner, int x, int y) {
 
 		food = 200;
-		desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(startNode.getPosition());
+		desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(x, y);
 
 		setX(desiredPosition.x);
 		setY(desiredPosition.y);

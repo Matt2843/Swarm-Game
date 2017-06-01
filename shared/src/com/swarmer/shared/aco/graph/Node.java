@@ -9,12 +9,12 @@ import java.util.ArrayList;
 public class Node implements Serializable {
 
     private boolean isHome = false;
-    private Player owner;
+    public Player owner;
 
     private final Vector2 position;
     private ArrayList<Edge> connectedEdges;
 
-    private Resource resource = null;
+    public Resource resource = null;
 
     public Node(Vector2 position) {
         this.position = position;

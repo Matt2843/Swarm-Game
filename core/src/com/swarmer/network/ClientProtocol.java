@@ -10,6 +10,7 @@ import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
 import com.swarmer.gui.widgets.FriendList;
 import com.swarmer.gui.widgets.SwarmerNotification;
 import com.swarmer.shared.aco.graph.Graph;
+import com.swarmer.shared.aco.graph.SerialisedGraph;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
@@ -61,14 +62,14 @@ public class ClientProtocol extends Protocol {
 			case 1000:
 				connectServerUnit(message);
 				break;
+			case 11111:
+				secureConnectToAuthNode(message);
+				break;
 			case 13371:
 				handleGame(message);
 				break;
 			case 13372:
 				handleFoundGame(message);
-				break;
-			case 11111:
-				secureConnectToAuthNode(message);
 				break;
 			case 23323:
 			    updateAntPositions(message);
@@ -91,7 +92,7 @@ public class ClientProtocol extends Protocol {
         SerialisedAnt ant = (SerialisedAnt) ((Object[])message.getObject())[0];
         Player antOwner = (Player) ((Object[])message.getObject())[1];
 
-        GameScreen.getInstance().getAnts().add(ant.id, new Ant(antOwner, GameScreen.getInstance().graph.nodes[ant.x][ant.y]));
+        GameScreen.getInstance().getAnts().add(ant.id, new Ant(antOwner, ant.x, ant.y));
     }
 
     private void updateAntPositions(Message message) {
@@ -156,7 +157,7 @@ public class ClientProtocol extends Protocol {
 	private void handleGame(Message message) {
 		GameClient.currentGame = (String) ((Object[]) message.getObject())[0];
 		int gamePort = (int) ((Object[]) message.getObject())[1];
-		final Graph graph = (Graph) ((Object[]) message.getObject())[2];
+		final SerialisedGraph graph = (SerialisedGraph) ((Object[]) message.getObject())[2];
 
 		Gdx.app.postRunnable(new Runnable() {
 			@Override public void run() {

@@ -11,8 +11,8 @@ public class Temp {
 	public static Boolean spawn(Player owner, int x, int y) {
 
 		if(between(x, 0, GameScreen.getInstance().graph.nodes.length) && between(y, 0, GameScreen.getInstance().graph.nodes[x].length)) {
-			if(GameScreen.getInstance().graph.nodes[x][y] != null && GameScreen.getInstance().graph.nodes[x][y].getConnectedEdges().size() > 0) {
-				GameScreen.getInstance().getAnts().add(new Ant(owner, GameScreen.getInstance().graph.nodes[x][y]));
+			if(GameScreen.getInstance().graph.nodes[x][y] != null) {
+				GameScreen.getInstance().getAnts().add(new Ant(owner, x, y));
 				return true;
 			}
 		}
