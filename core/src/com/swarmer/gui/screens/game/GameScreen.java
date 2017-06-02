@@ -126,8 +126,10 @@ public class GameScreen extends SwarmerScreen {
 
 		map = new TiledMap();
 		map.getLayers().add(new TiledMapTileLayer((int) mapWidth, (int) mapHeight, (int) lay0.getTileWidth(), (int) lay0.getTileHeight()));
-
+		map.getLayers().add(new TiledMapTileLayer((int) mapWidth, (int) mapHeight, (int) lay0.getTileWidth(), (int) lay0.getTileHeight()));
+		
 		TiledMapTileLayer lay = map.getLayers().getByType(TiledMapTileLayer.class).get(0);
+		TiledMapTileLayer lay1 = map.getLayers().getByType(TiledMapTileLayer.class).get(1);
 
 		for(int i = 0; i < graph.nodes.length; i++) {
 			for(int j = 0; j < graph.nodes[0].length; j++) {
@@ -136,14 +138,14 @@ public class GameScreen extends SwarmerScreen {
 				}
 				lay.setCell(i, j, new TiledMapTileLayer.Cell());
 				if(graph.nodes[i][j].resource != null){
-					lay.getCell(i, j).setTile(res);
-				} else {
-					lay.getCell(i, j).setTile(tile);
+					lay1.setCell(i, j, new TiledMapTileLayer.Cell());
+					lay1.getCell(i, j).setTile(res);
 				}
+				lay.getCell(i, j).setTile(tile);
 			}
 		}
 
-		backgroundLayers = new int[]{0};
+		backgroundLayers = new int[]{0, 1};
 		foregroundLayers = new int[]{};
 
 		renderer = new IsometricTiledMapRenderer(map);
