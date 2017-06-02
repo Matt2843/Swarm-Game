@@ -5,17 +5,19 @@ import java.util.ArrayList;
 
 public class SerialisedAnts implements Serializable {
 
-	public ArrayList<SerialisedAnt> ants;
+	public SerialisedAnt[] ants;
+	public int size = 0;
 
-	public SerialisedAnts() {
-		ants = new ArrayList<SerialisedAnt>();
+	public SerialisedAnts(int size) {
+		ants = new SerialisedAnt[size];
 	}
 
-	public void addAnt(int id, int x, int y) {
-		ants.add(new SerialisedAnt(id, x, y));
+	public SerialisedAnt getAnt(int index) {
+		return ants[index];
 	}
 
-	public void clear() {
-		ants.clear();
+	public void addAnt(int index, int id, int x, int y) {
+		ants[index] = new SerialisedAnt(id, x, y);
+		size++;
 	}
 }

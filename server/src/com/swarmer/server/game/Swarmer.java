@@ -16,9 +16,9 @@ import java.net.DatagramSocket;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class Swarmer implements Runnable {
+public class Swarmer extends Thread {
 
-	private Game game;
+	public Game game;
 	private HashMap<Player, LocationInformation> players;
 	private GameUnit gameUnit;
 	private int port;
@@ -75,6 +75,10 @@ public class Swarmer implements Runnable {
 		System.out.println("UDP Setup Completed");
 
 		return udpConnection;
+	}
+
+	public void spawnAnt(Player owner) {
+		game.spawnAnt(owner);
 	}
 
 	public Graph getMap() {

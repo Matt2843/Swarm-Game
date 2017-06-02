@@ -68,27 +68,37 @@ public class Game {
 	}
 
 	public void render() {
-		SerialisedAnts serialisedAnts = new SerialisedAnts();
-		int j = 1;
+		int size = 10;
+		SerialisedAnts serialisedAnts = new SerialisedAnts(size);
+
+		int j = 0;
 		for(int i = 0; i < ants.size(); i++) {
 			ants.get(i).update();
-			if(j >= 10){
+			if(j > size){
 				try {
 					udpConnection.sendMessage(new Message(23323, serialisedAnts));
 				} catch(IOException e) {
 					e.printStackTrace();
 				}
-				serialisedAnts = new SerialisedAnts();
-				j = 0;
+				serialisedAnts = new SerialisedAnts(size);
+				j = -1;
 			}
-			serialisedAnts.addAnt(i, ants.get(i).desiredPosition.x, ants.get(i).desiredPosition.y);
+			serialisedAnts.addAnt(j, i, ants.get(i).desiredPosition.x, ants.get(i).desiredPosition.y);
 			j++;
 		}
-		if (ants.size() % 10 != 0) {
+		if (ants.size() % size != 0) {
 			try {
 				udpConnection.sendMessage(new Message(23323, serialisedAnts));
 			} catch(IOException e) {
 				e.printStackTrace();
+			}
+		}
+	}
+
+	public void spawnAnt(Player owner) {
+		for(Hive hive : hives) {
+			if(hive.owner.equals(owner)) {
+				ants.add(new Ant(owner, hive.node, graph));
 			}
 		}
 	}

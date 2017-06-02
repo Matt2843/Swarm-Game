@@ -119,6 +119,7 @@ public class GameScreen extends SwarmerScreen {
 		TiledMap tempmap = new TmxMapLoader().load("newmap.tmx");
 		TiledMapTileLayer lay0 = tempmap.getLayers().getByType(TiledMapTileLayer.class).get(3);
 		TiledMapTile tile = tempmap.getLayers().getByType(TiledMapTileLayer.class).get(0).getCell(1, 1).getTile();
+		TiledMapTile res = map.getLayers().getByType(TiledMapTileLayer.class).get(3).getCell(0, 0).getTile();
 
 		mapWidth = graph.nodes.length * lay0.getTileWidth();
 		mapHeight = graph.nodes[0].length * lay0.getTileHeight();
@@ -130,8 +131,15 @@ public class GameScreen extends SwarmerScreen {
 
 		for(int i = 0; i < graph.nodes.length; i++) {
 			for(int j = 0; j < graph.nodes[0].length; j++) {
+				if(graph.nodes[i][j].isHome != null){
+					hives.add(new Hive(graph.nodes[i][j].isHome, i, j));
+				}
 				lay.setCell(i, j, new TiledMapTileLayer.Cell());
-				lay.getCell(i, j).setTile(tile);
+				if(graph.nodes[i][j].resource != null){
+					lay.getCell(i, j).setTile(res);
+				} else {
+					lay.getCell(i, j).setTile(tile);
+				}
 			}
 		}
 
@@ -169,7 +177,7 @@ public class GameScreen extends SwarmerScreen {
 			ant.draw(renderer.getBatch());
 		}
 
-		for(Hive hive: hives) {
+		for(Hive hive : hives) {
 			hive.draw(renderer.getBatch());
 		}
 		renderer.getBatch().end();

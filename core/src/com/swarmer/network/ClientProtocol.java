@@ -92,16 +92,20 @@ public class ClientProtocol extends Protocol {
         SerialisedAnt ant = (SerialisedAnt) ((Object[])message.getObject())[0];
         Player antOwner = (Player) ((Object[])message.getObject())[1];
 
-        GameScreen.getInstance().getAnts().add(ant.id, new Ant(antOwner, ant.x, ant.y));
+        GameScreen.getInstance().getAnts().add(ant.id, new Ant(ant.x, ant.y));
     }
 
     private void updateAntPositions(Message message) {
         SerialisedAnts ants = (SerialisedAnts) message.getObject();
 
-        for(SerialisedAnt ant : ants.ants)  {
-            if(GameScreen.getInstance().getAnts().contains(ant.id)) {
-                GameScreen.getInstance().getAnts().get(ant.id).setDesiredPosition(ant.x, ant.y);
-            }
+        for(int i = 0; i < ants.size; i++)  {
+			int id = ants.getAnt(i).id;
+			System.out.println(id);
+			if(GameScreen.getInstance().getAnts().contains(id)) {
+                GameScreen.getInstance().getAnts().get(id).setDesiredPosition(ants.getAnt(i).x, ants.getAnt(i).y);
+            } else {
+				GameScreen.getInstance().getAnts().add(id, new Ant(ants.getAnt(i).x, ants.getAnt(i).y));
+			}
         }
     }
 

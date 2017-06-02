@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.swarmer.shared.aco.graph.Node;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.network.GameClient;
+import com.swarmer.shared.aco.graph.SerialisedNode;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.utility.CoordsTranslator;
@@ -22,14 +23,11 @@ public class Hive extends Structure {
 	private final OrthographicCamera camera;
 	private Vector3 touchPoint = new Vector3();
 	private final Player owner;
-	private Node node;
 
-	public Hive(Player owner, Node node) {
+	public Hive(Player owner, int x, int y) {
 		this.owner = owner;
-		this.node = node;
-		node.setHome(owner);
 
-		Vector2 position = CoordsTranslator.getInstance().getScreenCoordinates(node.getPosition());
+		Vector2 position = CoordsTranslator.getInstance().getScreenCoordinates(x, y);
 
 		Sprite sprite = new Sprite(new Texture("structures/hive.png"));
 
@@ -53,7 +51,7 @@ public class Hive extends Structure {
 				//Temp.spawn(owner, node.getPosition());
 
                 try {
-                    GameClient.getInstance().tcp.sendMessage(new Message(23324));
+                    GameClient.getInstance().tcp.sendMessage(new Message(23324, GameClient.currentGame));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

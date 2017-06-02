@@ -6,8 +6,8 @@ import com.swarmer.shared.communication.Player;
 
 public class Hive extends Structure {
 
-    private final Player owner;
-    private Node node;
+    public final Player owner;
+    public Node node;
 
     public Hive(Player owner, Node node) {
         this.owner = owner;

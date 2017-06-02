@@ -39,6 +39,10 @@ public class GameUnit extends ServerUnit {
 		new GameUnit();
 	}
 
+	public void spawnAnt(String gameID, Player owner) {
+		currentRunningGames.get(gameID).spawnAnt(owner);
+	}
+
 	public void startNewGame(HashMap<Player, LocationInformation> players) throws IOException, InterruptedException {
 		int port = getPort() + currentRunningGames.size() + 4;
 
@@ -50,16 +54,10 @@ public class GameUnit extends ServerUnit {
 
 		currentRunningGames.put(ID, game);
 
-		System.out.println("her 1");
-
 		for (Map.Entry<Player, LocationInformation> player : players.entrySet()) {
 			sendToPlayer(player.getKey().getUsername(), new Message(13371, new Object[]{ID, port, map}));
 		}
 
-		System.out.println("her 2");
-
-		new Thread(game).start();
-
-		System.out.println("her 3");
+		game.start();
 	}
 }

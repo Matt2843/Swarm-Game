@@ -12,7 +12,7 @@ public class Temp {
 
 		if(between(x, 0, GameScreen.getInstance().graph.nodes.length) && between(y, 0, GameScreen.getInstance().graph.nodes[x].length)) {
 			if(GameScreen.getInstance().graph.nodes[x][y] != null) {
-				GameScreen.getInstance().getAnts().add(new Ant(owner, x, y));
+				GameScreen.getInstance().getAnts().add(new Ant(x, y));
 				return true;
 			}
 		}

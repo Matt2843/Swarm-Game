@@ -25,7 +25,7 @@ public class GameProtocol extends ServerProtocol {
 				startGame(message);
 				break;
             case 23324:
-                spawnAnt(caller);
+                spawnAnt(message, caller);
                 break;
 			default:
 				super.react(message, caller);
@@ -33,9 +33,10 @@ public class GameProtocol extends ServerProtocol {
 		}
 	}
 
-    private void spawnAnt(Connection caller) {
-        Player antOwner = caller.getPlayer();
-        
+    private void spawnAnt(Message message, Connection caller) {
+		String gameID = (String) message.getObject();
+		Player antOwner = caller.getPlayer();
+		((GameUnit) serverUnit).spawnAnt(gameID, antOwner);
     }
 
     private void startGame(Message message) throws IOException, InterruptedException {
