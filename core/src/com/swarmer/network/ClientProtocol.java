@@ -100,11 +100,10 @@ public class ClientProtocol extends Protocol {
 
         for(int i = 0; i < ants.size; i++)  {
 			int id = ants.getAnt(i).id;
-			System.out.println(id);
-			if(GameScreen.getInstance().getAnts().contains(id)) {
+			if(GameScreen.getInstance().getAnts().size() > id) {
                 GameScreen.getInstance().getAnts().get(id).setDesiredPosition(ants.getAnt(i).x, ants.getAnt(i).y);
-            } else {
-				GameScreen.getInstance().getAnts().add(id, new Ant(ants.getAnt(i).x, ants.getAnt(i).y));
+            } else if(GameScreen.getInstance().getAnts().size() == id) {
+				GameScreen.getInstance().getAnts().add(new Ant(ants.getAnt(i).x, ants.getAnt(i).y));
 			}
         }
     }

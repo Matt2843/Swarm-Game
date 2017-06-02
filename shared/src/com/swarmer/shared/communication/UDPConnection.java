@@ -18,8 +18,10 @@ public class UDPConnection extends Connection {
 	protected DatagramPacket inbound;
 	protected DatagramPacket outbound;
 
-	protected byte[] inbuffer = new byte[512];
-	protected byte[] outbuffer = new byte[512];
+	public int size = 512;
+
+	protected byte[] inbuffer;
+	protected byte[] outbuffer;
 
 	protected DatagramSocket connection = null;
 
@@ -29,21 +31,13 @@ public class UDPConnection extends Connection {
 
 	public UDPConnection(DatagramSocket connection, Protocol protocol) throws IOException {
 		super(protocol);
+		inbuffer = new byte[size];
+		outbuffer = new byte[size];
 		this.connection = connection;
 		connection.setBroadcast(false);
-		//correspondentsIp = connection.getRemoteSocketAddress().toString();
 		inbound = new DatagramPacket(inbuffer, inbuffer.length);
 		outbound = new DatagramPacket(outbuffer, outbuffer.length);
 		setupStreams();
-	}
-
-	public void changeAddress(int port) {
-		connection.close();
-		try {
-			connection = new DatagramSocket(port);
-		} catch (SocketException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void addBroadcastAddress(SocketAddress ip) {
@@ -65,7 +59,7 @@ public class UDPConnection extends Connection {
 				react(message);
 			} catch (IOException e) {
 				e.printStackTrace();
-				stop = true;
+				//stop = true;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (OperationInWrongServerNodeException e) {
@@ -88,9 +82,11 @@ public class UDPConnection extends Connection {
 			output.flush();
 			outbound.setData(baos.toByteArray());
 			System.out.println(baos.toByteArray().length);
-			for(SocketAddress inet : broadcastAddress) {
-				outbound.setSocketAddress(inet);
-				connection.send(outbound);
+			if(baos.toByteArray().length <= size) {
+				for(SocketAddress inet : broadcastAddress) {
+					outbound.setSocketAddress(inet);
+					connection.send(outbound);
+				}
 			}
 		}
 	}
@@ -102,8 +98,10 @@ public class UDPConnection extends Connection {
 			output.flush();
 			outbound.setData(baos.toByteArray());
 			System.out.println(outbound.getLength());
-			outbound.setSocketAddress(inet);
-			connection.send(outbound);
+			if(baos.toByteArray().length <= size) {
+				outbound.setSocketAddress(inet);
+				connection.send(outbound);
+			}
 		}
 	}
 

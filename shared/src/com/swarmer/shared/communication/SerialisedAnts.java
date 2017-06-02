@@ -17,7 +17,9 @@ public class SerialisedAnts implements Serializable {
 	}
 
 	public void addAnt(int index, int id, int x, int y) {
-		ants[index] = new SerialisedAnt(id, x, y);
-		size++;
+		if(index < ants.length) {
+			ants[index] = new SerialisedAnt(id, x, y);
+			size++;
+		}
 	}
 }

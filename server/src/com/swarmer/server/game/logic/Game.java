@@ -68,7 +68,7 @@ public class Game {
 	}
 
 	public void render() {
-		int size = 10;
+		int size = 5;
 		SerialisedAnts serialisedAnts = new SerialisedAnts(size);
 
 		int j = 0;
@@ -81,12 +81,12 @@ public class Game {
 					e.printStackTrace();
 				}
 				serialisedAnts = new SerialisedAnts(size);
-				j = -1;
+				j = 0;
 			}
 			serialisedAnts.addAnt(j, i, ants.get(i).desiredPosition.x, ants.get(i).desiredPosition.y);
 			j++;
 		}
-		if (ants.size() % size != 0) {
+		if (serialisedAnts.size > 0) {
 			try {
 				udpConnection.sendMessage(new Message(23323, serialisedAnts));
 			} catch(IOException e) {
