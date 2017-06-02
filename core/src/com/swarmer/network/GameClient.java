@@ -42,7 +42,7 @@ public final class GameClient {
 
 		// TODO: FIX UDP
 		try {
-			udp = new UDPConnection(new DatagramSocket(4445), new ClientProtocol());
+			udp = new UDPConnection(new DatagramSocket(4449), new ClientProtocol());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

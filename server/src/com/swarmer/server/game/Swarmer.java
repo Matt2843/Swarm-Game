@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -66,12 +67,21 @@ public class Swarmer extends Thread {
 
 		udpConnection = new UDPConnection(datagramSocket, new GameProtocol(gameUnit));
 
-		while(iterations < playerCount) {
+//		while(iterations < playerCount) {
+//			DatagramPacket datagramPacket = new DatagramPacket(new byte[512], 512);
+//			datagramSocket.receive(datagramPacket);
+//			udpConnection.addBroadcastAddress(new InetSocketAddress("localhost", 4445));
+//			iterations++;
+//		}
+
 			DatagramPacket datagramPacket = new DatagramPacket(new byte[512], 512);
 			datagramSocket.receive(datagramPacket);
-			udpConnection.addBroadcastAddress(datagramPacket.getSocketAddress());
-			iterations++;
-		}
+			udpConnection.addBroadcastAddress(new InetSocketAddress("localhost", 4445));
+
+			datagramPacket = new DatagramPacket(new byte[512], 512);
+			datagramSocket.receive(datagramPacket);
+			udpConnection.addBroadcastAddress(new InetSocketAddress("localhost", 4449));
+
 		System.out.println("UDP Setup Completed");
 
 		return udpConnection;
