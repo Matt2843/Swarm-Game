@@ -55,13 +55,13 @@ public class Game {
 				hives.add(new Hive(player.getKey(), graph.nodes[0][0]));
 			}
 			if (i == 1) {
-				hives.add(new Hive(player.getKey(), graph.nodes[mapWidth][mapHeight]));
+				hives.add(new Hive(player.getKey(), graph.nodes[mapWidth-1][mapHeight-1]));
 			}
 			if (i == 2) {
-				hives.add(new Hive(player.getKey(), graph.nodes[mapWidth][0]));
+				hives.add(new Hive(player.getKey(), graph.nodes[mapWidth-1][0]));
 			}
 			if (i == 3) {
-				hives.add(new Hive(player.getKey(), graph.nodes[0][mapHeight]));
+				hives.add(new Hive(player.getKey(), graph.nodes[0][mapHeight-1]));
 			}
 			i++;
 		}

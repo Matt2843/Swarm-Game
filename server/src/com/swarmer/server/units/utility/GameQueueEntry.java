@@ -5,7 +5,7 @@ import com.swarmer.shared.communication.Player;
 import java.util.ArrayList;
 
 public class GameQueueEntry {
-    private int freeSpots = 1;
+    private int freeSpots = 2;
     private ArrayList<Player> connectedPlayers = new ArrayList<>();
 
     public GameQueueEntry(ArrayList<Player> players) {
