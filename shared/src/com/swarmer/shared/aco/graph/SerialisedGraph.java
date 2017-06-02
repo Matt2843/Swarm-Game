@@ -3,7 +3,7 @@ package com.swarmer.shared.aco.graph;
 import java.io.Serializable;
 
 public class SerialisedGraph implements Serializable {
-
+    private static final long serialVersionUID = -1338L;
 	public SerialisedNode[][] nodes;
 
 	public SerialisedGraph(Graph graph) {

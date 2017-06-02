@@ -51,7 +51,8 @@ public class Hive extends Structure {
 				//Temp.spawn(owner, node.getPosition());
 
                 try {
-                    GameClient.getInstance().tcp.sendMessage(new Message(23324, GameClient.currentGame));
+                    if(owner.equals(GameClient.getInstance().getCurrentPlayer()))
+                        GameClient.getInstance().tcp.sendMessage(new Message(23324, GameClient.currentGame));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

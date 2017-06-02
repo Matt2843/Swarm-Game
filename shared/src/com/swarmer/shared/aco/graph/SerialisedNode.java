@@ -6,7 +6,7 @@ import com.swarmer.shared.resources.Resource;
 import java.io.Serializable;
 
 public class SerialisedNode implements Serializable {
-
+    private static final long serialVersionUID = -1339L;
 	public Player isHome;
 	public Resource resource;
 

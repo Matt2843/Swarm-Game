@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class SerialisedAnts implements Serializable {
-
+    private static final long serialVersionUID = -1337L;
 	public SerialisedAnt[] ants;
 	public int size = 0;
 
