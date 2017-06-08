@@ -1,6 +1,6 @@
 package com.swarmer.shared.communication;
 
-import java.io.Serializable;
+		import java.io.Serializable;
 
 public class SerialisedAnt implements Serializable {
 	public int id;

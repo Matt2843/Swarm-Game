@@ -10,7 +10,7 @@ public class Ant {
 
     public int x;
     public int y;
-    private int food;
+    public int food;
 
     private AntBrain brain;
 

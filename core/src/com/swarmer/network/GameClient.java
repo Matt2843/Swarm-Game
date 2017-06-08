@@ -41,12 +41,12 @@ public final class GameClient {
 		establishTCPConnection(IP, 43120);
 
 		// TODO: FIX UDP
-		try {
+		/*try {
 			udp = new UDPConnection(new DatagramSocket(4449), new ClientProtocol());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		udp.start();
+		udp.start();*/
 	}
 
 	public static GameClient getInstance() {

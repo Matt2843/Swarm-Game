@@ -6,6 +6,7 @@ import com.swarmer.server.protocols.ServerProtocol;
 import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.aco.graph.Graph;
 import com.swarmer.shared.aco.graph.SerialisedGraph;
+import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 
@@ -46,8 +47,21 @@ public class GameUnit extends ServerUnit {
 	public void startNewGame(HashMap<Player, LocationInformation> players) throws IOException, InterruptedException {
 		int port = getPort() + currentRunningGames.size() + 4;
 
-		Swarmer game = new Swarmer(players, this, port);
-		new Thread(game).start();
+		HashMap<Player, Connection> playerConnections = new HashMap<>();
+
+		for(Map.Entry<Player, LocationInformation> player : players.entrySet()) {
+			if(!hasConnection(player.getKey())) {
+				sendToPlayer(player.getKey().getUsername(), new Message(1000, getId()));
+			}
+		}
+
+		Thread.sleep(1000);
+
+		for(Map.Entry<Player, LocationInformation> player : players.entrySet()) {
+			playerConnections.put(player.getKey(), activeConnections.get(player.getKey()));
+		}
+
+		Swarmer game = new Swarmer(playerConnections, this, port);
 
 		SerialisedGraph map = new SerialisedGraph(game.getMap());
 		String ID = game.getGameUUID();

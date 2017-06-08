@@ -98,12 +98,12 @@ public class ClientProtocol extends Protocol {
     private void updateAntPositions(Message message) {
         SerialisedAnts ants = (SerialisedAnts) message.getObject();
 
-        for(int i = 0; i < ants.size; i++)  {
-			int id = ants.getAnt(i).id;
-			if(GameScreen.getInstance().getAnts().size() > id) {
-                GameScreen.getInstance().getAnts().get(id).setDesiredPosition(ants.getAnt(i).x, ants.getAnt(i).y);
-            } else if(GameScreen.getInstance().getAnts().size() == id) {
-				GameScreen.getInstance().getAnts().add(new Ant(ants.getAnt(i).x, ants.getAnt(i).y));
+        //for(int i = 0; i < ants.size; i++)  {
+		for(SerialisedAnt ant : ants.ants) {
+			if(GameScreen.getInstance().getAnts().size() > ant.id) {
+                GameScreen.getInstance().getAnts().get(ant.id).addCoordinate(ant.x, ant.y);
+            } else if(GameScreen.getInstance().getAnts().size() == ant.id) {
+				GameScreen.getInstance().getAnts().add(new Ant(ant.x, ant.y));
 			}
         }
     }
@@ -172,11 +172,11 @@ public class ClientProtocol extends Protocol {
 		System.out.println(GameClient.getInstance().tcp.getConnection().getInetAddress());
 		System.out.println(GameClient.getInstance().tcp.getConnection().getRemoteSocketAddress());
 
-		try {
+		/*try {
 			GameClient.getInstance().udp.sendMessage(new Message(666), new InetSocketAddress(GameClient.getInstance().tcp.getConnection().getInetAddress(), gamePort));
 		} catch(IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		SwarmerMain.getInstance().show(GameScreen.getInstance());
 	}
 

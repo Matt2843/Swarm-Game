@@ -2,6 +2,7 @@ package com.swarmer.server.game.logic;
 
 import com.swarmer.shared.aco.graph.Graph;
 import com.swarmer.shared.aco.graph.Vector2;
+import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.resources.Food;
 import com.swarmer.server.game.logic.structures.Hive;
 import com.swarmer.server.game.logic.units.Ant;
@@ -24,10 +25,10 @@ public class Game {
 	private Vector2 vec = new Vector2();
 	private ArrayList<Ant> ants;
 	private ArrayList<Hive> hives;
-	private HashMap<Player, LocationInformation> players;
+	private HashMap<Player, Connection> players;
 	private UDPConnection udpConnection;
 
-	public Game(HashMap<Player, LocationInformation> players, int width, int height) {
+	public Game(HashMap<Player, Connection> players, int width, int height) {
 		this.players = players;
 		mapWidth = width;
 		mapHeight = height;
@@ -50,7 +51,7 @@ public class Game {
 		}
 
 		int i = 0;
-		for(Map.Entry<Player, LocationInformation> player : players.entrySet()) {
+		for(Map.Entry<Player, Connection> player : players.entrySet()) {
 			if (i == 0) {
 				hives.add(new Hive(player.getKey(), graph.nodes[0][0]));
 			}
@@ -68,13 +69,13 @@ public class Game {
 	}
 
 	public void render() {
-		int size = 5;
-		SerialisedAnts serialisedAnts = new SerialisedAnts(size);
+		//int size = 5;
+		SerialisedAnts serialisedAnts = new SerialisedAnts(ants.size());
 
 		int j = 0;
 		for(int i = 0; i < ants.size(); i++) {
 			ants.get(i).update();
-			if(j > size){
+			/*if(j > size){
 				try {
 					udpConnection.sendMessage(new Message(23323, serialisedAnts));
 				} catch(IOException e) {
@@ -82,17 +83,28 @@ public class Game {
 				}
 				serialisedAnts = new SerialisedAnts(size);
 				j = 0;
+			}*/
+			if(ants.get(i).food > 0) {
+				serialisedAnts.addAnt(i, ants.get(i).desiredPosition.x, ants.get(i).desiredPosition.y);
 			}
-			serialisedAnts.addAnt(j, i, ants.get(i).desiredPosition.x, ants.get(i).desiredPosition.y);
-			j++;
+			//j++;
 		}
-		if (serialisedAnts.size > 0) {
+
+		for(Map.Entry<Player, Connection> player : players.entrySet()) {
+			try {
+				player.getValue().sendMessage(new Message(23323, serialisedAnts));
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		/*if (serialisedAnts.size > 0) {
 			try {
 				udpConnection.sendMessage(new Message(23323, serialisedAnts));
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 
 	public void spawnAnt(Player owner) {

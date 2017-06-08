@@ -8,6 +8,11 @@ import com.swarmer.shared.communication.Player;
 import com.swarmer.utility.CoordsTranslator;
 import com.swarmer.shared.aco.graph.Node;
 
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 public class Ant {
 
 	private float stateTime;
@@ -21,6 +26,8 @@ public class Ant {
 	private float zero  = speed / 5;
 	private String animation;
 
+	private ConcurrentLinkedQueue<Vector2> desiredPositions;
+
 	private Vector2 desiredPosition;
 
 	public void setDesiredPosition(int x, int y) {
@@ -29,6 +36,7 @@ public class Ant {
 
 	public Ant(int x, int y) {
 
+		desiredPositions = new ConcurrentLinkedQueue<Vector2>();
 		food = 200;
 		desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(x, y);
 
@@ -70,10 +78,16 @@ public class Ant {
 		setX(getX() + velocity.x * delta);
 		setY(getY() + velocity.y * delta);
 
-		/*if(Math.abs(Math.round(getX() - desiredPosition.x)) < 10 && Math.abs(Math.round(getY() - desiredPosition.y)) < 10) {
-			//desiredPosition = CoordsTranslator.getInstance().getScreenCoordinates(brain.determineNextPath().getNode().getPosition());
-			food -= 1;
-		}*/
+		if(Math.abs(Math.round(getX() - desiredPosition.x)) < 10 && Math.abs(Math.round(getY() - desiredPosition.y)) < 10) {
+			if(!desiredPositions.isEmpty()) {
+				desiredPosition = desiredPositions.poll();
+				food -= 1;
+			}
+		}
+	}
+
+	public void addCoordinate(int x, int y) {
+		desiredPositions.add(CoordsTranslator.getInstance().getScreenCoordinates(x, y));
 	}
 
 	private void setX(float x) {

@@ -5,6 +5,7 @@ import com.swarmer.server.game.logic.Game;
 import com.swarmer.server.protocols.GameProtocol;
 import com.swarmer.server.units.GameUnit;
 import com.swarmer.server.units.utility.LocationInformation;
+import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.UDPConnection;
 
@@ -20,12 +21,12 @@ import java.util.UUID;
 public class Swarmer extends Thread {
 
 	public Game game;
-	private HashMap<Player, LocationInformation> players;
+	private HashMap<Player, Connection> players;
 	private GameUnit gameUnit;
 	private int port;
 	private String gameUUID;
 
-	public Swarmer(HashMap<Player, LocationInformation> players, GameUnit gameUnit, int port) throws InterruptedException, IOException {
+	public Swarmer(HashMap<Player, Connection> players, GameUnit gameUnit, int port) throws InterruptedException, IOException {
 		this.players = players;
 		this.gameUnit = gameUnit;
 		this.port = port;
@@ -35,15 +36,15 @@ public class Swarmer extends Thread {
     }
 
 	@Override public void run() {
-		try {
+		/*try {
 			UDPConnection udpConnection = connectToPlayers(players.size());
 			game.setUdpConnection(udpConnection);
-		} catch (IOException ignored) {}
+		} catch (IOException ignored) {}*/
 
 		while(true) {
 			long time = System.currentTimeMillis();
 			game.render();
-			long sleep = 1000 - (System.currentTimeMillis() - time);
+			long sleep = 500 - (System.currentTimeMillis() - time);
 			if(sleep > 0) {
 				try {
 					Thread.sleep(sleep);
