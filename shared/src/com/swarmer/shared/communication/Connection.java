@@ -1,7 +1,5 @@
 package com.swarmer.shared.communication;
 
-import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
-
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -19,7 +17,7 @@ public abstract class Connection extends Thread {
 
 	abstract public void run();
 
-	protected void react(Message message) throws IOException, OperationInWrongServerNodeException, SQLException, NoSuchAlgorithmException, InterruptedException {
+	protected void react(Message message) throws IOException, SQLException, NoSuchAlgorithmException, InterruptedException {
 		protocol.react(message, this);
 	}
 

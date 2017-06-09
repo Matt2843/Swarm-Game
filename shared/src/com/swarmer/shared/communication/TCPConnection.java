@@ -1,7 +1,5 @@
 package com.swarmer.shared.communication;
 
-import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -34,7 +32,7 @@ public class TCPConnection extends Connection {
 			} catch (IOException e) {
 				System.out.println("input.readObject() threw an IOException, cleaning up connection.");
 				stop = true;
-			} catch (ClassNotFoundException | InterruptedException | SQLException | NoSuchAlgorithmException | OperationInWrongServerNodeException e) {
+			} catch (ClassNotFoundException | InterruptedException | SQLException | NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
 		} while(!stop && message.getOpcode() != 0); // TODO: CHANGE STOP CONDITION.

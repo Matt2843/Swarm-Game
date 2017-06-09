@@ -68,10 +68,7 @@ public class Game {
 	}
 
 	public void render() {
-		//int size = 5;
 		SerialisedAnts serialisedAnts = new SerialisedAnts(ants.size());
-
-		int j = 0;
 		for(int i = 0; i < ants.size(); i++) {
 			ants.get(i).update();
 			/*if(j > size){

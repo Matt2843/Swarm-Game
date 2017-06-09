@@ -1,7 +1,5 @@
 package com.swarmer.shared.communication;
 
-import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
-
 import javax.crypto.*;
 import java.io.*;
 import java.net.Socket;
@@ -70,7 +68,7 @@ public class SecureTCPConnection extends Connection {
 			} catch (IOException e) {
 				System.out.println("WHY GOD WHY");
 				stop = true;
-			} catch (ClassNotFoundException | OperationInWrongServerNodeException | NoSuchAlgorithmException | SQLException | InterruptedException e) {
+			} catch (ClassNotFoundException | NoSuchAlgorithmException | SQLException | InterruptedException e) {
 				e.printStackTrace();
 			}
 		} while(!stop && message.getOpcode() != 0); // TODO: CHANGE STOP CONDITION.

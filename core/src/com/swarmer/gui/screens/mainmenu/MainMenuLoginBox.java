@@ -1,22 +1,18 @@
 package com.swarmer.gui.screens.mainmenu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.StyleSheet;
-import com.swarmer.gui.widgets.SwarmerNotification;
 import com.swarmer.network.GameClient;
 import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.exceptions.GameClientNotInstantiatedException;
 
 import java.io.IOException;
 
-/**
- * Created by Matt on 03/28/2017.
- */
 public class MainMenuLoginBox extends Table {
 
 	private TextField userName;

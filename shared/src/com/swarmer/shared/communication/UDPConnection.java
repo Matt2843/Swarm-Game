@@ -1,7 +1,5 @@
 package com.swarmer.shared.communication;
 
-import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
-
 import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -63,8 +61,6 @@ public class UDPConnection extends Connection {
 				e.printStackTrace();
 				//stop = true;
 			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} catch (OperationInWrongServerNodeException e) {
 				e.printStackTrace();
 			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();

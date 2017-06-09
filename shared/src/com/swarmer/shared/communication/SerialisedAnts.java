@@ -8,7 +8,8 @@ public class SerialisedAnts implements Serializable {
 	public ArrayList<SerialisedAnt> ants;
 	public int size = 0;
 
-	public SerialisedAnts() {
+	public SerialisedAnts(int size) {
+		this.size = size;
 		ants = new ArrayList<>();
 	}
 
