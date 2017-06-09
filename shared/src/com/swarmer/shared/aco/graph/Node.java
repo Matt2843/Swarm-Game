@@ -59,10 +59,6 @@ public class Node implements Serializable {
         return connectedEdges;
     }
 
-    public void setConnectedEdges(ArrayList<Edge> connectedEdges) {
-        this.connectedEdges = connectedEdges;
-    }
-
     public float getX() {
         return position.x;
     }

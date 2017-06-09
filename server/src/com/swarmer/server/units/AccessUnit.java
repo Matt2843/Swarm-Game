@@ -8,9 +8,6 @@ import com.swarmer.shared.communication.Message;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
-/**
- * Created by Matt on 04/06/2017.
- */
 public class AccessUnit extends ServerUnit {
 
 	private final AccessProtocol accessProtocol = new AccessProtocol(this);

@@ -18,10 +18,6 @@ public class LocationInformation implements Serializable {
 		return "/" + serverUnitIp + ":" + serverUnitPort;
 	}
 
-	public String getServerUnitDescription() {
-		return serverUnitDescription;
-	}
-
 	public void setServerUnitDescription(String serverUnitDescription) {
 		this.serverUnitDescription = serverUnitDescription;
 	}

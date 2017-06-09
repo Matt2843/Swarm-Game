@@ -13,17 +13,7 @@ public class Pheromone implements Serializable {
         quantity += amount;
     }
 
-    public void decreasePheromone() {
-        if(quantity > 0) {
-            quantity -= 1;
-        }
-    }
-
     public int getQuantity() {
         return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 }

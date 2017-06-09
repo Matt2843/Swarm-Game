@@ -2,30 +2,16 @@ package com.swarmer.shared.communication;
 
 import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import javax.crypto.*;
+import java.io.*;
 import java.net.Socket;
-import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
-import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SealedObject;
-import javax.crypto.spec.IvParameterSpec;
 
 public class SecureTCPConnection extends Connection {
 	protected ObjectInputStream input;
@@ -34,16 +20,11 @@ public class SecureTCPConnection extends Connection {
 	protected Cipher inCipher;
 	protected Cipher outCipher;
 
-	private CipherInputStream cis;
-	private CipherOutputStream cos;
-
 	private KeyPair KEY = null;
 	private PublicKey exPublicKey = null;
 
 	private Socket connection = null;
 	private boolean stop = false;
-
-	private Callable NonSecureTCP;
 
 	public SecureTCPConnection(Socket connection, Protocol protocol, KeyPair KEY, PublicKey exPublicKey) throws IOException {
 		super(protocol);
@@ -57,14 +38,6 @@ public class SecureTCPConnection extends Connection {
 	}
 
 	@Override protected void setupStreams() throws IOException {}
-
-	public PublicKey getPublicKey() {
-		return KEY.getPublic();
-	}
-
-	public void setExternalPublicKey(PublicKey publicKey) {
-		exPublicKey = publicKey;
-	}
 
 	private void setupCiphers() throws IOException {
 		try {
@@ -92,7 +65,7 @@ public class SecureTCPConnection extends Connection {
 		Message message = null;
 		do {
 			try {
-				message = (Message) recreateMessage((ArrayList<SealedObject>) input.readObject());
+				message = recreateMessage((ArrayList<SealedObject>) input.readObject());
 				react(message);
 			} catch (IOException e) {
 				System.out.println("WHY GOD WHY");

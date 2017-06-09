@@ -8,12 +8,8 @@ public class SerialisedAnts implements Serializable {
 	public ArrayList<SerialisedAnt> ants;
 	public int size = 0;
 
-	public SerialisedAnts(int size) {
+	public SerialisedAnts() {
 		ants = new ArrayList<>();
-	}
-
-	public SerialisedAnt getAnt(int index) {
-		return ants.get(index);
 	}
 
 	public void addAnt(int id, int x, int y) {

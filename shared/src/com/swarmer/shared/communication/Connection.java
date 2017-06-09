@@ -33,10 +33,6 @@ public abstract class Connection extends Thread {
 
 	abstract protected void cleanUp();
 
-	public String getCorrespondentsIp() {
-		return correspondentsIp;
-	}
-
 	public void setProtocol(Protocol protocol) {
 		this.protocol = protocol;
 	}

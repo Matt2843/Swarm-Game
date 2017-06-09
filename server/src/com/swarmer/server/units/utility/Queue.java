@@ -5,7 +5,6 @@ import com.swarmer.shared.communication.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 public class Queue implements Runnable {
 
@@ -83,10 +82,6 @@ public class Queue implements Runnable {
         }
     }
 
-    public void removeFulLGame(GameQueueEntry gameQueueEntry) {
-        fullGames.remove(gameQueueEntry);
-    }
-
     public ArrayList<GameQueueEntry> getFullGames() {
         return this.fullGames;
     }
@@ -100,9 +95,4 @@ public class Queue implements Runnable {
 
         return totalRating / players.size();
     }
-
-//    LocationInformation locationInformation = findPlayerLocationInformation(player.getUsername());
-//
-//							System.out.println("Sending request to " + player.getUsername());
-//    sendTo(locationInformation, null, new Message(13372));
 }

@@ -8,9 +8,7 @@ import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
-import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,25 +53,9 @@ public abstract class ServerUnit extends Unit {
 		}
     }
 
-	public void print() {
-		String str = "\n";
-		for(Map.Entry<Player, Connection> entry : activeConnections.entrySet()) {
-			str += entry.getKey().getUsername() + ", " + entry.getValue().toString() + "\n";
-		}
-		System.out.println(str);
-	}
-
 	public boolean hasConnection(Player player) {
 		return activeConnections.containsKey(player);
 	}
-
-    public Connection getActiveConnection(Player player) {
-        if(activeConnections.containsKey(player)) {
-            return activeConnections.get(player);
-		} else {
-        	return null;
-		}
-    }
 
     public boolean addActiveConnection(Player player, Connection connection) throws IOException {
 	    if(!activeConnections.containsKey(player)) {
@@ -114,7 +96,6 @@ public abstract class ServerUnit extends Unit {
 	}
 
 	public void sendToPlayer(String username, Message message) throws IOException {
-		//print();
 		for(Player player : activeConnections.keySet()) { // Check if the suspect is in local activeConnections.
 			if(player.getUsername().equals(username)) {
 				activeConnections.get(player).sendMessage(message);
@@ -130,7 +111,6 @@ public abstract class ServerUnit extends Unit {
 			TCPConnection con = new TCPConnection(new Socket(local.getServerUnitIp(), local.getServerUnitPort()), prt);
 			con.start();
 			con.sendMessage(new Message(888, new Object[] {msg, username}));
-			//con.stopConnection();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

@@ -21,7 +21,6 @@ public class AntBrain {
 
     private String state = "Seek";
     private Edge previousEdge;
-    private Edge nextEdge;
     private Node currentNode;
 	private Graph graph;
 	private Node previousNode;
@@ -51,7 +50,7 @@ public class AntBrain {
             }
         }
 
-        nextEdge = currentNode.getConnectedEdges().get(decision);
+        Edge nextEdge = currentNode.getConnectedEdges().get(decision);
 
         previousNode = currentNode;
         Vector2 index = nextEdge.getNode();
@@ -106,26 +105,5 @@ public class AntBrain {
         }
         return edgeLikelihood;
     }
-
-    public Edge getPreviousEdge() {
-        return previousEdge;
-    }
-
-    public Node getPreviousNode() {
-        return previousNode;
-    }
-
-    public void setPreviousEdge(Edge previousEdge) {
-        this.previousEdge = previousEdge;
-    }
-
-    public Node getCurrentNode() {
-        return currentNode;
-    }
-
-    public void setCurrentNode(Node currentNode) {
-        this.currentNode = currentNode;
-    }
-
 }
 

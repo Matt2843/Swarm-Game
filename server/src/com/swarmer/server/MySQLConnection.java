@@ -1,10 +1,10 @@
 package com.swarmer.server;
 
-import java.sql.*;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-/**
- * Created by Matt on 04/06/2017.
- */
 public class MySQLConnection {
 
 	private static java.sql.Connection mySqlConnection;

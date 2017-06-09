@@ -6,9 +6,6 @@ import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
-/**
- * Created by Matt on 03/29/2017.
- */
 public final class HashingTools {
 
     private static final int iterations = 10;

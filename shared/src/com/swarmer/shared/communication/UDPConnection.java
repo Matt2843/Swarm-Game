@@ -3,7 +3,10 @@ package com.swarmer.shared.communication;
 import com.swarmer.shared.exceptions.OperationInWrongServerNodeException;
 
 import java.io.*;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,7 +16,6 @@ public class UDPConnection extends Connection {
 	protected ByteArrayOutputStream baos;
 
 	protected ObjectInputStream input;
-	protected ByteArrayInputStream iaos;
 
 	protected DatagramPacket inbound;
 	protected DatagramPacket outbound;

@@ -2,15 +2,7 @@ package com.swarmer.server;
 
 import com.swarmer.server.protocols.DatabaseControllerProtocol;
 import com.swarmer.server.protocols.ServerProtocol;
-import com.swarmer.server.units.ServerUnit;
-import com.swarmer.shared.communication.TCPConnection;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 public class DatabaseController extends Unit {

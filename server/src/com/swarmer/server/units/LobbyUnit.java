@@ -32,7 +32,7 @@ public class LobbyUnit extends ServerUnit {
 
     public String createLobby(Player lobbyOwner) throws IOException {
         String lobbyID = UUID.randomUUID().toString();
-        Lobby lobby = new Lobby(lobbyID, lobbyOwner);
+        Lobby lobby = new Lobby();
         if(!addLobby(lobbyID, lobby))
             return null;
         joinLobby(lobbyID, lobbyOwner);
@@ -43,7 +43,7 @@ public class LobbyUnit extends ServerUnit {
         if(hostedLobbies.containsKey(id)) {
             ArrayList<Player> players = hostedLobbies.get(id).getConnectedUsers();
 
-            Message response = new CoordinationUnitCallable(new Message(13371, players)).getFutureResult();
+            new CoordinationUnitCallable(new Message(13371, players)).getFutureResult();
         }
     }
 
@@ -63,14 +63,6 @@ public class LobbyUnit extends ServerUnit {
     private boolean addLobby(String lobbyID, Lobby lobby) {
         if(!hostedLobbies.containsKey(lobbyID)) {
             hostedLobbies.put(lobbyID, lobby);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean removeLobby(String lobbyID) {
-        if(hostedLobbies.containsKey(lobbyID)) {
-            hostedLobbies.remove(lobbyID);
             return true;
         }
         return false;

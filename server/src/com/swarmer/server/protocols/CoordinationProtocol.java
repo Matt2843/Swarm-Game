@@ -3,26 +3,20 @@ package com.swarmer.server.protocols;
 import com.swarmer.server.units.CoordinationUnit;
 import com.swarmer.server.units.ServerUnit;
 import com.swarmer.server.units.utility.LocationInformation;
-import com.swarmer.shared.communication.*;
+import com.swarmer.shared.communication.Connection;
+import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.communication.Player;
+import com.swarmer.shared.communication.TCPConnection;
 
 import java.io.IOException;
-import java.net.Socket;
-import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Objects;
 
-/**
- * Created by Matt on 04/17/2017.
- */
 public class CoordinationProtocol extends ServerProtocol {
 
 	private Connection caller = null;
 
 	private Player connectedPlayer;
-	private String connectedPlayerUnitDescription;
-	private String connectedPlayerCurrentUnitIp;
-	private int connectedPlayerCurrentUnitPort;
 
 	public CoordinationProtocol(ServerUnit serverUnit) {
 		super(serverUnit);
@@ -99,9 +93,7 @@ public class CoordinationProtocol extends ServerProtocol {
 		int connectedPlayerCurrentUnitPort = (int) receivedObjects[2];
 
 		this.connectedPlayer = connectedPlayer;
-		this.connectedPlayerUnitDescription = connectedPlayerUnitDescription;
-		this.connectedPlayerCurrentUnitIp = ((TCPConnection) caller).getConnection().getInetAddress().toString();
-		this.connectedPlayerCurrentUnitPort = connectedPlayerCurrentUnitPort;
+		String connectedPlayerCurrentUnitIp = ((TCPConnection) caller).getConnection().getInetAddress().toString();
 		return new LocationInformation(connectedPlayerUnitDescription, connectedPlayerCurrentUnitIp, connectedPlayerCurrentUnitPort);
 	}
 }

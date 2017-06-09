@@ -1,16 +1,12 @@
 package com.swarmer.server.protocols;
 
 import com.swarmer.server.DatabaseController;
-import com.swarmer.server.units.AuthenticationUnit;
-import com.swarmer.server.units.ServerUnit;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.TCPConnection;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
-import java.security.PublicKey;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -18,10 +14,6 @@ import java.util.UUID;
 public class DatabaseControllerProtocol extends ServerProtocol {
 
 	private Connection caller;
-
-	public DatabaseControllerProtocol(ServerUnit serverUnit) {
-		super(serverUnit);
-	}
 
 	public DatabaseControllerProtocol() {
 		super(null);
@@ -65,14 +57,12 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 	    String UUID = (String) objects[0];
 	    String description = (String) objects[1];
 	    int usersConnected = (int) objects[2];
-        DatabaseController.mySQLConnection.sqlExecute("UPDATE " + description + " SET user_count=" + usersConnected + ";");
-        //DatabaseController.mySQLConnection.sqlExecute("UPDATE " + description + " SET user_count=" + usersConnected + " WHERE id=" + "'" + UUID + "'" + ";");
+        DatabaseController.mySQLConnection.sqlExecute("UPDATE " + description + " SET user_count=" + usersConnected + " WHERE id='" + UUID + "';");
         caller.sendMessage(new Message(15001, true));
     }
 
     private void addFriendShipToDatabase(Message message) throws SQLException, IOException {
 		// TODO: Add friendship to database message contains String[] {User1, User2}
-		//DatabaseController.mySQLConnection.sqlExecute("INSERT INTO friendships ()");
 		Player player1 = ((Player[]) message.getObject())[0];
 		Player player2 = ((Player[]) message.getObject())[1];
 		DatabaseController.mySQLConnection.sqlExecute("INSERT INTO friendships (id, user_id_1, user_id_2) VALUES (?, ?, ?)",  UUID.randomUUID().toString(), player1.getId(), player2.getId());

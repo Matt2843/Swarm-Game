@@ -1,7 +1,6 @@
 package com.swarmer.shared.communication;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
@@ -20,7 +19,6 @@ public class Callable {
 				}
 			});
 
-			//connection.start();
 			System.out.println("Callable is sending");
 			connection.sendMessage(message);
 

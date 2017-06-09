@@ -10,11 +10,10 @@ public class Edge implements Serializable {
 	private final Vector2 dest;
 	public Edge reverse;
 	private HashMap<Player, Pheromone> pheromones;
-	private String PATH_ID;
 
 	public Edge(Node start, Node end, Boolean bool) {
 		dest = new Vector2((int) end.getX(), (int) end.getY());
-		if(start != null && end != null) {
+		if(start != null) {
 			start.addEdge(this);
 			if(bool) {
 				pheromones = new HashMap<>();
@@ -25,19 +24,11 @@ public class Edge implements Serializable {
 		}
 	}
 
-	public String getPATH_ID() {
-		return PATH_ID;
-	}
-
 	public Pheromone getPheromones(Player player) {
 		if(!pheromones.containsKey(player)) {
 			pheromones.put(player, new Pheromone(0));
 		}
 		return pheromones.get(player);
-	}
-
-	public HashMap<Player, Pheromone> getPheromones() {
-		return pheromones;
 	}
 
 	public void setPheromones(HashMap<Player, Pheromone> pheromones) {

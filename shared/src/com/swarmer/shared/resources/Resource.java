@@ -6,10 +6,6 @@ public abstract class Resource implements Serializable {
 	
 	private int quantity;
 
-	public Resource() {
-		this.quantity = 0;
-	}
-	
 	public Resource(int quantity) {
 		this.quantity = quantity;
 	}
@@ -25,7 +21,7 @@ public abstract class Resource implements Serializable {
 	}
 
 	public void removeQuantity(int quantity) {
-		if (this.quantity > 0 + quantity) {
+		if (this.quantity > quantity) {
 			this.quantity -= quantity;
 		}
 	}

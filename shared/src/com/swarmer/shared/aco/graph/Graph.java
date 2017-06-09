@@ -2,7 +2,7 @@ package com.swarmer.shared.aco.graph;
 
 import java.io.Serializable;
 
-public class    Graph implements Serializable {
+public class Graph implements Serializable {
     public Node[][] nodes;
 
     private final int width;

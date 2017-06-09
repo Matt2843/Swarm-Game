@@ -14,14 +14,12 @@ import java.sql.SQLException;
 public abstract class ServerProtocol extends Protocol {
 
 	protected ServerUnit serverUnit;
-	private Connection caller;
 
 	protected ServerProtocol(ServerUnit serverUnit) {
 		this.serverUnit = serverUnit;
 	}
 
 	@Override protected void react(Message message, Connection caller) throws IOException, SQLException, InterruptedException {
-		this.caller = caller;
 		switch (message.getOpcode()) {
 			case 0:
 				removeConnectionFromActiveConnections(message);
@@ -48,12 +46,6 @@ public abstract class ServerProtocol extends Protocol {
 				break;
 		}
 	}
-	private void sharePublicKeys(Message message) throws IOException {
-		if(exPublicKey != message.getObject()) {
-			exPublicKey = (PublicKey) message.getObject();
-			caller.sendMessage(new Message(11111, serverUnit.KEY.getPublic()));
-		}
-	}
 
 	private void inviteFriendToLobby(Message message) throws IOException {
 		serverUnit.addFriendToLobby(message);
@@ -65,7 +57,7 @@ public abstract class ServerProtocol extends Protocol {
 	}
 
 	private void sharePublicKey(Message message, Connection caller) throws IOException {
-		if(exPublicKey != (PublicKey) message.getObject()) {
+		if(exPublicKey != message.getObject()) {
 			exPublicKey = (PublicKey) message.getObject();
 			caller.sendMessage(new Message(11111, AuthenticationUnit.KEY.getPublic()));
 		}
@@ -76,7 +68,6 @@ public abstract class ServerProtocol extends Protocol {
 	}
 
 	private void sendFriendRequest(Message message) throws IOException {
-		// Convert message.getObject[0] i.e. from username, message.getObject[1] i.e. to username to Players.
 		serverUnit.sendFriendRequest(message);
 	}
 

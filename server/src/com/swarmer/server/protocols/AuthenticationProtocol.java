@@ -4,10 +4,11 @@ import com.swarmer.server.CoordinationUnitCallable;
 import com.swarmer.server.DatabaseControllerCallable;
 import com.swarmer.server.units.AuthenticationUnit;
 import com.swarmer.server.units.ServerUnit;
-import com.swarmer.shared.communication.*;
+import com.swarmer.shared.communication.Connection;
+import com.swarmer.shared.communication.Message;
+import com.swarmer.shared.communication.Player;
 
 import java.io.IOException;
-import java.security.PublicKey;
 import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
 
