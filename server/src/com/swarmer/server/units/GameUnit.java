@@ -51,7 +51,7 @@ public class GameUnit extends ServerUnit {
 
 		for(Map.Entry<Player, LocationInformation> player : players.entrySet()) {
 			if(!hasConnection(player.getKey())) {
-				system.out.println(player.getKey().getUsername() + " do not exist");
+				System.out.println(player.getKey().getUsername() + " do not exist");
 				sendToPlayer(player.getKey().getUsername(), new Message(1000, getId()));
 			}
 		}
@@ -60,7 +60,7 @@ public class GameUnit extends ServerUnit {
 
 		for(Map.Entry<Player, LocationInformation> player : players.entrySet()) {
 			if(hasConnection(player.getKey())) {
-				system.out.println(player.getKey().getUsername() + " do exist");
+				System.out.println(player.getKey().getUsername() + " do exist");
 				playerConnections.put(player.getKey(), activeConnections.get(player.getKey()));
 			}
 		}
