@@ -98,7 +98,6 @@ public class ClientProtocol extends Protocol {
     private void updateAntPositions(Message message) {
         SerialisedAnts ants = (SerialisedAnts) message.getObject();
 
-        //for(int i = 0; i < ants.size; i++)  {
 		for(SerialisedAnt ant : ants.ants) {
 			if(GameScreen.getInstance().getAnts().size() > ant.id) {
                 GameScreen.getInstance().getAnts().get(ant.id).addCoordinate(ant.x, ant.y);

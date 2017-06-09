@@ -24,15 +24,10 @@ public class Ant {
 
 	private float speed = 100f;
 	private float zero  = speed / 5;
-	private String animation;
 
 	private ConcurrentLinkedQueue<Vector2> desiredPositions;
 
 	private Vector2 desiredPosition;
-
-	public void setDesiredPosition(int x, int y) {
-	    desiredPosition.set(CoordsTranslator.getInstance().getScreenCoordinates((float) x, (float) y));
-    }
 
 	public Ant(int x, int y) {
 
@@ -51,6 +46,7 @@ public class Ant {
 		stateTime += delta;
 		update(delta);
 
+		String animation;
 		if (food <= 0) {
 			animation = "die_down";
 		} else {
