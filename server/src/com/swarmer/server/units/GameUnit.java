@@ -51,6 +51,7 @@ public class GameUnit extends ServerUnit {
 
 		for(Map.Entry<Player, LocationInformation> player : players.entrySet()) {
 			if(!hasConnection(player.getKey())) {
+				system.out.println(player.getKey().getUsername() + " do not exist");
 				sendToPlayer(player.getKey().getUsername(), new Message(1000, getId()));
 			}
 		}
@@ -58,7 +59,10 @@ public class GameUnit extends ServerUnit {
 		Thread.sleep(1000);
 
 		for(Map.Entry<Player, LocationInformation> player : players.entrySet()) {
-			playerConnections.put(player.getKey(), activeConnections.get(player.getKey()));
+			if(hasConnection(player.getKey())) {
+				system.out.println(player.getKey().getUsername() + " do exist");
+				playerConnections.put(player.getKey(), activeConnections.get(player.getKey()));
+			}
 		}
 
 		Swarmer game = new Swarmer(playerConnections, this, port);
