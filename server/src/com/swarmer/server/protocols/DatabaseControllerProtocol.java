@@ -65,7 +65,6 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 	    String UUID = (String) objects[0];
 	    String description = (String) objects[1];
 	    int usersConnected = (int) objects[2];
-        System.out.println(UUID + " " + description + " users: " + usersConnected);
         DatabaseController.mySQLConnection.sqlExecute("UPDATE " + description + " SET user_count=" + usersConnected + ";");
         //DatabaseController.mySQLConnection.sqlExecute("UPDATE " + description + " SET user_count=" + usersConnected + " WHERE id=" + "'" + UUID + "'" + ";");
         caller.sendMessage(new Message(15001, true));
