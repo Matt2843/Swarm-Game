@@ -147,11 +147,14 @@ public class PreLobbyScreen extends SwarmerScreen {
 		TextButton logout = new TextButton("Logout ", StyleSheet.defaultSkin);
 		logout.addCaptureListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
+				try {
+					GameClient.getInstance().tcp.sendMessage(new Message(0, GameClient.getInstance().getCurrentPlayer()));
+					GameClient.getInstance().closeConnection();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				SwarmerMain.getInstance().show(MainMenuScreen.getInstance());
-				//ScreenManager.getInstance().show(ScreenLib.MAIN_MENU_SCREEN);
-				GameClient.getInstance().tcp.stopConnection(GameClient.getInstance().getCurrentPlayer());
-				GameClient.getInstance().tcp = null;
-				GameClient.getInstance().establishTCPConnection(IPGetter.getInstance().getAccessUnitIP(), 43120);
+                GameClient.getInstance().initialConnection();
 			}
 		});
 		logout.setPosition(0, Gdx.graphics.getHeight() - logout.getHeight());

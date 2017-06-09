@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class CoordinationUnit extends ServerUnit {
 
@@ -23,9 +26,32 @@ public class CoordinationUnit extends ServerUnit {
 	private static HashMap<Player, LocationInformation> allConnectedUsers = new HashMap<>();
 	private static Queue queue;
 
+	private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+
 	private CoordinationUnit() {
 		super();
 		initializeQueue();
+		updateDatabaseUserCounts();
+	}
+
+	private void updateDatabaseUserCounts() {
+		scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+			@Override public void run() {
+				HashMap<LocationInformation, Integer> userCounts = new HashMap<>();
+				for(LocationInformation locationInformation : allConnectedUsers.values()) {
+					if(userCounts.containsKey(locationInformation)) {
+						userCounts.put(locationInformation, userCounts.get(locationInformation) + 1);
+					} else {
+						userCounts.put(locationInformation, 1);
+					}
+				}
+				try {
+					new DatabaseControllerCallable(new Message(15000, userCounts)).getFutureResult();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}, 20, 20, TimeUnit.SECONDS);
 	}
 
 	@Override public int getPort() {
@@ -68,8 +94,8 @@ public class CoordinationUnit extends ServerUnit {
 
 	public static void removeConnection(Player player, String serverId) {
 		if(player != null) {
-			System.out.println("Remove:" + player.getUsername());
-			if(allConnectedUsers.containsKey(player) && !allConnectedUsers.get(player).getInetAddress().equals(serverId)) {
+			if(allConnectedUsers.containsKey(player) && allConnectedUsers.get(player).getInetAddress().equals(serverId)) {
+				System.out.println("Remove:" + player.getUsername());
 				allConnectedUsers.remove(player);
 			}
 			printlocations();
@@ -103,7 +129,6 @@ public class CoordinationUnit extends ServerUnit {
 				return player;
 			}
 		}
-
 		return null;
 	}
 

@@ -39,8 +39,7 @@ public final class GameClient {
 			e.printStackTrace();
 		}
 
-		String IP = IPGetter.getInstance().getAccessUnitIP();
-		establishTCPConnection(IP, 43120);
+        initialConnection();
 
 		// TODO: FIX UDP
 		/*try {
@@ -50,6 +49,11 @@ public final class GameClient {
 		}
 		udp.start();*/
 	}
+
+	public void initialConnection() {
+        String IP = IPGetter.getInstance().getAccessUnitIP();
+        establishTCPConnection(IP, 43120);
+    }
 
 	public static GameClient getInstance() {
 		if(gc == null) {

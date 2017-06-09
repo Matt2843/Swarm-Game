@@ -33,10 +33,10 @@ public class CoordinationProtocol extends ServerProtocol {
 		this.caller = caller;
 		System.out.println("Coordination Protocol: " + message.toString());
 		switch(message.getOpcode()) {
-			case 1150: // User connected to a server unit, object: {Player, Unit_Description, Unit_Port}
+			case 1150: // User connected to a server unit, object: {Player, Unit_Description, Unit_Port, Unit_UUID}
 				addPlayer(message);
 				break;
-			case 1151: // User changed server unit, object: {Player, Unit_Description, Unit_Port}
+			case 1151: // User changed server unit, object: {Player, Unit_Description, Unit_Port, Unit_UUID}
 				changePlayerLocationInformation(message);
 				break;
 			case 1152: // User disconnected completely from the server, object: {Player}
@@ -48,12 +48,20 @@ public class CoordinationProtocol extends ServerProtocol {
 			case 1154: // Retrieve player profile from a username.
 				findPlayerReturnPlayer(message);
 				break;
+			case 1155:
+				checkIfPlayerExists(message);
+				break;
 			case 1161:
+				break;
 			case 13371:
 				findMatch(message);
 			default:
 				break;
 		}
+	}
+
+	private void checkIfPlayerExists(Message message) throws IOException {
+		caller.sendMessage(new Message(1155, CoordinationUnit.findPlayerReturnPlayer(message)));
 	}
 
 	private void findPlayerReturnPlayer(Message message) throws IOException {
@@ -97,11 +105,12 @@ public class CoordinationProtocol extends ServerProtocol {
 		Player connectedPlayer = (Player) receivedObjects[0];
 		String connectedPlayerUnitDescription = (String) receivedObjects[1];
 		int connectedPlayerCurrentUnitPort = (int) receivedObjects[2];
+		String connectedPlayerCurrentNodeUUID = (String) receivedObjects[3];
 
 		this.connectedPlayer = connectedPlayer;
 		this.connectedPlayerUnitDescription = connectedPlayerUnitDescription;
 		this.connectedPlayerCurrentUnitIp = ((TCPConnection) caller).getConnection().getInetAddress().toString();
 		this.connectedPlayerCurrentUnitPort = connectedPlayerCurrentUnitPort;
-		return new LocationInformation(connectedPlayerUnitDescription, connectedPlayerCurrentUnitIp, connectedPlayerCurrentUnitPort);
+		return new LocationInformation(connectedPlayerUnitDescription, connectedPlayerCurrentUnitIp, connectedPlayerCurrentUnitPort, connectedPlayerCurrentNodeUUID);
 	}
 }

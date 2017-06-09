@@ -30,8 +30,16 @@ public class MainMenuLoginBox extends Table {
 	private TextButton login;
 	private TextButton createUser;
 
-	public MainMenuLoginBox() {
+	private static MainMenuLoginBox instance;
+
+	private MainMenuLoginBox() {
 		createFields();
+	}
+
+	public static MainMenuLoginBox getInstance() {
+		if(instance == null)
+			instance = new MainMenuLoginBox();
+		return instance;
 	}
 
 	private void createFields() {
@@ -125,5 +133,17 @@ public class MainMenuLoginBox extends Table {
 		userName.setText("");
 		verifyPassword.setText("");
 		password.setText("");
+	}
+
+	public TextButton getCreateUser() {
+		return createUser;
+	}
+
+	public TextField getUserName() {
+		return userName;
+	}
+
+	public TextButton getLogin() {
+		return login;
 	}
 }

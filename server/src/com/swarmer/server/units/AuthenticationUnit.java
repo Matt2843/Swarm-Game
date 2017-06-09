@@ -1,5 +1,6 @@
 package com.swarmer.server.units;
 
+import com.swarmer.server.CoordinationUnitCallable;
 import com.swarmer.server.DatabaseControllerCallable;
 import com.swarmer.server.DatabaseControllerSecureCallable;
 import com.swarmer.server.protocols.AuthenticationProtocol;
@@ -68,6 +69,10 @@ public class AuthenticationUnit extends ServerUnit {
 		}
 		String username = (String) receivedObject[0];
 		char[] password = (char[]) receivedObject[1];
+
+		Message coordinationUnitResponse = new CoordinationUnitCallable(new Message(1155, username)).getFutureResult();
+		if(coordinationUnitResponse.getObject() != null)
+			return null;
 
 		DatabaseControllerSecureCallable databaseControllerSecureCallable = new DatabaseControllerSecureCallable(new Message(message.getOpcode(), username), KEY, DBCkey);
 		Message futureResult = databaseControllerSecureCallable.getFutureResult();

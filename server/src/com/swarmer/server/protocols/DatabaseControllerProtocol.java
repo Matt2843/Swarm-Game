@@ -1,19 +1,18 @@
 package com.swarmer.server.protocols;
 
 import com.swarmer.server.DatabaseController;
-import com.swarmer.server.units.AuthenticationUnit;
 import com.swarmer.server.units.ServerUnit;
+import com.swarmer.server.units.utility.LocationInformation;
 import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.TCPConnection;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
-import java.security.PublicKey;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.Semaphore;
 
 public class DatabaseControllerProtocol extends ServerProtocol {
 
@@ -26,6 +25,8 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 	public DatabaseControllerProtocol() {
 		super(null);
 	}
+
+	private Semaphore semaphore = new Semaphore(1, true);
 
 	@Override protected void react(Message message, Connection caller) throws IOException, SQLException, InterruptedException {
 		this.caller = caller;
@@ -46,13 +47,17 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 				addUserToDatabase(message);
 				break;
 			case 301: // Ambigious, either get best quality lobby unit randomly or get specific lobby unit. i.e. either "random" or "unit_id" in message.getObject()
-				getLobbyUnit(message);
+				getLobbyUnitFromDb();
 				break;
+            case 16000:
+                getUsersFriendlist(message);
+                break;
 			case 34788:
 				addFriendShipToDatabase(message);
 				break;
             case 15000:
-                updateUserCount(message);
+                //updateUserCount(message);
+				updateUserCounts(message);
                 break;
 			default:
 				super.react(message, caller);
@@ -60,15 +65,28 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 		}
 	}
 
-    private void updateUserCount(Message message) throws IOException, SQLException {
-	    Object[] objects = (Object[]) message.getObject();
-	    String UUID = (String) objects[0];
-	    String description = (String) objects[1];
-	    int usersConnected = (int) objects[2];
-        DatabaseController.mySQLConnection.sqlExecute("UPDATE " + description + " SET user_count=" + usersConnected + ";");
-        //DatabaseController.mySQLConnection.sqlExecute("UPDATE " + description + " SET user_count=" + usersConnected + " WHERE id=" + "'" + UUID + "'" + ";");
-        caller.sendMessage(new Message(15001, true));
-    }
+    private void getUsersFriendlist(Message message) throws SQLException {
+        Player target = (Player) message.getObject();
+
+        ResultSet resultSet = DatabaseController.mySQLConnection.sqlExecuteQuery("SELECT * FROM friendships WHERE user_id_1 = ? OR user_id_2 = ?", target.getId(), target.getId());
+
+	}
+
+    private void updateUserCounts(Message message) throws IOException, SQLException, InterruptedException {
+		HashMap<LocationInformation, Integer> userCounts = (HashMap<LocationInformation, Integer>) message.getObject();
+		String[] allUnits = {"access_units", "authentication_units", "coordination_units", "game_units", "lobby_units"};
+		semaphore.acquire();
+        for(String string : allUnits) {
+            DatabaseController.mySQLConnection.sqlExecute("UPDATE " + string + " SET user_count=0;");
+        }
+		for(Map.Entry<LocationInformation, Integer> entry : userCounts.entrySet()) {
+			DatabaseController.mySQLConnection.sqlExecute("UPDATE " + entry.getKey().getServerUnitDescription() +
+																" SET user_count=" + entry.getValue() +
+																" WHERE id='" + entry.getKey().getServerUUID() + "';");
+		}
+		semaphore.release();
+		caller.sendMessage(new Message(15001, true));
+	}
 
     private void addFriendShipToDatabase(Message message) throws SQLException, IOException {
 		// TODO: Add friendship to database message contains String[] {User1, User2}
@@ -77,14 +95,6 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 		Player player2 = ((Player[]) message.getObject())[1];
 		DatabaseController.mySQLConnection.sqlExecute("INSERT INTO friendships (id, user_id_1, user_id_2) VALUES (?, ?, ?)",  UUID.randomUUID().toString(), player1.getId(), player2.getId());
 		caller.sendMessage(new Message(true));
-	}
-
-	private void getLobbyUnit(Message message) throws IOException, SQLException {
-		if(message.getObject().equals("random")) {
-			getRandomLobbyUnitFromDb("lobby_units");
-		} else {
-			getLobbyUnitFromDb("lobby_units", (String) message.getObject());
-		}
 	}
 
 	private void authenticateUserInDatabase(Message message) throws IOException, SQLException {
@@ -111,27 +121,21 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 		}
 	}
 
-	private void getRandomLobbyUnitFromDb(String unitType) throws SQLException, IOException {
-		String sqlQuery = "SELECT ip_address,port FROM " + unitType + " ORDER BY user_count ASC LIMIT 1";
+	private void getLobbyUnitFromDb() throws SQLException, IOException {
+		String sqlQuery = "SELECT ip_address,port FROM lobby_units ORDER BY user_count ASC LIMIT 1";
 		ResultSet resultSet = DatabaseController.mySQLConnection.sqlExecuteQuery(sqlQuery);
 		resultSet.next();
 		String queryResult = resultSet.getString("ip_address") + ":" + resultSet.getString("port");
 		caller.sendMessage(new Message(998, queryResult));
 	}
 
-	private void getLobbyUnitFromDb(String unitType, String unitID) throws SQLException, IOException {
-		String sqlQuery = "SELECT ip_address,port FROM " + unitType + " WHERE id = ?";
-		ResultSet resultSet = DatabaseController.mySQLConnection.sqlExecuteQuery(sqlQuery, unitID);
-		resultSet.next();
-		String queryResult = resultSet.getString("ip_address") + ":" + resultSet.getString("port");
-		caller.sendMessage(new Message(998, queryResult));
-	}
-
-	private void getUnitFromDb(Message message) throws IOException, SQLException {
+	private void getUnitFromDb(Message message) throws IOException, SQLException, InterruptedException {
+	    semaphore.acquire();
 		String sqlQuery = "SELECT ip_address,port FROM " + message.getObject() + " ORDER BY user_count ASC LIMIT 1";
 		ResultSet resultSet = DatabaseController.mySQLConnection.sqlExecuteQuery(sqlQuery);
 		resultSet.next();
 		String queryResult = resultSet.getString("ip_address") + ":" + resultSet.getString("port");
+		semaphore.release();
 		caller.sendMessage(new Message(999, queryResult));
 	}
 

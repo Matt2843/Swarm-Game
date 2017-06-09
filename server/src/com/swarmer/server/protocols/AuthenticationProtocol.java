@@ -1,6 +1,7 @@
 package com.swarmer.server.protocols;
 
 import com.swarmer.server.CoordinationUnitCallable;
+import com.swarmer.server.DatabaseController;
 import com.swarmer.server.DatabaseControllerCallable;
 import com.swarmer.server.units.AuthenticationUnit;
 import com.swarmer.server.units.ServerUnit;
@@ -32,7 +33,7 @@ public class AuthenticationProtocol extends ServerProtocol {
 				createUser(message);
 				break;
 			case 301:
-				getLobbyUnit(message); // message = {lobby unit ID} or message = {random}
+				getLobbyUnit(); // message = {lobby unit ID} or message = {random}
 				break;
 			case 13371:
 				findGame(message); // message = ArrayList<Player>
@@ -50,8 +51,8 @@ public class AuthenticationProtocol extends ServerProtocol {
 		}
 	}
 
-	private void getLobbyUnit(Message message) throws IOException {
-		Message lobbyUnitConnectionInformation = new DatabaseControllerCallable(message).getFutureResult();
+	private void getLobbyUnit() throws IOException {
+		Message lobbyUnitConnectionInformation = new DatabaseControllerCallable(new Message(301)).getFutureResult();
 		caller.sendMessage(lobbyUnitConnectionInformation);
 	}
 
@@ -59,7 +60,7 @@ public class AuthenticationProtocol extends ServerProtocol {
 		try {
 			Player createdPlayer = AuthenticationUnit.createUser(message);
 			if(createdPlayer != null) {
-				new CoordinationUnitCallable(new Message(1150, new Object[]{createdPlayer, serverUnit.getDescription(), serverUnit.getPort()})).getFutureResult();
+				new CoordinationUnitCallable(new Message(1150, new Object[]{createdPlayer, serverUnit.getDescription(), serverUnit.getPort(), serverUnit.getNodeUUID()})).getFutureResult();
 			}
 			caller.sendMessage(new Message(202, createdPlayer));
 		} catch (ExecutionException e) {
@@ -73,8 +74,10 @@ public class AuthenticationProtocol extends ServerProtocol {
 
 	private void authenticateUser(Message message) throws IOException {
 		Player authenticatedPlayer = AuthenticationUnit.authenticateUser(message);
+        Message response = new DatabaseControllerCallable(new Message(16000, authenticatedPlayer)).getFutureResult();
+
 		if(authenticatedPlayer != null) {
-			new CoordinationUnitCallable(new Message(1150, new Object[]{authenticatedPlayer, serverUnit.getDescription(), serverUnit.getPort()})).getFutureResult();
+			new CoordinationUnitCallable(new Message(1150, new Object[]{authenticatedPlayer, serverUnit.getDescription(), serverUnit.getPort(), serverUnit})).getFutureResult();
 			caller.sendMessage(new Message(110, authenticatedPlayer));
 			serverUnit.addActiveConnection(authenticatedPlayer, caller);
 		}

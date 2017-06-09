@@ -25,25 +25,9 @@ public abstract class ServerUnit extends Unit {
 	private final String nodeUUID = UUID.randomUUID().toString();
 	protected int usersConnected = 0;
 
-	private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
-
 	protected ServerUnit() {
 		super();
 		notifyMotherShip();
-		updateDatabase();
-    }
-
-    private void updateDatabase() {
-        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    new DatabaseControllerCallable(new Message(15000, new Object[] {getNodeUUID(), getDescription(), usersConnected})).getFutureResult();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, 20, 20, TimeUnit.SECONDS);
     }
 
     private void notifyMotherShip() {
@@ -80,7 +64,7 @@ public abstract class ServerUnit extends Unit {
 	        usersConnected++;
 			System.out.println("Add: " + player.getUsername());
             activeConnections.put(player, connection);
-			new CoordinationUnitCallable(new Message(1150, new Object[]{player, getDescription(), getPort()})).getFutureResult().getObject();
+			new CoordinationUnitCallable(new Message(1150, new Object[]{player, getDescription(), getPort(), getNodeUUID()})).getFutureResult().getObject();
 			//print();
             return true;
         } else {
@@ -93,11 +77,11 @@ public abstract class ServerUnit extends Unit {
 		    usersConnected--;
 			System.out.println("Remove: " + player.getUsername());
             activeConnections.remove(player);
-			new CoordinationUnitCallable(new Message(1152, new Object[] {player, getId()})).getFutureResult().getObject();
+			new CoordinationUnitCallable(new Message(1152, new Object[] {player, getId()})).getFutureResult();
 			//print();
             return true;
         } else {
-			return false;
+            return false;
 		}
     }
 
