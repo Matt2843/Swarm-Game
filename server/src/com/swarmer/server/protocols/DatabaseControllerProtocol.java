@@ -65,11 +65,13 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 		}
 	}
 
-    private void getUsersFriendlist(Message message) throws SQLException {
+    private void getUsersFriendlist(Message message) throws SQLException, IOException {
         Player target = (Player) message.getObject();
 
         ResultSet resultSet = DatabaseController.mySQLConnection.sqlExecuteQuery("SELECT * FROM friendships WHERE user_id_1 = ? OR user_id_2 = ?", target.getId(), target.getId());
 
+        String[] relations = {};
+        caller.sendMessage(new Message(16001, relations));
 	}
 
     private void updateUserCounts(Message message) throws IOException, SQLException, InterruptedException {

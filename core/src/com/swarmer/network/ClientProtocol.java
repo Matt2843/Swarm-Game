@@ -71,6 +71,9 @@ public class ClientProtocol extends Protocol {
 			case 13372:
 				handleFoundGame(message);
 				break;
+            case 16001:
+                receivedFriendListEntries(message);
+                break;
 			case 23323:
 			    updateAntPositions(message);
 				break;
@@ -87,6 +90,13 @@ public class ClientProtocol extends Protocol {
 				break;
 		}
 	}
+
+    private void receivedFriendListEntries(Message message) {
+        String[] relationships = (String[]) message.getObject();
+        for(String friend : relationships) {
+            FriendList.getInstance().addFriendToFriendList(friend, FriendList.FriendListEntry.ONLINE);
+        }
+    }
 
     private void addNewAntToGraph(Message message) {
         SerialisedAnt ant = (SerialisedAnt) ((Object[])message.getObject())[0];
