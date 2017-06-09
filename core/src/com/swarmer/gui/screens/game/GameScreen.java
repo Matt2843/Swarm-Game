@@ -47,13 +47,13 @@ public class GameScreen extends SwarmerScreen {
 
 	private static GameScreen gameScreenInstance;
 
-	private GameScreen(int width, int height, String description) {
-		super(width, height, description);
+	private GameScreen(int width, int height) {
+		super(width, height);
 	}
 
 	public static GameScreen getInstance() {
 		if(gameScreenInstance == null) {
-			gameScreenInstance = new GameScreen(1280, 800, "game_screen");
+			gameScreenInstance = new GameScreen(1280, 800);
 		}
 		return gameScreenInstance;
 	}

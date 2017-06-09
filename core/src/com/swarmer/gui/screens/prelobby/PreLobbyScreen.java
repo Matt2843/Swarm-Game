@@ -28,13 +28,13 @@ public class PreLobbyScreen extends SwarmerScreen {
 
 	private static PreLobbyScreen lobbyScreenInstance;
 
-	private PreLobbyScreen(int width, int height, String description) {
-		super(width, height, description);
+	private PreLobbyScreen(int width, int height) {
+		super(width, height);
 	}
 
 	public static PreLobbyScreen getInstance() {
 		if(lobbyScreenInstance == null) {
-			lobbyScreenInstance = new PreLobbyScreen(1280, 800, "pre_lobby_screen");
+			lobbyScreenInstance = new PreLobbyScreen(1280, 800);
 		}
 		return lobbyScreenInstance;
 	}

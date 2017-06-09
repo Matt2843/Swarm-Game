@@ -27,13 +27,13 @@ public class LobbyScreen extends SwarmerScreen {
 
     private static LobbyScreen lobbyScreenInstance;
 
-    private LobbyScreen(int width, int height, String description) {
-        super(width, height, description);
+    private LobbyScreen(int width, int height) {
+        super(width, height);
     }
 
     public static LobbyScreen getInstance() {
         if(lobbyScreenInstance == null) {
-            lobbyScreenInstance = new LobbyScreen(1280, 800, "lobby_screen");
+            lobbyScreenInstance = new LobbyScreen(1280, 800);
         }
         return lobbyScreenInstance;
     }
