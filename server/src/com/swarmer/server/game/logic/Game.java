@@ -22,7 +22,6 @@ public class Game {
 
 	private Graph graph;
 	private int mapWidth, mapHeight;
-	private Vector2 vec = new Vector2();
 	private ArrayList<Ant> ants;
 	private ArrayList<Hive> hives;
 	private HashMap<Player, Connection> players;
