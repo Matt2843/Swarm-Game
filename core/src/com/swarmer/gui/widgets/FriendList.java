@@ -14,8 +14,6 @@ import com.swarmer.network.GameClient;
 import com.swarmer.shared.communication.Message;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -49,27 +47,12 @@ public class FriendList extends ChatWidget {
 		scrollableObject.add(theList).expand().fill();
 
 		configureAddFriendButton();
-		//addFriendToFriendList("Matt", FriendListEntry.ONLINE);
-		/*addFriendToFriendList("Albert", FriendListEntry.OFFLINE);
-		addFriendToFriendList("Georg", FriendListEntry.INGAME);
-		addFriendToFriendList("Aa", FriendListEntry.OFFLINE);
-		addFriendToFriendList("Bb", FriendListEntry.ONLINE);
-		addFriendToFriendList("Cc", FriendListEntry.INGAME);
-		addFriendToFriendList("Hans", FriendListEntry.OFFLINE);
-		addFriendToFriendList("Aa", FriendListEntry.ONLINE);*/
 	}
 
 	private void configureAddFriendButton() {
 		interaction.setText("ADD");
 		interaction.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				/*try {
-					System.out.println(new InetSocketAddress("127.0.0.1", 43152).toString());
-					GameClient.getInstance().udp.sendMessage(new Message(128342982, "Hello World"), new InetSocketAddress("127.0.0.1", 43152));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}*/
-
 				try {
 					GameClient.getInstance().tcp.sendMessage(new Message(34789, new String[] {GameClient.getInstance().getCurrentPlayer().getUsername(), input.getText()}));
 				} catch (IOException e) {

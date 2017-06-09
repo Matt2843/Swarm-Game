@@ -207,10 +207,6 @@ public class GameScreen extends SwarmerScreen {
 		}
 	}
 
-	public TiledMap getMap() {
-		return map;
-	}
-
 	public List<Ant> getAnts() {
 		return ants;
 	}

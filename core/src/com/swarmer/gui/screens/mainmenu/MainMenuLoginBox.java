@@ -23,8 +23,6 @@ public class MainMenuLoginBox extends Table {
 	private TextField password;
 	private TextField verifyPassword;
 
-	private Label userNameLabel;
-	private Label passwordLabel;
 	private Label verifyPasswordLabel;
 
 	private TextButton login;
@@ -37,10 +35,10 @@ public class MainMenuLoginBox extends Table {
 	private void createFields() {
 
 		userName = new TextField("", StyleSheet.defaultSkin);
-		userNameLabel = new Label("Account Name: ", StyleSheet.defaultSkin);
+		Label userNameLabel = new Label("Account Name: ", StyleSheet.defaultSkin);
 
 		password = new TextField("",  StyleSheet.defaultSkin);
-		passwordLabel = new Label("Password: ", StyleSheet.defaultSkin);
+		Label passwordLabel = new Label("Password: ", StyleSheet.defaultSkin);
 		password.setPasswordCharacter('*');
 		password.setPasswordMode(true);
 

@@ -9,14 +9,8 @@ import com.swarmer.gui.screens.lobby.LobbyUserList;
 import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
 import com.swarmer.gui.widgets.FriendList;
 import com.swarmer.gui.widgets.SwarmerNotification;
-import com.swarmer.shared.aco.graph.Graph;
 import com.swarmer.shared.aco.graph.SerialisedGraph;
-import com.swarmer.shared.communication.Connection;
-import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.Player;
-import com.swarmer.shared.communication.Protocol;
-import com.swarmer.shared.communication.SerialisedAnts;
-import com.swarmer.shared.communication.SerialisedAnt;
+import com.swarmer.shared.communication.*;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

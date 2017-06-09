@@ -1,19 +1,12 @@
 package com.swarmer.game.units;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.swarmer.gui.animations.AnimationLibrary;
-import com.swarmer.network.GameClient;
-import com.swarmer.shared.communication.Player;
 import com.swarmer.utility.CoordsTranslator;
-import com.swarmer.shared.aco.graph.Node;
 
-import java.util.ArrayList;
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Semaphore;
 
 public class Ant {
 

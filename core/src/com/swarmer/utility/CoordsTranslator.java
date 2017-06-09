@@ -29,22 +29,6 @@ public class CoordsTranslator {
 		return instance;
 	}
 
-	public Vector2 getTileCoordinates(com.swarmer.shared.aco.graph.Vector2 pos) {
-		return getTileCoordinates(pos.x, pos.y);
-	}
-
-	public Vector2 getScreenCoordinates(com.swarmer.shared.aco.graph.Vector2 pos) {
-		return getScreenCoordinates(pos.x, pos.y);
-	}
-
-	public Vector2 getTileCoordinates(Vector2 pos) {
-		return getTileCoordinates(pos.x, pos.y);
-	}
-
-	public Vector2 getScreenCoordinates(Vector2 pos) {
-		return getScreenCoordinates(pos.x, pos.y);
-	}
-
 	public Vector2 getTileCoordinatesFromScreen(float screenX, float screenY) {
 		Vector3 worldCoords = camera.unproject(new Vector3(screenX, screenY, 0));
 		return getTileCoordinates(worldCoords.x, worldCoords.y);
@@ -62,9 +46,4 @@ public class CoordsTranslator {
 
 		return new Vector2(x, y);
 	}
-
-	public TiledMapTileLayer.Cell getCell(TiledMapTileLayer layer, Vector2 coords) {
-		return layer.getCell((int) coords.x, (int) coords.y);
-	}
-
 }

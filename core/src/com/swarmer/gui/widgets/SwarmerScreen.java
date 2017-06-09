@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.swarmer.game.SwarmerMain;
 
 public abstract class SwarmerScreen extends Stage implements Screen {
 
@@ -31,9 +30,6 @@ public abstract class SwarmerScreen extends Stage implements Screen {
 	@Override public void show() {
 		Gdx.input.setInputProcessor(this);
 	}
-
-
-	float time = 0;
 
 	@Override public void render(float delta) {
 		handleInput();

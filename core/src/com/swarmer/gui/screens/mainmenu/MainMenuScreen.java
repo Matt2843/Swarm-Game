@@ -1,9 +1,5 @@
 package com.swarmer.gui.screens.mainmenu;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.swarmer.game.SwarmerMain;
-import com.swarmer.gui.screens.game.GameScreen;
 import com.swarmer.gui.widgets.SwarmerScreen;
 
 public class MainMenuScreen extends SwarmerScreen {

@@ -14,10 +14,8 @@ import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
 import com.swarmer.gui.widgets.SwarmerScreen;
 import com.swarmer.network.GameClient;
 import com.swarmer.shared.communication.Message;
-import com.swarmer.shared.communication.Player;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class LobbyScreen extends SwarmerScreen {
     private String lobbyId = "";
@@ -83,10 +81,6 @@ public class LobbyScreen extends SwarmerScreen {
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             lobbyChat.pressSendInput();
         }
-    }
-
-    public TextButton getFindGame() {
-        return findGame;
     }
 
     public String getLobbyId() {

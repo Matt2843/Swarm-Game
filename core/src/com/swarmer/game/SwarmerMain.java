@@ -9,7 +9,6 @@ import com.swarmer.gui.screens.lobby.LobbyScreen;
 import com.swarmer.gui.screens.mainmenu.MainMenuScreen;
 import com.swarmer.gui.screens.prelobby.PreLobbyScreen;
 import com.swarmer.gui.widgets.FriendList;
-import com.swarmer.gui.widgets.SwarmerNotification;
 import com.swarmer.gui.widgets.SwarmerScreen;
 import com.swarmer.network.GameClient;
 
@@ -38,7 +37,6 @@ public class SwarmerMain extends Game {
 		AnimationLibrary.getInstance().initializeAntAnimations();
 
 		show(MainMenuScreen.getInstance());
-		//show(LobbyScreen.getInstance());
 	}
 
 	private void initializeScreens() {
@@ -69,9 +67,5 @@ public class SwarmerMain extends Game {
 
 	public void dispose() {
 		GameClient.getInstance().tcp.stopConnection();
-	}
-
-	public void showNotification(SwarmerNotification notification) {
-		currentScreen.addActor(notification);
 	}
 }
