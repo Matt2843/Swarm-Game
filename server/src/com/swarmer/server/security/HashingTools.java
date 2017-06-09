@@ -20,13 +20,13 @@ public final class HashingTools {
 
     public static String hashPassword(final char[] password, final byte[] salt) {
         try {
-            SecretKeyFactory skf = SecretKeyFactory.getInstance( "PBKDF2WithHmacSHA512" );
-            PBEKeySpec spec = new PBEKeySpec( password, salt, iterations, keyLength );
-            SecretKey key = skf.generateSecret( spec );
-            byte[] res = key.getEncoded( );
+            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+            PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, keyLength);
+            SecretKey key = skf.generateSecret(spec);
+            byte[] res = key.getEncoded();
             return bytesToHex(res);
-        } catch( NoSuchAlgorithmException | InvalidKeySpecException e ) {
-            throw new RuntimeException( e );
+        } catch(NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException(e);
         }
     }
 

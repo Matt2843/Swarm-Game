@@ -2,7 +2,7 @@ package com.swarmer.shared.aco.graph;
 
 import java.io.Serializable;
 
-public class Graph implements Serializable {
+public class    Graph implements Serializable {
     public Node[][] nodes;
 
     private final int width;
@@ -28,7 +28,6 @@ public class Graph implements Serializable {
                     new Edge(nodes[i][j], nodes[i][j - 1], true);
                     new Edge(nodes[i][j], nodes[i + 1][j - 1], true);
                 } else if(j == 0 && i > 0) {
-                    new Edge(nodes[i][j], nodes[i - 1][j], true);
                 } else if(i == width - 1) {
                     new Edge(nodes[i][j], nodes[i - 1][j], true);
                     new Edge(nodes[i][j], nodes[i - 1][j - 1], true);

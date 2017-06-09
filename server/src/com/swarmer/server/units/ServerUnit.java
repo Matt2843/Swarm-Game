@@ -15,6 +15,9 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public abstract class ServerUnit extends Unit {
 
@@ -22,14 +25,30 @@ public abstract class ServerUnit extends Unit {
 	private final String nodeUUID = UUID.randomUUID().toString();
 	protected int usersConnected = 0;
 
+	private final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+
 	protected ServerUnit() {
 		super();
 		notifyMotherShip();
-	}
+		updateDatabase();
+    }
+
+    private void updateDatabase() {
+        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    new DatabaseControllerCallable(new Message(15000, new Object[] {getNodeUUID(), getDescription(), usersConnected})).getFutureResult();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 20, 20, TimeUnit.SECONDS);
+    }
 
     private void notifyMotherShip() {
 		try {
-			Message msg = new DatabaseControllerCallable(new Message(2, new String[] {String.valueOf(getPort()), getDescription()})).getFutureResult();
+			Message msg = new DatabaseControllerCallable(new Message(2, new String[] {String.valueOf(getPort()), getDescription(), getNodeUUID()})).getFutureResult();
 			IP = (String) msg.getObject();
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -58,6 +77,7 @@ public abstract class ServerUnit extends Unit {
 
     public boolean addActiveConnection(Player player, Connection connection) throws IOException {
 	    if(!activeConnections.containsKey(player)) {
+	        usersConnected++;
 			System.out.println("Add: " + player.getUsername());
             activeConnections.put(player, connection);
 			new CoordinationUnitCallable(new Message(1150, new Object[]{player, getDescription(), getPort()})).getFutureResult().getObject();
@@ -70,6 +90,7 @@ public abstract class ServerUnit extends Unit {
 
     public boolean removeActiveConnection(Player player) throws IOException {
 		if(activeConnections.containsKey(player)) {
+		    usersConnected--;
 			System.out.println("Remove: " + player.getUsername());
             activeConnections.remove(player);
 			new CoordinationUnitCallable(new Message(1152, new Object[] {player, getId()})).getFutureResult().getObject();

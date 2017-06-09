@@ -7,6 +7,7 @@ import com.swarmer.shared.communication.Connection;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 import com.swarmer.shared.communication.TCPConnection;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.security.PublicKey;
@@ -50,13 +51,27 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 			case 34788:
 				addFriendShipToDatabase(message);
 				break;
+            case 15000:
+                updateUserCount(message);
+                break;
 			default:
 				super.react(message, caller);
 				break;
 		}
 	}
 
-	private void addFriendShipToDatabase(Message message) throws SQLException, IOException {
+    private void updateUserCount(Message message) throws IOException, SQLException {
+	    Object[] objects = (Object[]) message.getObject();
+	    String UUID = (String) objects[0];
+	    String description = (String) objects[1];
+	    int usersConnected = (int) objects[2];
+        System.out.println(UUID + " " + description + " users: " + usersConnected);
+        DatabaseController.mySQLConnection.sqlExecute("UPDATE " + description + " SET user_count=" + usersConnected + ";");
+        //DatabaseController.mySQLConnection.sqlExecute("UPDATE " + description + " SET user_count=" + usersConnected + " WHERE id=" + "'" + UUID + "'" + ";");
+        caller.sendMessage(new Message(15001, true));
+    }
+
+    private void addFriendShipToDatabase(Message message) throws SQLException, IOException {
 		// TODO: Add friendship to database message contains String[] {User1, User2}
 		//DatabaseController.mySQLConnection.sqlExecute("INSERT INTO friendships ()");
 		Player player1 = ((Player[]) message.getObject())[0];
@@ -124,7 +139,7 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 	private void addNodeToDb(Message message) throws SQLException {
 		String[] queryDetails = (String[]) message.getObject();
 		String sqlQuery = "INSERT INTO " + queryDetails[1] + " (id, ip_address, port, user_count) VALUES (?, ?, ?, ?)";
-		DatabaseController.mySQLConnection.sqlExecute(sqlQuery, UUID.randomUUID().toString(), ((TCPConnection) caller).getConnection().getInetAddress().toString(), queryDetails[0], "0");
+		DatabaseController.mySQLConnection.sqlExecute(sqlQuery, queryDetails[2], ((TCPConnection) caller).getConnection().getInetAddress().toString(), queryDetails[0], "0");
 		try {
 			caller.sendMessage(new Message(((TCPConnection) caller).getConnection().getInetAddress().toString()));
 		} catch(IOException e) {
