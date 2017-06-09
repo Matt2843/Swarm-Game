@@ -62,62 +62,11 @@ public class GameScreen extends SwarmerScreen {
 		hives = new ArrayList<>();
 		ants = Collections.synchronizedList(new ArrayList<Ant>());
 		camera = SwarmerMain.getInstance().camera;
-		map = new TmxMapLoader().load("newmap.tmx");
-		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
-		mapWidth = layer.getWidth() * layer.getTileWidth();
-		mapHeight = layer.getHeight() * layer.getTileHeight();
-
-		/*TiledMap m = new TiledMap();
-		m.getLayers().add(new TiledMapTileLayer(w, h, tw, th));
-
-		TiledMapTileLayer lay = m.getLayers().getByType(TiledMapTileLayer.class).get(0);
-
-		TiledMapTile tile = new StaticTiledMapTile(new TextureRegion().);*/
-
-		/*backgroundLayers = new int[]{0, 1, 2};
-		foregroundLayers = new int[]{3};
-
-		graph = new Graph(4, 5);*/
-
-//		viewport = new ExtendViewport(VP_WIDTH, VP_HEIGHT, camera);
-//
-//		viewport.apply(false);
-//
-//		IM = new InputMultiplexer();
-//		IM.addProcessor(new SwamerInputProcessor(this));
-//		IM.addProcessor(new GestureDetector(new SwarmerGestureDetector(this)));
-
-//		centerCamera();
-
-//		TiledMapTileLayer lay0 = map.getLayers().getByType(TiledMapTileLayer.class).get(2);
-//
-//		TiledMapTile tile = map.getLayers().getByType(TiledMapTileLayer.class).get(3).getCell(0, 0).getTile();
-
-		/*for(int i = 0; i < 200; i++) {
-			int x = ThreadLocalRandom.current().nextInt(1, 99);
-			int y = ThreadLocalRandom.current().nextInt(1, 99);
-
-			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size() > 0) {
-				lay0.setCell(x, y, new TiledMapTileLayer.Cell());
-				lay0.getCell(x,y).setTile(tile);
-				graph.nodes[x][y].setResource(new Food(100));
-			}
-		}
-
-		int playerCount = 3;
-		for(int i = 0; i < playerCount; i++) {
-			int x = ThreadLocalRandom.current().nextInt(1, 99);
-			int y = ThreadLocalRandom.current().nextInt(1, 99);
-			Player player = new Player("Alias", "" + i, 0);
-			if(graph.nodes[x][y] != null && graph.nodes[x][y].getConnectedEdges().size() > 0) {
-				hives.add(new Hive(player, graph.nodes[x][y]));
-			}
-		}*/
 	}
 
 	public void init(SerialisedGraph graph) {
 		this.graph = graph;
-		TiledMap tempmap = new TmxMapLoader().load("newmap.tmx");
+		TiledMap tempmap = new TmxMapLoader().load("newMap.tmx");
 		TiledMapTileLayer lay0 = tempmap.getLayers().getByType(TiledMapTileLayer.class).get(3);
 		TiledMapTile tile = tempmap.getLayers().getByType(TiledMapTileLayer.class).get(0).getCell(1, 1).getTile();
 		TiledMapTile res = map.getLayers().getByType(TiledMapTileLayer.class).get(3).getCell(0, 0).getTile();
@@ -168,7 +117,6 @@ public class GameScreen extends SwarmerScreen {
 
 	@Override public void render(float delta) {
 		handleInput();
-		//Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		camera.update();
