@@ -13,7 +13,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.swarmer.shared.aco.graph.Graph;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.game.input.SwamerInputProcessor;
 import com.swarmer.game.input.SwarmerGestureDetector;
@@ -23,6 +22,8 @@ import com.swarmer.gui.widgets.SwarmerScreen;
 import com.swarmer.shared.aco.graph.SerialisedGraph;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class GameScreen extends SwarmerScreen {
 
@@ -39,7 +40,7 @@ public class GameScreen extends SwarmerScreen {
 	private float mapWidth, mapHeight;
 	private InputMultiplexer IM;
 	private Vector2 vec = new Vector2();
-	private ArrayList<Ant> ants;
+	private List<Ant> ants;
 	private ArrayList<Hive> hives;
 	private int[] backgroundLayers;
 	private int[] foregroundLayers;
@@ -59,7 +60,7 @@ public class GameScreen extends SwarmerScreen {
 
 	@Override protected void create() {
 		hives = new ArrayList<>();
-		ants = new ArrayList<>();
+		ants = Collections.synchronizedList(new ArrayList<Ant>());
 		camera = SwarmerMain.getInstance().camera;
 		map = new TmxMapLoader().load("newmap.tmx");
 		TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
@@ -175,6 +176,8 @@ public class GameScreen extends SwarmerScreen {
 		renderer.render(backgroundLayers);
 
 		renderer.getBatch().begin();
+
+
 		for(Ant ant : ants) {
 			ant.draw(renderer.getBatch());
 		}
@@ -252,7 +255,7 @@ public class GameScreen extends SwarmerScreen {
 		return map;
 	}
 
-	public ArrayList<Ant> getAnts() {
+	public List<Ant> getAnts() {
 		return ants;
 	}
 }
