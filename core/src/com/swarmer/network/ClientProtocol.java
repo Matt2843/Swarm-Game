@@ -98,6 +98,12 @@ public class ClientProtocol extends Protocol {
     private void updateAntPositions(Message message) {
         SerialisedAnts ants = (SerialisedAnts) message.getObject();
 
+		try {
+			GameClient.getInstance().getSemaphore().acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
 		for(SerialisedAnt ant : ants.ants) {
 			if(GameScreen.getInstance().getAnts().size() > ant.id) {
                 GameScreen.getInstance().getAnts().get(ant.id).addCoordinate(ant.x, ant.y);
@@ -105,7 +111,9 @@ public class ClientProtocol extends Protocol {
 				GameScreen.getInstance().getAnts().add(new Ant(ant.x, ant.y));
 			}
         }
-    }
+
+		GameClient.getInstance().getSemaphore().release();
+	}
 
     private void receivedMessageInLobby(Message message) {
         String[] receivedMessageArray = (String[]) message.getObject();

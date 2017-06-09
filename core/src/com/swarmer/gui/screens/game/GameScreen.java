@@ -19,6 +19,7 @@ import com.swarmer.game.input.SwarmerGestureDetector;
 import com.swarmer.game.structures.Hive;
 import com.swarmer.game.units.Ant;
 import com.swarmer.gui.widgets.SwarmerScreen;
+import com.swarmer.network.GameClient;
 import com.swarmer.shared.aco.graph.SerialisedGraph;
 
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class GameScreen extends SwarmerScreen {
 		TiledMap tempmap = new TmxMapLoader().load("newMap.tmx");
 		TiledMapTileLayer lay0 = tempmap.getLayers().getByType(TiledMapTileLayer.class).get(3);
 		TiledMapTile tile = tempmap.getLayers().getByType(TiledMapTileLayer.class).get(0).getCell(1, 1).getTile();
-		TiledMapTile res = map.getLayers().getByType(TiledMapTileLayer.class).get(3).getCell(0, 0).getTile();
+		TiledMapTile res = tempmap.getLayers().getByType(TiledMapTileLayer.class).get(3).getCell(0, 0).getTile();
 
 		mapWidth = graph.nodes.length * lay0.getTileWidth();
 		mapHeight = graph.nodes[0].length * lay0.getTileHeight();
@@ -125,10 +126,17 @@ public class GameScreen extends SwarmerScreen {
 
 		renderer.getBatch().begin();
 
+		try {
+			GameClient.getInstance().getSemaphore().acquire();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 		for(Ant ant : ants) {
 			ant.draw(renderer.getBatch());
 		}
+
+		GameClient.getInstance().getSemaphore().release();
 
 		for(Hive hive : hives) {
 			hive.draw(renderer.getBatch());

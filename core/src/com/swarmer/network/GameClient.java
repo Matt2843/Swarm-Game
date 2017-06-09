@@ -9,6 +9,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.util.concurrent.Semaphore;
 
 public final class GameClient {
 
@@ -17,6 +18,7 @@ public final class GameClient {
 	public TCPConnection tcp = null;
 	public SecureTCPConnection stcp = null;
 	public UDPConnection udp;
+	private Semaphore semaphore = new Semaphore(1, true);
 
 	private static Player currentPlayer;
 
@@ -80,6 +82,7 @@ public final class GameClient {
 		}
 	}
 
+
 	public void closeConnection() {
 		if(tcp != null) {
 			tcp.stopConnection(currentPlayer);
@@ -90,6 +93,12 @@ public final class GameClient {
 		}
 	}
 
+	public void cleanUp() {
+		tcp.cleanUp();
+		stcp.cleanUp();
+		udp.cleanUp();
+	}
+
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
@@ -98,9 +107,7 @@ public final class GameClient {
 		currentPlayer = player;
 	}
 
-	public void cleanUp() {
-		tcp.cleanUp();
-		stcp.cleanUp();
-		udp.cleanUp();
+	public Semaphore getSemaphore() {
+		return semaphore;
 	}
 }
