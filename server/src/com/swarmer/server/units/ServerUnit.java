@@ -110,13 +110,15 @@ public abstract class ServerUnit extends Unit {
 	}
 
 	public static void sendTo(String username, LocationInformation local, Protocol prt, Message msg) {
-		try {
-			TCPConnection con = new TCPConnection(new Socket(local.getServerUnitIp(), local.getServerUnitPort()), prt);
-			con.start();
-			con.sendMessage(new Message(888, new Object[] {msg, username}));
-			//con.stopConnection();
-		} catch(IOException e) {
-			e.printStackTrace();
+		if(local != null) {
+			try {
+				TCPConnection con = new TCPConnection(new Socket(local.getServerUnitIp(), local.getServerUnitPort()), prt);
+				con.start();
+				con.sendMessage(new Message(888, new Object[]{msg, username}));
+				con.stopConnection();
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

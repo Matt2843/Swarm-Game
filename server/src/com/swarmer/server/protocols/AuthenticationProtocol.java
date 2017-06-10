@@ -61,8 +61,9 @@ public class AuthenticationProtocol extends ServerProtocol {
 			Player createdPlayer = AuthenticationUnit.createUser(message);
 			if(createdPlayer != null) {
 				new CoordinationUnitCallable(new Message(1150, new Object[]{createdPlayer, serverUnit.getDescription(), serverUnit.getPort(), serverUnit.getNodeUUID()})).getFutureResult();
+				addConnectionToActiveConnections(createdPlayer, caller);
+				caller.sendMessage(new Message(202, createdPlayer));
 			}
-			caller.sendMessage(new Message(202, createdPlayer));
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -77,7 +78,7 @@ public class AuthenticationProtocol extends ServerProtocol {
 		if(authenticatedPlayer != null) {
 			new CoordinationUnitCallable(new Message(1150, new Object[]{authenticatedPlayer, serverUnit.getDescription(), serverUnit.getPort(), serverUnit.getNodeUUID()})).getFutureResult();
 			caller.sendMessage(new Message(110, authenticatedPlayer));
-			serverUnit.addActiveConnection(authenticatedPlayer, caller);
+			addConnectionToActiveConnections(authenticatedPlayer, caller);
 			sendRelationships(authenticatedPlayer);
 		}
 	}

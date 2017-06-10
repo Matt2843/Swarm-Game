@@ -87,15 +87,25 @@ public class ClientProtocol extends Protocol {
 			case 34790: // Friend added, object = string with friends name.
 				friendAdded(message);
 				break;
+			case 34791: // Friend is online, object = string with friends name.
+				receivedFriendIsOnline(message);
+				break;
 			default:
 				break;
 		}
 	}
 
-    private void receivedFriendListEntries(Message message) {
+	private void receivedFriendIsOnline(Message message) throws IOException {
+		friendAdded(message);
+		GameClient.getInstance().tcp.sendMessage(new Message(888, new Object[]{new Message(34790, GameClient.getInstance().getCurrentPlayer().getUsername()), (String) message.getObject()}));
+	}
+
+    private void receivedFriendListEntries(Message message) throws IOException {
         ArrayList<String> relationships = (ArrayList<String>) message.getObject();
-        for(String friend : relationships)
-            FriendList.getInstance().addFriendToFriendList(friend, FriendList.FriendListEntry.OFFLINE);
+        for(String friend : relationships) {
+			FriendList.getInstance().addFriendToFriendList(friend, FriendList.FriendListEntry.OFFLINE);
+			GameClient.getInstance().tcp.sendMessage(new Message(888, new Object[]{new Message(34791, GameClient.getInstance().getCurrentPlayer().getUsername()), friend}));
+		}
     }
 
     private void addNewAntToGraph(Message message) {

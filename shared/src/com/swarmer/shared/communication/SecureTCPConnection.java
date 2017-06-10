@@ -153,7 +153,7 @@ public class SecureTCPConnection extends Connection {
 		ArrayList<SealedObject> lst = new ArrayList<SealedObject>();
 		try {
 			ByteArrayInputStream bis = new ByteArrayInputStream(data);
-			byte[] bytes = new byte[200];
+			byte[] bytes = new byte[180];
 			int len = 0;
 			while((len = bis.read(bytes)) != -1) {
 				lst.add(new SealedObject(Arrays.copyOfRange(bytes, 0, len), outCipher));

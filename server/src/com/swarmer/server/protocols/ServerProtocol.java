@@ -24,7 +24,7 @@ public abstract class ServerProtocol extends Protocol {
 		this.caller = caller;
 		switch (message.getOpcode()) {
 			case 0:
-				removeConnectionFromActiveConnections(message);
+				removeConnectionFromActiveConnections(message, caller);
 				break;
 			case 1:
 				addConnectionToActiveConnections(message, caller);
@@ -81,15 +81,20 @@ public abstract class ServerProtocol extends Protocol {
 	}
 
 	private boolean addConnectionToActiveConnections(Message message, Connection connection) throws IOException {
-		Player player = (Player) message.getObject();
+		return addConnectionToActiveConnections((Player) message.getObject(), connection);
+	}
+
+	protected boolean addConnectionToActiveConnections(Player player, Connection connection) throws IOException {
 		connection.setPlayer(player);
 		return serverUnit.addActiveConnection(player, connection);
 	}
 
-	private boolean removeConnectionFromActiveConnections(Message message) throws IOException {
+	private boolean removeConnectionFromActiveConnections(Message message, Connection connection) throws IOException {
 		Player player = (Player) message.getObject();
+		if(player == null) {
+			player = connection.getPlayer(); // ToDO test
+		}
 		return serverUnit.removeActiveConnection(player);
 	}
-
 }
 

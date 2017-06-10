@@ -82,6 +82,10 @@ public class FriendList extends ChatWidget {
 	public void addFriendToFriendList(String name, int onlineStatus) {
 		FriendListEntry friendListEntry = new FriendListEntry((int)width, 25, name, onlineStatus);
 
+		onlineFriends.remove(name);
+		offlineFriends.remove(name);
+		ingameFriends.remove(name);
+
 		switch (onlineStatus) {
 			case FriendListEntry.ONLINE:
 				onlineFriends.put(name, friendListEntry);

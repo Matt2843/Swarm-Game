@@ -35,6 +35,19 @@ public class TCPConnection extends Connection {
 			} catch (IOException e) {
 				System.out.println("input.readObject() threw an IOException, cleaning up connection.");
 				stop = true;
+				try {
+					react(new Message(0, player));
+				} catch(IOException e1) {
+					e1.printStackTrace();
+				} catch(OperationInWrongServerNodeException e1) {
+					e1.printStackTrace();
+				} catch(SQLException e1) {
+					e1.printStackTrace();
+				} catch(NoSuchAlgorithmException e1) {
+					e1.printStackTrace();
+				} catch(InterruptedException e1) {
+					e1.printStackTrace();
+				}
 			} catch (ClassNotFoundException | InterruptedException | SQLException | NoSuchAlgorithmException | OperationInWrongServerNodeException e) {
 				e.printStackTrace();
 			}
