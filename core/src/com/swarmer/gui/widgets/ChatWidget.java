@@ -45,7 +45,7 @@ public class ChatWidget extends Table {
 
 		description = new TextButton(title, StyleSheet.defaultSkin);
 		input = new TextField("", StyleSheet.defaultSkin);
-		interaction = new TextButton("", StyleSheet.defaultSkin);
+		interaction = new TextButton("SEND", StyleSheet.defaultSkin);
 		scrollableObject = new Table();
 
 		scrollList = new ScrollPane(scrollableObject, StyleSheet.defaultSkin);

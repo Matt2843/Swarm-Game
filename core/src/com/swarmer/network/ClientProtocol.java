@@ -21,6 +21,7 @@ import com.swarmer.shared.communication.SerialisedAnt;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.security.PublicKey;
+import java.util.ArrayList;
 
 public class ClientProtocol extends Protocol {
 
@@ -92,10 +93,9 @@ public class ClientProtocol extends Protocol {
 	}
 
     private void receivedFriendListEntries(Message message) {
-        String[] relationships = (String[]) message.getObject();
-        for(String friend : relationships) {
-            FriendList.getInstance().addFriendToFriendList(friend, FriendList.FriendListEntry.ONLINE);
-        }
+        ArrayList<String> relationships = (ArrayList<String>) message.getObject();
+        for(String friend : relationships)
+            FriendList.getInstance().addFriendToFriendList(friend, FriendList.FriendListEntry.OFFLINE);
     }
 
     private void addNewAntToGraph(Message message) {

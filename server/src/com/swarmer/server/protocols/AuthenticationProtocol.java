@@ -43,7 +43,7 @@ public class AuthenticationProtocol extends ServerProtocol {
 		}
 	}
 
-	private void findGame(Message message) {
+    private void findGame(Message message) {
 		try {
 			Message response = new CoordinationUnitCallable(message).getFutureResult();
 		} catch (IOException e) {
@@ -74,12 +74,16 @@ public class AuthenticationProtocol extends ServerProtocol {
 
 	private void authenticateUser(Message message) throws IOException {
 		Player authenticatedPlayer = AuthenticationUnit.authenticateUser(message);
-        Message response = new DatabaseControllerCallable(new Message(16000, authenticatedPlayer)).getFutureResult();
-        serverUnit.sendToPlayer(authenticatedPlayer.getUsername(), response);
 		if(authenticatedPlayer != null) {
-			new CoordinationUnitCallable(new Message(1150, new Object[]{authenticatedPlayer, serverUnit.getDescription(), serverUnit.getPort(), serverUnit})).getFutureResult();
+			new CoordinationUnitCallable(new Message(1150, new Object[]{authenticatedPlayer, serverUnit.getDescription(), serverUnit.getPort(), serverUnit.getNodeUUID()})).getFutureResult();
 			caller.sendMessage(new Message(110, authenticatedPlayer));
 			serverUnit.addActiveConnection(authenticatedPlayer, caller);
+			sendRelationships(authenticatedPlayer);
 		}
 	}
+
+    private void sendRelationships(Player authenticatedPlayer) throws IOException {
+        Message response = new DatabaseControllerCallable(new Message(16000, authenticatedPlayer)).getFutureResult();
+        serverUnit.sendToPlayer(authenticatedPlayer.getUsername(), response);
+    }
 }

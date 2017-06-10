@@ -56,7 +56,6 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 				addFriendShipToDatabase(message);
 				break;
             case 15000:
-                //updateUserCount(message);
 				updateUserCounts(message);
                 break;
 			default:
@@ -67,11 +66,23 @@ public class DatabaseControllerProtocol extends ServerProtocol {
 
     private void getUsersFriendlist(Message message) throws SQLException, IOException {
         Player target = (Player) message.getObject();
-
-        ResultSet resultSet = DatabaseController.mySQLConnection.sqlExecuteQuery("SELECT * FROM friendships WHERE user_id_1 = ? OR user_id_2 = ?", target.getId(), target.getId());
-
-        String[] relations = {};
-        caller.sendMessage(new Message(16001, relations));
+        ResultSet resultSet = DatabaseController.mySQLConnection.sqlExecuteQuery("SELECT *" +
+                "FROM users u INNER JOIN" +
+                "(" +
+                "    SELECT  CASE" +
+                "    WHEN user_id_1 = ? THEN" +
+                "    user_id_2" +
+                "    ELSE user_id_1" +
+                "    END person_id" +
+                "    FROM friendships" +
+                "    WHERE user_id_1 = ?" +
+                "    OR user_id_2 = ?" +
+                ") myFriends ON u.id = myFriends.person_id", target.getId(), target.getId(), target.getId());
+        ArrayList<String> relationsList = new ArrayList<>();
+        while(resultSet.next()) {
+            relationsList.add(resultSet.getString("username"));
+        }
+        caller.sendMessage(new Message(16001, relationsList));
 	}
 
     private void updateUserCounts(Message message) throws IOException, SQLException, InterruptedException {
