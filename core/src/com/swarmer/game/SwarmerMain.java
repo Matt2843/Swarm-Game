@@ -68,7 +68,7 @@ public class SwarmerMain extends Game {
 	}
 
 	public void dispose() {
-		GameClient.getInstance().tcp.stopConnection();
+		GameClient.getInstance().tcp.stopConnection(GameClient.getInstance().getCurrentPlayer());
 	}
 
 	public void showNotification(SwarmerNotification notification) {
