@@ -31,7 +31,5 @@ public class Ant {
 
         desiredPosition = brain.determineNextPath().getNode();
         food -= 1;
-
-        System.out.println(desiredPosition);
     }
 }

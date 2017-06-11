@@ -41,9 +41,11 @@ public class Swarmer extends Thread {
 			game.setUdpConnection(udpConnection);
 		} catch (IOException ignored) {}*/
 
-		while(true) {
+		boolean bool = true;
+
+		while(bool) {
 			long time = System.currentTimeMillis();
-			game.render();
+			bool = game.render();
 			long sleep = 500 - (System.currentTimeMillis() - time);
 			if(sleep > 0) {
 				try {
@@ -53,6 +55,7 @@ public class Swarmer extends Thread {
 				}
 			}
 		}
+		System.out.println("Game Terminated");
 	}
 
     public String getGameUUID() {

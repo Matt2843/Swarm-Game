@@ -12,6 +12,9 @@ import com.swarmer.gui.widgets.FriendList;
 import com.swarmer.gui.widgets.SwarmerNotification;
 import com.swarmer.gui.widgets.SwarmerScreen;
 import com.swarmer.network.GameClient;
+import com.swarmer.shared.communication.Message;
+
+import java.io.IOException;
 
 public class SwarmerMain extends Game {
 
@@ -68,7 +71,14 @@ public class SwarmerMain extends Game {
 	}
 
 	public void dispose() {
-		GameClient.getInstance().tcp.stopConnection(GameClient.getInstance().getCurrentPlayer());
+		for(String name : FriendList.getInstance().getOnlineFriends().keySet()) {
+			try {
+				GameClient.getInstance().tcp.sendMessage(new Message(888, new Object[]{new Message(34792, GameClient.getInstance().getCurrentPlayer().getUsername()), name}));
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+		}
+		GameClient.getInstance().closeConnection();
 	}
 
 	public void showNotification(SwarmerNotification notification) {

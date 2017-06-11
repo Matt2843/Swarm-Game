@@ -27,6 +27,8 @@ public class Ant {
 	private float speed = 100f;
 	private float zero  = speed / 5;
 
+	private boolean bool = false;
+
 	private ConcurrentLinkedQueue<Vector2> desiredPositions;
 
 	private Vector2 desiredPosition;
@@ -79,7 +81,9 @@ public class Ant {
 		if(Math.abs(Math.round(getX() - desiredPosition.x)) < 10 && Math.abs(Math.round(getY() - desiredPosition.y)) < 10) {
 			if(!desiredPositions.isEmpty()) {
 				desiredPosition = desiredPositions.poll();
-				food -= 1;
+				bool = true;
+			} else if(bool) {
+				food = 0;
 			}
 		}
 	}

@@ -14,9 +14,6 @@ import com.swarmer.shared.exceptions.GameClientNotInstantiatedException;
 
 import java.io.IOException;
 
-/**
- * Created by Matt on 03/28/2017.
- */
 public class MainMenuLoginBox extends Table {
 
 	private TextField userName;
@@ -129,8 +126,13 @@ public class MainMenuLoginBox extends Table {
 		login.setText("Login");
 	}
 
-	private void clearFields() {
+	public void clearFields() {
 		userName.setText("");
+		verifyPassword.setText("");
+		password.setText("");
+	}
+
+	public void clearPassword() {
 		verifyPassword.setText("");
 		password.setText("");
 	}

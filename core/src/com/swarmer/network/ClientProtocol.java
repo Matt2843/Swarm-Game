@@ -85,18 +85,33 @@ public class ClientProtocol extends Protocol {
 				handleFriendRequest(message);
 				break;
 			case 34790: // Friend added, object = string with friends name.
-				friendAdded(message);
+				friendAdded(message, FriendList.FriendListEntry.ONLINE);
 				break;
 			case 34791: // Friend is online, object = string with friends name.
 				receivedFriendIsOnline(message);
+				break;
+			case 34792: // Friend is online, object = string with friends name.
+				receivedFriendIsOffline(message);
+				break;
+			case 34793: // Friend is online, object = string with friends name.
+				receivedFriendIsOffline(message);
 				break;
 			default:
 				break;
 		}
 	}
 
+	private void receivedFriendIsInGame(Message message) throws IOException {
+		friendAdded(message, FriendList.FriendListEntry.INGAME);
+	}
+
+	private void receivedFriendIsOffline(Message message) throws IOException {
+		friendAdded(message, FriendList.FriendListEntry.OFFLINE);
+	}
+
+
 	private void receivedFriendIsOnline(Message message) throws IOException {
-		friendAdded(message);
+		friendAdded(message, FriendList.FriendListEntry.ONLINE);
 		GameClient.getInstance().tcp.sendMessage(new Message(888, new Object[]{new Message(34790, GameClient.getInstance().getCurrentPlayer().getUsername()), (String) message.getObject()}));
 	}
 
@@ -195,15 +210,20 @@ public class ClientProtocol extends Protocol {
 			}
 		});
 
-		System.out.println(gamePort);
-		System.out.println(GameClient.getInstance().tcp.getConnection().getInetAddress());
-		System.out.println(GameClient.getInstance().tcp.getConnection().getRemoteSocketAddress());
-
 		/*try {
 			GameClient.getInstance().udp.sendMessage(new Message(666), new InetSocketAddress(GameClient.getInstance().tcp.getConnection().getInetAddress(), gamePort));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}*/
+
+		//for(String name : FriendList.getInstance().getOnlineFriends().keySet()) {
+		//	try {
+		//		GameClient.getInstance().tcp.sendMessage(new Message(888, new Object[]{new Message(34793, GameClient.getInstance().getCurrentPlayer().getUsername()), name}));
+		//	} catch(IOException e) {
+		//		e.printStackTrace();
+		//	}
+		//}
+
 		SwarmerMain.getInstance().show(GameScreen.getInstance());
 	}
 
@@ -224,8 +244,8 @@ public class ClientProtocol extends Protocol {
 		});
 	}
 
-	private void friendAdded(Message message) {
-		FriendList.getInstance().addFriendToFriendList((String) message.getObject(), FriendList.FriendListEntry.ONLINE);
+	private void friendAdded(Message message, int state) {
+		FriendList.getInstance().addFriendToFriendList((String) message.getObject(), state);
 	}
 
 	private void handleFriendRequest(final Message message) {

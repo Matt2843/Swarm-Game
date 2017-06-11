@@ -1,6 +1,5 @@
 package com.swarmer.gui.screens.prelobby;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -9,18 +8,16 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.swarmer.game.SwarmerMain;
 import com.swarmer.gui.StyleSheet;
 import com.swarmer.gui.screens.mainmenu.MainMenuScreen;
+import com.swarmer.gui.screens.mainmenu.MainMenuLoginBox;
+import com.swarmer.gui.widgets.FriendList;
 import com.swarmer.gui.widgets.SwarmerScreen;
 import com.swarmer.network.GameClient;
-import com.swarmer.shared.communication.IPGetter;
 import com.swarmer.shared.communication.Message;
 import com.swarmer.shared.communication.Player;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by Matt on 04/16/2017.
- */
 public class PreLobbyScreen extends SwarmerScreen {
 
 	private TextButton startLobbyButton, startCompetitiveGameButton, startCasualGameButton, cancelSearchButton;
@@ -147,12 +144,9 @@ public class PreLobbyScreen extends SwarmerScreen {
 		TextButton logout = new TextButton("Logout ", StyleSheet.defaultSkin);
 		logout.addCaptureListener(new ChangeListener() {
 			@Override public void changed(ChangeEvent event, Actor actor) {
-				try {
-					GameClient.getInstance().tcp.sendMessage(new Message(0, GameClient.getInstance().getCurrentPlayer()));
-					GameClient.getInstance().closeConnection();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				FriendList.getInstance().clearList();
+				SwarmerMain.getInstance().dispose();
+				MainMenuLoginBox.getInstance().clearPassword();
 				SwarmerMain.getInstance().show(MainMenuScreen.getInstance());
                 GameClient.getInstance().initialConnection();
 			}

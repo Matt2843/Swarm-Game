@@ -49,27 +49,16 @@ public class FriendList extends ChatWidget {
 		scrollableObject.add(theList).expand().fill();
 
 		configureAddFriendButton();
-		//addFriendToFriendList("Matt", FriendListEntry.ONLINE);
-		/*addFriendToFriendList("Albert", FriendListEntry.OFFLINE);
-		addFriendToFriendList("Georg", FriendListEntry.INGAME);
-		addFriendToFriendList("Aa", FriendListEntry.OFFLINE);
-		addFriendToFriendList("Bb", FriendListEntry.ONLINE);
-		addFriendToFriendList("Cc", FriendListEntry.INGAME);
-		addFriendToFriendList("Hans", FriendListEntry.OFFLINE);
-		addFriendToFriendList("Aa", FriendListEntry.ONLINE);*/
+	}
+
+	public Map<String, FriendListEntry> getOnlineFriends() {
+		return onlineFriends;
 	}
 
 	private void configureAddFriendButton() {
 		interaction.setText("ADD");
 		interaction.addListener(new ClickListener() {
 			@Override public void clicked(InputEvent event, float x, float y) {
-				/*try {
-					System.out.println(new InetSocketAddress("127.0.0.1", 43152).toString());
-					GameClient.getInstance().udp.sendMessage(new Message(128342982, "Hello World"), new InetSocketAddress("127.0.0.1", 43152));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}*/
-
 				try {
 					GameClient.getInstance().tcp.sendMessage(new Message(34789, new String[] {GameClient.getInstance().getCurrentPlayer().getUsername(), input.getText()}));
 				} catch (IOException e) {
@@ -77,6 +66,10 @@ public class FriendList extends ChatWidget {
 				}
 			}
 		});
+	}
+
+	public void clearList() {
+		theList.clear();
 	}
 
 	public void addFriendToFriendList(String name, int onlineStatus) {

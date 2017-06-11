@@ -36,6 +36,12 @@ public class Edge implements Serializable {
 		return pheromones.get(player);
 	}
 
+	public void evaporate() {
+		for(Pheromone pheromone : pheromones.values()) {
+			pheromone.decreasePheromone();
+		}
+	}
+
 	public HashMap<Player, Pheromone> getPheromones() {
 		return pheromones;
 	}

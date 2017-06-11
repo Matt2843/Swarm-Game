@@ -67,9 +67,15 @@ public class Game {
 		}
 	}
 
-	public void render() {
+	public boolean render() {
 		//int size = 5;
 		SerialisedAnts serialisedAnts = new SerialisedAnts(ants.size());
+
+		for(int i = 0; i < graph.nodes.length; i++) {
+			for(int j = 0; j < graph.nodes[0].length; j++) {
+				graph.nodes[i][j].evaporate();
+			}
+		}
 
 		int j = 0;
 		for(int i = 0; i < ants.size(); i++) {
@@ -93,7 +99,7 @@ public class Game {
 			try {
 				player.getValue().sendMessage(new Message(23323, serialisedAnts));
 			} catch(IOException e) {
-				e.printStackTrace();
+				return false;
 			}
 		}
 
@@ -104,6 +110,7 @@ public class Game {
 				e.printStackTrace();
 			}
 		}*/
+		return true;
 	}
 
 	public void spawnAnt(Player owner) {

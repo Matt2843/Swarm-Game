@@ -8,71 +8,75 @@ import java.util.ArrayList;
 
 public class Node implements Serializable {
 
-    private boolean isHome = false;
-    public Player owner;
+	private final Vector2 position;
+	public Player owner;
+	public Resource resource = null;
+	private boolean isHome = false;
+	private ArrayList<Edge> connectedEdges;
 
-    private final Vector2 position;
-    private ArrayList<Edge> connectedEdges;
+	public Node(Vector2 position) {
+		this.position = position;
+		connectedEdges = new ArrayList<>();
+	}
 
-    public Resource resource = null;
+	public Node(Vector2 position, ArrayList<Edge> connectedEdges) {
+		this.position = position;
+		this.connectedEdges = connectedEdges;
+	}
 
-    public Node(Vector2 position) {
-        this.position = position;
-        connectedEdges = new ArrayList<>();
-    }
+	public Vector2 getPosition() {
+		return position;
+	}
 
-    public Node(Vector2 position, ArrayList<Edge> connectedEdges) {
-        this.position = position;
-        this.connectedEdges = connectedEdges;
-    }
+	public void addEdge(Edge e) {
+		connectedEdges.add(e);
+	}
 
-    public Vector2 getPosition() {
-        return position;
-    }
+	public Boolean isHome(Player player) {
+		return isHome && owner.equals(player);
+	}
 
-    public void addEdge(Edge e) {
-        connectedEdges.add(e);
-    }
+	public void setHome(Player owner) {
+		this.isHome = true;
+		this.owner = owner;
+	}
 
-    public Boolean isHome(Player player) {
-        return isHome && owner.equals(player);
-    }
+	public Boolean hasResource() {
+		return resource != null;
+	}
 
-    public void setHome(Player owner) {
-        this.isHome = true;
-        this.owner = owner;
-    }
+	public Resource getResource() {
+		return resource;
+	}
 
-    public Boolean hasResource() {
-        return resource != null;
-    }
+	public void setResource(Resource resource) {
+		this.resource = resource;
+	}
 
-    public Resource getResource() {
-        return resource;
-    }
+	public ArrayList<Edge> getConnectedEdges() {
+		return connectedEdges;
+	}
 
-    public void setResource(Resource resource) {
-        this.resource = resource;
-    }
+	public void setConnectedEdges(ArrayList<Edge> connectedEdges) {
+		this.connectedEdges = connectedEdges;
+	}
 
-    public ArrayList<Edge> getConnectedEdges() {
-        return connectedEdges;
-    }
+	public float getX() {
+		return position.x;
+	}
 
-    public void setConnectedEdges(ArrayList<Edge> connectedEdges) {
-        this.connectedEdges = connectedEdges;
-    }
+	public float getY() {
+		return position.y;
+	}
 
-    public float getX() {
-        return position.x;
-    }
+	public void evaporate() {
+		for(Edge edge : connectedEdges) {
+			edge.evaporate();
+		}
+	}
 
-    public float getY() {
-        return position.y;
-    }
-
-    @Override public boolean equals(Object node) {
-        return position.equals(((Node) node).getPosition());
-    }
+	@Override public boolean equals(Object node) {
+		return position.equals(((Node) node).getPosition());
+	}
 
 }
